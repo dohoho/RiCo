@@ -1,0 +1,310 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using RBI.Object.ObjectMSSQL;
+using RBI.BUS.BUSMSSQL;
+namespace RBI.PRE.subForm.InputDataForm
+{
+    public partial class UCComponentProperties : UserControl
+    {
+        string[] itemsBrinnellHardness = { "Below 200", "Between 200 and 237", "Greater than 237" };
+        //string[] itemsInsulationCondition = { "Above average", "Average", "Below average" };
+        string[] itemsProtrusionComplexity = { "Above average", "Average", "Below average" };
+        string[] itemsCyclicLoading = { "None", "PRV chatter", "Reciprocating machinery", "Valve with high pressure drop" };
+        string[] itemsBranchDiameter = {"Any branch less than or equal to 2\" Nominal OD", "All branches greater than 2\" Nominal OD"};
+        string[] itemsBranchJointType = {"None","Piping tee weldolets", "Saddle in fittings", "Sweepolets", "Threaded, socket welded, or saddle on"};
+        string[] itemsNumberPipeFittings = {"More than 10", "6 to 10", "Up to 5"};
+        string[] itemsPipeCondition = { "Broken gussets or gussets welded directly to pipe", "Good condition","Missing or damage supports, improper support"};
+        string[] itemsPreviousFailure = {"Greater than one", "None", "One"};
+        string[] itemsAmountShaking = { "Minor", "Moderate", "Severe" };
+        string[] itemsAccumulatedTimeShaking = {"13 to 52 weeks", "2 to 13 weeks", "Less than 2 weeks"};
+        string[] itemsCorrectiveAction = { "Engineering Analysis", "Experience", "None" };
+        
+
+        public UCComponentProperties()
+        {
+            InitializeComponent();
+            additemsBrinnellHardness();
+            additemsProtrusionComplexity();
+            additemsCyclicLoading();
+            additemsBranchDiameter();
+            additemsBranchJointType();
+            additemsNumberPipeFittings();
+            additemsPipeCondition();
+            additemsPreviousFailure();
+            additemsAmountShaking();
+            additemsAccumulatedTimeShaking();
+            additemsCorrectiveAction();
+        }
+        public UCComponentProperties(int ID)
+        {
+            InitializeComponent();
+            additemsBrinnellHardness();
+            additemsProtrusionComplexity();
+            additemsCyclicLoading();
+            additemsBranchDiameter();
+            additemsBranchJointType();
+            additemsNumberPipeFittings();
+            additemsPipeCondition();
+            additemsPreviousFailure();
+            additemsAmountShaking();
+            additemsAccumulatedTimeShaking();
+            additemsCorrectiveAction();
+            ShowDatatoControl(ID);
+        }
+        public void ShowDatatoControl(int ID)
+        {
+            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
+            List<RW_COMPONENT> listComponent = comBus.getDataSource();
+            foreach(RW_COMPONENT comp in listComponent)
+            {
+                if(comp.ID == ID)
+                {
+                    txtNominalDiameter.Text = comp.NominalDiameter.ToString();
+                    txtNominalThickness.Text = comp.NominalThickness.ToString();
+                    txtCurrentThickness.Text = comp.CurrentThickness.ToString();
+                    txtMinRequiredThickness.Text = comp.MinReqThickness.ToString();
+                    txtCurrentCorrosionRate.Text = comp.CurrentCorrosionRate.ToString();
+                    chkPresenceCracks.Checked = comp.CracksPresent == 1 ? true : false;
+                    chkPresenceInjectionMixPoint.Checked = comp.ChemicalInjection ==1?true:false;
+                    chkHighlyEffectiveMixPoint.Checked = comp.HighlyInjectionInsp == 1? true:false;
+                    chkDamageFoundDuringInspection.Checked = comp.DamageFoundInspection ==1?true:false;
+                    txtDeltaFATT.Text = comp.DeltaFATT.ToString();
+                    chkVisibleAudible.Checked = comp.ShakingDetected == 1?true:false;
+                    chkTrampElements.Checked = comp.TrampElements == 1 ? true : false;
+
+                    for (int i = 0; i < itemsAccumulatedTimeShaking.Length; i++ )
+                    {
+                        if (comp.ShakingTime == itemsAccumulatedTimeShaking[i])
+                            cbAccumalatedTimeShakingPipe.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsCorrectiveAction.Length; i++ )
+                    {
+                        if (comp.CorrectiveAction == itemsCorrectiveAction[i])
+                            cbCorrectiveAction.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsCyclicLoading.Length; i++ )
+                    {
+                        if (comp.CyclicLoadingWitin15_25m == itemsCyclicLoading[i])
+                            cbCyclicLoading.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsBranchDiameter.Length; i++ )
+                    {
+                        if (comp.BranchDiameter == itemsBranchDiameter[i])
+                            cbBranchDiameter.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsBranchJointType.Length; i++ )
+                    {
+                        if (comp.BranchJointType == itemsBranchJointType[i])
+                            cbJointTypeBranch.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsBrinnellHardness.Length; i++ )
+                    {
+                        if (comp.BrinnelHardness == itemsBrinnellHardness[i])
+                            cbMaxBrillnessHardness.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsNumberPipeFittings.Length; i++ )
+                    {
+                        if (comp.NumberPipeFittings == itemsNumberPipeFittings[i])
+                            cbNumberFittingPipe.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsPipeCondition.Length; i++ )
+                    {
+                        if (comp.PipeCondition == itemsPipeCondition[i])
+                            cbPipeCondition.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsPreviousFailure.Length; i++ )
+                    {
+                        if (comp.PreviousFailures == itemsPreviousFailure[i])
+                            cbPreviousFailures.SelectedIndex = i + 1;
+                    }
+                    for (int i = 0; i < itemsAmountShaking.Length; i++ )
+                    {
+                        if(comp.ShakingAmount == itemsAmountShaking[i])
+                            cbAmountShakingPipe.SelectedIndex = i+1;
+                    }
+                    for (int i = 0; i < itemsProtrusionComplexity.Length; i++ )
+                    {
+                        if (comp.ComplexityProtrusion == itemsProtrusionComplexity[i])
+                            cbComplexityProtrusion.SelectedIndex = i + 1;
+                    }
+                }
+            }
+        }
+        
+
+        public RW_COMPONENT getData(int ID)
+        {
+            RW_COMPONENT comp = new RW_COMPONENT();
+            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+            comp.ID = ID;
+            comp.NominalDiameter = txtNominalDiameter.Text != "" ? float.Parse(txtNominalDiameter.Text) : 0;
+            comp.NominalThickness = txtNominalThickness.Text != "" ? float.Parse(txtNominalThickness.Text) : 0;
+            comp.CurrentThickness = txtCurrentThickness.Text != "" ? float.Parse(txtCurrentThickness.Text) : 0;
+            comp.MinReqThickness = txtMinRequiredThickness.Text != "" ? float.Parse(txtMinRequiredThickness.Text) : 0;
+            comp.CurrentCorrosionRate = txtCurrentCorrosionRate.Text != "" ? float.Parse(txtCurrentCorrosionRate.Text) : 0;
+            comp.BranchDiameter = cbBranchDiameter.Text;
+            comp.BranchJointType = cbJointTypeBranch.Text;
+            comp.BrinnelHardness = cbMaxBrillnessHardness.Text;
+            comp.CracksPresent = chkPresenceCracks.Checked ? 1 : 0;
+            comp.ComplexityProtrusion = cbComplexityProtrusion.Text;
+            comp.ChemicalInjection = chkPresenceInjectionMixPoint.Checked ? 1 : 0;
+            comp.HighlyInjectionInsp = chkHighlyEffectiveMixPoint.Checked ? 1 : 0;
+            comp.CorrectiveAction = cbCorrectiveAction.Text;
+            comp.CyclicLoadingWitin15_25m = cbCyclicLoading.Text;
+            comp.DamageFoundInspection = chkDamageFoundDuringInspection.Checked ? 1 : 0;
+            comp.DeltaFATT = txtDeltaFATT.Text != "" ? float.Parse(txtDeltaFATT.Text) : 0;
+            comp.NumberPipeFittings = cbNumberFittingPipe.Text;
+            comp.PipeCondition = cbPipeCondition.Text;
+            comp.PreviousFailures = cbPreviousFailures.Text;
+            comp.ShakingAmount = cbAmountShakingPipe.Text;
+            comp.ShakingDetected = chkVisibleAudible.Checked ? 1 : 0;
+            comp.ShakingTime = cbAccumalatedTimeShakingPipe.Text;
+            comp.TrampElements = chkTrampElements.Checked ? 1 : 0;
+            //comp.ShellHeight cua shell
+            //comp.ReleasePreventionBarrier =  cua tank
+            //comp.ConcreteFoundation = cua tank bottom
+            //comp.SeverityOfVibration cua tank
+            return comp;
+        }
+        private void additemsBrinnellHardness()
+        {
+            cbMaxBrillnessHardness.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsBrinnellHardness.Length; i++)
+            {
+                cbMaxBrillnessHardness.Properties.Items.Add(itemsBrinnellHardness[i], i, i);
+            }
+        }
+        private void additemsProtrusionComplexity()
+        {
+            cbComplexityProtrusion.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsProtrusionComplexity.Length; i++)
+            {
+                cbComplexityProtrusion.Properties.Items.Add(itemsProtrusionComplexity[i], i, i);
+            }
+        }
+        private void additemsCyclicLoading()
+        {
+            cbCyclicLoading.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsCyclicLoading.Length; i++)
+            {
+                cbCyclicLoading.Properties.Items.Add(itemsCyclicLoading[i], i, i);
+            }
+        }
+        private void additemsBranchDiameter()
+        {
+            cbBranchDiameter.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsBranchDiameter.Length; i++)
+            {
+                cbBranchDiameter.Properties.Items.Add(itemsBranchDiameter[i], i, i);
+            }
+        }
+
+        private void additemsBranchJointType()
+        {
+            cbJointTypeBranch.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsBranchJointType.Length; i++)
+            {
+                cbJointTypeBranch.Properties.Items.Add(itemsBranchJointType[i], i, i);
+            }
+        }
+        private void additemsNumberPipeFittings()
+        {
+            cbNumberFittingPipe.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsNumberPipeFittings.Length; i++)
+            {
+                cbNumberFittingPipe.Properties.Items.Add(itemsNumberPipeFittings[i], i, i);
+            }
+        }
+        private void additemsPipeCondition()
+        {
+            cbPipeCondition.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsPipeCondition.Length; i++)
+            {
+                cbPipeCondition.Properties.Items.Add(itemsPipeCondition[i], i, i);
+            }
+        }
+        private void additemsPreviousFailure()
+        {
+            cbPreviousFailures.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsPreviousFailure.Length; i++)
+            {
+                cbPreviousFailures.Properties.Items.Add(itemsPreviousFailure[i], i, i);
+            }
+        }
+        private void additemsAmountShaking()
+        {
+            cbAmountShakingPipe.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsAmountShaking.Length; i++)
+            {
+                cbAmountShakingPipe.Properties.Items.Add(itemsAmountShaking[i], i, i);
+            }
+        }
+
+        private void additemsAccumulatedTimeShaking()
+        {
+            cbAccumalatedTimeShakingPipe.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsAccumulatedTimeShaking.Length; i++)
+            {
+                cbAccumalatedTimeShakingPipe.Properties.Items.Add(itemsAccumulatedTimeShaking[i], i, i);
+            }
+        }
+        private void additemsCorrectiveAction()
+        {
+            cbCorrectiveAction.Properties.Items.Add("", -1, -1);
+            for (int i = 0; i < itemsCorrectiveAction.Length; i++)
+            {
+                cbCorrectiveAction.Properties.Items.Add(itemsCorrectiveAction[i], i, i);
+            }
+        }
+        #region Key Press Event
+        private void keyPressEvent(TextBox textbox, KeyPressEventArgs ev)
+        {
+            string a = textbox.Text;
+            if (!char.IsControl(ev.KeyChar) && !char.IsDigit(ev.KeyChar) && (ev.KeyChar != '.'))
+            {
+                ev.Handled = true;
+            }
+            if (a.Contains('.') && ev.KeyChar == '.')
+            {
+                ev.Handled = true;
+            }
+        }
+        private void txtNominalDiameter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtNominalDiameter, e);
+        }
+
+        private void txtCurrentThickness_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtCurrentThickness, e);
+        }
+
+        private void txtCurrentCorrosionRate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtCurrentCorrosionRate, e);
+        }
+
+        private void txtNominalThickness_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtNominalThickness, e);
+        }
+
+        private void txtMinRequiredThickness_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtMinRequiredThickness, e);
+        }
+
+        private void txtDeltaFATT_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyPressEvent(txtDeltaFATT, e);
+        }
+        #endregion
+    }
+}
