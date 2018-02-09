@@ -260,7 +260,7 @@
             this.txtOp176.Location = new System.Drawing.Point(235, 254);
             this.txtOp176.Name = "txtOp176";
             this.txtOp176.Size = new System.Drawing.Size(117, 21);
-            this.txtOp176.TabIndex = 8;
+            this.txtOp176.TabIndex = 17;
             this.txtOp176.TextChanged += new System.EventHandler(this.txtOp176_TextChanged);
             this.txtOp176.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp176_KeyPress);
             // 
@@ -270,7 +270,7 @@
             this.txtOp162.Location = new System.Drawing.Point(235, 230);
             this.txtOp162.Name = "txtOp162";
             this.txtOp162.Size = new System.Drawing.Size(117, 21);
-            this.txtOp162.TabIndex = 9;
+            this.txtOp162.TabIndex = 16;
             this.txtOp162.TextChanged += new System.EventHandler(this.txtOp162_TextChanged);
             this.txtOp162.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp162_KeyPress);
             // 
@@ -280,7 +280,7 @@
             this.txtOp135.Location = new System.Drawing.Point(235, 202);
             this.txtOp135.Name = "txtOp135";
             this.txtOp135.Size = new System.Drawing.Size(117, 21);
-            this.txtOp135.TabIndex = 10;
+            this.txtOp135.TabIndex = 15;
             this.txtOp135.TextChanged += new System.EventHandler(this.txtOp135_TextChanged);
             this.txtOp135.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp135_KeyPress);
             // 
@@ -301,7 +301,7 @@
             this.txtOp121.Location = new System.Drawing.Point(235, 178);
             this.txtOp121.Name = "txtOp121";
             this.txtOp121.Size = new System.Drawing.Size(117, 21);
-            this.txtOp121.TabIndex = 11;
+            this.txtOp121.TabIndex = 14;
             this.txtOp121.TextChanged += new System.EventHandler(this.txtOp121_TextChanged);
             this.txtOp121.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp121_KeyPress);
             // 
@@ -311,7 +311,7 @@
             this.txtOp107.Location = new System.Drawing.Point(235, 152);
             this.txtOp107.Name = "txtOp107";
             this.txtOp107.Size = new System.Drawing.Size(117, 21);
-            this.txtOp107.TabIndex = 12;
+            this.txtOp107.TabIndex = 13;
             this.txtOp107.TextChanged += new System.EventHandler(this.txtOp107_TextChanged);
             this.txtOp107.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp107_KeyPress);
             // 
@@ -415,17 +415,17 @@
             this.txtOp71.Location = new System.Drawing.Point(235, 129);
             this.txtOp71.Name = "txtOp71";
             this.txtOp71.Size = new System.Drawing.Size(117, 21);
-            this.txtOp71.TabIndex = 1;
+            this.txtOp71.TabIndex = 12;
             this.txtOp71.TextChanged += new System.EventHandler(this.txtOp71_TextChanged);
             this.txtOp71.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp71_KeyPress);
             // 
             // txtOp32
             // 
             this.txtOp32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOp32.Location = new System.Drawing.Point(235, 105);
+            this.txtOp32.Location = new System.Drawing.Point(235, 104);
             this.txtOp32.Name = "txtOp32";
             this.txtOp32.Size = new System.Drawing.Size(117, 21);
-            this.txtOp32.TabIndex = 1;
+            this.txtOp32.TabIndex = 11;
             this.txtOp32.TextChanged += new System.EventHandler(this.txtOp32_TextChanged);
             this.txtOp32.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp32_KeyPress);
             // 
@@ -456,7 +456,7 @@
             this.txtOp8.Location = new System.Drawing.Point(235, 53);
             this.txtOp8.Name = "txtOp8";
             this.txtOp8.Size = new System.Drawing.Size(117, 21);
-            this.txtOp8.TabIndex = 1;
+            this.txtOp8.TabIndex = 9;
             this.txtOp8.TextChanged += new System.EventHandler(this.txtOp8_TextChanged);
             this.txtOp8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp8_KeyPress);
             // 
@@ -466,7 +466,7 @@
             this.txtOp12.Location = new System.Drawing.Point(235, 27);
             this.txtOp12.Name = "txtOp12";
             this.txtOp12.Size = new System.Drawing.Size(117, 21);
-            this.txtOp12.TabIndex = 1;
+            this.txtOp12.TabIndex = 8;
             this.txtOp12.TextChanged += new System.EventHandler(this.txtOp12_TextChanged);
             this.txtOp12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp12_KeyPress);
             // 
@@ -552,7 +552,7 @@
             this.txtCriticalExposure.Location = new System.Drawing.Point(241, 103);
             this.txtCriticalExposure.Name = "txtCriticalExposure";
             this.txtCriticalExposure.Size = new System.Drawing.Size(117, 21);
-            this.txtCriticalExposure.TabIndex = 1;
+            this.txtCriticalExposure.TabIndex = 4;
             this.txtCriticalExposure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCriticalExposure_KeyPress);
             // 
             // label4
@@ -572,7 +572,7 @@
             this.txtOperatingHydrogen.Location = new System.Drawing.Point(241, 77);
             this.txtOperatingHydrogen.Name = "txtOperatingHydrogen";
             this.txtOperatingHydrogen.Size = new System.Drawing.Size(117, 21);
-            this.txtOperatingHydrogen.TabIndex = 1;
+            this.txtOperatingHydrogen.TabIndex = 3;
             this.txtOperatingHydrogen.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOperatingHydrogen_KeyPress);
             // 
             // label3
@@ -592,7 +592,7 @@
             this.txtMinimumOperatingTemp.Location = new System.Drawing.Point(241, 51);
             this.txtMinimumOperatingTemp.Name = "txtMinimumOperatingTemp";
             this.txtMinimumOperatingTemp.Size = new System.Drawing.Size(117, 21);
-            this.txtMinimumOperatingTemp.TabIndex = 1;
+            this.txtMinimumOperatingTemp.TabIndex = 2;
             this.txtMinimumOperatingTemp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinimumOperatingTemp_KeyPress);
             // 
             // label2
@@ -612,7 +612,7 @@
             this.txtFlowRate.Location = new System.Drawing.Point(595, 77);
             this.txtFlowRate.Name = "txtFlowRate";
             this.txtFlowRate.Size = new System.Drawing.Size(117, 21);
-            this.txtFlowRate.TabIndex = 1;
+            this.txtFlowRate.TabIndex = 7;
             this.txtFlowRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFlowRate_KeyPress);
             // 
             // label13
@@ -632,7 +632,7 @@
             this.txtMinOperatingPressure.Location = new System.Drawing.Point(595, 51);
             this.txtMinOperatingPressure.Name = "txtMinOperatingPressure";
             this.txtMinOperatingPressure.Size = new System.Drawing.Size(117, 21);
-            this.txtMinOperatingPressure.TabIndex = 1;
+            this.txtMinOperatingPressure.TabIndex = 6;
             this.txtMinOperatingPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinOperatingPressure_KeyPress);
             // 
             // label11
@@ -652,7 +652,7 @@
             this.txtMaxOperatingPressure.Location = new System.Drawing.Point(595, 25);
             this.txtMaxOperatingPressure.Name = "txtMaxOperatingPressure";
             this.txtMaxOperatingPressure.Size = new System.Drawing.Size(117, 21);
-            this.txtMaxOperatingPressure.TabIndex = 1;
+            this.txtMaxOperatingPressure.TabIndex = 5;
             this.txtMaxOperatingPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxOperatingPressure_KeyPress);
             // 
             // label8

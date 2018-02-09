@@ -47,7 +47,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnBrowse.Location = new System.Drawing.Point(284, 464);
+            this.btnBrowse.Location = new System.Drawing.Point(432, 465);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 0;
@@ -58,9 +58,9 @@
             // txtPathFileExcel
             // 
             this.txtPathFileExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtPathFileExcel.Location = new System.Drawing.Point(12, 465);
+            this.txtPathFileExcel.Location = new System.Drawing.Point(12, 466);
             this.txtPathFileExcel.Name = "txtPathFileExcel";
-            this.txtPathFileExcel.Size = new System.Drawing.Size(266, 20);
+            this.txtPathFileExcel.Size = new System.Drawing.Size(414, 20);
             this.txtPathFileExcel.TabIndex = 1;
             // 
             // btnImportExcel

@@ -39,6 +39,19 @@ namespace RBI
 {
     public partial class RibbonForm1 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
+        public RibbonForm1()
+        {
+            SplashScreenManager.ShowForm(typeof(WaitForm1));
+            InitializeComponent();
+            initDataforTreeList();
+            treeListProject.OptionsBehavior.Editable = false;
+            treeListProject.OptionsView.ShowIndicator = false;
+            treeListProject.OptionsView.ShowColumns = false;
+            treeListProject.OptionsView.ShowHorzLines = true;
+            treeListProject.OptionsView.ShowVertLines = false;
+            barStaticItem1.Caption = "Ready";
+            SplashScreenManager.CloseForm();
+        }
         #region Parameters
         //<treeListProject_MouseDoubleClick>
         List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
@@ -65,401 +78,91 @@ namespace RBI
         //<btnPlanInsp_ItemClick>
         List<InspectionPlant> listInspectionPlan = new List<InspectionPlant>();
         //</btnPlanInsp_ItemClick>
+        List<ucTabNormal> listUC = new List<ucTabNormal>();
+        List<ucTabTank> listUCTank = new List<ucTabTank>();
         #endregion
-
-        public RibbonForm1()
-        {
-            SplashScreenManager.ShowForm(typeof(WaitForm1));
-            InitializeComponent();
-            initDataforTreeList();
-            treeListProject.OptionsBehavior.Editable = false;
-            treeListProject.OptionsView.ShowIndicator = false;
-            treeListProject.OptionsView.ShowColumns = false;
-            treeListProject.OptionsView.ShowHorzLines = true;
-            treeListProject.OptionsView.ShowVertLines = false;
-            barStaticItem1.Caption = "Ready";
-            SplashScreenManager.CloseForm();
-        }
-
         
-        private void initDataforTreeList()
+        #region Button Click
+        private void btnGeneral_ItemClick(object sender, ItemClickEventArgs e)
         {
-            treeListProject.StateImageList = imageTreeList;
-            List<SITES> readListSite = new List<SITES>();
-            SITES_BUS siteBus = new SITES_BUS();
-            List<FACILITY> readListFacility = new List<FACILITY>();
-            FACILITY_BUS facilityBus = new FACILITY_BUS();
-            List<EQUIPMENT_MASTER> readListEquipmentMaster = new List<EQUIPMENT_MASTER>();
-            EQUIPMENT_MASTER_BUS equipmentMasterBus = new EQUIPMENT_MASTER_BUS();
-            List<COMPONENT_MASTER> readListComponentMaster = new List<COMPONENT_MASTER>();
-            COMPONENT_MASTER_BUS componentMasterBus = new COMPONENT_MASTER_BUS();
-            List<RW_ASSESSMENT> readListAssessment = new List<RW_ASSESSMENT>();
-            RW_ASSESSMENT_BUS assessmentBus = new RW_ASSESSMENT_BUS();
-            listTree = new List<TestData>();
-            readListSite = siteBus.getData();
-            readListFacility = facilityBus.getDataSource();
-            readListEquipmentMaster = equipmentMasterBus.getDataSource();
-            readListComponentMaster = componentMasterBus.getDataSource();
-            readListAssessment = assessmentBus.getDataSource();
-            List<int> _siteID = new List<int>();
-            List<int> _facilityID = new List<int>();
-            List<int> _equipmentID = new List<int>();
-            List<int> _componentID = new List<int>();
-            List<int> _reportID = new List<int>();
-            foreach (SITES s in readListSite)
-            {
-                listTree.Add(new TestData(s.SiteID, -1, s.SiteName));
-            }
-
-            foreach (FACILITY f in readListFacility)
-            {
-                listTree.Add(new TestData(f.FacilityID + 100000, f.SiteID, f.FacilityName));
-                
-            }
-
-            foreach (EQUIPMENT_MASTER e in readListEquipmentMaster)
-            {
-                listTree.Add(new TestData(e.EquipmentID + 200000, e.FacilityID + 100000, e.EquipmentNumber));
-            }
-            foreach (COMPONENT_MASTER c in readListComponentMaster)
-            {
-                        listTree.Add(new TestData(c.ComponentID + 300000, c.EquipmentID + 200000, c.ComponentNumber));
-            }
-            foreach (RW_ASSESSMENT a in readListAssessment)
-            {
-                        listTree.Add(new TestData(a.ID + 400000, a.ComponentID + 300000, a.ProposalName));
-            }
-            treeListProject.DataSource = listTree;
-            treeListProject.RefreshDataSource();
-            listTree1 = listTree;
-            try
-            {
-                treeListProject.FocusedNode.Expand();
-            }
-            catch
-            {
-                // do nothing
-            }
-            //treeListProject.ExpandAll();
-            //treeListProject.ExpandToLevel(selectedLevel);
-        }
-        
-        private void treeListProject_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
-        {
-            
-            TreeListNode node = treeListProject.FocusedNode;
-            treeListProject.StateImageList = imageTreeList;
-            foreach (TreeListNode item in node.Nodes)
-            {
-                if (e.Node.Level == 0)
-                {
-                    e.Node.StateImageIndex = 0;
-                }
-                else if (e.Node.Level == 1)
-                {
-                    e.Node.StateImageIndex = 1;
-                }
-                else if (e.Node.Level == 2)
-                {
-                    e.Node.StateImageIndex = 2;
-                }
-                else if (e.Node.Level == 3)
-                    e.Node.StateImageIndex = 3;
-                else
-                    e.Node.StateImageIndex = 4;
-            }
-            selectedLevel = e.Node.Level; 
+            if (!checkTank)
+                createReportExcel(true);
+            else
+                createReportExcelTank(true);
         }
 
-        private void treeListProject_CustomDrawNodeImages(object sender, CustomDrawNodeImagesEventArgs e)
+        private void btnGan_ItemClick(object sender, ItemClickEventArgs e)
         {
-            TreeListNode node = treeListProject.FocusedNode;
-            treeListProject.StateImageList = imageTreeList;
-            foreach (TreeListNode item in node.Nodes)
-            {
-                if (e.Node.Level == 0)
-                {
-                    e.Node.StateImageIndex = 0;
-                    e.Node.SelectImageIndex = 0;
-                }
-                else if (e.Node.Level == 1)
-                {
-                    e.Node.StateImageIndex = 1;
-                    e.Node.SelectImageIndex = 1;
-                }
-                else if (e.Node.Level == 2)
-                {
-                    e.Node.StateImageIndex = 2;
-                    e.Node.SelectImageIndex = 2;
-                }
-                else if (e.Node.Level == 3)
-                {
-                    e.Node.StateImageIndex = 3;
-                    e.Node.SelectImageIndex = 3;
-                }
-                else
-                {
-                    e.Node.StateImageIndex = 4;
-                    e.Node.SelectImageIndex = 4;
-                }
-            }
+            if (!checkTank)
+                createReportExcel(false);
+            else
+                createReportExcelTank(false);
         }
-        private void btn_add_Component_click(object sender, EventArgs e)
+
+        private void btnBackupData_ItemClick(object sender, ItemClickEventArgs e)
         {
-            string facilityName = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString();
-            string equipmentName = treeListProject.FocusedNode.GetValue(0).ToString();
-            string siteName = treeListProject.FocusedNode.RootNode.GetValue(0).ToString();
-            frmNewComponent com = new frmNewComponent(equipmentName, facilityName, siteName);
-            com.ShowDialog();
-            if(com.ButtonOKClicked)
+            frm_backup back = new frm_backup();
+            back.ShowInTaskbar = false;
+            back.Show();
+        }
+
+        private void barButtonItem19_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            frm_restored restored = new frm_restored();
+            restored.ShowInTaskbar = false;
+            restored.Show();
+        }
+
+        private void btnImportTank_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            frmImportExcelTank exTank = new frmImportExcelTank();
+            exTank.ShowInTaskbar = false;
+            exTank.ShowDialog();
+            if (exTank.ButtonOKClicked)
                 initDataforTreeList();
         }
-        private void btn_add_Equipment_click(object sender, EventArgs e)
+
+        private void btnSites_ItemClick(object sender, ItemClickEventArgs e)
         {
-            string siteName = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString();
-            string facilityName = treeListProject.FocusedNode.GetValue(0).ToString();
-            frmEquipment eq = new frmEquipment(siteName, facilityName);
-            eq.ShowDialog();
-            if(eq.ButtonOKCliked)
-                initDataforTreeList();
-        }
-        private void btn_edit_site_name(object sender, EventArgs e)
-        {
-            string name = treeListProject.FocusedNode.GetDisplayText(0);
-            frmNewSite site = new frmNewSite(name);
+
+            frmNewSite site = new frmNewSite();
             site.ShowInTaskbar = false;
             site.ShowDialog();
             if (site.ButtonOKClicked)
                 initDataforTreeList();
         }
-        private void btn_add_facility_click(object sender, EventArgs e)
+
+        private void btnFacilityRibbon_ItemClick(object sender, ItemClickEventArgs e)
         {
-            
             frmFacilityInput faci = new frmFacilityInput();
+            faci.ShowInTaskbar = false;
             faci.ShowDialog();
-            if(faci.ButtonOKClicked)
-                initDataforTreeList();
-        }
-        
-        private void addNewRecord(object sender, EventArgs e)
-        {
-            UCAssessmentInfo ucAss = new UCAssessmentInfo();
-            RW_ASSESSMENT rwass = new RW_ASSESSMENT();
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS rwEqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS rwComBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS rwStreamBus = new RW_STREAM_BUS();
-            RW_MATERIAL_BUS rwMaterialBus = new RW_MATERIAL_BUS();
-            RW_COATING_BUS rwCoatBus = new RW_COATING_BUS();
-            RW_CA_LEVEL_1_BUS rwCABus = new RW_CA_LEVEL_1_BUS();
-            RW_FULL_POF_BUS rwFullPoFBus = new RW_FULL_POF_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS rwExtTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS inputCAlv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            RW_CA_TANK_BUS rwCATankBus = new RW_CA_TANK_BUS();
-            RW_INPUT_CA_TANK_BUS rwInputCATankBus = new RW_INPUT_CA_TANK_BUS();
-
-            RW_EXTCOR_TEMPERATURE rwExtTemp = new RW_EXTCOR_TEMPERATURE();
-            RW_EQUIPMENT rwEq = new RW_EQUIPMENT();
-            RW_COMPONENT rwCom = new RW_COMPONENT();
-            RW_STREAM rwStream = new RW_STREAM();
-            RW_MATERIAL rwMaterial = new RW_MATERIAL();
-            RW_COATING rwCoat = new RW_COATING();
-            RW_CA_LEVEL_1 rwCA= new RW_CA_LEVEL_1();
-            RW_FULL_POF rwFullPoF = new RW_FULL_POF();
-            RW_INPUT_CA_LEVEL_1 rwCALevel1 = new RW_INPUT_CA_LEVEL_1();
-            RW_CA_TANK rwCATank = new RW_CA_TANK();
-            RW_INPUT_CA_TANK rwInputCATank = new RW_INPUT_CA_TANK();
-            String ProposalName = "New Record Test" ;
-            String componentNumber = treeListProject.FocusedNode.GetValue(0).ToString();
-            COMPONENT_MASTER_BUS componentBus = new COMPONENT_MASTER_BUS();
-            List<COMPONENT_MASTER> listComponentMaster = componentBus.getDataSource();
-            EQUIPMENT_MASTER_BUS eqBus = new EQUIPMENT_MASTER_BUS();
-            List<EQUIPMENT_MASTER> listEq = eqBus.getDataSource();
-            foreach(COMPONENT_MASTER c in listComponentMaster)
-            {
-                if(c.ComponentNumber == componentNumber)
-                {
-                    rwass.EquipmentID = c.EquipmentID;
-                    rwass.ComponentID = c.ComponentID;
-                    foreach(EQUIPMENT_MASTER e1 in listEq)
-                    {
-                        if(e1.EquipmentID == c.EquipmentID)
-                        {
-                            rwEq.CommissionDate = e1.CommissionDate;
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-            rwass.RiskAnalysisPeriod = 36;
-            rwass.AssessmentDate = DateTime.Now;
-            rwass.ProposalName = ProposalName;
-            rwass.AdoptedDate = DateTime.Now;
-            rwass.RecommendedDate = DateTime.Now;
-            rwass.AddByExcel = 0;
-            assBus.add(rwass);
-            List<RW_ASSESSMENT> listAss = assBus.getDataSource();
-            int ID = listAss.Max(RW_ASSESSMENT => RW_ASSESSMENT.ID);
-            rwEq.ID = ID;
-            rwCom.ID = ID;
-            rwCoat.ID = ID;
-            rwStream.ID = ID;
-            
-            rwFullPoF.ID = ID;
-            rwMaterial.ID = ID;
-            rwExtTemp.ID = ID;
-            rwCoat.ExternalCoatingDate = DateTime.Now;
-
-            rwEqBus.add(rwEq);
-            rwComBus.add(rwCom);
-            rwCoatBus.add(rwCoat);
-            rwMaterialBus.add(rwMaterial);
-            rwStreamBus.add(rwStream);
-            rwExtTempBus.add(rwExtTemp);
-            RW_ASSESSMENT_BUS rwAssBus = new RW_ASSESSMENT_BUS();
-            COMPONENT_MASTER_BUS comMaBus = new COMPONENT_MASTER_BUS();
-            int[] eq_comID = rwAssBus.getEquipmentID_ComponentID(ID);
-            COMPONENT_MASTER componentMaster = comMaBus.getData(eq_comID[1]);
-            COMPONENT_TYPE__BUS comTypeBus = new COMPONENT_TYPE__BUS();
-            String componentTypeName = comTypeBus.getComponentTypeName(componentMaster.ComponentTypeID);
-            if (componentTypeName == "Shell" || componentTypeName == "Tank Bottom")
-            {
-                rwCATank.ID = ID;
-                rwInputCATank.ID = ID;
-                rwCATankBus.add(rwCATank);
-                rwInputCATankBus.add(rwInputCATank);
-            }
-            else
-            {
-                rwCA.ID = ID;
-                rwCALevel1.ID = ID;
-                inputCAlv1Bus.add(rwCALevel1);
-                rwCABus.add(rwCA);
-            }
-            initDataforTreeList();
-        }
-        private void btn_add_site_click(object sender, EventArgs e)
-        {
-            frmNewSite site = new frmNewSite();
-            site.ShowDialog();
-            if (site.ButtonOKClicked)
+            if (faci.ButtonOKClicked)
                 initDataforTreeList();
         }
 
-        
-        private void treeListProject_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void btnEquipmentRibbon_ItemClick(object sender, ItemClickEventArgs e)
         {
-            TreeList tree = sender as TreeList;
-            TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
-            //<show edit equipment and component>
-            int levelNode = treeListProject.FocusedNode.Level;
-            switch (levelNode)
-            {
-                case 1: // edit data cho Facility
-                    frmFacilityInput fcInput = new frmFacilityInput(listTree1[hi.Node.Id].ID - (hi.Node.Level - 0) * 100000);
-                    fcInput.doubleEditClicked = true;
-                    fcInput.ShowInTaskbar = false;
-                    fcInput.ShowDialog();
-                    return;
-                case 2: //edit data cho Equipment
-                    frmEquipment eq = new frmEquipment(listTree1[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000);
-                    eq.doubleEditClicked = true;
-                    eq.ShowInTaskbar = false;
-                    eq.ShowDialog();
-                    return;
-                case 3: //edit data cho Component
-                    int comID = listTree1[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
-                    frmNewComponent comEdit = new frmNewComponent(comID);
-                    comEdit.doubleEditClicked = true;
-                    comEdit.ShowInTaskbar = false;
-                    comEdit.ShowDialog();
-                    return;
-                default:
-                    break;
-            }
-            //</show edit equipment and component>
-            if (treeListProject.FocusedNode.Level == 4) //check xem co phai la Proposal
-            {
-                btnSave.Enabled = true;
-                navBarMainmenu.Expanded = false;
-                navBarRecord.Visible = true;
-                navBarRecord.Expanded = true;
-            }
-            if (hi.Node != null)
-            {
-                IDProposal = listTree1[hi.Node.Id].ID - hi.Node.Level * 100000;
-                if (treeListProject.FocusedNode.GetValue(0).ToString() != xtraTabData.SelectedTabPage.Name && treeListProject.FocusedNode.Level == 4)
-                {
+            frmEquipment eq = new frmEquipment();
+            eq.ShowInTaskbar = false;
+            eq.ShowDialog();
+            if (eq.ButtonOKCliked)
+                initDataforTreeList();
+        }
 
-                    RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
-                    int equipmentID = busAss.getEquipmentID(IDProposal);
-                    EQUIPMENT_MASTER_BUS busEquipment = new EQUIPMENT_MASTER_BUS();
-                    int equipmentTypeID = busEquipment.getEquipmentTypeID(equipmentID);
-                    EQUIPMENT_TYPE_BUS busEqType = new EQUIPMENT_TYPE_BUS();
-                    String EquipmentTypeName = busEqType.getEquipmentTypeName(equipmentTypeID);
-                    if (EquipmentTypeName != "Tank")
-                    {
-                        checkTank = false;
-                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
-                        listUC.Add(ucTabnormal);
-                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
-                    }
-                    else
-                    {
-                        navCA.Enabled = false;
-                        checkTank = true;
-                        ucTabTank ucTabTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal), new UCComponentPropertiesTank(IDProposal), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
-                        listUCTank.Add(ucTabTank);
-                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabTank.ucAss);
-                    }
-                    if (checkTank)
-                    {
-                        navCA.Visible = false;
-                    }
-                    else
-                    {
-                        navCA.Visible = true;
-                        navCA.Enabled = true;
-                    }
-                }
-                else
-                    return;
-            }
-        }
-        
-        private void treeListProject_PopupMenuShowing(object sender, DevExpress.XtraTreeList.PopupMenuShowingEventArgs e)
+        private void btnComponentRibbon_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.Menu is TreeListNodeMenu)
-            {
-                if (selectedLevel == 0)
-                {
-                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Site", btn_add_site_click));
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Facility", btn_add_facility_click));
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Edit Site Name", btn_edit_site_name));
-                }
-                else if (selectedLevel == 1)
-                {
-                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Equipment", btn_add_Equipment_click));
-                }
-                else if (selectedLevel == 2)
-                {
-                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Component", btn_add_Component_click));
-                }
-                else
-                {
-                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Open Record", addNewRecord));
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Record", addNewRecord));
-                }
-            }
+            frmNewComponent com = new frmNewComponent();
+            com.ShowInTaskbar = false;
+            com.ShowDialog();
+            if (com.ButtonOKClicked)
+                initDataforTreeList();
         }
-        
+        private void btnPlanInsp_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+            createInspectionPlanExcel(listInspectionPlan);
+        }
         private void btnPlant_ItemClick(object sender, ItemClickEventArgs e)
         {
             RBI.PRE.subForm.InputDataForm.frmNewSite site = new PRE.subForm.InputDataForm.frmNewSite();
@@ -492,14 +195,7 @@ namespace RBI
             if (com.ButtonOKClicked)
                 initDataforTreeList();
         }
-        private void btnExit_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            DialogResult da = MessageBox.Show("Do you want to close program?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (da == DialogResult.Yes)
-                System.Windows.Forms.Application.Exit();
-            else return;
-        }
-        
+
         private void btnSave_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
@@ -507,7 +203,7 @@ namespace RBI
                 SplashScreenManager.ShowForm(typeof(WaitForm2));
                 if (!checkTank)
                 {
-                    
+
                     int selectedID = int.Parse(this.xtraTabData.SelectedTabPage.Name);
                     ucTabNormal uc = null;
                     foreach (ucTabNormal u in listUC)
@@ -595,8 +291,8 @@ namespace RBI
 
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
-                    String ThinningType = "Local";;
-                    Calculation_CA_TANK(componentTypeName, apiComName,ThinningType, componentNumber, eq, com,ma, stream,coat, extTemp, caTank);
+                    String ThinningType = "Local"; ;
+                    Calculation_CA_TANK(componentTypeName, apiComName, ThinningType, componentNumber, eq, com, ma, stream, coat, extTemp, caTank);
                     MessageBox.Show("Calculation finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     SaveDatatoDatabase(ass, eq, com, stream, extTemp, coat, ma, caTank);
                     UCRiskFactor resultRisk = new UCRiskFactor();
@@ -607,58 +303,468 @@ namespace RBI
 
                 SplashScreenManager.CloseForm();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Chưa tính được" + ex.ToString(), "Cortek RBI");
             }
         }
+        private void btnImportExcelData_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            frmImportExcel excel = new frmImportExcel();
+            excel.ShowInTaskbar = false;
+            excel.ShowDialog();
+            if (excel.ButtonOKClicked)
+                initDataforTreeList();
+        }
 
-        private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_LEVEL_1 ca)
+        private void btnImportInspection_ItemClick(object sender, ItemClickEventArgs e)
         {
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS caLv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            //if(assBus.checkExistAssessment(IDProposal))
-            //{
-                assBus.edit(ass);
-                eqBus.edit(eq);
-                comBus.edit(com);
-                streamBus.edit(stream);
-                extTempBus.edit(extTemp);
-                coatBus.edit(coat);
-                maBus.edit(ma);
-                caLv1Bus.edit(ca);
-            //}
+            frmImportInspection insp = new frmImportInspection();
+            insp.ShowInTaskbar = false;
+            insp.ShowDialog();
         }
-        private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_TANK ca)
+        #endregion
+
+        #region TreeListProject va XtratabData
+        private void treeListProject_MouseClick(object sender, MouseEventArgs e)
         {
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_TANK_BUS caTankBus = new RW_INPUT_CA_TANK_BUS();
-            assBus.edit(ass);
-            eqBus.edit(eq);
-            comBus.edit(com);
-            streamBus.edit(stream);
-            extTempBus.edit(extTemp);
-            coatBus.edit(coat);
-            maBus.edit(ma);
-            caTankBus.edit(ca);
+            treeListProject.Appearance.FocusedCell.ForeColor = Color.Red;
         }
+        private void initDataforTreeList()
+        {
+            treeListProject.StateImageList = imageTreeList;
+            List<SITES> readListSite = new List<SITES>();
+            SITES_BUS siteBus = new SITES_BUS();
+            List<FACILITY> readListFacility = new List<FACILITY>();
+            FACILITY_BUS facilityBus = new FACILITY_BUS();
+            List<EQUIPMENT_MASTER> readListEquipmentMaster = new List<EQUIPMENT_MASTER>();
+            EQUIPMENT_MASTER_BUS equipmentMasterBus = new EQUIPMENT_MASTER_BUS();
+            List<COMPONENT_MASTER> readListComponentMaster = new List<COMPONENT_MASTER>();
+            COMPONENT_MASTER_BUS componentMasterBus = new COMPONENT_MASTER_BUS();
+            List<RW_ASSESSMENT> readListAssessment = new List<RW_ASSESSMENT>();
+            RW_ASSESSMENT_BUS assessmentBus = new RW_ASSESSMENT_BUS();
+            listTree = new List<TestData>();
+            readListSite = siteBus.getData();
+            readListFacility = facilityBus.getDataSource();
+            readListEquipmentMaster = equipmentMasterBus.getDataSource();
+            readListComponentMaster = componentMasterBus.getDataSource();
+            readListAssessment = assessmentBus.getDataSource();
+            List<int> _siteID = new List<int>();
+            List<int> _facilityID = new List<int>();
+            List<int> _equipmentID = new List<int>();
+            List<int> _componentID = new List<int>();
+            List<int> _reportID = new List<int>();
+            foreach (SITES s in readListSite)
+            {
+                listTree.Add(new TestData(s.SiteID, -1, s.SiteName));
+            }
+
+            foreach (FACILITY f in readListFacility)
+            {
+                listTree.Add(new TestData(f.FacilityID + 100000, f.SiteID, f.FacilityName));
+
+            }
+
+            foreach (EQUIPMENT_MASTER e in readListEquipmentMaster)
+            {
+                listTree.Add(new TestData(e.EquipmentID + 200000, e.FacilityID + 100000, e.EquipmentNumber));
+            }
+            foreach (COMPONENT_MASTER c in readListComponentMaster)
+            {
+                listTree.Add(new TestData(c.ComponentID + 300000, c.EquipmentID + 200000, c.ComponentNumber));
+            }
+            foreach (RW_ASSESSMENT a in readListAssessment)
+            {
+                listTree.Add(new TestData(a.ID + 400000, a.ComponentID + 300000, a.ProposalName));
+            }
+            treeListProject.DataSource = listTree;
+            treeListProject.RefreshDataSource();
+            listTree1 = listTree;
+            try
+            {
+                treeListProject.FocusedNode.Expand();
+            }
+            catch
+            {
+                // do nothing
+            }
+            //treeListProject.ExpandAll();
+            //treeListProject.ExpandToLevel(selectedLevel);
+        }
+        private void treeListProject_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
+        {
+
+            TreeListNode node = treeListProject.FocusedNode;
+            treeListProject.StateImageList = imageTreeList;
+            foreach (TreeListNode item in node.Nodes)
+            {
+                if (e.Node.Level == 0)
+                {
+                    e.Node.StateImageIndex = 0;
+                }
+                else if (e.Node.Level == 1)
+                {
+                    e.Node.StateImageIndex = 1;
+                }
+                else if (e.Node.Level == 2)
+                {
+                    e.Node.StateImageIndex = 2;
+                }
+                else if (e.Node.Level == 3)
+                    e.Node.StateImageIndex = 3;
+                else
+                    e.Node.StateImageIndex = 4;
+            }
+            selectedLevel = e.Node.Level;
+        }
+        private void treeListProject_CustomDrawNodeImages(object sender, CustomDrawNodeImagesEventArgs e)
+        {
+            TreeListNode node = treeListProject.FocusedNode;
+            treeListProject.StateImageList = imageTreeList;
+            foreach (TreeListNode item in node.Nodes)
+            {
+                if (e.Node.Level == 0)
+                {
+                    e.Node.StateImageIndex = 0;
+                    e.Node.SelectImageIndex = 0;
+                }
+                else if (e.Node.Level == 1)
+                {
+                    e.Node.StateImageIndex = 1;
+                    e.Node.SelectImageIndex = 1;
+                }
+                else if (e.Node.Level == 2)
+                {
+                    e.Node.StateImageIndex = 2;
+                    e.Node.SelectImageIndex = 2;
+                }
+                else if (e.Node.Level == 3)
+                {
+                    e.Node.StateImageIndex = 3;
+                    e.Node.SelectImageIndex = 3;
+                }
+                else
+                {
+                    e.Node.StateImageIndex = 4;
+                    e.Node.SelectImageIndex = 4;
+                }
+            }
+        }
+        private void btn_add_Component_click(object sender, EventArgs e)
+        {
+            string facilityName = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString();
+            string equipmentName = treeListProject.FocusedNode.GetValue(0).ToString();
+            string siteName = treeListProject.FocusedNode.RootNode.GetValue(0).ToString();
+            frmNewComponent com = new frmNewComponent(equipmentName, facilityName, siteName);
+            com.ShowDialog();
+            if (com.ButtonOKClicked)
+                initDataforTreeList();
+        }
+        private void btn_add_Equipment_click(object sender, EventArgs e)
+        {
+            string siteName = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString();
+            string facilityName = treeListProject.FocusedNode.GetValue(0).ToString();
+            frmEquipment eq = new frmEquipment(siteName, facilityName);
+            eq.ShowDialog();
+            if (eq.ButtonOKCliked)
+                initDataforTreeList();
+        }
+        private void btn_edit_site_name(object sender, EventArgs e)
+        {
+            string name = treeListProject.FocusedNode.GetDisplayText(0);
+            frmNewSite site = new frmNewSite(name);
+            site.ShowInTaskbar = false;
+            site.ShowDialog();
+            if (site.ButtonOKClicked)
+                initDataforTreeList();
+        }
+        private void btn_add_facility_click(object sender, EventArgs e)
+        {
+
+            frmFacilityInput faci = new frmFacilityInput();
+            faci.ShowDialog();
+            if (faci.ButtonOKClicked)
+                initDataforTreeList();
+        }
+        private void addNewRecord(object sender, EventArgs e)
+        {
+            UCAssessmentInfo ucAss = new UCAssessmentInfo();
+            RW_ASSESSMENT rwass = new RW_ASSESSMENT();
+            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS rwEqBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS rwComBus = new RW_COMPONENT_BUS();
+            RW_STREAM_BUS rwStreamBus = new RW_STREAM_BUS();
+            RW_MATERIAL_BUS rwMaterialBus = new RW_MATERIAL_BUS();
+            RW_COATING_BUS rwCoatBus = new RW_COATING_BUS();
+            RW_CA_LEVEL_1_BUS rwCABus = new RW_CA_LEVEL_1_BUS();
+            RW_FULL_POF_BUS rwFullPoFBus = new RW_FULL_POF_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS rwExtTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS inputCAlv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+            RW_CA_TANK_BUS rwCATankBus = new RW_CA_TANK_BUS();
+            RW_INPUT_CA_TANK_BUS rwInputCATankBus = new RW_INPUT_CA_TANK_BUS();
+
+            RW_EXTCOR_TEMPERATURE rwExtTemp = new RW_EXTCOR_TEMPERATURE();
+            RW_EQUIPMENT rwEq = new RW_EQUIPMENT();
+            RW_COMPONENT rwCom = new RW_COMPONENT();
+            RW_STREAM rwStream = new RW_STREAM();
+            RW_MATERIAL rwMaterial = new RW_MATERIAL();
+            RW_COATING rwCoat = new RW_COATING();
+            RW_CA_LEVEL_1 rwCA = new RW_CA_LEVEL_1();
+            RW_FULL_POF rwFullPoF = new RW_FULL_POF();
+            RW_INPUT_CA_LEVEL_1 rwCALevel1 = new RW_INPUT_CA_LEVEL_1();
+            RW_CA_TANK rwCATank = new RW_CA_TANK();
+            RW_INPUT_CA_TANK rwInputCATank = new RW_INPUT_CA_TANK();
+            String ProposalName = "New Record Test";
+            String componentNumber = treeListProject.FocusedNode.GetValue(0).ToString();
+            COMPONENT_MASTER_BUS componentBus = new COMPONENT_MASTER_BUS();
+            List<COMPONENT_MASTER> listComponentMaster = componentBus.getDataSource();
+            EQUIPMENT_MASTER_BUS eqBus = new EQUIPMENT_MASTER_BUS();
+            List<EQUIPMENT_MASTER> listEq = eqBus.getDataSource();
+            foreach (COMPONENT_MASTER c in listComponentMaster)
+            {
+                if (c.ComponentNumber == componentNumber)
+                {
+                    rwass.EquipmentID = c.EquipmentID;
+                    rwass.ComponentID = c.ComponentID;
+                    foreach (EQUIPMENT_MASTER e1 in listEq)
+                    {
+                        if (e1.EquipmentID == c.EquipmentID)
+                        {
+                            rwEq.CommissionDate = e1.CommissionDate;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            rwass.RiskAnalysisPeriod = 36;
+            rwass.AssessmentDate = DateTime.Now;
+            rwass.ProposalName = ProposalName;
+            rwass.AdoptedDate = DateTime.Now;
+            rwass.RecommendedDate = DateTime.Now;
+            rwass.AddByExcel = 0;
+            assBus.add(rwass);
+            List<RW_ASSESSMENT> listAss = assBus.getDataSource();
+            int ID = listAss.Max(RW_ASSESSMENT => RW_ASSESSMENT.ID);
+            rwEq.ID = ID;
+            rwCom.ID = ID;
+            rwCoat.ID = ID;
+            rwStream.ID = ID;
+
+            rwFullPoF.ID = ID;
+            rwMaterial.ID = ID;
+            rwExtTemp.ID = ID;
+            rwCoat.ExternalCoatingDate = DateTime.Now;
+
+            rwEqBus.add(rwEq);
+            rwComBus.add(rwCom);
+            rwCoatBus.add(rwCoat);
+            rwMaterialBus.add(rwMaterial);
+            rwStreamBus.add(rwStream);
+            rwExtTempBus.add(rwExtTemp);
+            RW_ASSESSMENT_BUS rwAssBus = new RW_ASSESSMENT_BUS();
+            COMPONENT_MASTER_BUS comMaBus = new COMPONENT_MASTER_BUS();
+            int[] eq_comID = rwAssBus.getEquipmentID_ComponentID(ID);
+            COMPONENT_MASTER componentMaster = comMaBus.getData(eq_comID[1]);
+            COMPONENT_TYPE__BUS comTypeBus = new COMPONENT_TYPE__BUS();
+            String componentTypeName = comTypeBus.getComponentTypeName(componentMaster.ComponentTypeID);
+            if (componentTypeName == "Shell" || componentTypeName == "Tank Bottom")
+            {
+                rwCATank.ID = ID;
+                rwInputCATank.ID = ID;
+                rwCATankBus.add(rwCATank);
+                rwInputCATankBus.add(rwInputCATank);
+            }
+            else
+            {
+                rwCA.ID = ID;
+                rwCALevel1.ID = ID;
+                inputCAlv1Bus.add(rwCALevel1);
+                rwCABus.add(rwCA);
+            }
+            initDataforTreeList();
+        }
+        private void deleteRecord(object sender, EventArgs e)
+        {
+            MessageBox.Show("Delete chua viet");
+        }
+        private void btn_add_site_click(object sender, EventArgs e)
+        {
+            frmNewSite site = new frmNewSite();
+            site.ShowDialog();
+            if (site.ButtonOKClicked)
+                initDataforTreeList();
+        }
+        private void treeListProject_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            TreeList tree = sender as TreeList;
+            TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+            if (treeListProject.Nodes.Count == 0) //tránh lỗi khi treelist rỗng
+                return;
+            //<show edit equipment and component>
+            int levelNode = treeListProject.FocusedNode.Level;
+            switch (levelNode)
+            {
+                case 1: // edit data cho Facility
+                    frmFacilityInput fcInput = new frmFacilityInput(listTree1[hi.Node.Id].ID - (hi.Node.Level - 0) * 100000);
+                    fcInput.doubleEditClicked = true;
+                    fcInput.ShowInTaskbar = false;
+                    fcInput.ShowDialog();
+                    return;
+                case 2: //edit data cho Equipment
+                    frmEquipment eq = new frmEquipment(listTree1[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000);
+                    eq.doubleEditClicked = true;
+                    eq.ShowInTaskbar = false;
+                    eq.ShowDialog();
+                    return;
+                case 3: //edit data cho Component
+                    int comID = listTree1[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
+                    frmNewComponent comEdit = new frmNewComponent(comID);
+                    comEdit.doubleEditClicked = true;
+                    comEdit.ShowInTaskbar = false;
+                    comEdit.ShowDialog();
+                    return;
+                default:
+                    break;
+            }
+            //</show edit equipment and component>
+            if (treeListProject.FocusedNode.Level == 4) //check xem co phai la Proposal
+            {
+                btnSave.Enabled = true;
+                navBarMainmenu.Expanded = false;
+                navBarRecord.Visible = true;
+                navBarRecord.Expanded = true;
+            }
+            if (hi.Node != null)
+            {
+                IDProposal = listTree1[hi.Node.Id].ID - hi.Node.Level * 100000;
+                if (treeListProject.FocusedNode.GetValue(0).ToString() != xtraTabData.SelectedTabPage.Name && treeListProject.FocusedNode.Level == 4)
+                {
+
+                    RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
+                    int equipmentID = busAss.getEquipmentID(IDProposal);
+                    EQUIPMENT_MASTER_BUS busEquipment = new EQUIPMENT_MASTER_BUS();
+                    int equipmentTypeID = busEquipment.getEquipmentTypeID(equipmentID);
+                    EQUIPMENT_TYPE_BUS busEqType = new EQUIPMENT_TYPE_BUS();
+                    String EquipmentTypeName = busEqType.getEquipmentTypeName(equipmentTypeID);
+                    if (EquipmentTypeName != "Tank")
+                    {
+                        checkTank = false;
+                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
+                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
+                        listUC.Add(ucTabnormal);
+                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
+                    }
+                    else
+                    {
+                        navCA.Enabled = false;
+                        checkTank = true;
+                        ucTabTank ucTabTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal), new UCComponentPropertiesTank(IDProposal), new UCOperatingCondition(IDProposal)
+                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
+                        listUCTank.Add(ucTabTank);
+                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabTank.ucAss);
+                    }
+                    if (checkTank)
+                    {
+                        navCA.Visible = false;
+                    }
+                    else
+                    {
+                        navCA.Visible = true;
+                        navCA.Enabled = true;
+                    }
+                }
+                else
+                    return;
+            }
+        }
+        private void treeListProject_PopupMenuShowing(object sender, DevExpress.XtraTreeList.PopupMenuShowingEventArgs e)
+        {
+            if (e.Menu is TreeListNodeMenu)
+            {
+                if (selectedLevel == 0)
+                {
+                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Site", btn_add_site_click));
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Facility", btn_add_facility_click));
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Edit Site Name", btn_edit_site_name));
+                }
+                else if (selectedLevel == 1)
+                {
+                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Equipment", btn_add_Equipment_click));
+                }
+                else if (selectedLevel == 2)
+                {
+                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Component", btn_add_Component_click));
+                }
+                else
+                {
+                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Record", addNewRecord));
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Delete Record", deleteRecord));
+                }
+            }
+        }
+
+        private void xtraTabData_CloseButtonClick(object sender, EventArgs e)
+        {
+            DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
+            DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs arg = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
+            (arg.Page as DevExpress.XtraTab.XtraTabPage).Dispose();
+        }
+        private void xtraTabData_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
+        {
+            int id_proposal;
+            if (int.TryParse(xtraTabData.SelectedTabPage.Name, out id_proposal))
+            {
+                RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
+                int eqID = busAss.getEquipmentID(id_proposal);
+                EQUIPMENT_MASTER_BUS busEqMaster = new EQUIPMENT_MASTER_BUS();
+                int eqTypeID = busEqMaster.getEqTypeID(eqID);
+                switch (eqTypeID)
+                {
+                    case 10: //tank
+                    case 11:
+                        navCA.Visible = false;
+                        checkTank = true;
+                        break;
+                    default: //thuong
+                        navCA.Visible = true;
+                        navCA.Enabled = true;
+                        checkTank = false;
+                        break;
+                }
+            }
+        }
+
+        private void dockPanel1_Collapsing(object sender, DevExpress.XtraBars.Docking.DockPanelEventArgs e)
+        {
+            Console.WriteLine("X = " + dockPanel1.Location.X);
+            //int a = xtraTabData.Location.X - (dockPanel1.Location.X - dockPanel2.Location.X);
+            System.Drawing.Point pt = new System.Drawing.Point();
+            pt.X = dockPanel2.Location.X + dockPanel1.Width;
+            pt.Y = xtraTabData.Location.Y;
+            //xtraTabData.Width += a;
+            xtraTabData.Location = pt;
+            //xtraTabData.Width += 100;
+        }
+        #endregion
+
+        #region Function Tu viet
         private void Calculation(String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_LEVEL_1 caInput)
         {
             #region PoF
             int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
-            string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S", "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC", "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack", "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement", "Vibration-Induced Mechanical Fatigue" };
+            string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
+                                 "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S",
+                                 "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking",
+                                 "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC",
+                                 "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking",
+                                 "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
+                                 "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
+                                 "Vibration-Induced Mechanical Fatigue" };
             RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
             //get EquipmentID ----> get EquipmentTypeName and APIComponentType
             int equipmentID = assBus.getEquipmentID(IDProposal);
@@ -737,6 +843,12 @@ namespace RBI
             cal.SULFUR_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[5]);
             cal.SULFUR_CONTENT = ma.SulfurContent;
             //</HIC/SOHIC-H2S>
+
+            //<input SCC Damage Factor Carbonate Cracking>
+            cal.CO3_CONCENTRATION = st.CO3Concentration;
+            cal.CACBONATE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[6]);
+            cal.CACBONATE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[6]);
+            //</SCC Damage Factor Carbonate Cracking>
 
             //<input PTA Cracking>
             cal.PTA_SUSCEP = ma.IsPTA == 1 ? true : false;
@@ -820,6 +932,7 @@ namespace RBI
             cal.HTHA_PRESSURE = st.H2SPartialPressure * 0.006895f;
             cal.CRITICAL_TEMP = st.CriticalExposureTemperature; //check lai
             cal.DAMAGE_FOUND = com.DamageFoundInspection == 1 ? true : false;
+            Console.WriteLine("Number of Inspection HTHA " + cal.HTHA_NUM_INSP);
             //</HTHA>
 
             //<input Brittle>
@@ -913,7 +1026,7 @@ namespace RBI
                     damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
                     damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
                     damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
-                    damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], )
+                    damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], );
                     damage.LastInspDate = DateTime.Now;
                     damage.DF1 = Df[i];
                     switch (i)
@@ -1021,7 +1134,7 @@ namespace RBI
                     listDamageMachenism.Add(damage);
                 }
             }
-            Console.WriteLine("Df thin" + Df[0]);
+            //Console.WriteLine("Df thin" + Df[0]);
             //Tính DF_Thin_Total
             float[] DF_Thin_Total = { 0, 0, 0 };
             if (Df[1] != 0)
@@ -1036,7 +1149,7 @@ namespace RBI
                 DF_Thin_Total[1] = thinningPlusAge[0];
                 DF_Thin_Total[2] = thinningPlusAge[1];
             }
-            Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
+            //Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
             //Tính Df_SSC_Total
             float[] DF_SSC_Total = { 0, 0, 0 };
             DF_SSC_Total[0] = Df[2];
@@ -1050,7 +1163,7 @@ namespace RBI
                 DF_SSC_Total[1] = DFSSCAgePlus3.Max();
                 DF_SSC_Total[2] = DFSSCAgePlus6.Max();
             }
-            Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
+            //Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
             //Tính DF_Ext_Total
             float DF_Ext_Total = Df[11];
             for (int i = 12; i < 15; i++)
@@ -1073,7 +1186,7 @@ namespace RBI
                     DF_ext_total3 = listDF_ext2[i];
             }
 
-            Console.WriteLine("DF_Ext total " + DF_Ext_Total);
+            //Console.WriteLine("DF_Ext total " + DF_Ext_Total);
             //Tính DF_Brit_Total
             float DF_Brit_Total = Df[16] + Df[17]; //Df_brittle + Df_temp_Embrittle
             for (int i = 18; i < 21; i++)
@@ -1139,7 +1252,7 @@ namespace RBI
             API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
             GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
             fullPOF.GFFTotal = GFFTotal;
-            Console.WriteLine("GFF total " + GFFTotal);
+            //Console.WriteLine("GFF total " + GFFTotal);
             fullPOF.ThinningType = ThinningType;
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
@@ -1276,6 +1389,7 @@ namespace RBI
 
             #endregion
 
+            #region INSPECTION HISTORY
             int FaciID = eqMaBus.getFacilityID(equipmentID);
             FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
             float risktaget = busRiskTarget.getRiskTarget(FaciID);
@@ -1344,6 +1458,7 @@ namespace RBI
                     insp.Availability = "Online";
                     insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
                     insp.InspectionInterval = k.ToString();
+                    //thay get last inspection = assessment date
                     insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
                     switch (i)
                     {
@@ -1363,257 +1478,8 @@ namespace RBI
                     listInspectionPlan.Add(insp);
                 }
             }
-
+            #endregion
         }
-        private void showUCinTabpage(UserControl uc)
-        {
-            if (xtraTabData.SelectedTabPageIndex == 0) return;
-                if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(uc)) return;
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(uc);
-        }
-        List<ucTabNormal> listUC = new List<ucTabNormal>();
-        List<ucTabTank> listUCTank = new List<ucTabTank>();
-        private void ShowItemTabpage(int ID, int Num, bool checkTank)
-        {
-            
-            ucTabNormal uctab = null;
-            ucTabTank ucTabTank = null;
-            UserControl u = null;
-            if (!checkTank)
-            {
-                foreach (ucTabNormal uc in listUC)
-                {
-                    if (ID == uc.ID)
-                    {
-                        uctab = uc;
-                        break;
-                    }
-                }
-                switch (Num)
-                {
-                    case 1:
-                        u = uctab.ucAss;
-                        break;
-                    case 2:
-                        u = uctab.ucEq;
-                        break;
-                    case 3:
-                        u = uctab.ucComp;
-                        break;
-                    case 4:
-                        u = uctab.ucOpera;
-                        break;
-                    case 5:
-                        u = uctab.ucCoat;
-                        break;
-                    case 6:
-                        u = uctab.ucMaterial;
-                        break;
-                    case 7:
-                        u = uctab.ucStream;
-                        break;
-                    case 8:
-                        u = uctab.ucCA;
-                        break;
-                    case 9:
-                        u = uctab.ucRiskFactor;
-                        break;
-                    case 10:
-                        u = uctab.ucRiskSummary;
-                        break;
-                    case 11:
-                        u = uctab.ucInspectionHistory;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                foreach (ucTabTank uc in listUCTank)
-                {
-                    if (ID == uc.ID)
-                    {
-                        ucTabTank = uc;
-                        break;
-                    }
-                }
-                switch (Num)
-                {
-                    case 1:
-                        u = ucTabTank.ucAss;
-                        break;
-                    case 2:
-                        u = ucTabTank.ucEquipmentTank;
-                        break;
-                    case 3:
-                        u = ucTabTank.ucComponentTank;
-                        break;
-                    case 4:
-                        u = ucTabTank.ucOpera;
-                        break;
-                    case 5:
-                        u = ucTabTank.ucCoat;
-                        break;
-                    case 6:
-                        u = ucTabTank.ucMaterialTank;
-                        break;
-                    case 7:
-                        u = ucTabTank.ucStreamTank;
-                        break;
-                    case 9:
-                        u = ucTabTank.ucRiskFactor;
-                        break;
-                    case 10:
-                        u = ucTabTank.ucRiskSummary;
-                        break;
-                    case 11:
-                        u = ucTabTank.ucInspHistory;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
-            xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
-            xtraTabData.TabPages.TabControl.SelectedTabPage.HorizontalScroll.Value = 0;
-            xtraTabData.TabPages.TabControl.SelectedTabPage.VerticalScroll.Value = 0;
-            if (xtraTabData.SelectedTabPageIndex == 0) return;
-            if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(u))
-            {
-                return;
-            }
-            else
-            {
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
-                u.Dock = DockStyle.Fill;
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
-            }
-        }
-        private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-            {
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 1, checkTank);
-            }
-        }
-        private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 2, checkTank);
-        }
-
-        private void navComponent_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 3, checkTank);
-        }
-
-        private void navOperating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 4, checkTank);
-        }
-
-        private void navMaterial_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 6, checkTank);
-        }
-
-        private void navCoating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 5, checkTank);
-        }
-
-        private void navNoInspection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 11, checkTank);
-        }
-
-        private void navStream_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 7, checkTank);
-        }
-        private void navRiskFactor_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 9, checkTank);
-        }
-        private void navCA_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 8, checkTank);
-        }
-        private void navRiskSummary_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 10, checkTank);
-        }
-        private void xtraTabData_CloseButtonClick(object sender, EventArgs e)
-        {
-            DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
-            DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs arg = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
-            (arg.Page as DevExpress.XtraTab.XtraTabPage).Dispose();
-        }
-        private void addNewTab(string tabname, UserControl uc)
-        {
-
-            string _tabID = IDProposal.ToString();
-            foreach (DevExpress.XtraTab.XtraTabPage tabpage in xtraTabData.TabPages)
-            {
-                if (tabpage.Name == _tabID)
-                {
-                    xtraTabData.SelectedTabPage = tabpage;
-                    return;
-                }
-            }
-            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
-            tabPage.AutoScroll = true;
-            tabPage.AutoScrollMargin = new Size(20, 20);
-            tabPage.AutoScrollMinSize = new Size(tabPage.Width, tabPage.Height);
-            if (tabPage.Name.Equals(_tabID))
-                tabPage.Show();
-            else
-                tabPage.Name = _tabID;
-            tabPage.Text = tabname;
-            tabPage.Controls.Add(uc);
-            uc.AutoSize = true;
-            if (xtraTabData.TabPages.Contains(tabPage)) return;
-            xtraTabData.TabPages.Add(tabPage);
-            xtraTabData.SelectedTabPage = tabPage;
-            tabPage.Show();
-        }
-        private void addTabfromMainMenu(string tabname, UserControl uc)
-        {
-            foreach (DevExpress.XtraTab.XtraTabPage tabpage in xtraTabData.TabPages)
-            {
-                if (tabpage.Text == tabname)
-                {
-                    xtraTabData.SelectedTabPage = tabpage;
-                    return;
-                }
-            }
-            
-            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
-            tabPage.Text = tabname;
-            string[] _tabname = tabname.Split(' ');
-            string name = null;
-            foreach(string a in _tabname)
-            {
-                name += a;
-            }
-            tabPage.Name = name;
-            tabPage.Controls.Add(uc);
-            xtraTabData.TabPages.Add(tabPage);
-            xtraTabData.SelectedTabPage = tabPage;
-            tabPage.Show();
-        }
-
         private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
         {
             #region PoF Tank
@@ -2001,7 +1867,7 @@ namespace RBI
                 DF_SSC_Total[2] = DFSSCAgePlus6.Max();
             }
             Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
-            
+
             /////Tính DF_Ext_Total
             float DF_Ext_Total = Df[11];
             for (int i = 12; i < 15; i++)
@@ -2136,6 +2002,7 @@ namespace RBI
             //</Calculate DF>
             #endregion
 
+            #region CA
             MSSQL_CA_CAL CA = new MSSQL_CA_CAL();
             CA.MATERIAL_COST = ma.CostFactor;
             CA.PRODUCTION_COST = caTank.ProductionCost;
@@ -2254,7 +2121,9 @@ namespace RBI
                 tankBus.edit(rwCATank);
                 FC_Total = rwCATank.Consequence;
             }
+            #endregion
 
+            #region Inspection Plan
             int FaciID = eqMaBus.getFacilityID(equipmentID);
             FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
             float risktaget = busRiskTarget.getRiskTarget(FaciID);
@@ -2342,29 +2211,186 @@ namespace RBI
                     listInspectionPlan.Add(insp);
                 }
             }
-        }
-        
-        
-        private void btnImportExcelData_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frmImportExcel excel = new frmImportExcel();
-            excel.ShowInTaskbar = false;
-            excel.ShowDialog();
-            if (excel.ButtonOKClicked)
-                initDataforTreeList();
+            #endregion
         }
 
-        private void btnImportInspection_ItemClick(object sender, ItemClickEventArgs e)
+        private void ShowItemTabpage(int ID, int Num, bool checkTank)
         {
-            frmImportInspection insp = new frmImportInspection();
-            insp.ShowInTaskbar = false;
-            insp.ShowDialog();
+
+            ucTabNormal uctab = null;
+            ucTabTank ucTabTank = null;
+            UserControl u = null;
+            if (!checkTank)
+            {
+                foreach (ucTabNormal uc in listUC)
+                {
+                    if (ID == uc.ID)
+                    {
+                        uctab = uc;
+                        break;
+                    }
+                }
+                switch (Num)
+                {
+                    case 1:
+                        u = uctab.ucAss;
+                        break;
+                    case 2:
+                        u = uctab.ucEq;
+                        break;
+                    case 3:
+                        u = uctab.ucComp;
+                        break;
+                    case 4:
+                        u = uctab.ucOpera;
+                        break;
+                    case 5:
+                        u = uctab.ucCoat;
+                        break;
+                    case 6:
+                        u = uctab.ucMaterial;
+                        break;
+                    case 7:
+                        u = uctab.ucStream;
+                        break;
+                    case 8:
+                        u = uctab.ucCA;
+                        break;
+                    case 9:
+                        u = uctab.ucRiskFactor;
+                        break;
+                    case 10:
+                        u = uctab.ucRiskSummary;
+                        break;
+                    case 11:
+                        u = uctab.ucInspectionHistory;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                foreach (ucTabTank uc in listUCTank)
+                {
+                    if (ID == uc.ID)
+                    {
+                        ucTabTank = uc;
+                        break;
+                    }
+                }
+                switch (Num)
+                {
+                    case 1:
+                        u = ucTabTank.ucAss;
+                        break;
+                    case 2:
+                        u = ucTabTank.ucEquipmentTank;
+                        break;
+                    case 3:
+                        u = ucTabTank.ucComponentTank;
+                        break;
+                    case 4:
+                        u = ucTabTank.ucOpera;
+                        break;
+                    case 5:
+                        u = ucTabTank.ucCoat;
+                        break;
+                    case 6:
+                        u = ucTabTank.ucMaterialTank;
+                        break;
+                    case 7:
+                        u = ucTabTank.ucStreamTank;
+                        break;
+                    case 9:
+                        u = ucTabTank.ucRiskFactor;
+                        break;
+                    case 10:
+                        u = ucTabTank.ucRiskSummary;
+                        break;
+                    case 11:
+                        u = ucTabTank.ucInspHistory;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
+            xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
+            xtraTabData.TabPages.TabControl.SelectedTabPage.HorizontalScroll.Value = 0;
+            xtraTabData.TabPages.TabControl.SelectedTabPage.VerticalScroll.Value = 0;
+            if (xtraTabData.SelectedTabPageIndex == 0) return;
+            if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(u))
+            {
+                return;
+            }
+            else
+            {
+                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
+                u.Dock = DockStyle.Fill;
+                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
+            }
         }
+
+        private void addNewTab(string tabname, UserControl uc)
+        {
+
+            string _tabID = IDProposal.ToString();
+            foreach (DevExpress.XtraTab.XtraTabPage tabpage in xtraTabData.TabPages)
+            {
+                if (tabpage.Name == _tabID)
+                {
+                    xtraTabData.SelectedTabPage = tabpage;
+                    return;
+                }
+            }
+            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
+            tabPage.AutoScroll = true;
+            tabPage.AutoScrollMargin = new Size(20, 20);
+            tabPage.AutoScrollMinSize = new Size(tabPage.Width, tabPage.Height);
+            if (tabPage.Name.Equals(_tabID))
+                tabPage.Show();
+            else
+                tabPage.Name = _tabID;
+            tabPage.Text = tabname;
+            tabPage.Controls.Add(uc);
+            uc.AutoSize = true;
+            if (xtraTabData.TabPages.Contains(tabPage)) return;
+            xtraTabData.TabPages.Add(tabPage);
+            xtraTabData.SelectedTabPage = tabPage;
+            tabPage.Show();
+        }
+        private void addTabfromMainMenu(string tabname, UserControl uc)
+        {
+            foreach (DevExpress.XtraTab.XtraTabPage tabpage in xtraTabData.TabPages)
+            {
+                if (tabpage.Text == tabname)
+                {
+                    xtraTabData.SelectedTabPage = tabpage;
+                    return;
+                }
+            }
+
+            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
+            tabPage.Text = tabname;
+            string[] _tabname = tabname.Split(' ');
+            string name = null;
+            foreach (string a in _tabname)
+            {
+                name += a;
+            }
+            tabPage.Name = name;
+            tabPage.Controls.Add(uc);
+            xtraTabData.TabPages.Add(tabPage);
+            xtraTabData.SelectedTabPage = tabPage;
+            tabPage.Show();
+        }
+
         private void createReportExcel(bool generalClick)
         {
             try
             {
-                
+
                 DevExpress.XtraSpreadsheet.SpreadsheetControl exportData = new SpreadsheetControl();
                 exportData.CreateNewDocument();
                 IWorkbook workbook = exportData.Document;
@@ -2438,7 +2464,7 @@ namespace RBI
                 risk.EquipmentDesc = eqMaBus.getEquipmentDesc(equipmentID);//Equipment Description gan lai
                 risk.EquipmentType = equipmentTypename; //Equipment type
                 risk.ComponentName = comMasterBus.getComponentName(equipmentID); //component name
-                if(inputCA.ID != 0)
+                if (inputCA.ID != 0)
                 {
                     risk.RepresentFluid = inputCA.API_FLUID; //Represent fluid
                     risk.FluidPhase = inputCA.SYSTEM;  //fluid phase
@@ -2543,7 +2569,7 @@ namespace RBI
                     {
                         using (FileStream stream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite))
                         {
-                            if(extension == ".xls")
+                            if (extension == ".xls")
                                 exportData.SaveDocument(stream, DocumentFormat.Xls);
                             else
                                 exportData.SaveDocument(stream, DocumentFormat.Xlsx);
@@ -2561,37 +2587,6 @@ namespace RBI
                 MessageBox.Show(e.ToString());
             }
         }
-
-        private void btnGeneral_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!checkTank)
-                createReportExcel(true);
-            else
-                createReportExcelTank(true);
-        }
-
-        private void btnGan_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!checkTank)
-                createReportExcel(false);
-            else
-                createReportExcelTank(false);
-        }
-
-        private void btnBackupData_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frm_backup back = new frm_backup();
-            back.ShowInTaskbar = false;
-            back.Show();
-        }
-
-        private void barButtonItem19_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frm_restored restored = new frm_restored();
-            restored.ShowInTaskbar = false;
-            restored.Show();
-        }
-
 
         private void createInspectionPlanExcel(List<InspectionPlant> listInspec)
         {
@@ -2835,12 +2830,60 @@ namespace RBI
                 MessageBox.Show(e.ToString());
             }
         }
-        
-        private void btnPlanInsp_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            createInspectionPlanExcel(listInspectionPlan);
-        }
 
+        //Thiet bi thuong
+        private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_LEVEL_1 ca)
+        {
+            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
+            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_COATING_BUS coatBus = new RW_COATING_BUS();
+            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS caLv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+            //if(assBus.checkExistAssessment(IDProposal))
+            //{
+            assBus.edit(ass);
+            eqBus.edit(eq);
+            comBus.edit(com);
+            streamBus.edit(stream);
+            extTempBus.edit(extTemp);
+            coatBus.edit(coat);
+            maBus.edit(ma);
+            caLv1Bus.edit(ca);
+            //}
+        }
+        //thiet bi tank
+        private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_TANK ca)
+        {
+            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
+            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_COATING_BUS coatBus = new RW_COATING_BUS();
+            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
+            RW_INPUT_CA_TANK_BUS caTankBus = new RW_INPUT_CA_TANK_BUS();
+            assBus.edit(ass);
+            eqBus.edit(eq);
+            comBus.edit(com);
+            streamBus.edit(stream);
+            extTempBus.edit(extTemp);
+            coatBus.edit(coat);
+            maBus.edit(ma);
+            caTankBus.edit(ca);
+        }
+        private void showUCinTabpage(UserControl uc)
+        {
+            if (xtraTabData.SelectedTabPageIndex == 0) return;
+            if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(uc)) return;
+            xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
+            xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(uc);
+        }
+        #endregion
+
+        #region Navigation Link
         private void navAddNewSite_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             frmNewSite site = new frmNewSite();
@@ -2866,6 +2909,7 @@ namespace RBI
         {
             xtraTabData.TabPages.TabControl.SelectedTabPageIndex = 0;
         }
+
         private void navFullInspHis_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             UCInspectionHistory history = new UCInspectionHistory();
@@ -2873,103 +2917,69 @@ namespace RBI
             addTabfromMainMenu("Inspection History", history);
         }
 
-        private void treeListProject_MouseClick(object sender, MouseEventArgs e)
+        private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-           treeListProject.Appearance.FocusedCell.ForeColor = Color.Red;
-        }
-
-        private void btnImportTank_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frmImportExcelTank exTank = new frmImportExcelTank();
-            exTank.ShowInTaskbar = false;
-            exTank.ShowDialog();
-            if (exTank.ButtonOKClicked)
-                initDataforTreeList();
-        }
-
-        private void btnSites_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            
-            frmNewSite site = new frmNewSite();
-            site.ShowInTaskbar = false;
-            site.ShowDialog();
-            if (site.ButtonOKClicked)
-                initDataforTreeList();
-        }
-
-        private void btnFacilityRibbon_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frmFacilityInput faci = new frmFacilityInput();
-            faci.ShowInTaskbar = false;
-            faci.ShowDialog();
-            if (faci.ButtonOKClicked)
-                initDataforTreeList();
-        }
-
-        private void btnEquipmentRibbon_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frmEquipment eq = new frmEquipment();
-            eq.ShowInTaskbar = false;
-            eq.ShowDialog();
-            if (eq.ButtonOKCliked)
-                initDataforTreeList();
-        }
-
-        private void btnComponentRibbon_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            frmNewComponent com = new frmNewComponent();
-            com.ShowInTaskbar = false;
-            com.ShowDialog();
-            if (com.ButtonOKClicked)
-                initDataforTreeList();
-        }
-
-        private void btnTinhLai_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void xtraTabData_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
-        {
-            int id_proposal;
-            if (int.TryParse(xtraTabData.SelectedTabPage.Name, out id_proposal))
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
             {
-                RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
-                int eqID = busAss.getEquipmentID(id_proposal);
-                EQUIPMENT_MASTER_BUS busEqMaster = new EQUIPMENT_MASTER_BUS();
-                int eqTypeID = busEqMaster.getEqTypeID(eqID);
-                switch (eqTypeID)
-                {
-                    case 10: //tank
-                    case 11:
-                        navCA.Visible = false;
-                        checkTank = true;
-                        break;
-                    default: //thuong
-                        navCA.Visible = true;
-                        navCA.Enabled = true;
-                        checkTank = false;
-                        break;
-                }
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 1, checkTank);
             }
         }
-
-        private void dockPanel1_Collapsing(object sender, DevExpress.XtraBars.Docking.DockPanelEventArgs e)
+        private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            Console.WriteLine("X = " + dockPanel1.Location.X);
-            //int a = xtraTabData.Location.X - (dockPanel1.Location.X - dockPanel2.Location.X);
-            System.Drawing.Point pt = new System.Drawing.Point();
-            pt.X = dockPanel2.Location.X + dockPanel1.Width;
-            pt.Y = xtraTabData.Location.Y;
-            //xtraTabData.Width += a;
-            xtraTabData.Location = pt;
-            //xtraTabData.Width += 100;
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 2, checkTank);
         }
 
-        private void dockPanel1_Move(object sender, EventArgs e)
+        private void navComponent_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            Console.WriteLine("Main menu is moving");
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 3, checkTank);
         }
 
+        private void navOperating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 4, checkTank);
+        }
+
+        private void navMaterial_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 6, checkTank);
+        }
+
+        private void navCoating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 5, checkTank);
+        }
+
+        private void navNoInspection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 11, checkTank);
+        }
+
+        private void navStream_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 7, checkTank);
+        }
+        private void navRiskFactor_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 9, checkTank);
+        }
+        private void navCA_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 8, checkTank);
+        }
+        private void navRiskSummary_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            if (this.xtraTabData.SelectedTabPageIndex != 0)
+                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 10, checkTank);
+        }
+        #endregion
     }
 }

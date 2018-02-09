@@ -157,7 +157,7 @@
             this.cbSites.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbSites.Size = new System.Drawing.Size(182, 20);
-            this.cbSites.TabIndex = 6;
+            this.cbSites.TabIndex = 2;
             this.cbSites.SelectedIndexChanged += new System.EventHandler(this.cbSites_SelectedIndexChanged);
             // 
             // btnCancel
@@ -165,7 +165,7 @@
             this.btnCancel.Location = new System.Drawing.Point(341, 367);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(76, 27);
-            this.btnCancel.TabIndex = 2;
+            this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -175,7 +175,7 @@
             this.btnOK.Location = new System.Drawing.Point(245, 367);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(76, 27);
-            this.btnOK.TabIndex = 2;
+            this.btnOK.TabIndex = 11;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -237,7 +237,7 @@
             this.txtA.Location = new System.Drawing.Point(210, 119);
             this.txtA.Name = "txtA";
             this.txtA.Size = new System.Drawing.Size(186, 20);
-            this.txtA.TabIndex = 0;
+            this.txtA.TabIndex = 10;
             this.txtA.Text = "1";
             this.txtA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtA.TextChanged += new System.EventHandler(this.txtA_TextChanged);
@@ -259,7 +259,7 @@
             this.txtC.Location = new System.Drawing.Point(210, 79);
             this.txtC.Name = "txtC";
             this.txtC.Size = new System.Drawing.Size(186, 20);
-            this.txtC.TabIndex = 0;
+            this.txtC.TabIndex = 8;
             this.txtC.Text = "1";
             this.txtC.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtC.TextChanged += new System.EventHandler(this.txtC_TextChanged);
@@ -270,7 +270,7 @@
             this.txtB.Location = new System.Drawing.Point(210, 99);
             this.txtB.Name = "txtB";
             this.txtB.Size = new System.Drawing.Size(186, 20);
-            this.txtB.TabIndex = 0;
+            this.txtB.TabIndex = 9;
             this.txtB.Text = "1";
             this.txtB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtB.TextChanged += new System.EventHandler(this.txtB_TextChanged);
@@ -292,7 +292,7 @@
             this.txtD.Location = new System.Drawing.Point(210, 59);
             this.txtD.Name = "txtD";
             this.txtD.Size = new System.Drawing.Size(186, 20);
-            this.txtD.TabIndex = 0;
+            this.txtD.TabIndex = 7;
             this.txtD.Text = "1";
             this.txtD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtD.TextChanged += new System.EventHandler(this.txtD_TextChanged);
@@ -314,7 +314,7 @@
             this.txtE.Location = new System.Drawing.Point(210, 39);
             this.txtE.Name = "txtE";
             this.txtE.Size = new System.Drawing.Size(186, 20);
-            this.txtE.TabIndex = 0;
+            this.txtE.TabIndex = 6;
             this.txtE.Text = "1";
             this.txtE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtE.TextChanged += new System.EventHandler(this.txtE_TextChanged);
@@ -423,7 +423,7 @@
             this.txtFinancial.Location = new System.Drawing.Point(178, 51);
             this.txtFinancial.Name = "txtFinancial";
             this.txtFinancial.Size = new System.Drawing.Size(182, 20);
-            this.txtFinancial.TabIndex = 2;
+            this.txtFinancial.TabIndex = 5;
             this.txtFinancial.TextChanged += new System.EventHandler(this.txtFinancial_TextChanged);
             this.txtFinancial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFinancial_KeyPress);
             // 
@@ -432,7 +432,7 @@
             this.txtArea.Location = new System.Drawing.Point(178, 25);
             this.txtArea.Name = "txtArea";
             this.txtArea.Size = new System.Drawing.Size(182, 20);
-            this.txtArea.TabIndex = 2;
+            this.txtArea.TabIndex = 4;
             this.txtArea.TextChanged += new System.EventHandler(this.txtArea_TextChanged);
             this.txtArea.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtArea_KeyPress);
             // 
@@ -441,7 +441,7 @@
             this.txtFacilityName.Location = new System.Drawing.Point(193, 11);
             this.txtFacilityName.Name = "txtFacilityName";
             this.txtFacilityName.Size = new System.Drawing.Size(182, 20);
-            this.txtFacilityName.TabIndex = 2;
+            this.txtFacilityName.TabIndex = 1;
             this.txtFacilityName.TextChanged += new System.EventHandler(this.txtFacilityName_TextChanged);
             // 
             // numManagementSystem
@@ -465,7 +465,7 @@
             65536});
             this.numManagementSystem.Name = "numManagementSystem";
             this.numManagementSystem.Size = new System.Drawing.Size(77, 20);
-            this.numManagementSystem.TabIndex = 1;
+            this.numManagementSystem.TabIndex = 3;
             this.numManagementSystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numManagementSystem.Value = new decimal(new int[] {
             1,

@@ -185,7 +185,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Concrete-Asphalt", ((short)(6)), 6)});
             this.cbTypeSoild.Properties.SmallImages = this.imgColTypeOfSolid;
             this.cbTypeSoild.Size = new System.Drawing.Size(281, 20);
-            this.cbTypeSoild.TabIndex = 12;
+            this.cbTypeSoild.TabIndex = 9;
             // 
             // imgColTypeOfSolid
             // 
@@ -206,7 +206,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbOnlineMonitoring.Properties.SmallImages = this.imgColOnlineMonitoring;
             this.cbOnlineMonitoring.Size = new System.Drawing.Size(281, 20);
-            this.cbOnlineMonitoring.TabIndex = 7;
+            this.cbOnlineMonitoring.TabIndex = 23;
             // 
             // imgColOnlineMonitoring
             // 
@@ -256,7 +256,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbEnvironmentalSensitivity.Properties.SmallImages = this.imgColEnviromental;
             this.cbEnvironmentalSensitivity.Size = new System.Drawing.Size(281, 20);
-            this.cbEnvironmentalSensitivity.TabIndex = 8;
+            this.cbEnvironmentalSensitivity.TabIndex = 21;
             // 
             // imgColEnviromental
             // 
@@ -273,7 +273,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbExternalEnviroment.Properties.SmallImages = this.imgColExternalEnviroment;
             this.cbExternalEnviroment.Size = new System.Drawing.Size(281, 20);
-            this.cbExternalEnviroment.TabIndex = 9;
+            this.cbExternalEnviroment.TabIndex = 20;
             // 
             // imgColExternalEnviroment
             // 
@@ -291,7 +291,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbThermalHistory.Properties.SmallImages = this.imgThermalHist;
             this.cbThermalHistory.Size = new System.Drawing.Size(281, 20);
-            this.cbThermalHistory.TabIndex = 10;
+            this.cbThermalHistory.TabIndex = 22;
             // 
             // imgThermalHist
             // 
@@ -309,7 +309,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAdjustmentSettlement.Properties.SmallImages = this.imgColAdjust;
             this.cbAdjustmentSettlement.Size = new System.Drawing.Size(281, 20);
-            this.cbAdjustmentSettlement.TabIndex = 11;
+            this.cbAdjustmentSettlement.TabIndex = 19;
             // 
             // imgColAdjust
             // 
@@ -336,7 +336,7 @@
             0});
             this.numSystemManagementFactor.Name = "numSystemManagementFactor";
             this.numSystemManagementFactor.Size = new System.Drawing.Size(120, 20);
-            this.numSystemManagementFactor.TabIndex = 4;
+            this.numSystemManagementFactor.TabIndex = 24;
             this.numSystemManagementFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numSystemManagementFactor.Value = new decimal(new int[] {
             1,
@@ -350,7 +350,7 @@
             this.txtEquipmentVolume.Location = new System.Drawing.Point(274, 497);
             this.txtEquipmentVolume.Name = "txtEquipmentVolume";
             this.txtEquipmentVolume.Size = new System.Drawing.Size(120, 22);
-            this.txtEquipmentVolume.TabIndex = 2;
+            this.txtEquipmentVolume.TabIndex = 25;
             this.txtEquipmentVolume.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEquipmentVolume_KeyPress);
             // 
             // txtDistanceGroundWater
@@ -359,7 +359,7 @@
             this.txtDistanceGroundWater.Location = new System.Drawing.Point(571, 84);
             this.txtDistanceGroundWater.Name = "txtDistanceGroundWater";
             this.txtDistanceGroundWater.Size = new System.Drawing.Size(139, 21);
-            this.txtDistanceGroundWater.TabIndex = 2;
+            this.txtDistanceGroundWater.TabIndex = 8;
             this.txtDistanceGroundWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDistanceGroundWater_KeyPress);
             // 
             // txtMinRequiredTemperature
@@ -368,7 +368,7 @@
             this.txtMinRequiredTemperature.Location = new System.Drawing.Point(571, 161);
             this.txtMinRequiredTemperature.Name = "txtMinRequiredTemperature";
             this.txtMinRequiredTemperature.Size = new System.Drawing.Size(139, 21);
-            this.txtMinRequiredTemperature.TabIndex = 2;
+            this.txtMinRequiredTemperature.TabIndex = 11;
             this.txtMinRequiredTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinRequiredTemperature_KeyPress);
             // 
             // chkComponentWelded
@@ -377,7 +377,7 @@
             this.chkComponentWelded.Location = new System.Drawing.Point(274, 314);
             this.chkComponentWelded.Name = "chkComponentWelded";
             this.chkComponentWelded.Size = new System.Drawing.Size(15, 14);
-            this.chkComponentWelded.TabIndex = 1;
+            this.chkComponentWelded.TabIndex = 15;
             this.chkComponentWelded.UseVisualStyleBackColor = true;
             // 
             // chkPresenceSulphideOperation
@@ -386,7 +386,7 @@
             this.chkPresenceSulphideOperation.Location = new System.Drawing.Point(274, 282);
             this.chkPresenceSulphideOperation.Name = "chkPresenceSulphideOperation";
             this.chkPresenceSulphideOperation.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceSulphideOperation.TabIndex = 1;
+            this.chkPresenceSulphideOperation.TabIndex = 14;
             this.chkPresenceSulphideOperation.UseVisualStyleBackColor = true;
             // 
             // chkTankMaintainedAccordance
@@ -395,7 +395,7 @@
             this.chkTankMaintainedAccordance.Location = new System.Drawing.Point(540, 314);
             this.chkTankMaintainedAccordance.Name = "chkTankMaintainedAccordance";
             this.chkTankMaintainedAccordance.Size = new System.Drawing.Size(15, 14);
-            this.chkTankMaintainedAccordance.TabIndex = 1;
+            this.chkTankMaintainedAccordance.TabIndex = 18;
             this.chkTankMaintainedAccordance.UseVisualStyleBackColor = true;
             // 
             // chkPresenceSulphideShutdown
@@ -404,7 +404,7 @@
             this.chkPresenceSulphideShutdown.Location = new System.Drawing.Point(540, 279);
             this.chkPresenceSulphideShutdown.Name = "chkPresenceSulphideShutdown";
             this.chkPresenceSulphideShutdown.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceSulphideShutdown.TabIndex = 1;
+            this.chkPresenceSulphideShutdown.TabIndex = 17;
             this.chkPresenceSulphideShutdown.UseVisualStyleBackColor = true;
             // 
             // chkLinerOnlineMonitoring
@@ -413,7 +413,7 @@
             this.chkLinerOnlineMonitoring.Location = new System.Drawing.Point(540, 244);
             this.chkLinerOnlineMonitoring.Name = "chkLinerOnlineMonitoring";
             this.chkLinerOnlineMonitoring.Size = new System.Drawing.Size(15, 14);
-            this.chkLinerOnlineMonitoring.TabIndex = 1;
+            this.chkLinerOnlineMonitoring.TabIndex = 16;
             this.chkLinerOnlineMonitoring.UseVisualStyleBackColor = true;
             // 
             // chkMaterialExposedFluid
@@ -422,7 +422,7 @@
             this.chkMaterialExposedFluid.Location = new System.Drawing.Point(274, 253);
             this.chkMaterialExposedFluid.Name = "chkMaterialExposedFluid";
             this.chkMaterialExposedFluid.Size = new System.Drawing.Size(15, 14);
-            this.chkMaterialExposedFluid.TabIndex = 1;
+            this.chkMaterialExposedFluid.TabIndex = 13;
             this.chkMaterialExposedFluid.UseVisualStyleBackColor = true;
             // 
             // chkEquipmentOperatingManyYear
@@ -431,7 +431,7 @@
             this.chkEquipmentOperatingManyYear.Location = new System.Drawing.Point(274, 218);
             this.chkEquipmentOperatingManyYear.Name = "chkEquipmentOperatingManyYear";
             this.chkEquipmentOperatingManyYear.Size = new System.Drawing.Size(15, 14);
-            this.chkEquipmentOperatingManyYear.TabIndex = 1;
+            this.chkEquipmentOperatingManyYear.TabIndex = 12;
             this.chkEquipmentOperatingManyYear.UseVisualStyleBackColor = true;
             // 
             // chkPressurisationControlled
@@ -440,7 +440,7 @@
             this.chkPressurisationControlled.Location = new System.Drawing.Point(274, 165);
             this.chkPressurisationControlled.Name = "chkPressurisationControlled";
             this.chkPressurisationControlled.Size = new System.Drawing.Size(15, 14);
-            this.chkPressurisationControlled.TabIndex = 1;
+            this.chkPressurisationControlled.TabIndex = 10;
             this.chkPressurisationControlled.UseVisualStyleBackColor = true;
             // 
             // chkInterfaceSoilWater
@@ -449,7 +449,7 @@
             this.chkInterfaceSoilWater.Location = new System.Drawing.Point(274, 79);
             this.chkInterfaceSoilWater.Name = "chkInterfaceSoilWater";
             this.chkInterfaceSoilWater.Size = new System.Drawing.Size(15, 14);
-            this.chkInterfaceSoilWater.TabIndex = 1;
+            this.chkInterfaceSoilWater.TabIndex = 4;
             this.chkInterfaceSoilWater.UseVisualStyleBackColor = true;
             // 
             // chkHeatTraced
@@ -458,7 +458,7 @@
             this.chkHeatTraced.Location = new System.Drawing.Point(274, 60);
             this.chkHeatTraced.Name = "chkHeatTraced";
             this.chkHeatTraced.Size = new System.Drawing.Size(15, 14);
-            this.chkHeatTraced.TabIndex = 1;
+            this.chkHeatTraced.TabIndex = 3;
             this.chkHeatTraced.UseVisualStyleBackColor = true;
             // 
             // chkDowntimeProtection
@@ -467,7 +467,7 @@
             this.chkDowntimeProtection.Location = new System.Drawing.Point(274, 43);
             this.chkDowntimeProtection.Name = "chkDowntimeProtection";
             this.chkDowntimeProtection.Size = new System.Drawing.Size(15, 14);
-            this.chkDowntimeProtection.TabIndex = 1;
+            this.chkDowntimeProtection.TabIndex = 2;
             this.chkDowntimeProtection.UseVisualStyleBackColor = true;
             // 
             // chkPWHT
@@ -476,7 +476,7 @@
             this.chkPWHT.Location = new System.Drawing.Point(571, 63);
             this.chkPWHT.Name = "chkPWHT";
             this.chkPWHT.Size = new System.Drawing.Size(15, 14);
-            this.chkPWHT.TabIndex = 1;
+            this.chkPWHT.TabIndex = 7;
             this.chkPWHT.UseVisualStyleBackColor = true;
             // 
             // chkSteamedOutPriorWaterFlushing
@@ -485,7 +485,7 @@
             this.chkSteamedOutPriorWaterFlushing.Location = new System.Drawing.Point(571, 43);
             this.chkSteamedOutPriorWaterFlushing.Name = "chkSteamedOutPriorWaterFlushing";
             this.chkSteamedOutPriorWaterFlushing.Size = new System.Drawing.Size(15, 14);
-            this.chkSteamedOutPriorWaterFlushing.TabIndex = 1;
+            this.chkSteamedOutPriorWaterFlushing.TabIndex = 6;
             this.chkSteamedOutPriorWaterFlushing.UseVisualStyleBackColor = true;
             // 
             // chkCylicOperation
@@ -494,7 +494,7 @@
             this.chkCylicOperation.Location = new System.Drawing.Point(571, 23);
             this.chkCylicOperation.Name = "chkCylicOperation";
             this.chkCylicOperation.Size = new System.Drawing.Size(15, 14);
-            this.chkCylicOperation.TabIndex = 1;
+            this.chkCylicOperation.TabIndex = 5;
             this.chkCylicOperation.UseVisualStyleBackColor = true;
             // 
             // chkAministrativeControl

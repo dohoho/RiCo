@@ -778,7 +778,6 @@
             this.dockPanel1.Size = new System.Drawing.Size(187, 520);
             this.dockPanel1.Text = "Main Menu";
             this.dockPanel1.Collapsing += new DevExpress.XtraBars.Docking.DockPanelEventHandler(this.dockPanel1_Collapsing);
-            this.dockPanel1.Move += new System.EventHandler(this.dockPanel1_Move);
             // 
             // dockPanel1_Container
             // 

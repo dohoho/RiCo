@@ -135,7 +135,7 @@
             this.cbManufacturer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbManufacturer.Size = new System.Drawing.Size(287, 20);
-            this.cbManufacturer.TabIndex = 83;
+            this.cbManufacturer.TabIndex = 69;
             this.cbManufacturer.SelectedIndexChanged += new System.EventHandler(this.cbManufacturer_SelectedIndexChanged);
             this.cbManufacturer.Click += new System.EventHandler(this.cbManufacturer_Click);
             // 
@@ -145,7 +145,7 @@
             this.btnAddManufacture.Location = new System.Drawing.Point(501, 179);
             this.btnAddManufacture.Name = "btnAddManufacture";
             this.btnAddManufacture.Size = new System.Drawing.Size(21, 21);
-            this.btnAddManufacture.TabIndex = 82;
+            this.btnAddManufacture.TabIndex = 70;
             this.btnAddManufacture.Text = "simpleButton1";
             this.btnAddManufacture.Click += new System.EventHandler(this.btnManufacturer_Click);
             // 
@@ -156,7 +156,7 @@
             this.btnAddFacility.Location = new System.Drawing.Point(501, 153);
             this.btnAddFacility.Name = "btnAddFacility";
             this.btnAddFacility.Size = new System.Drawing.Size(21, 21);
-            this.btnAddFacility.TabIndex = 82;
+            this.btnAddFacility.TabIndex = 68;
             this.btnAddFacility.Text = "simpleButton1";
             this.btnAddFacility.Click += new System.EventHandler(this.btnAddFacility_Click);
             // 
@@ -166,7 +166,7 @@
             this.btnAddSite.Location = new System.Drawing.Point(501, 127);
             this.btnAddSite.Name = "btnAddSite";
             this.btnAddSite.Size = new System.Drawing.Size(21, 21);
-            this.btnAddSite.TabIndex = 82;
+            this.btnAddSite.TabIndex = 66;
             this.btnAddSite.Text = "simpleButton1";
             this.btnAddSite.Click += new System.EventHandler(this.btnAddSite_Click);
             // 
@@ -176,7 +176,7 @@
             this.btnAddNewDesignCode.Location = new System.Drawing.Point(501, 102);
             this.btnAddNewDesignCode.Name = "btnAddNewDesignCode";
             this.btnAddNewDesignCode.Size = new System.Drawing.Size(21, 21);
-            this.btnAddNewDesignCode.TabIndex = 82;
+            this.btnAddNewDesignCode.TabIndex = 64;
             this.btnAddNewDesignCode.Text = "simpleButton1";
             this.btnAddNewDesignCode.Click += new System.EventHandler(this.btnAddNewDesignCode_Click);
             // 
@@ -187,7 +187,7 @@
             this.cbDesignCode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbDesignCode.Size = new System.Drawing.Size(286, 20);
-            this.cbDesignCode.TabIndex = 81;
+            this.cbDesignCode.TabIndex = 63;
             this.cbDesignCode.SelectedIndexChanged += new System.EventHandler(this.cbDesignCode_SelectedIndexChanged);
             this.cbDesignCode.Click += new System.EventHandler(this.cbDesignCode_Click);
             // 
@@ -198,7 +198,7 @@
             this.cbEquipmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbEquipmentType.Size = new System.Drawing.Size(307, 20);
-            this.cbEquipmentType.TabIndex = 80;
+            this.cbEquipmentType.TabIndex = 61;
             this.cbEquipmentType.TextChanged += new System.EventHandler(this.cbEquipmentType_TextChanged);
             // 
             // cbFacility
@@ -209,7 +209,7 @@
             this.cbFacility.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbFacility.Size = new System.Drawing.Size(287, 20);
-            this.cbFacility.TabIndex = 79;
+            this.cbFacility.TabIndex = 67;
             // 
             // cbSite
             // 
@@ -218,7 +218,7 @@
             this.cbSite.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbSite.Size = new System.Drawing.Size(286, 20);
-            this.cbSite.TabIndex = 79;
+            this.cbSite.TabIndex = 65;
             this.cbSite.SelectedValueChanged += new System.EventHandler(this.cbSite_SelectedValueChanged);
             // 
             // picCommissionDate
@@ -281,7 +281,7 @@
             this.btnOK.Location = new System.Drawing.Point(345, 385);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(74, 27);
-            this.btnOK.TabIndex = 76;
+            this.btnOK.TabIndex = 75;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -298,7 +298,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateCommission.Properties.CalendarTimeProperties.Mask.EditMask = "g";
             this.dateCommission.Size = new System.Drawing.Size(309, 20);
-            this.dateCommission.TabIndex = 75;
+            this.dateCommission.TabIndex = 71;
             this.dateCommission.TextChanged += new System.EventHandler(this.dateCommission_TextChanged);
             // 
             // label3
@@ -316,7 +316,7 @@
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(309, 51);
-            this.txtDescription.TabIndex = 62;
+            this.txtDescription.TabIndex = 74;
             // 
             // txtProcessDescription
             // 
@@ -324,7 +324,7 @@
             this.txtProcessDescription.Multiline = true;
             this.txtProcessDescription.Name = "txtProcessDescription";
             this.txtProcessDescription.Size = new System.Drawing.Size(309, 51);
-            this.txtProcessDescription.TabIndex = 61;
+            this.txtProcessDescription.TabIndex = 73;
             // 
             // txtEquipmentNumber
             // 
@@ -340,14 +340,14 @@
             this.txtEquipmentName.Location = new System.Drawing.Point(215, 75);
             this.txtEquipmentName.Name = "txtEquipmentName";
             this.txtEquipmentName.Size = new System.Drawing.Size(307, 20);
-            this.txtEquipmentName.TabIndex = 59;
+            this.txtEquipmentName.TabIndex = 62;
             // 
             // txtPDFNo
             // 
             this.txtPDFNo.Location = new System.Drawing.Point(213, 232);
             this.txtPDFNo.Name = "txtPDFNo";
             this.txtPDFNo.Size = new System.Drawing.Size(309, 20);
-            this.txtPDFNo.TabIndex = 58;
+            this.txtPDFNo.TabIndex = 72;
             // 
             // lblDescription
             // 

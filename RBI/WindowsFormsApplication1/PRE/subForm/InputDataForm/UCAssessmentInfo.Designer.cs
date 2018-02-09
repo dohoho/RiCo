@@ -130,7 +130,7 @@
             this.cbReportTemplate.Properties.Items.AddRange(new object[] {
             "Standard Component"});
             this.cbReportTemplate.Size = new System.Drawing.Size(240, 20);
-            this.cbReportTemplate.TabIndex = 2;
+            this.cbReportTemplate.TabIndex = 5;
             // 
             // groupBox4
             // 
@@ -161,7 +161,7 @@
             this.chkRiskLinksEquipmentRisk.Location = new System.Drawing.Point(183, 112);
             this.chkRiskLinksEquipmentRisk.Name = "chkRiskLinksEquipmentRisk";
             this.chkRiskLinksEquipmentRisk.Size = new System.Drawing.Size(15, 14);
-            this.chkRiskLinksEquipmentRisk.TabIndex = 2;
+            this.chkRiskLinksEquipmentRisk.TabIndex = 4;
             this.chkRiskLinksEquipmentRisk.UseVisualStyleBackColor = true;
             // 
             // txtComponentName
@@ -486,7 +486,7 @@
             this.dateAssessmentDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateAssessmentDate.Size = new System.Drawing.Size(240, 20);
-            this.dateAssessmentDate.TabIndex = 3;
+            this.dateAssessmentDate.TabIndex = 2;
             // 
             // txtRiskAnalysisPeriod
             // 
@@ -494,7 +494,7 @@
             this.txtRiskAnalysisPeriod.Location = new System.Drawing.Point(183, 73);
             this.txtRiskAnalysisPeriod.Name = "txtRiskAnalysisPeriod";
             this.txtRiskAnalysisPeriod.Size = new System.Drawing.Size(120, 22);
-            this.txtRiskAnalysisPeriod.TabIndex = 1;
+            this.txtRiskAnalysisPeriod.TabIndex = 3;
             this.txtRiskAnalysisPeriod.Text = "36";
             // 
             // txtAssessmentName

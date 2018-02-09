@@ -1003,12 +1003,12 @@ namespace RBI.BUS.BUSMSSQL_CAL
         }
         public float Bbl_leak_n(int n)
         {
-            if (d_n(n) <= 50.8)
-            {
+            //if (d_n(n) <= 50.8)
+            //{
                 return Math.Min(W_n_Tank(n) * ld_tank(n), Bbl_avail(n));
-            }
-            else
-                return Bbl_avail(n);
+            //}
+            //else
+                //return Bbl_avail(n);
         }
         public int[] getCost()
         {

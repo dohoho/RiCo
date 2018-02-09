@@ -94,7 +94,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
         ///</summary>
         public String CACBONATE_INSP_EFF { set; get; }
         public int CACBONATE_INSP_NUM { set; get; }
-        public float CO3_CONTENT { set; get; }
+        public float CO3_CONCENTRATION { set; get; }
 
         ///<summary>
         /// INPUT PTA Cracking
@@ -455,16 +455,53 @@ namespace RBI.BUS.BUSMSSQL_CAL
                 else
                     Fsm = 1;
             }
-
-            if (OnlineMonitoring == "Amine high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Amine high velocity corrosion - Key process variable" || OnlineMonitoring == "Amine low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Key process variable" || OnlineMonitoring == "HF corrosion - Key process variable" || OnlineMonitoring == "High temperature H2S/H2 corrosion - Electrical resistance probes" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes"
-                || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable" || OnlineMonitoring == "Sour water high velocity corrosion - Key process variable" || OnlineMonitoring == "Sour water low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes")
-                Fom = 10;
-            else if (OnlineMonitoring == "Amine low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "HCI corrosion - Corrosion coupons" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons")
-                Fom = 2;
-            else if (OnlineMonitoring == "Amine low velocity corrosion - Key process variable" || OnlineMonitoring == "HCI corrosion - Key process variable & Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Key process variable" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes" || OnlineMonitoring == "Sulfuric acid(H2S / H2) corrosion low velocity - Key process parameters")
-                Fom = 20;
-            else
-                Fom = 1;
+            switch(OnlineMonitoring)
+            {
+                case "Amine high velocity corrosion - Electrical resistance probes":
+                case "Amine high velocity corrosion - Key process variable":
+                case "Amine low velocity corrosion - Electrical resistance probes":
+                case "HCI corrosion - Electrical resistance probes":
+                case "HCI corrosion - Key process variable":
+                case "HF corrosion - Key process variable":
+                case "High temperature H2S/H2 corrosion - Electrical resistance probes":
+                case "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes":
+                case "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable":
+                case "Sour water high velocity corrosion - Key process variable":
+                case "Sour water low velocity corrosion - Electrical resistance probes":
+                case "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes":
+                case "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters":
+                case "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes":
+                    Fom = 10;
+                    break;
+                case "Amine low velocity corrosion - Corrosion coupons":
+                case "HCI corrosion - Corrosion coupons":
+                case "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons":
+                case "Sour water high velocity corrosion - Corrosion coupons":
+                case "Sour water high velocity corrosion - Electrical resistance probes":
+                case "Sour water low velocity corrosion - Corrosion coupons":
+                case "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons":
+                    Fom = 2;
+                    break;
+                case "Amine low velocity corrosion - Key process variable":
+                case "HCI corrosion - Key process variable & Electrical resistance probes":
+                case "Sour water low velocity corrosion - Key process variable":
+                case "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes":
+                case "Sulfuric acid(H2S / H2) corrosion low velocity - Key process parameters":
+                    Fom = 20;
+                    break;
+                default:
+                    Fom = 1;
+                    break;
+            }
+            //if (OnlineMonitoring == "Amine high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Amine high velocity corrosion - Key process variable" || OnlineMonitoring == "Amine low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Key process variable" || OnlineMonitoring == "HF corrosion - Key process variable" || OnlineMonitoring == "High temperature H2S/H2 corrosion - Electrical resistance probes" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes"
+            //    || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable" || OnlineMonitoring == "Sour water high velocity corrosion - Key process variable" || OnlineMonitoring == "Sour water low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes")
+            //    Fom = 10;
+            //else if (OnlineMonitoring == "Amine low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "HCI corrosion - Corrosion coupons" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons")
+            //    Fom = 2;
+            //else if (OnlineMonitoring == "Amine low velocity corrosion - Key process variable" || OnlineMonitoring == "HCI corrosion - Key process variable & Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Key process variable" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes" || OnlineMonitoring == "Sulfuric acid(H2S / H2) corrosion low velocity - Key process parameters")
+            //    Fom = 20;
+            //else
+            //    Fom = 1;
 
             return DFB_THIN(age) * Fip * Fdl * Fwd * Fsm * Fam / Fom;
         }
@@ -848,10 +885,10 @@ namespace RBI.BUS.BUSMSSQL_CAL
             if (CRACK_PRESENT) sus = "High";
             else
             {
-                if (CO3_CONTENT < 100) sus = "Low";
-                else if (CO3_CONTENT <= 500)
+                if (CO3_CONCENTRATION < 100) sus = "Low";
+                else if (CO3_CONCENTRATION <= 500)
                     sus = (PH >= 9.0) ? "Medium" : "Low";
-                else if (CO3_CONTENT <= 1000)
+                else if (CO3_CONCENTRATION <= 1000)
                     sus = (PH >= 9.0) ? "High" : ((PH > 8.3) ? "Medium" : "Low");
                 else
                     sus = (PH >= 7.6 && PH <= 8.3) ? "Medium" : "High";

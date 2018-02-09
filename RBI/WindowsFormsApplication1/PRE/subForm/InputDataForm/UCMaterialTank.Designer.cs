@@ -142,7 +142,7 @@
             this.cbPTAMaterialGrade.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbPTAMaterialGrade.Size = new System.Drawing.Size(490, 20);
-            this.cbPTAMaterialGrade.TabIndex = 17;
+            this.cbPTAMaterialGrade.TabIndex = 16;
             // 
             // cbHeatTreatment
             // 
@@ -151,7 +151,7 @@
             this.cbHeatTreatment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbHeatTreatment.Size = new System.Drawing.Size(490, 20);
-            this.cbHeatTreatment.TabIndex = 17;
+            this.cbHeatTreatment.TabIndex = 14;
             // 
             // cbSulfurContent
             // 
@@ -160,7 +160,7 @@
             this.cbSulfurContent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbSulfurContent.Size = new System.Drawing.Size(491, 20);
-            this.cbSulfurContent.TabIndex = 17;
+            this.cbSulfurContent.TabIndex = 13;
             // 
             // cbPTAMaterial
             // 
@@ -173,7 +173,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(editorButtonImageOptions1, DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, null)});
             this.cbPTAMaterial.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
             this.cbPTAMaterial.Size = new System.Drawing.Size(490, 20);
-            this.cbPTAMaterial.TabIndex = 16;
+            this.cbPTAMaterial.TabIndex = 1;
             // 
             // chkNickelAlloy
             // 
@@ -181,7 +181,7 @@
             this.chkNickelAlloy.Location = new System.Drawing.Point(525, 195);
             this.chkNickelAlloy.Name = "chkNickelAlloy";
             this.chkNickelAlloy.Size = new System.Drawing.Size(15, 14);
-            this.chkNickelAlloy.TabIndex = 4;
+            this.chkNickelAlloy.TabIndex = 12;
             this.chkNickelAlloy.UseVisualStyleBackColor = true;
             // 
             // chkAusteniticSteel
@@ -190,7 +190,7 @@
             this.chkAusteniticSteel.Location = new System.Drawing.Point(525, 172);
             this.chkAusteniticSteel.Name = "chkAusteniticSteel";
             this.chkAusteniticSteel.Size = new System.Drawing.Size(15, 14);
-            this.chkAusteniticSteel.TabIndex = 4;
+            this.chkAusteniticSteel.TabIndex = 11;
             this.chkAusteniticSteel.UseVisualStyleBackColor = true;
             // 
             // chkIsPTASeverity
@@ -199,7 +199,7 @@
             this.chkIsPTASeverity.Location = new System.Drawing.Point(172, 307);
             this.chkIsPTASeverity.Name = "chkIsPTASeverity";
             this.chkIsPTASeverity.Size = new System.Drawing.Size(15, 14);
-            this.chkIsPTASeverity.TabIndex = 4;
+            this.chkIsPTASeverity.TabIndex = 15;
             this.chkIsPTASeverity.UseVisualStyleBackColor = true;
             this.chkIsPTASeverity.CheckedChanged += new System.EventHandler(this.chkIsPTASeverity_CheckedChanged);
             // 
@@ -209,7 +209,7 @@
             this.chkChromium.Location = new System.Drawing.Point(172, 213);
             this.chkChromium.Name = "chkChromium";
             this.chkChromium.Size = new System.Drawing.Size(15, 14);
-            this.chkChromium.TabIndex = 4;
+            this.chkChromium.TabIndex = 10;
             this.chkChromium.UseVisualStyleBackColor = true;
             // 
             // chkCarbonLowAlloySteel
@@ -218,7 +218,7 @@
             this.chkCarbonLowAlloySteel.Location = new System.Drawing.Point(172, 173);
             this.chkCarbonLowAlloySteel.Name = "chkCarbonLowAlloySteel";
             this.chkCarbonLowAlloySteel.Size = new System.Drawing.Size(15, 14);
-            this.chkCarbonLowAlloySteel.TabIndex = 4;
+            this.chkCarbonLowAlloySteel.TabIndex = 9;
             this.chkCarbonLowAlloySteel.UseVisualStyleBackColor = true;
             // 
             // label15
@@ -304,7 +304,7 @@
             this.txtBrittleFracture.Location = new System.Drawing.Point(524, 105);
             this.txtBrittleFracture.Name = "txtBrittleFracture";
             this.txtBrittleFracture.Size = new System.Drawing.Size(138, 21);
-            this.txtBrittleFracture.TabIndex = 1;
+            this.txtBrittleFracture.TabIndex = 8;
             this.txtBrittleFracture.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBrittleFracture_KeyPress);
             // 
             // txtAllowableStress
@@ -313,7 +313,7 @@
             this.txtAllowableStress.Location = new System.Drawing.Point(172, 105);
             this.txtAllowableStress.Name = "txtAllowableStress";
             this.txtAllowableStress.Size = new System.Drawing.Size(138, 21);
-            this.txtAllowableStress.TabIndex = 1;
+            this.txtAllowableStress.TabIndex = 4;
             this.txtAllowableStress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAllowableStress_KeyPress);
             // 
             // txtReferenceTemperature
@@ -322,7 +322,7 @@
             this.txtReferenceTemperature.Location = new System.Drawing.Point(525, 76);
             this.txtReferenceTemperature.Name = "txtReferenceTemperature";
             this.txtReferenceTemperature.Size = new System.Drawing.Size(138, 21);
-            this.txtReferenceTemperature.TabIndex = 1;
+            this.txtReferenceTemperature.TabIndex = 7;
             this.txtReferenceTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtReferenceTemperature_KeyPress);
             // 
             // label9
@@ -341,7 +341,7 @@
             this.txtProductionCost.Location = new System.Drawing.Point(497, 365);
             this.txtProductionCost.Name = "txtProductionCost";
             this.txtProductionCost.Size = new System.Drawing.Size(138, 22);
-            this.txtProductionCost.TabIndex = 1;
+            this.txtProductionCost.TabIndex = 18;
             this.txtProductionCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtProductionCost_KeyPress);
             // 
             // txtMaterialCostFactor
@@ -350,7 +350,7 @@
             this.txtMaterialCostFactor.Location = new System.Drawing.Point(172, 365);
             this.txtMaterialCostFactor.Name = "txtMaterialCostFactor";
             this.txtMaterialCostFactor.Size = new System.Drawing.Size(138, 22);
-            this.txtMaterialCostFactor.TabIndex = 1;
+            this.txtMaterialCostFactor.TabIndex = 17;
             this.txtMaterialCostFactor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaterialCostFactor_KeyPress);
             // 
             // txtCorrosionAllowance
@@ -359,7 +359,7 @@
             this.txtCorrosionAllowance.Location = new System.Drawing.Point(172, 136);
             this.txtCorrosionAllowance.Name = "txtCorrosionAllowance";
             this.txtCorrosionAllowance.Size = new System.Drawing.Size(138, 21);
-            this.txtCorrosionAllowance.TabIndex = 1;
+            this.txtCorrosionAllowance.TabIndex = 5;
             this.txtCorrosionAllowance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCorrosionAllowance_KeyPress);
             // 
             // txtDesignPressure
@@ -368,7 +368,7 @@
             this.txtDesignPressure.Location = new System.Drawing.Point(172, 74);
             this.txtDesignPressure.Name = "txtDesignPressure";
             this.txtDesignPressure.Size = new System.Drawing.Size(138, 21);
-            this.txtDesignPressure.TabIndex = 1;
+            this.txtDesignPressure.TabIndex = 3;
             this.txtDesignPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDesignPressure_KeyPress);
             // 
             // txtMinDesignTemperature
@@ -377,7 +377,7 @@
             this.txtMinDesignTemperature.Location = new System.Drawing.Point(525, 52);
             this.txtMinDesignTemperature.Name = "txtMinDesignTemperature";
             this.txtMinDesignTemperature.Size = new System.Drawing.Size(138, 21);
-            this.txtMinDesignTemperature.TabIndex = 1;
+            this.txtMinDesignTemperature.TabIndex = 6;
             this.txtMinDesignTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinDesignTemperature_KeyPress);
             // 
             // label5
@@ -439,7 +439,7 @@
             this.txtMaxDesignTemperature.Location = new System.Drawing.Point(172, 50);
             this.txtMaxDesignTemperature.Name = "txtMaxDesignTemperature";
             this.txtMaxDesignTemperature.Size = new System.Drawing.Size(138, 21);
-            this.txtMaxDesignTemperature.TabIndex = 1;
+            this.txtMaxDesignTemperature.TabIndex = 2;
             this.txtMaxDesignTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxDesignTemperature_KeyPress);
             // 
             // label27

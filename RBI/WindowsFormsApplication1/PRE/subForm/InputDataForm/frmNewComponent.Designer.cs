@@ -113,7 +113,7 @@
             this.cbAPIComponentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAPIComponentType.Size = new System.Drawing.Size(314, 20);
-            this.cbAPIComponentType.TabIndex = 59;
+            this.cbAPIComponentType.TabIndex = 7;
             this.cbAPIComponentType.SelectedIndexChanged += new System.EventHandler(this.cbAPIComponentType_SelectedIndexChanged);
             // 
             // cbComponentType
@@ -123,7 +123,7 @@
             this.cbComponentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbComponentType.Size = new System.Drawing.Size(314, 20);
-            this.cbComponentType.TabIndex = 58;
+            this.cbComponentType.TabIndex = 6;
             this.cbComponentType.SelectedValueChanged += new System.EventHandler(this.cbComponentType_SelectedValueChanged);
             // 
             // cbFacility
@@ -133,7 +133,7 @@
             this.cbFacility.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbFacility.Size = new System.Drawing.Size(314, 20);
-            this.cbFacility.TabIndex = 58;
+            this.cbFacility.TabIndex = 4;
             this.cbFacility.SelectedValueChanged += new System.EventHandler(this.cbFacility_SelectedValueChanged);
             // 
             // cbSites
@@ -143,7 +143,7 @@
             this.cbSites.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbSites.Size = new System.Drawing.Size(314, 20);
-            this.cbSites.TabIndex = 58;
+            this.cbSites.TabIndex = 3;
             this.cbSites.SelectedValueChanged += new System.EventHandler(this.cbSites_SelectedValueChanged);
             // 
             // cbEquipmentNumber
@@ -153,7 +153,7 @@
             this.cbEquipmentNumber.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbEquipmentNumber.Size = new System.Drawing.Size(314, 20);
-            this.cbEquipmentNumber.TabIndex = 57;
+            this.cbEquipmentNumber.TabIndex = 1;
             // 
             // picAPIComponent
             // 
@@ -187,7 +187,7 @@
             this.btnCancel.Location = new System.Drawing.Point(522, 409);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 29);
-            this.btnCancel.TabIndex = 56;
+            this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -197,7 +197,7 @@
             this.btnOK.Location = new System.Drawing.Point(427, 409);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(80, 29);
-            this.btnOK.TabIndex = 56;
+            this.btnOK.TabIndex = 11;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -209,7 +209,7 @@
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(314, 80);
-            this.txtDescription.TabIndex = 55;
+            this.txtDescription.TabIndex = 10;
             // 
             // chkLinks
             // 
@@ -217,7 +217,7 @@
             this.chkLinks.Location = new System.Drawing.Point(288, 288);
             this.chkLinks.Name = "chkLinks";
             this.chkLinks.Size = new System.Drawing.Size(15, 14);
-            this.chkLinks.TabIndex = 54;
+            this.chkLinks.TabIndex = 9;
             this.chkLinks.UseVisualStyleBackColor = true;
             // 
             // txtComponentName
@@ -225,14 +225,14 @@
             this.txtComponentName.Location = new System.Drawing.Point(288, 260);
             this.txtComponentName.Name = "txtComponentName";
             this.txtComponentName.Size = new System.Drawing.Size(314, 20);
-            this.txtComponentName.TabIndex = 53;
+            this.txtComponentName.TabIndex = 8;
             // 
             // txtComponentNumber
             // 
             this.txtComponentNumber.Location = new System.Drawing.Point(288, 181);
             this.txtComponentNumber.Name = "txtComponentNumber";
             this.txtComponentNumber.Size = new System.Drawing.Size(314, 20);
-            this.txtComponentNumber.TabIndex = 50;
+            this.txtComponentNumber.TabIndex = 5;
             this.txtComponentNumber.TextChanged += new System.EventHandler(this.txtComponentNumber_TextChanged);
             // 
             // txtEquipmentType
@@ -240,7 +240,7 @@
             this.txtEquipmentType.Location = new System.Drawing.Point(288, 93);
             this.txtEquipmentType.Name = "txtEquipmentType";
             this.txtEquipmentType.Size = new System.Drawing.Size(314, 20);
-            this.txtEquipmentType.TabIndex = 46;
+            this.txtEquipmentType.TabIndex = 2;
             // 
             // lblDescription
             // 

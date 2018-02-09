@@ -37,7 +37,7 @@ namespace RBI.PRE.subForm.InputDataForm
             InitializeComponent();
             addDatatoControl();
         }
-        public frmNewComponent(int ID)
+        public frmNewComponent(int ID) //COMPONENT ID
         {
             InitializeComponent();
             this.componentID = ID;
@@ -74,34 +74,18 @@ namespace RBI.PRE.subForm.InputDataForm
             txtEquipmentType.Text = eqTypeBus.getEquipmentTypeName(equipmentBus.getEquipmentTypeID(eqID));
             txtEquipmentType.Enabled = false;
             //Sites
-            List<string> listSite = siteBus.getListSiteName();
-            cbSites.Properties.Items.Add("", -1, -1);
-            for (int i = 0; i < listSite.Count; i++)
-            {
-                cbSites.Properties.Items.Add(listSite[i], i, i);
-                if (listSite[i] == siteBus.getSiteName(equipmentBus.getSiteID(eqID)))
-                {
-                    cbSites.SelectedIndex = i + 1;
-                }
-            }
+            cbSites.Properties.Items.Add(siteBus.getSiteName(equipmentBus.getSiteID(eqID)), 0, 0);
+            cbSites.SelectedIndex = 0;
             cbSites.Enabled = false;
             //Facility
-            List<string> listFacility = facilityBus.getListFacilityName(equipmentBus.getSiteID(eqID));
-            cbFacility.Properties.Items.Add("", -1, -1);
-            for (int i = 0; i < listFacility.Count; i++)
-            {
-                cbFacility.Properties.Items.Add(listFacility[i], i, i);
-                if (listFacility[i] == facilityBus.getFacilityName(equipmentBus.getFacilityID(eqID)))
-                {
-                    cbFacility.SelectedIndex = i + 1;
-                }
-            }
+            int faciID = equipmentBus.getFacilityID(eqID);
+            cbFacility.Properties.Items.Add(facilityBus.getFacilityName(faciID),0,0);
+            cbFacility.SelectedIndex = 0;
             cbFacility.Enabled = false;
             //Component Number
             txtComponentNumber.Text = componentMaster_Bus.getComponentNumber(ID);
 
             //<lọc dữ liệu cho trường hợp tank>
-           
             int _equipmentTypeID = equipmentBus.getEqTypeID(ID);
             if (_equipmentTypeID == 11)
             {

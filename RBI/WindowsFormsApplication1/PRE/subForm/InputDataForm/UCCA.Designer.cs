@@ -193,7 +193,7 @@
             this.txtEnvironmentCost.Location = new System.Drawing.Point(217, 151);
             this.txtEnvironmentCost.Name = "txtEnvironmentCost";
             this.txtEnvironmentCost.Size = new System.Drawing.Size(198, 21);
-            this.txtEnvironmentCost.TabIndex = 3;
+            this.txtEnvironmentCost.TabIndex = 6;
             this.txtEnvironmentCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEnvironmentCost_KeyPress);
             // 
             // txtPersonDensity
@@ -202,7 +202,7 @@
             this.txtPersonDensity.Location = new System.Drawing.Point(671, 155);
             this.txtPersonDensity.Name = "txtPersonDensity";
             this.txtPersonDensity.Size = new System.Drawing.Size(164, 21);
-            this.txtPersonDensity.TabIndex = 3;
+            this.txtPersonDensity.TabIndex = 14;
             this.txtPersonDensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPersonDensity_KeyPress);
             // 
             // txtToxicPercent
@@ -211,7 +211,7 @@
             this.txtToxicPercent.Location = new System.Drawing.Point(671, 102);
             this.txtToxicPercent.Name = "txtToxicPercent";
             this.txtToxicPercent.Size = new System.Drawing.Size(164, 20);
-            this.txtToxicPercent.TabIndex = 3;
+            this.txtToxicPercent.TabIndex = 12;
             this.txtToxicPercent.TextChanged += new System.EventHandler(this.txtToxicPercent_TextChanged);
             this.txtToxicPercent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtToxicPercent_KeyPress);
             // 
@@ -221,7 +221,7 @@
             this.txtInjureCost.Location = new System.Drawing.Point(217, 126);
             this.txtInjureCost.Name = "txtInjureCost";
             this.txtInjureCost.Size = new System.Drawing.Size(198, 21);
-            this.txtInjureCost.TabIndex = 3;
+            this.txtInjureCost.TabIndex = 5;
             this.txtInjureCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInjureCost_KeyPress);
             // 
             // txtProductionCost
@@ -230,7 +230,7 @@
             this.txtProductionCost.Location = new System.Drawing.Point(217, 102);
             this.txtProductionCost.Name = "txtProductionCost";
             this.txtProductionCost.Size = new System.Drawing.Size(198, 21);
-            this.txtProductionCost.TabIndex = 3;
+            this.txtProductionCost.TabIndex = 4;
             this.txtProductionCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtProductionCost_KeyPress);
             // 
             // txtMassComponent
@@ -239,7 +239,7 @@
             this.txtMassComponent.Location = new System.Drawing.Point(671, 51);
             this.txtMassComponent.Name = "txtMassComponent";
             this.txtMassComponent.Size = new System.Drawing.Size(164, 21);
-            this.txtMassComponent.TabIndex = 3;
+            this.txtMassComponent.TabIndex = 10;
             this.txtMassComponent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMassComponent_KeyPress);
             // 
             // txtMassInvert
@@ -248,7 +248,7 @@
             this.txtMassInvert.Location = new System.Drawing.Point(671, 24);
             this.txtMassInvert.Name = "txtMassInvert";
             this.txtMassInvert.Size = new System.Drawing.Size(164, 21);
-            this.txtMassInvert.TabIndex = 3;
+            this.txtMassInvert.TabIndex = 9;
             this.txtMassInvert.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMassInvert_KeyPress);
             // 
             // cbMittigationSystem
@@ -258,7 +258,7 @@
             this.cbMittigationSystem.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbMittigationSystem.Size = new System.Drawing.Size(164, 20);
-            this.cbMittigationSystem.TabIndex = 1;
+            this.cbMittigationSystem.TabIndex = 11;
             // 
             // cbIsulationType
             // 
@@ -267,7 +267,7 @@
             this.cbIsulationType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbIsulationType.Size = new System.Drawing.Size(198, 20);
-            this.cbIsulationType.TabIndex = 1;
+            this.cbIsulationType.TabIndex = 8;
             // 
             // cbReleaseDuration
             // 
@@ -276,7 +276,7 @@
             this.cbReleaseDuration.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbReleaseDuration.Size = new System.Drawing.Size(164, 20);
-            this.cbReleaseDuration.TabIndex = 1;
+            this.cbReleaseDuration.TabIndex = 13;
             // 
             // cbDetectionType
             // 
@@ -285,7 +285,7 @@
             this.cbDetectionType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbDetectionType.Size = new System.Drawing.Size(198, 20);
-            this.cbDetectionType.TabIndex = 1;
+            this.cbDetectionType.TabIndex = 7;
             // 
             // cbFluidPhase
             // 
@@ -294,7 +294,7 @@
             this.cbFluidPhase.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbFluidPhase.Size = new System.Drawing.Size(198, 20);
-            this.cbFluidPhase.TabIndex = 1;
+            this.cbFluidPhase.TabIndex = 2;
             this.cbFluidPhase.SelectedIndexChanged += new System.EventHandler(this.cbFluidPhase_SelectedIndexChanged);
             // 
             // cbFluid

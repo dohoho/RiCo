@@ -297,12 +297,12 @@ namespace RBI.DAL.MSSQL
             }
             return _ID;
         }
-        public String getComponentName(int eqID)
+        public String getComponentName(int comID)
         {
             String comName = "";
             SqlConnection con = MSSQLDBUtils.GetDBConnection();
             con.Open();
-            String sql = "select ComponentName from rbi.dbo.COMPONENT_MASTER where EquipmentID = '"+eqID+"'";
+            String sql = "select ComponentName from rbi.dbo.COMPONENT_MASTER where ComponentID = '" + comID + "'";
             try
             {
                 SqlCommand cmd = new SqlCommand();

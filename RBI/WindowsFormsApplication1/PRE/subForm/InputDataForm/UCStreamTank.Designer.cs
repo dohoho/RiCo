@@ -68,6 +68,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbFluidTank = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.txtPercentageFluidGoingOffsite = new System.Windows.Forms.TextBox();
             this.txtPercentageLeavingDike = new System.Windows.Forms.TextBox();
             this.txtPercentageLeavingRemainsOnSite = new System.Windows.Forms.TextBox();
@@ -78,7 +79,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbFluidTank = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbAmineSolutionComposition.Properties)).BeginInit();
@@ -156,7 +156,7 @@
             this.cbAmineSolutionComposition.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAmineSolutionComposition.Size = new System.Drawing.Size(406, 20);
-            this.cbAmineSolutionComposition.TabIndex = 2;
+            this.cbAmineSolutionComposition.TabIndex = 14;
             // 
             // cbExposureAmine
             // 
@@ -167,7 +167,7 @@
             this.cbExposureAmine.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbExposureAmine.Size = new System.Drawing.Size(406, 20);
-            this.cbExposureAmine.TabIndex = 2;
+            this.cbExposureAmine.TabIndex = 13;
             // 
             // chkProcessContainsHydrogen
             // 
@@ -175,7 +175,7 @@
             this.chkProcessContainsHydrogen.Location = new System.Drawing.Point(672, 239);
             this.chkProcessContainsHydrogen.Name = "chkProcessContainsHydrogen";
             this.chkProcessContainsHydrogen.Size = new System.Drawing.Size(15, 14);
-            this.chkProcessContainsHydrogen.TabIndex = 2;
+            this.chkProcessContainsHydrogen.TabIndex = 22;
             this.chkProcessContainsHydrogen.UseVisualStyleBackColor = true;
             // 
             // chkExposedSulphurBearing
@@ -184,7 +184,7 @@
             this.chkExposedSulphurBearing.Location = new System.Drawing.Point(672, 276);
             this.chkExposedSulphurBearing.Name = "chkExposedSulphurBearing";
             this.chkExposedSulphurBearing.Size = new System.Drawing.Size(15, 14);
-            this.chkExposedSulphurBearing.TabIndex = 2;
+            this.chkExposedSulphurBearing.TabIndex = 23;
             this.chkExposedSulphurBearing.UseVisualStyleBackColor = true;
             // 
             // chkPresenceHydrofluoricAcid
@@ -193,7 +193,7 @@
             this.chkPresenceHydrofluoricAcid.Location = new System.Drawing.Point(672, 219);
             this.chkPresenceHydrofluoricAcid.Name = "chkPresenceHydrofluoricAcid";
             this.chkPresenceHydrofluoricAcid.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceHydrofluoricAcid.TabIndex = 2;
+            this.chkPresenceHydrofluoricAcid.TabIndex = 21;
             this.chkPresenceHydrofluoricAcid.UseVisualStyleBackColor = true;
             // 
             // chkChlorine
@@ -202,7 +202,7 @@
             this.chkChlorine.Location = new System.Drawing.Point(251, 321);
             this.chkChlorine.Name = "chkChlorine";
             this.chkChlorine.Size = new System.Drawing.Size(15, 14);
-            this.chkChlorine.TabIndex = 2;
+            this.chkChlorine.TabIndex = 19;
             this.chkChlorine.UseVisualStyleBackColor = true;
             // 
             // chkEnvironmentContainsCaustic
@@ -211,7 +211,7 @@
             this.chkEnvironmentContainsCaustic.Location = new System.Drawing.Point(251, 280);
             this.chkEnvironmentContainsCaustic.Name = "chkEnvironmentContainsCaustic";
             this.chkEnvironmentContainsCaustic.Size = new System.Drawing.Size(15, 14);
-            this.chkEnvironmentContainsCaustic.TabIndex = 2;
+            this.chkEnvironmentContainsCaustic.TabIndex = 18;
             this.chkEnvironmentContainsCaustic.UseVisualStyleBackColor = true;
             // 
             // chkPresenceCyanides
@@ -220,7 +220,7 @@
             this.chkPresenceCyanides.Location = new System.Drawing.Point(251, 239);
             this.chkPresenceCyanides.Name = "chkPresenceCyanides";
             this.chkPresenceCyanides.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceCyanides.TabIndex = 2;
+            this.chkPresenceCyanides.TabIndex = 17;
             this.chkPresenceCyanides.UseVisualStyleBackColor = true;
             // 
             // chkEnviromentContainsH2S
@@ -229,7 +229,7 @@
             this.chkEnviromentContainsH2S.Location = new System.Drawing.Point(251, 217);
             this.chkEnviromentContainsH2S.Name = "chkEnviromentContainsH2S";
             this.chkEnviromentContainsH2S.Size = new System.Drawing.Size(15, 14);
-            this.chkEnviromentContainsH2S.TabIndex = 2;
+            this.chkEnviromentContainsH2S.TabIndex = 16;
             this.chkEnviromentContainsH2S.UseVisualStyleBackColor = true;
             // 
             // chkAqueousPhaseShutdown
@@ -238,7 +238,7 @@
             this.chkAqueousPhaseShutdown.Location = new System.Drawing.Point(672, 196);
             this.chkAqueousPhaseShutdown.Name = "chkAqueousPhaseShutdown";
             this.chkAqueousPhaseShutdown.Size = new System.Drawing.Size(15, 14);
-            this.chkAqueousPhaseShutdown.TabIndex = 2;
+            this.chkAqueousPhaseShutdown.TabIndex = 20;
             this.chkAqueousPhaseShutdown.UseVisualStyleBackColor = true;
             // 
             // chkAqueousPhaseDuringOperation
@@ -247,7 +247,7 @@
             this.chkAqueousPhaseDuringOperation.Location = new System.Drawing.Point(251, 196);
             this.chkAqueousPhaseDuringOperation.Name = "chkAqueousPhaseDuringOperation";
             this.chkAqueousPhaseDuringOperation.Size = new System.Drawing.Size(15, 14);
-            this.chkAqueousPhaseDuringOperation.TabIndex = 2;
+            this.chkAqueousPhaseDuringOperation.TabIndex = 15;
             this.chkAqueousPhaseDuringOperation.UseVisualStyleBackColor = true;
             // 
             // chkExposedAcidGas
@@ -256,7 +256,7 @@
             this.chkExposedAcidGas.Location = new System.Drawing.Point(250, 108);
             this.chkExposedAcidGas.Name = "chkExposedAcidGas";
             this.chkExposedAcidGas.Size = new System.Drawing.Size(15, 14);
-            this.chkExposedAcidGas.TabIndex = 2;
+            this.chkExposedAcidGas.TabIndex = 12;
             this.chkExposedAcidGas.UseVisualStyleBackColor = true;
             // 
             // label13
@@ -276,7 +276,7 @@
             this.txtpHWater.Location = new System.Drawing.Point(672, 70);
             this.txtpHWater.Name = "txtpHWater";
             this.txtpHWater.Size = new System.Drawing.Size(170, 21);
-            this.txtpHWater.TabIndex = 1;
+            this.txtpHWater.TabIndex = 11;
             this.txtpHWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtpHWater_KeyPress);
             // 
             // label12
@@ -384,7 +384,7 @@
             this.txtCO3ConcentrationWater.Location = new System.Drawing.Point(672, 44);
             this.txtCO3ConcentrationWater.Name = "txtCO3ConcentrationWater";
             this.txtCO3ConcentrationWater.Size = new System.Drawing.Size(170, 21);
-            this.txtCO3ConcentrationWater.TabIndex = 1;
+            this.txtCO3ConcentrationWater.TabIndex = 10;
             this.txtCO3ConcentrationWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCO3ConcentrationWater_KeyPress);
             // 
             // label14
@@ -426,7 +426,7 @@
             this.txtReleaseFluidPercent.Location = new System.Drawing.Point(672, 18);
             this.txtReleaseFluidPercent.Name = "txtReleaseFluidPercent";
             this.txtReleaseFluidPercent.Size = new System.Drawing.Size(170, 21);
-            this.txtReleaseFluidPercent.TabIndex = 1;
+            this.txtReleaseFluidPercent.TabIndex = 9;
             this.txtReleaseFluidPercent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtReleaseFluidPercent_KeyPress);
             // 
             // label
@@ -445,7 +445,7 @@
             this.txtH2SContent.Location = new System.Drawing.Point(250, 73);
             this.txtH2SContent.Name = "txtH2SContent";
             this.txtH2SContent.Size = new System.Drawing.Size(170, 21);
-            this.txtH2SContent.TabIndex = 1;
+            this.txtH2SContent.TabIndex = 8;
             this.txtH2SContent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtH2SContent_KeyPress);
             // 
             // label7
@@ -464,7 +464,7 @@
             this.txtChlorideIon.Location = new System.Drawing.Point(250, 47);
             this.txtChlorideIon.Name = "txtChlorideIon";
             this.txtChlorideIon.Size = new System.Drawing.Size(170, 21);
-            this.txtChlorideIon.TabIndex = 1;
+            this.txtChlorideIon.TabIndex = 7;
             this.txtChlorideIon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtChlorideIon_KeyPress);
             // 
             // label6
@@ -483,7 +483,7 @@
             this.txtNaOHConcentration.Location = new System.Drawing.Point(250, 21);
             this.txtNaOHConcentration.Name = "txtNaOHConcentration";
             this.txtNaOHConcentration.Size = new System.Drawing.Size(170, 21);
-            this.txtNaOHConcentration.TabIndex = 1;
+            this.txtNaOHConcentration.TabIndex = 6;
             this.txtNaOHConcentration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNaOHConcentration_KeyPress);
             // 
             // label5
@@ -536,13 +536,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Fluid";
             // 
+            // cbFluidTank
+            // 
+            this.cbFluidTank.Location = new System.Drawing.Point(232, 18);
+            this.cbFluidTank.Name = "cbFluidTank";
+            this.cbFluidTank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbFluidTank.Size = new System.Drawing.Size(471, 20);
+            this.cbFluidTank.TabIndex = 1;
+            // 
             // txtPercentageFluidGoingOffsite
             // 
             this.txtPercentageFluidGoingOffsite.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPercentageFluidGoingOffsite.Location = new System.Drawing.Point(603, 82);
             this.txtPercentageFluidGoingOffsite.Name = "txtPercentageFluidGoingOffsite";
             this.txtPercentageFluidGoingOffsite.Size = new System.Drawing.Size(100, 21);
-            this.txtPercentageFluidGoingOffsite.TabIndex = 3;
+            this.txtPercentageFluidGoingOffsite.TabIndex = 5;
             this.txtPercentageFluidGoingOffsite.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPercentageFluidGoingOffsite_KeyPress);
             // 
             // txtPercentageLeavingDike
@@ -551,7 +560,7 @@
             this.txtPercentageLeavingDike.Location = new System.Drawing.Point(603, 49);
             this.txtPercentageLeavingDike.Name = "txtPercentageLeavingDike";
             this.txtPercentageLeavingDike.Size = new System.Drawing.Size(100, 21);
-            this.txtPercentageLeavingDike.TabIndex = 3;
+            this.txtPercentageLeavingDike.TabIndex = 4;
             this.txtPercentageLeavingDike.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPercentageLeavingDike_KeyPress);
             // 
             // txtPercentageLeavingRemainsOnSite
@@ -579,7 +588,7 @@
             this.txtFluidHeight.Location = new System.Drawing.Point(232, 45);
             this.txtFluidHeight.Name = "txtFluidHeight";
             this.txtFluidHeight.Size = new System.Drawing.Size(100, 21);
-            this.txtFluidHeight.TabIndex = 3;
+            this.txtFluidHeight.TabIndex = 2;
             this.txtFluidHeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFluidHeight_KeyPress);
             // 
             // label23
@@ -631,15 +640,6 @@
             this.label1.Size = new System.Drawing.Size(34, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fluid";
-            // 
-            // cbFluidTank
-            // 
-            this.cbFluidTank.Location = new System.Drawing.Point(232, 18);
-            this.cbFluidTank.Name = "cbFluidTank";
-            this.cbFluidTank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbFluidTank.Size = new System.Drawing.Size(471, 20);
-            this.cbFluidTank.TabIndex = 4;
             // 
             // UCStreamTank
             // 

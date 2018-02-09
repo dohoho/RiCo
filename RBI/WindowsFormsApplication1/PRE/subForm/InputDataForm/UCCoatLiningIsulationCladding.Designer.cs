@@ -140,7 +140,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Asbestos", ((short)(5)), 5)});
             this.cbExternalIsulation.Properties.SmallImages = this.imgColExIsulation;
             this.cbExternalIsulation.Size = new System.Drawing.Size(236, 20);
-            this.cbExternalIsulation.TabIndex = 12;
+            this.cbExternalIsulation.TabIndex = 13;
             // 
             // imgColExIsulation
             // 
@@ -166,7 +166,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Below average", ((short)(2)), 2)});
             this.cbIsulationCondition.Properties.SmallImages = this.imgColCondi;
             this.cbIsulationCondition.Size = new System.Drawing.Size(236, 20);
-            this.cbIsulationCondition.TabIndex = 11;
+            this.cbIsulationCondition.TabIndex = 14;
             // 
             // imgColCondi
             // 
@@ -224,7 +224,7 @@
             this.chkInsulationContainsChlorides.Location = new System.Drawing.Point(431, 17);
             this.chkInsulationContainsChlorides.Name = "chkInsulationContainsChlorides";
             this.chkInsulationContainsChlorides.Size = new System.Drawing.Size(15, 14);
-            this.chkInsulationContainsChlorides.TabIndex = 1;
+            this.chkInsulationContainsChlorides.TabIndex = 12;
             this.chkInsulationContainsChlorides.UseVisualStyleBackColor = true;
             // 
             // chkExternalIsulation
@@ -233,7 +233,7 @@
             this.chkExternalIsulation.Location = new System.Drawing.Point(187, 19);
             this.chkExternalIsulation.Name = "chkExternalIsulation";
             this.chkExternalIsulation.Size = new System.Drawing.Size(15, 14);
-            this.chkExternalIsulation.TabIndex = 1;
+            this.chkExternalIsulation.TabIndex = 11;
             this.chkExternalIsulation.UseVisualStyleBackColor = true;
             this.chkExternalIsulation.CheckedChanged += new System.EventHandler(this.chkExternalIsulation_CheckedChanged);
             // 
@@ -273,7 +273,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Fibreglass", ((short)(6)), 6)});
             this.cbInternalLinerType.Properties.SmallImages = this.imgColInternalType;
             this.cbInternalLinerType.Size = new System.Drawing.Size(237, 20);
-            this.cbInternalLinerType.TabIndex = 10;
+            this.cbInternalLinerType.TabIndex = 9;
             // 
             // imgColInternalType
             // 
@@ -311,7 +311,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Unknown", ((short)(3)), 3)});
             this.cbInternalLinerCondition.Properties.SmallImages = this.imgColInternalCondition;
             this.cbInternalLinerCondition.Size = new System.Drawing.Size(236, 20);
-            this.cbInternalLinerCondition.TabIndex = 13;
+            this.cbInternalLinerCondition.TabIndex = 10;
             // 
             // imgColInternalCondition
             // 
@@ -348,7 +348,7 @@
             this.chkInternalLining.Location = new System.Drawing.Point(187, 19);
             this.chkInternalLining.Name = "chkInternalLining";
             this.chkInternalLining.Size = new System.Drawing.Size(15, 14);
-            this.chkInternalLining.TabIndex = 1;
+            this.chkInternalLining.TabIndex = 8;
             this.chkInternalLining.UseVisualStyleBackColor = true;
             this.chkInternalLining.CheckedChanged += new System.EventHandler(this.chkInternalLining_CheckedChanged);
             // 
@@ -375,7 +375,7 @@
             this.txtCladdingCorrosionRate.Location = new System.Drawing.Point(409, 16);
             this.txtCladdingCorrosionRate.Name = "txtCladdingCorrosionRate";
             this.txtCladdingCorrosionRate.Size = new System.Drawing.Size(100, 20);
-            this.txtCladdingCorrosionRate.TabIndex = 2;
+            this.txtCladdingCorrosionRate.TabIndex = 7;
             this.txtCladdingCorrosionRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCladdingCorrosionRate_KeyPress);
             // 
             // label8
@@ -414,7 +414,7 @@
             this.chkInternalCladding.Location = new System.Drawing.Point(187, 19);
             this.chkInternalCladding.Name = "chkInternalCladding";
             this.chkInternalCladding.Size = new System.Drawing.Size(15, 14);
-            this.chkInternalCladding.TabIndex = 1;
+            this.chkInternalCladding.TabIndex = 6;
             this.chkInternalCladding.UseVisualStyleBackColor = true;
             // 
             // groupBox2
@@ -453,7 +453,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("High coating quality", ((short)(2)), 2)});
             this.cbExternalCoatQuality.Properties.SmallImages = this.imgColExternal;
             this.cbExternalCoatQuality.Size = new System.Drawing.Size(220, 20);
-            this.cbExternalCoatQuality.TabIndex = 6;
+            this.cbExternalCoatQuality.TabIndex = 4;
             // 
             // imgColExternal
             // 
@@ -473,7 +473,7 @@
             this.dateExternalCoating.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateExternalCoating.Size = new System.Drawing.Size(220, 20);
-            this.dateExternalCoating.TabIndex = 4;
+            this.dateExternalCoating.TabIndex = 3;
             // 
             // chkExternalCoat
             // 
@@ -481,7 +481,7 @@
             this.chkExternalCoat.Location = new System.Drawing.Point(428, 30);
             this.chkExternalCoat.Name = "chkExternalCoat";
             this.chkExternalCoat.Size = new System.Drawing.Size(15, 14);
-            this.chkExternalCoat.TabIndex = 1;
+            this.chkExternalCoat.TabIndex = 2;
             this.chkExternalCoat.UseVisualStyleBackColor = true;
             this.chkExternalCoat.CheckedChanged += new System.EventHandler(this.chkExternalCoat_CheckedChanged);
             // 
@@ -491,7 +491,7 @@
             this.chkSupport.Location = new System.Drawing.Point(202, 115);
             this.chkSupport.Name = "chkSupport";
             this.chkSupport.Size = new System.Drawing.Size(15, 14);
-            this.chkSupport.TabIndex = 1;
+            this.chkSupport.TabIndex = 5;
             this.chkSupport.UseVisualStyleBackColor = true;
             // 
             // chkInternalCoat

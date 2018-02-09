@@ -36,9 +36,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getAPIComponentTypeID(EqID);
         }
-        public String getComponentName(int eqID)
+        public String getComponentName(int comID)
         {
-            return DAL.getComponentName(eqID);
+            return DAL.getComponentName(comID);
         }
         public COMPONENT_MASTER getData(int comID)
         {

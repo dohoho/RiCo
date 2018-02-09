@@ -188,7 +188,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbPreviousFailures.Properties.SmallImages = this.imgColPreFail;
             this.cbPreviousFailures.Size = new System.Drawing.Size(368, 20);
-            this.cbPreviousFailures.TabIndex = 15;
+            this.cbPreviousFailures.TabIndex = 19;
             // 
             // imgColPreFail
             // 
@@ -205,7 +205,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbJointTypeBranch.Properties.SmallImages = this.imgColJoinType;
             this.cbJointTypeBranch.Size = new System.Drawing.Size(368, 20);
-            this.cbJointTypeBranch.TabIndex = 9;
+            this.cbJointTypeBranch.TabIndex = 16;
             // 
             // imgColJoinType
             // 
@@ -224,7 +224,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbCyclicLoading.Properties.SmallImages = this.imgColCyclicLoad;
             this.cbCyclicLoading.Size = new System.Drawing.Size(368, 20);
-            this.cbCyclicLoading.TabIndex = 16;
+            this.cbCyclicLoading.TabIndex = 14;
             // 
             // imgColCyclicLoad
             // 
@@ -242,7 +242,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbMaxBrillnessHardness.Properties.SmallImages = this.imgColMaxBrinHard;
             this.cbMaxBrillnessHardness.Size = new System.Drawing.Size(368, 20);
-            this.cbMaxBrillnessHardness.TabIndex = 10;
+            this.cbMaxBrillnessHardness.TabIndex = 12;
             // 
             // imgColMaxBrinHard
             // 
@@ -259,7 +259,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbPipeCondition.Properties.SmallImages = this.imgColPipeCondi;
             this.cbPipeCondition.Size = new System.Drawing.Size(368, 20);
-            this.cbPipeCondition.TabIndex = 11;
+            this.cbPipeCondition.TabIndex = 18;
             // 
             // imgColPipeCondi
             // 
@@ -276,7 +276,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbNumberFittingPipe.Properties.SmallImages = this.imgColFitting;
             this.cbNumberFittingPipe.Size = new System.Drawing.Size(368, 20);
-            this.cbNumberFittingPipe.TabIndex = 12;
+            this.cbNumberFittingPipe.TabIndex = 17;
             // 
             // imgColFitting
             // 
@@ -293,7 +293,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbBranchDiameter.Properties.SmallImages = this.imgColBranchDiameter;
             this.cbBranchDiameter.Size = new System.Drawing.Size(368, 20);
-            this.cbBranchDiameter.TabIndex = 13;
+            this.cbBranchDiameter.TabIndex = 15;
             // 
             // imgColBranchDiameter
             // 
@@ -309,7 +309,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbComplexityProtrusion.Properties.SmallImages = this.imgColComplexity;
             this.cbComplexityProtrusion.Size = new System.Drawing.Size(368, 20);
-            this.cbComplexityProtrusion.TabIndex = 14;
+            this.cbComplexityProtrusion.TabIndex = 13;
             // 
             // imgColComplexity
             // 
@@ -326,7 +326,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAmountShakingPipe.Properties.SmallImages = this.imgColAmount;
             this.cbAmountShakingPipe.Size = new System.Drawing.Size(368, 20);
-            this.cbAmountShakingPipe.TabIndex = 5;
+            this.cbAmountShakingPipe.TabIndex = 21;
             // 
             // imgColAmount
             // 
@@ -343,7 +343,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbCorrectiveAction.Properties.SmallImages = this.imColCorrAct;
             this.cbCorrectiveAction.Size = new System.Drawing.Size(368, 20);
-            this.cbCorrectiveAction.TabIndex = 5;
+            this.cbCorrectiveAction.TabIndex = 23;
             // 
             // imColCorrAct
             // 
@@ -360,7 +360,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAccumalatedTimeShakingPipe.Properties.SmallImages = this.imgColAccu;
             this.cbAccumalatedTimeShakingPipe.Size = new System.Drawing.Size(368, 20);
-            this.cbAccumalatedTimeShakingPipe.TabIndex = 5;
+            this.cbAccumalatedTimeShakingPipe.TabIndex = 22;
             // 
             // imgColAccu
             // 
@@ -375,7 +375,7 @@
             this.chkVisibleAudible.Location = new System.Drawing.Point(248, 406);
             this.chkVisibleAudible.Name = "chkVisibleAudible";
             this.chkVisibleAudible.Size = new System.Drawing.Size(15, 14);
-            this.chkVisibleAudible.TabIndex = 4;
+            this.chkVisibleAudible.TabIndex = 20;
             this.chkVisibleAudible.UseVisualStyleBackColor = true;
             // 
             // chkHighlyEffectiveMixPoint
@@ -384,7 +384,7 @@
             this.chkHighlyEffectiveMixPoint.Location = new System.Drawing.Point(248, 167);
             this.chkHighlyEffectiveMixPoint.Name = "chkHighlyEffectiveMixPoint";
             this.chkHighlyEffectiveMixPoint.Size = new System.Drawing.Size(15, 14);
-            this.chkHighlyEffectiveMixPoint.TabIndex = 2;
+            this.chkHighlyEffectiveMixPoint.TabIndex = 9;
             this.chkHighlyEffectiveMixPoint.UseVisualStyleBackColor = true;
             // 
             // chkPresenceInjectionMixPoint
@@ -393,7 +393,7 @@
             this.chkPresenceInjectionMixPoint.Location = new System.Drawing.Point(248, 139);
             this.chkPresenceInjectionMixPoint.Name = "chkPresenceInjectionMixPoint";
             this.chkPresenceInjectionMixPoint.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceInjectionMixPoint.TabIndex = 2;
+            this.chkPresenceInjectionMixPoint.TabIndex = 8;
             this.chkPresenceInjectionMixPoint.UseVisualStyleBackColor = true;
             // 
             // chkTrampElements
@@ -402,7 +402,7 @@
             this.chkTrampElements.Location = new System.Drawing.Point(599, 162);
             this.chkTrampElements.Name = "chkTrampElements";
             this.chkTrampElements.Size = new System.Drawing.Size(15, 14);
-            this.chkTrampElements.TabIndex = 2;
+            this.chkTrampElements.TabIndex = 11;
             this.chkTrampElements.UseVisualStyleBackColor = true;
             // 
             // label25
@@ -432,7 +432,7 @@
             this.chkPresenceCracks.Location = new System.Drawing.Point(599, 139);
             this.chkPresenceCracks.Name = "chkPresenceCracks";
             this.chkPresenceCracks.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceCracks.TabIndex = 2;
+            this.chkPresenceCracks.TabIndex = 10;
             this.chkPresenceCracks.UseVisualStyleBackColor = true;
             // 
             // label27
@@ -472,7 +472,7 @@
             this.chkDamageFoundDuringInspection.Location = new System.Drawing.Point(248, 115);
             this.chkDamageFoundDuringInspection.Name = "chkDamageFoundDuringInspection";
             this.chkDamageFoundDuringInspection.Size = new System.Drawing.Size(15, 14);
-            this.chkDamageFoundDuringInspection.TabIndex = 2;
+            this.chkDamageFoundDuringInspection.TabIndex = 7;
             this.chkDamageFoundDuringInspection.UseVisualStyleBackColor = true;
             // 
             // label23
@@ -491,7 +491,7 @@
             this.txtCurrentCorrosionRate.Location = new System.Drawing.Point(248, 73);
             this.txtCurrentCorrosionRate.Name = "txtCurrentCorrosionRate";
             this.txtCurrentCorrosionRate.Size = new System.Drawing.Size(125, 21);
-            this.txtCurrentCorrosionRate.TabIndex = 1;
+            this.txtCurrentCorrosionRate.TabIndex = 3;
             this.txtCurrentCorrosionRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentCorrosionRate_KeyPress);
             // 
             // label22
@@ -510,7 +510,7 @@
             this.txtCurrentThickness.Location = new System.Drawing.Point(248, 47);
             this.txtCurrentThickness.Name = "txtCurrentThickness";
             this.txtCurrentThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtCurrentThickness.TabIndex = 1;
+            this.txtCurrentThickness.TabIndex = 2;
             this.txtCurrentThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentThickness_KeyPress);
             // 
             // label21
@@ -529,7 +529,7 @@
             this.txtMinRequiredThickness.Location = new System.Drawing.Point(599, 47);
             this.txtMinRequiredThickness.Name = "txtMinRequiredThickness";
             this.txtMinRequiredThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtMinRequiredThickness.TabIndex = 1;
+            this.txtMinRequiredThickness.TabIndex = 5;
             this.txtMinRequiredThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinRequiredThickness_KeyPress);
             // 
             // label20
@@ -548,7 +548,7 @@
             this.txtDeltaFATT.Location = new System.Drawing.Point(599, 73);
             this.txtDeltaFATT.Name = "txtDeltaFATT";
             this.txtDeltaFATT.Size = new System.Drawing.Size(125, 21);
-            this.txtDeltaFATT.TabIndex = 1;
+            this.txtDeltaFATT.TabIndex = 6;
             this.txtDeltaFATT.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDeltaFATT_KeyPress);
             // 
             // label19
@@ -568,7 +568,7 @@
             this.txtNominalThickness.Location = new System.Drawing.Point(599, 23);
             this.txtNominalThickness.Name = "txtNominalThickness";
             this.txtNominalThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtNominalThickness.TabIndex = 1;
+            this.txtNominalThickness.TabIndex = 4;
             this.txtNominalThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNominalThickness_KeyPress);
             // 
             // label18

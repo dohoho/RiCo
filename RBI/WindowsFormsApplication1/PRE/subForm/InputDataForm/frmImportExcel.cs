@@ -607,6 +607,11 @@ namespace RBI.PRE.subForm.InputDataForm
                 }
             }
         }
+
+        private void txtPathFileExcel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

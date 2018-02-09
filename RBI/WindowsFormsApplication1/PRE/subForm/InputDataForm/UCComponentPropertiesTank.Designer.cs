@@ -137,7 +137,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Greater than 237", ((short)(2)), 2)});
             this.cbMaxBrillnessHardness.Properties.SmallImages = this.imgColMaxBrinnHardness;
             this.cbMaxBrillnessHardness.Size = new System.Drawing.Size(368, 20);
-            this.cbMaxBrillnessHardness.TabIndex = 8;
+            this.cbMaxBrillnessHardness.TabIndex = 12;
             // 
             // imgColMaxBrinnHardness
             // 
@@ -159,7 +159,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("High", ((short)(3)), 3)});
             this.cbSeverityVibration.Properties.SmallImages = this.imgColSeverity;
             this.cbSeverityVibration.Size = new System.Drawing.Size(368, 20);
-            this.cbSeverityVibration.TabIndex = 9;
+            this.cbSeverityVibration.TabIndex = 14;
             // 
             // imgColSeverity
             // 
@@ -182,7 +182,7 @@
             new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Below Average", ((short)(2)), 2)});
             this.cbComplexityProtrusion.Properties.SmallImages = this.imgColComplexity;
             this.cbComplexityProtrusion.Size = new System.Drawing.Size(368, 20);
-            this.cbComplexityProtrusion.TabIndex = 10;
+            this.cbComplexityProtrusion.TabIndex = 13;
             // 
             // imgColComplexity
             // 
@@ -197,7 +197,7 @@
             this.chkPreventionBarrier.Location = new System.Drawing.Point(611, 185);
             this.chkPreventionBarrier.Name = "chkPreventionBarrier";
             this.chkPreventionBarrier.Size = new System.Drawing.Size(15, 14);
-            this.chkPreventionBarrier.TabIndex = 2;
+            this.chkPreventionBarrier.TabIndex = 11;
             this.chkPreventionBarrier.UseVisualStyleBackColor = true;
             // 
             // chkTrampElements
@@ -206,7 +206,7 @@
             this.chkTrampElements.Location = new System.Drawing.Point(611, 161);
             this.chkTrampElements.Name = "chkTrampElements";
             this.chkTrampElements.Size = new System.Drawing.Size(15, 14);
-            this.chkTrampElements.TabIndex = 2;
+            this.chkTrampElements.TabIndex = 10;
             this.chkTrampElements.UseVisualStyleBackColor = true;
             // 
             // chkPresenceCracks
@@ -215,7 +215,7 @@
             this.chkPresenceCracks.Location = new System.Drawing.Point(611, 138);
             this.chkPresenceCracks.Name = "chkPresenceCracks";
             this.chkPresenceCracks.Size = new System.Drawing.Size(15, 14);
-            this.chkPresenceCracks.TabIndex = 2;
+            this.chkPresenceCracks.TabIndex = 9;
             this.chkPresenceCracks.UseVisualStyleBackColor = true;
             // 
             // chkConcreteAsphalt
@@ -224,7 +224,7 @@
             this.chkConcreteAsphalt.Location = new System.Drawing.Point(231, 185);
             this.chkConcreteAsphalt.Name = "chkConcreteAsphalt";
             this.chkConcreteAsphalt.Size = new System.Drawing.Size(15, 14);
-            this.chkConcreteAsphalt.TabIndex = 2;
+            this.chkConcreteAsphalt.TabIndex = 8;
             this.chkConcreteAsphalt.UseVisualStyleBackColor = true;
             // 
             // chkDamageFoundDuringInspection
@@ -233,7 +233,7 @@
             this.chkDamageFoundDuringInspection.Location = new System.Drawing.Point(231, 132);
             this.chkDamageFoundDuringInspection.Name = "chkDamageFoundDuringInspection";
             this.chkDamageFoundDuringInspection.Size = new System.Drawing.Size(15, 14);
-            this.chkDamageFoundDuringInspection.TabIndex = 2;
+            this.chkDamageFoundDuringInspection.TabIndex = 7;
             this.chkDamageFoundDuringInspection.UseVisualStyleBackColor = true;
             // 
             // txtShellCourseHeight
@@ -242,7 +242,7 @@
             this.txtShellCourseHeight.Location = new System.Drawing.Point(231, 99);
             this.txtShellCourseHeight.Name = "txtShellCourseHeight";
             this.txtShellCourseHeight.Size = new System.Drawing.Size(125, 21);
-            this.txtShellCourseHeight.TabIndex = 1;
+            this.txtShellCourseHeight.TabIndex = 4;
             this.txtShellCourseHeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtShellCourseHeight_KeyPress);
             // 
             // txtCurrentCorrosionRate
@@ -251,7 +251,7 @@
             this.txtCurrentCorrosionRate.Location = new System.Drawing.Point(231, 72);
             this.txtCurrentCorrosionRate.Name = "txtCurrentCorrosionRate";
             this.txtCurrentCorrosionRate.Size = new System.Drawing.Size(125, 21);
-            this.txtCurrentCorrosionRate.TabIndex = 1;
+            this.txtCurrentCorrosionRate.TabIndex = 3;
             this.txtCurrentCorrosionRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentCorrosionRate_KeyPress);
             // 
             // txtCurrentThickness
@@ -260,7 +260,7 @@
             this.txtCurrentThickness.Location = new System.Drawing.Point(231, 46);
             this.txtCurrentThickness.Name = "txtCurrentThickness";
             this.txtCurrentThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtCurrentThickness.TabIndex = 1;
+            this.txtCurrentThickness.TabIndex = 2;
             this.txtCurrentThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentThickness_KeyPress);
             // 
             // txtMinRequiredThickness
@@ -269,7 +269,7 @@
             this.txtMinRequiredThickness.Location = new System.Drawing.Point(611, 44);
             this.txtMinRequiredThickness.Name = "txtMinRequiredThickness";
             this.txtMinRequiredThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtMinRequiredThickness.TabIndex = 1;
+            this.txtMinRequiredThickness.TabIndex = 6;
             this.txtMinRequiredThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinRequiredThickness_KeyPress);
             // 
             // label12
@@ -288,7 +288,7 @@
             this.txtNominalThickness.Location = new System.Drawing.Point(611, 20);
             this.txtNominalThickness.Name = "txtNominalThickness";
             this.txtNominalThickness.Size = new System.Drawing.Size(125, 21);
-            this.txtNominalThickness.TabIndex = 1;
+            this.txtNominalThickness.TabIndex = 5;
             this.txtNominalThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNominalThickness_KeyPress);
             // 
             // label18

@@ -36,15 +36,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageTreeList)).BeginInit();
             this.SuspendLayout();
             // 
-            // imageTreeList
-            // 
-            this.imageTreeList.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageTreeList.ImageStream")));
-            this.imageTreeList.Images.SetKeyName(0, "factory48x48.png");
-            this.imageTreeList.Images.SetKeyName(1, "Factory-Yellow48x48.png");
-            this.imageTreeList.Images.SetKeyName(2, "Equipment32x32.png");
-            this.imageTreeList.Images.SetKeyName(3, "component32x32.png");
-            this.imageTreeList.Images.SetKeyName(4, "Assessment32x32.png");
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(130, 41);
