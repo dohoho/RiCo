@@ -70,6 +70,41 @@ namespace RBI.BUS.BUSExcel
             return exConn.connectionExcel(path);
         }
 
+        //check xem file input la cho Tank hay cho thuong
+        public bool checkFileTank()
+        {
+            bool isTank = false;
+            OleDbConnection conn = getConnect();
+            try
+            {
+                conn.Open();
+                String sql = "SELECT * FROM [Equipment$]";
+                OleDbCommand cmd = new OleDbCommand(sql, conn);
+                OleDbDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    try
+                    {
+                        if (!reader.IsDBNull(35))
+                        {
+                            isTank = true;
+                        }
+                    }
+                    catch
+                    {
+                        isTank = false;
+                    }
+                }
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return isTank;
+        }
+
+
         /// <summary>
         /// get data
         /// </summary>

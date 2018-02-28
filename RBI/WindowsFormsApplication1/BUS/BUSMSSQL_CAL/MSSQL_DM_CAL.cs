@@ -2193,14 +2193,18 @@ namespace RBI.BUS.BUSMSSQL_CAL
             if (EquipmentType == "Piping")
             {
                 float FCA = 1, FPC = 1, FCP = 1, FJB = 1, FBD = 1;
-
-                if (CORRECT_ACTION == "Engineering Analysis")
-                    FCA = 0.002f;
-                else if (CORRECT_ACTION == "Experience")
-                    FCA = 0.2f;
-                else
-                    FCA = 2;
-
+                switch(CORRECT_ACTION)
+                {
+                    case "Engineering Analysis":
+                        FCA = 0.002f;
+                        break;
+                    case "Experience":
+                        FCA = 0.2f;
+                        break;
+                    default:
+                        FCA = 2;
+                        break;
+                }
                 if (NUM_PIPE == "Up to 5")
                     FPC = 0.5f;
                 else if (NUM_PIPE == "6 to 10")

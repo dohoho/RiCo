@@ -13,7 +13,7 @@ namespace RBI.BUS.BUSMSSQL
         RW_INPUT_CA_LEVEL_1_ConnUtils DAL = new RW_INPUT_CA_LEVEL_1_ConnUtils();
         public void add(RW_INPUT_CA_LEVEL_1 obj)
         {
-            DAL.Add(obj.API_FLUID, obj.SYSTEM, obj.Release_Duration, obj.Detection_Type, obj.Isulation_Type, obj.Mitigation_System, obj.Equipment_Cost, obj.Injure_Cost, obj.Environment_Cost, obj.Toxic_Percent, obj.Personal_Density, obj.Material_Cost, obj.Production_Cost, obj.Mass_Inventory, obj.Mass_Component, obj.Stored_Pressure, obj.Stored_Temp);
+            DAL.Add(obj.ID, obj.API_FLUID, obj.SYSTEM, obj.Release_Duration, obj.Detection_Type, obj.Isulation_Type, obj.Mitigation_System, obj.Equipment_Cost, obj.Injure_Cost, obj.Environment_Cost, obj.Toxic_Percent, obj.Personal_Density, obj.Material_Cost, obj.Production_Cost, obj.Mass_Inventory, obj.Mass_Component, obj.Stored_Pressure, obj.Stored_Temp);
         }
         public void edit(RW_INPUT_CA_LEVEL_1 obj)
         {

@@ -84,10 +84,11 @@ namespace RBI.PRE.subForm.InputDataForm
             MessageBox.Show("This file has been saved!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
-        private void btnFinish_Click(object sender, EventArgs e)
+        private void btnImport_Click(object sender, EventArgs e)
         {
             SplashScreenManager.ShowForm(typeof(WaitForm2));
-            
+            //CA ko co trong file Excel can them bang tay
+
             // data from file
             SITES_BUS busSite = new SITES_BUS();
             FACILITY_BUS busFacility = new FACILITY_BUS();
@@ -102,13 +103,15 @@ namespace RBI.PRE.subForm.InputDataForm
             RW_STREAM_BUS busStream = new RW_STREAM_BUS();
             RW_MATERIAL_BUS busMaterial = new RW_MATERIAL_BUS();
             RW_COATING_BUS busCoat = new RW_COATING_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS busInputCA = new RW_INPUT_CA_LEVEL_1_BUS();
             FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
             Bus_PLANT_PROCESS_Excel busExcelProcess = new Bus_PLANT_PROCESS_Excel();
             busExcelProcess.path = txtPathFileExcel.Text;
-            //Console.WriteLine(busExcelProcess.path);
-
+            //neu nap vao la file cua Tank thi thoat
+            if (busExcelProcess.checkFileTank())
+                return;
             List<SITES> listSite = busExcelProcess.getAllSite();
-            foreach(SITES s in listSite)
+            foreach (SITES s in listSite)
             {
                 if (!busSite.checkExist(s.SiteName))
                     busSite.add(s);
@@ -132,7 +135,7 @@ namespace RBI.PRE.subForm.InputDataForm
             }
 
             List<string> manufacture = busExcelProcess.getAllManufacture();
-            for (int i = 0; i<manufacture.Count; i++)
+            for (int i = 0; i < manufacture.Count; i++)
             {
                 MANUFACTURER manu = new MANUFACTURER();
                 manu.ManufacturerID = busManufacture.getIDbyName(manufacture[i]);
@@ -144,7 +147,7 @@ namespace RBI.PRE.subForm.InputDataForm
             }
 
             List<String> designcode = busExcelProcess.getAllDesigncode();
-            for (int i = 0; i< designcode.Count; i++)
+            for (int i = 0; i < designcode.Count; i++)
             {
                 DESIGN_CODE design = new DESIGN_CODE();
                 design.DesignCodeID = busDesign.getIDbyName(designcode[i]);
@@ -162,7 +165,9 @@ namespace RBI.PRE.subForm.InputDataForm
                 if (busEqMaster.check(eqM.EquipmentNumber))
                     busEqMaster.edit(eqM);
                 else
+                {
                     busEqMaster.add(eqM);
+                }
             }
 
             List<COMPONENT_MASTER> listComMaster = busExcelProcess.getComponentMaster();
@@ -179,18 +184,18 @@ namespace RBI.PRE.subForm.InputDataForm
             List<int> addExcel = new List<int>();
             foreach (RW_ASSESSMENT rwAss in listRW_Assessment)
             {
-                //get check addbyExcel or add by Form and get ID Proposal
+                //kiem tra xem Proposal add bang file Excel hay add bang tay
                 List<int[]> ID_checkAddbyExcel = busAss.getCheckAddExcel_ID(rwAss.ComponentID, rwAss.EquipmentID);
                 if (ID_checkAddbyExcel.Count != 0)
                 {
                     for (int i = 0; i < ID_checkAddbyExcel.Count; i++)
                     {
-                        if (ID_checkAddbyExcel[i][0] != 0) //kiem tra xem co phai Assessment nay duoc them tu file Excel ko
+                        if (ID_checkAddbyExcel[i][0] != 0) //kiem tra xem co phai Assessment nay duoc them tu file Excel ko, !=0 la them tu file Excel
                         {
                             rwAss.ID = ID_checkAddbyExcel[i][1];
                             editExcel.Add(rwAss.ID);
                             busAss.edit(rwAss);
-                            Console.WriteLine("Code da chay den day");
+                            Console.WriteLine("Edit Excel ID " + rwAss.ID);
                         }
                     }
                 }
@@ -199,13 +204,17 @@ namespace RBI.PRE.subForm.InputDataForm
                     rwAss.AddByExcel = 1;
                     busAss.add(rwAss);
                     int assID = busAss.getLastID();
-                    Console.WriteLine("Last Id " + assID);
+                    Console.WriteLine("Add Excel ID " + assID);
                     addExcel.Add(assID);
+                    RW_INPUT_CA_LEVEL_1 inputCA = new RW_INPUT_CA_LEVEL_1();
+                    inputCA.ID = assID;
+                    busInputCA.add(inputCA);
+                    
                 }
             }
 
             List<RW_EQUIPMENT> listRw_eq = busExcelProcess.getRwEquipment();
-            for (int i = 0; i < listRw_eq.Count; i++ )
+            for (int i = 0; i < listRw_eq.Count; i++)
             {
                 if (editExcel.Count != 0)
                 {
@@ -219,10 +228,11 @@ namespace RBI.PRE.subForm.InputDataForm
                 }
                 if (addExcel.Count != 0)
                 {
-                    for(int j = 0; j < addExcel.Count; j++)
+                    for (int j = 0; j < addExcel.Count; j++)
                     {
-                        if(listRw_eq[i].ID == addExcel[j])
+                        if (listRw_eq[i].ID == addExcel[j])
                         {
+                            Console.WriteLine("RW Equipment ID " + listRw_eq[i].ID);
                             busEq.add(listRw_eq[i]);
                         }
                     }
@@ -363,6 +373,34 @@ namespace RBI.PRE.subForm.InputDataForm
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            IWorkbook workbook = spreadExcel.Document;
+            SaveFileDialog op = new SaveFileDialog();
+            op.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*.xlsx)|*.xlsx|All File(*)|*";
+            op.Title = "Save Inspection History File";
+            op.ShowDialog();
+            String pathFile = op.FileName;
+            String exten = Path.GetExtension(pathFile);
+            if (pathFile != "")
+            {
+                try
+                {
+                    using (FileStream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        if (exten == ".xls")
+                            workbook.SaveDocument(stream, DocumentFormat.Xls);
+                        else
+                            workbook.SaveDocument(stream, DocumentFormat.Xlsx);
+                    }
+                    MessageBox.Show("This file has been saved!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                catch
+                {
+                    MessageBox.Show("Save file error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
         private void readDataFromSheet()
         {
@@ -577,40 +615,6 @@ namespace RBI.PRE.subForm.InputDataForm
             str.CUI_PERCENT_9 = sheetOperatingCondition[17] != "" ? float.Parse(sheetOperatingCondition[17]) : 0;
             str.CUI_PERCENT_10 = sheetOperatingCondition[18] != "" ? float.Parse(sheetOperatingCondition[18]) : 0;
             return str;
-        }
-
-        private void btnSaveAs_Click(object sender, EventArgs e)
-        {
-            IWorkbook workbook = spreadExcel.Document;
-            SaveFileDialog op = new SaveFileDialog();
-            op.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*.xlsx)|*.xlsx|All File(*)|*";
-            op.Title = "Save Inspection History File";
-            op.ShowDialog();
-            String pathFile = op.FileName;
-            String exten = Path.GetExtension(pathFile);
-            if (pathFile != "")
-            {
-                try
-                {
-                    using (FileStream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite))
-                    {
-                        if (exten == ".xls")
-                            workbook.SaveDocument(stream, DocumentFormat.Xls);
-                        else
-                            workbook.SaveDocument(stream, DocumentFormat.Xlsx);
-                    }
-                    MessageBox.Show("This file has been saved!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                }
-                catch
-                {
-                    MessageBox.Show("Save file error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void txtPathFileExcel_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

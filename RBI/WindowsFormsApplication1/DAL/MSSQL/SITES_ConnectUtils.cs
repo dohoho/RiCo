@@ -96,10 +96,7 @@ namespace RBI.DAL.MSSQL
             conn.Open();
             List<SITES> list = new List<SITES>();
             SITES obj = null;
-            String sql = "Use [rbi]" +
-                        "SELECT [SiteID]" +
-                        ",[SiteName]" +
-                        "  FROM [rbi].[dbo].[SITES]";
+            String sql = "SELECT [SiteID],[SiteName] FROM [rbi].[dbo].[SITES]";
             try
             {
                 SqlCommand cmd = new SqlCommand();

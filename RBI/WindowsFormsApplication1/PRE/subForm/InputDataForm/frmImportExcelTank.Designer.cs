@@ -32,13 +32,13 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtPathFileExcel = new System.Windows.Forms.TextBox();
             this.btnImportExcel = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSaveAs = new System.Windows.Forms.Button();
             this.btnFinish = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -70,16 +70,6 @@
             this.btnImportExcel.Text = "Filter";
             this.btnImportExcel.UseVisualStyleBackColor = true;
             this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(902, 465);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // panelControl1
             // 
@@ -140,16 +130,26 @@
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(914, 465);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // frmImportExcelTank
             // 
             this.AcceptButton = this.btnFinish;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(989, 495);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnFinish);
             this.Controls.Add(this.btnSaveAs);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnImportExcel);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.txtPathFileExcel);
@@ -173,12 +173,12 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox txtPathFileExcel;
         private System.Windows.Forms.Button btnImportExcel;
-        private System.Windows.Forms.Button btnCancel;
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnSaveAs;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnFinish;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

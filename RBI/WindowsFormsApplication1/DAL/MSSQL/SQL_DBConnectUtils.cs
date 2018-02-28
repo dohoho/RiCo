@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace RBI.DAL.MSSQL
 {
     class SQL_DBConnectUtils
@@ -16,6 +16,8 @@ namespace RBI.DAL.MSSQL
             String connection = null;
             SqlConnection cnn;
             connection = @"Server=" + serverName + ";Database=" + DbName + ";Trusted_Connection=True;";
+            //connection = "Data Source=(localdb)\\v11.0;AttachDbFilename="+Directory.GetCurrentDirectory()+"\\RiskWISE5ProcessData.mdf;Integrated Security=True";
+            //Console.WriteLine("directory " + connection);
             cnn = new SqlConnection(connection);
             return cnn;
         }

@@ -38,7 +38,6 @@
             this.picAPIComponent = new System.Windows.Forms.PictureBox();
             this.picComponentType = new System.Windows.Forms.PictureBox();
             this.picComponentNumber = new System.Windows.Forms.PictureBox();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkLinks = new System.Windows.Forms.CheckBox();
@@ -59,6 +58,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbAPIComponentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbComponentType.Properties)).BeginInit();
@@ -75,6 +75,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.cbAPIComponentType);
             this.panel1.Controls.Add(this.cbComponentType);
             this.panel1.Controls.Add(this.cbFacility);
@@ -83,7 +84,6 @@
             this.panel1.Controls.Add(this.picAPIComponent);
             this.panel1.Controls.Add(this.picComponentType);
             this.panel1.Controls.Add(this.picComponentNumber);
-            this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnOK);
             this.panel1.Controls.Add(this.txtDescription);
             this.panel1.Controls.Add(this.chkLinks);
@@ -181,16 +181,6 @@
             this.picComponentNumber.Size = new System.Drawing.Size(17, 19);
             this.picComponentNumber.TabIndex = 2;
             this.picComponentNumber.TabStop = false;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(522, 409);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(80, 29);
-            this.btnCancel.TabIndex = 12;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
@@ -382,6 +372,16 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Component";
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(527, 409);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 29);
+            this.btnCancel.TabIndex = 44;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // frmNewComponent
             // 
             this.AcceptButton = this.btnOK;
@@ -435,7 +435,6 @@
         private System.Windows.Forms.PictureBox picAPIComponent;
         private System.Windows.Forms.PictureBox picComponentType;
         private System.Windows.Forms.PictureBox picComponentNumber;
-        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -446,5 +445,6 @@
         private DevExpress.XtraEditors.ImageComboBoxEdit cbComponentType;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbFacility;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbSites;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -21,17 +21,12 @@ namespace RBI.PRE.subForm.OutputDataForm
         {
             InitializeComponent();
             DrawRiskMatrix(ID);
-            Console.WriteLine("ID risk " + ID);
         }
         Graphics g;
         private void DrawRiskMatrix(int ID)
         {
             RW_FULL_POF_BUS busPoF = new RW_FULL_POF_BUS();
             float[] DF = busPoF.getDF(ID);
-            for(int i = 0; i<DF.Length; i++)
-            {
-                Console.WriteLine("DF " + DF[i]);
-            }
             RW_FULL_FCOF_BUS busCoF = new RW_FULL_FCOF_BUS();
             float CoF = busCoF.getFCoFValue(ID);
             int width = picRiskSummary.Width - 16;
@@ -133,7 +128,6 @@ namespace RBI.PRE.subForm.OutputDataForm
             for (int i = 0; i < 3; i++)
             {
                 g.DrawImage(image[i], coordinatesCoF, coordinatesPoF[i]);
-                Console.WriteLine("toa do " + coordinatesCoF + " " + coordinatesPoF[i]);
             }
         }
     }

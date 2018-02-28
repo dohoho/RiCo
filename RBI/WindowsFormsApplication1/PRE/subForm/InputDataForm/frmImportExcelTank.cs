@@ -102,9 +102,11 @@ namespace RBI.PRE.subForm.InputDataForm
             RW_STREAM_BUS busStream = new RW_STREAM_BUS();
             RW_MATERIAL_BUS busMaterial = new RW_MATERIAL_BUS();
             RW_COATING_BUS busCoating = new RW_COATING_BUS();
+            RW_INPUT_CA_TANK_BUS busInputCATank = new RW_INPUT_CA_TANK_BUS();
             Bus_PLANT_PROCESS_Excel busExcel = new Bus_PLANT_PROCESS_Excel();
             busExcel.path = txtPathFileExcel.Text;
-
+            if (!busExcel.checkFileTank())
+                return;
             //Sites
             List<SITES> lstSite = busExcel.getAllSite();
             foreach(SITES s in lstSite)
@@ -226,6 +228,9 @@ namespace RBI.PRE.subForm.InputDataForm
                     busAss.add(ass);
                     int assID = busAss.getLastID();
                     addExcel.Add(assID);
+                    RW_INPUT_CA_TANK inputCATank = new RW_INPUT_CA_TANK();
+                    inputCATank.ID = assID;
+                    busInputCATank.add(inputCATank);
                 }
             }
 
@@ -639,6 +644,7 @@ namespace RBI.PRE.subForm.InputDataForm
                 }
             }
         }
+
     }
 }
 

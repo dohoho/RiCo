@@ -552,7 +552,7 @@ namespace RBI.DAL.MSSQL
             int temp = 0;
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();
             conn.Open();
-            String sql = "SELECT TOP 1 ID FROM rbi.dbo.RW_ASSESSMENT";
+            String sql = "SELECT MAX(ID) FROM rbi.dbo.RW_ASSESSMENT";
             try
             {
                 SqlCommand cmd = new SqlCommand();

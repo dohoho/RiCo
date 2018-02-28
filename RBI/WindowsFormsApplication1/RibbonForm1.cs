@@ -52,6 +52,7 @@ namespace RBI
             barStaticItem1.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
+
         #region Parameters
         //<treeListProject_MouseDoubleClick>
         List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
@@ -238,6 +239,8 @@ namespace RBI
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
                     String ThinningType = uc.ucRiskFactor.type;
+                    Console.WriteLine("Thinning Type " + ThinningType);
+
                     Calculation(ThinningType, componentNumber, eq, com, ma, stream, coat, extTemp, caInput);
                     MessageBox.Show("Calculation Finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     //Save Data
@@ -310,7 +313,7 @@ namespace RBI
         }
         private void btnImportExcelData_ItemClick(object sender, ItemClickEventArgs e)
         {
-            frmImportExcel excel = new frmImportExcel();
+            RBI.PRE.subForm.InputDataForm.frmImportExcel excel = new RBI.PRE.subForm.InputDataForm.frmImportExcel();
             excel.ShowInTaskbar = false;
             excel.ShowDialog();
             if (excel.ButtonOKClicked)
@@ -738,7 +741,6 @@ namespace RBI
                 }
             }
         }
-
         private void dockPanel1_Collapsing(object sender, DevExpress.XtraBars.Docking.DockPanelEventArgs e)
         {
             Console.WriteLine("X = " + dockPanel1.Location.X);
@@ -2216,7 +2218,6 @@ namespace RBI
 
         private void ShowItemTabpage(int ID, int Num, bool checkTank)
         {
-
             ucTabNormal uctab = null;
             ucTabTank ucTabTank = null;
             UserControl u = null;
@@ -2315,10 +2316,7 @@ namespace RBI
                         break;
                 }
             }
-            xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
-            xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
-            xtraTabData.TabPages.TabControl.SelectedTabPage.HorizontalScroll.Value = 0;
-            xtraTabData.TabPages.TabControl.SelectedTabPage.VerticalScroll.Value = 0;
+            
             if (xtraTabData.SelectedTabPageIndex == 0) return;
             if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(u))
             {
@@ -2329,6 +2327,10 @@ namespace RBI
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
                 u.Dock = DockStyle.Fill;
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
+                xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
+                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
+                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(20, 20);
+                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMinSize = new Size(xtraTabData.TabPages.TabControl.SelectedTabPage.Width, xtraTabData.TabPages.TabControl.SelectedTabPage.Height);
             }
         }
 
@@ -2853,6 +2855,8 @@ namespace RBI
             maBus.edit(ma);
             caLv1Bus.edit(ca);
             //}
+            //kiem tra trong CSDL xem neu chua co thi them vao
+
         }
         //thiet bi tank
         private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_TANK ca)

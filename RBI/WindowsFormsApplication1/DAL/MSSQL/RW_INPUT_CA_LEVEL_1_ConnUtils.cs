@@ -12,13 +12,14 @@ namespace RBI.DAL.MSSQL
 {
     class RW_INPUT_CA_LEVEL_1_ConnUtils
     {
-        public void Add(String API_FLUID, String SYSTEM, String Release_Duration, String Detection_Type, String Isulation_Type, String Mitigation_System, float Equipment_Cost, float Injure_Cost, float Evironment_Cost, float Toxic_Percent, float Personal_Density, float Material_Cost, float Production_Cost, float Mass_Inventory, float Mass_Component, float Stored_Pressure, float Stored_Temp)
+        public void Add(int ID, String API_FLUID, String SYSTEM, String Release_Duration, String Detection_Type, String Isulation_Type, String Mitigation_System, float Equipment_Cost, float Injure_Cost, float Evironment_Cost, float Toxic_Percent, float Personal_Density, float Material_Cost, float Production_Cost, float Mass_Inventory, float Mass_Component, float Stored_Pressure, float Stored_Temp)
         {
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();
             conn.Open();
             String sql = "USE [rbi] " +
                         "INSERT INTO [dbo].[RW_INPUT_CA_LEVEL1] " +
-                        "([API_FLUID] " +
+                        "([ID]"+
+                        ",[API_FLUID] " +
                         ",[SYSTEM] " +
                         ",[Release_Duration] " +
                         ",[Detection_Type] " +
@@ -36,7 +37,8 @@ namespace RBI.DAL.MSSQL
                         ",[Stored_Pressure] " +
                         ",[Stored_Temp]) " +
                         "VALUES " +
-                        "('" + API_FLUID + "' " +
+                        "('" + ID + "' " +
+                        ",'" + API_FLUID + "' " +
                         ",'" + SYSTEM + "' " +
                         ",'" + Release_Duration + "' " +
                         ",'" + Detection_Type + "' " +
@@ -60,9 +62,9 @@ namespace RBI.DAL.MSSQL
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("ADD FAIL!", "ERROR!");
+                MessageBox.Show(ex.ToString(), "ERROR!");
             }
             finally
             {
