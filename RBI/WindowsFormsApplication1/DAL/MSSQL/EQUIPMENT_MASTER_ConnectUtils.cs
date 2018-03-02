@@ -47,6 +47,39 @@ namespace RBI.DAL.MSSQL
             }
             return check;
         }
+        public List<int> getAlleqIDbyFaciID(int faciID)
+        {
+            List<int> list = new List<int>();
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            String sql = "select EquipmentID from rbi.dbo.EQUIPMENT_MASTER where FacilityID = '" + faciID + "'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            list.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "GET DATA FAIL!");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return list;
+        }
         public void add(String EquipmentNumber,int EquipmentTypeID,String EquipmentName,DateTime CommissionDate,int DesignCodeID,int SiteID,int FacilityID,int ManufacturerID,String PFDNo,String ProcessDescription,string EquipmentDesc,int IsArchived,DateTime Archived,String ArchivedBy)
         {
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();

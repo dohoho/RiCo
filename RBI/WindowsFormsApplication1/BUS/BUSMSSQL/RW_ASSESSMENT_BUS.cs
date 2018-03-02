@@ -24,6 +24,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.delete(obj.ID);
         }
+        public void delete(int ID)
+        {
+            DAL.delete(ID);
+        }
         public List<RW_ASSESSMENT> getDataSource()
         {
             return DAL.getDataSource();
@@ -67,6 +71,10 @@ namespace RBI.BUS.BUSMSSQL
         public int getLastID()
         {
             return DAL.getLastID();
+        }
+        public List<int> getAllIDbyComponentID(int ID)
+        {
+            return DAL.getAllIDbyComponentID(ID);
         }
     }
 }

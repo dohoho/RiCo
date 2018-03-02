@@ -414,5 +414,73 @@ namespace RBI.DAL.MSSQL
             }
             return id;
         }
+        public List<int> getAlleqIDbyFaciID(int faciID)
+        {
+            List<int> list = new List<int>();
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            String sql = "select EquipmentID from rbi.dbo.EQUIPMENT_MASTER where FacilityID = '" + faciID + "'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            list.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "GET DATA FAIL!");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return list;
+        }
+        public List<int> getIDbySiteID(int siteID)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            List<int> list = new List<int>();
+            String sql = "USE[rbi]" +
+                        "SELECT [FacilityID]" +
+                        "  FROM [rbi].[dbo].[FACILITY] WHERE SiteID = '" + siteID + "'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            list.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return list;
+        }
     }
 }

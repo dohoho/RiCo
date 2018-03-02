@@ -23,6 +23,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.Delete(obj.ID);
         }
+        public void delete(int ID)
+        {
+            DAL.Delete(ID);
+        }
         public RW_INPUT_CA_LEVEL_1 getData(int ID)
         {
             return DAL.GetData(ID);

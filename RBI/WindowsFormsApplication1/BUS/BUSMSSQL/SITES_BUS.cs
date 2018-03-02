@@ -20,9 +20,14 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.edit(obj.SiteID, obj.SiteName);
         }
+        
         public void delete(SITES obj)
         {
             DAL.delete(obj.SiteID);
+        }
+        public void delete(int ID)
+        {
+            DAL.delete(ID);
         }
         public List<SITES> getData()
         {

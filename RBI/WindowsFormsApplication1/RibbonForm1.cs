@@ -53,52 +53,8 @@ namespace RBI
             SplashScreenManager.CloseForm();
         }
 
-        #region Parameters
-        //<treeListProject_MouseDoubleClick>
-        List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
-        List<UCCoatLiningIsulationCladding> listUCCoating = new List<UCCoatLiningIsulationCladding>();
-        List<UCComponentProperties> listUCComponent = new List<UCComponentProperties>();
-        List<UCEquipmentProperties> listUCEquipment = new List<UCEquipmentProperties>();
-        List<UCMaterial> listUCMaterial = new List<UCMaterial>();
-        List<UCStream> listUCStream = new List<UCStream>();
-        List<UCOperatingCondition> listUCOperating = new List<UCOperatingCondition>();
-        List<UCRiskFactor> listUCRiskFactor = new List<UCRiskFactor>();
-        private List<TestData> listTree1 = null;
-        private int IDProposal = 0;
-        private bool checkTank = false;
-        //</treeListProject_MouseDoubleClick>
 
-        //<initDataforTreeList>
-        List<TestData> listTree;
-        //</initDataforTreeList>
-
-        //<treeListProject_FocusedNodeChanged>
-        private int selectedLevel = -1;
-        //</treeListProject_FocusedNodeChanged>
-
-        //<btnPlanInsp_ItemClick>
-        List<InspectionPlant> listInspectionPlan = new List<InspectionPlant>();
-        //</btnPlanInsp_ItemClick>
-        List<ucTabNormal> listUC = new List<ucTabNormal>();
-        List<ucTabTank> listUCTank = new List<ucTabTank>();
-        #endregion
-        
         #region Button Click
-        private void btnGeneral_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!checkTank)
-                createReportExcel(true);
-            else
-                createReportExcelTank(true);
-        }
-
-        private void btnGan_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!checkTank)
-                createReportExcel(false);
-            else
-                createReportExcelTank(false);
-        }
 
         private void btnBackupData_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -326,6 +282,27 @@ namespace RBI
             insp.ShowInTaskbar = false;
             insp.ShowDialog();
         }
+
+        private void btnExportGeneral_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (!checkTank)
+                createReportExcel(true);
+            else
+                createReportExcelTank(true);
+        }
+
+        private void btnExportDetail_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (!checkTank)
+                createReportExcel(false);
+            else
+                createReportExcelTank(false);
+        }
+
+        private void btnInspectionPlan_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            createInspectionPlanExcel(listInspectionPlan);
+        }
         #endregion
 
         #region TreeListProject va XtratabData
@@ -396,29 +373,34 @@ namespace RBI
         }
         private void treeListProject_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
         {
-
             TreeListNode node = treeListProject.FocusedNode;
             treeListProject.StateImageList = imageTreeList;
+            int nodeLevel = e.Node.Level;
             foreach (TreeListNode item in node.Nodes)
             {
-                if (e.Node.Level == 0)
+                switch(nodeLevel)
                 {
-                    e.Node.StateImageIndex = 0;
+                    case 0:
+                        e.Node.StateImageIndex = 0;
+                        break;
+                    case 1:
+                        e.Node.StateImageIndex = 1;
+                        break;
+                    case 2:
+                        e.Node.StateImageIndex = 2;
+                        break;
+                    case 3:
+                        e.Node.StateImageIndex = 3;
+                        break;
+                    case 4:
+                        e.Node.StateImageIndex = 4;
+                        break;
+                    default:
+                        e.Node.StateImageIndex = 5;
+                        break;
                 }
-                else if (e.Node.Level == 1)
-                {
-                    e.Node.StateImageIndex = 1;
-                }
-                else if (e.Node.Level == 2)
-                {
-                    e.Node.StateImageIndex = 2;
-                }
-                else if (e.Node.Level == 3)
-                    e.Node.StateImageIndex = 3;
-                else
-                    e.Node.StateImageIndex = 4;
             }
-            selectedLevel = e.Node.Level;
+            selectedLevel = nodeLevel;
         }
         private void treeListProject_CustomDrawNodeImages(object sender, CustomDrawNodeImagesEventArgs e)
         {
@@ -589,7 +571,342 @@ namespace RBI
         }
         private void deleteRecord(object sender, EventArgs e)
         {
-            MessageBox.Show("Delete chua viet");
+            /*Cần xóa dữ liệu ở các bảng:
+             * RW_ASSESSMENT
+             * RW_EQUIPMENT
+             * RW_COMPONENT
+             * RW_EXTCOR_TEMPERATURE
+             * RW_COATING
+             * RW_MATERIAL
+             * RW_INPUT_CA_LEVEL1
+             * RW_INPUT_CA_TANK
+             * RW_CA_LEVEL1
+             * RW_CA_TANK
+             * RW_FULL_POF
+             * RW_STREAM
+             * RW_FULL_FCOF
+             */
+            DialogResult da = MessageBox.Show("Do you want to delete record?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (da == DialogResult.Yes)
+            {
+                RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
+                RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
+                RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
+                RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+                RW_COATING_BUS coatingBus = new RW_COATING_BUS();
+                RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
+                RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+                RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
+                RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
+                RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
+                RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
+                RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+                RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+
+                rwEquipmentBus.delete(IDNodeTreeList);
+                compBus.delete(IDNodeTreeList);
+                extcorTempBus.delete(IDNodeTreeList);
+                coatingBus.delete(IDNodeTreeList);
+                materialBus.delete(IDNodeTreeList);
+                inputCALv1Bus.delete(IDNodeTreeList);
+                inputCAtankBus.delete(IDNodeTreeList);
+                CAlv1Bus.delete(IDNodeTreeList);
+                CAtankBus.delete(IDNodeTreeList);
+                fullPoFbus.delete(IDNodeTreeList);
+                streamBus.delete(IDNodeTreeList);
+                fullFCoFbus.delete(IDNodeTreeList);
+                rwAssessBus.delete(IDNodeTreeList);
+                initDataforTreeList();
+                //close tab nếu nó đang được mở
+                foreach (XtraTabPage x in xtraTabData.TabPages)
+                {
+                    if (x.Name == IDNodeTreeList.ToString())
+                    {
+                        xtraTabData.TabPages.Remove(x);
+                        break;
+                    }
+                }
+            }
+            else return;
+        }
+
+        private void deleteComponent(object sender, EventArgs e)
+        {
+            /*Cần xóa dữ liệu ở các bảng:
+             * RW_ASSESSMENT
+             * RW_EQUIPMENT
+             * RW_COMPONENT
+             * RW_EXTCOR_TEMPERATURE
+             * RW_COATING
+             * RW_MATERIAL
+             * RW_INPUT_CA_LEVEL1
+             * RW_INPUT_CA_TANK
+             * RW_CA_LEVEL1
+             * RW_CA_TANK
+             * RW_FULL_POF
+             * RW_STREAM
+             * RW_FULL_FCOF
+             * COMPONENT_MASTER
+             */
+            DialogResult da = MessageBox.Show("Do you want to delete component?\nAll Record of Component will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (da == DialogResult.Yes)
+            {
+                COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
+                RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
+                RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
+                RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
+                RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+                RW_COATING_BUS coatingBus = new RW_COATING_BUS();
+                RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
+                RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+                RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
+                RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
+                RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
+                RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
+                RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+                RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+
+
+                List<int> allID = new List<int>();
+                allID = rwAssessBus.getAllIDbyComponentID(IDNodeTreeList);
+                foreach (int id in allID)
+                {
+                    rwEquipmentBus.delete(rwEquipmentBus.getData(id));
+                    compBus.delete(compBus.getData(id));
+                    extcorTempBus.delete(id);
+                    coatingBus.delete(id);
+                    materialBus.delete(id);
+                    inputCALv1Bus.delete(id);
+                    inputCAtankBus.delete(id);
+                    CAlv1Bus.delete(id);
+                    CAtankBus.delete(id);
+                    fullPoFbus.delete(id);
+                    streamBus.delete(id);
+                    fullFCoFbus.delete(id);
+                    rwAssessBus.delete(id);
+                }
+                compMasterBus.delete(IDNodeTreeList);
+                initDataforTreeList();
+                treeListProject.ExpandToLevel(treeListProject.FocusedNode.Level);
+            }
+            else return;
+        }
+
+        private void deleteEquipment(object sender, EventArgs e)
+        {
+            /*Cần xóa dữ liệu ở các bảng:
+             * RW_ASSESSMENT
+             * RW_EQUIPMENT
+             * RW_COMPONENT
+             * RW_EXTCOR_TEMPERATURE
+             * RW_COATING
+             * RW_MATERIAL
+             * RW_INPUT_CA_LEVEL1
+             * RW_INPUT_CA_TANK
+             * RW_CA_LEVEL1
+             * RW_CA_TANK
+             * RW_FULL_POF
+             * RW_STREAM
+             * RW_FULL_FCOF
+             * COMPONENT_MASTER
+             * EQUIPMENT_MASTER
+             */
+
+            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
+            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
+            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
+            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
+            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
+            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
+            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
+            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+            DialogResult da = MessageBox.Show("Do you want to delete equipment?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (da == DialogResult.Yes)
+            {
+                List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(IDNodeTreeList);
+                foreach (int compID in listCompID)
+                {
+                    List<int> allAssessID = rwAssessBus.getAllIDbyComponentID(compID);
+                    foreach (int id in allAssessID)
+                    {
+                        rwEquipmentBus.delete(rwEquipmentBus.getData(id));
+                        compBus.delete(compBus.getData(id));
+                        extcorTempBus.delete(id);
+                        coatingBus.delete(id);
+                        materialBus.delete(id);
+                        inputCALv1Bus.delete(id);
+                        inputCAtankBus.delete(id);
+                        CAlv1Bus.delete(id);
+                        CAtankBus.delete(id);
+                        fullPoFbus.delete(id);
+                        streamBus.delete(id);
+                        fullFCoFbus.delete(id);
+                        rwAssessBus.delete(id);
+                    }
+                    compMasterBus.delete(compID);
+                }
+                eqMasterBus.delete(IDNodeTreeList);
+                initDataforTreeList();
+            }
+            else return;
+        }
+
+        private void deleteFacility(object sender, EventArgs e)
+        {
+            /*Cần xóa dữ liệu ở các bảng:
+             * RW_ASSESSMENT
+             * RW_EQUIPMENT
+             * RW_COMPONENT
+             * RW_EXTCOR_TEMPERATURE
+             * RW_COATING
+             * RW_MATERIAL
+             * RW_INPUT_CA_LEVEL1
+             * RW_INPUT_CA_TANK
+             * RW_CA_LEVEL1
+             * RW_CA_TANK
+             * RW_FULL_POF
+             * RW_STREAM
+             * RW_FULL_FCOF
+             * COMPONENT_MASTER
+             * EQUIPMENT_MASTER
+             * FACILITY
+             */
+            FACILITY_BUS faciBus = new FACILITY_BUS();
+            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
+            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
+            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
+            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
+            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
+            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
+            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
+            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+            DialogResult da = MessageBox.Show("Do you want to delete facility?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (da == DialogResult.Yes)
+            {
+                List<int> listEqID = eqMasterBus.getAllEqIDbyFaciID(IDNodeTreeList);
+                foreach (int eqID in listEqID)
+                {
+                    List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(eqID);
+                    foreach (int compID in listCompID)
+                    {
+                        List<int> allAssessID = rwAssessBus.getAllIDbyComponentID(compID);
+                        foreach (int id in allAssessID)
+                        {
+                            rwEquipmentBus.delete(rwEquipmentBus.getData(id));
+                            compBus.delete(compBus.getData(id));
+                            extcorTempBus.delete(id);
+                            coatingBus.delete(id);
+                            materialBus.delete(id);
+                            inputCALv1Bus.delete(id);
+                            inputCAtankBus.delete(id);
+                            CAlv1Bus.delete(id);
+                            CAtankBus.delete(id);
+                            fullPoFbus.delete(id);
+                            streamBus.delete(id);
+                            fullFCoFbus.delete(id);
+                            rwAssessBus.delete(id);
+                        }
+                        compMasterBus.delete(compID);
+                    }
+                    eqMasterBus.delete(eqID);
+                }
+                faciBus.delete(IDNodeTreeList);
+                initDataforTreeList();
+            }
+            else return;
+        }
+
+        private void deleteSite(object sender, EventArgs e)
+        {
+            /*Cần xóa dữ liệu ở các bảng:
+             * RW_ASSESSMENT
+             * RW_EQUIPMENT
+             * RW_COMPONENT
+             * RW_EXTCOR_TEMPERATURE
+             * RW_COATING
+             * RW_MATERIAL
+             * RW_INPUT_CA_LEVEL1
+             * RW_INPUT_CA_TANK
+             * RW_CA_LEVEL1
+             * RW_CA_TANK
+             * RW_FULL_POF
+             * RW_STREAM
+             * RW_FULL_FCOF
+             * COMPONENT_MASTER
+             * EQUIPMENT_MASTER
+             * FACILITY
+             * SITES
+             */
+            SITES_BUS siteBus = new SITES_BUS();
+            FACILITY_BUS faciBus = new FACILITY_BUS();
+            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
+            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
+            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
+            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
+            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
+            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
+            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
+            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
+            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
+            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
+            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
+            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
+            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
+            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
+            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+            DialogResult da = MessageBox.Show("Do you want to delete site?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (da == DialogResult.Yes)
+            {
+                List<int> listFaciId = faciBus.getAllFaciIDbySiteID(IDNodeTreeList);
+                foreach (int faciID in listFaciId)
+                {
+                    List<int> listEqID = eqMasterBus.getAllEqIDbyFaciID(faciID);
+                    foreach (int EqID in listEqID)
+                    {
+                        List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(EqID);
+                        foreach (int compID in listCompID)
+                        {
+                            List<int> allID = new List<int>();
+                            allID = rwAssessBus.getAllIDbyComponentID(compID);
+                            foreach (int id in allID)
+                            {
+                                rwEquipmentBus.delete(rwEquipmentBus.getData(id));
+                                compBus.delete(compBus.getData(id));
+                                extcorTempBus.delete(id);
+                                coatingBus.delete(id);
+                                materialBus.delete(id);
+                                inputCALv1Bus.delete(id);
+                                inputCAtankBus.delete(id);
+                                CAlv1Bus.delete(id);
+                                CAtankBus.delete(id);
+                                fullPoFbus.delete(id);
+                                streamBus.delete(id);
+                                fullFCoFbus.delete(id);
+                                rwAssessBus.delete(id);
+                            }
+                            compMasterBus.delete(compID);
+                        }
+                        eqMasterBus.delete(EqID);
+                    }
+                    faciBus.delete(faciID);
+                }
+                siteBus.delete(IDNodeTreeList);
+            }
+            initDataforTreeList();
         }
         private void btn_add_site_click(object sender, EventArgs e)
         {
@@ -609,7 +926,7 @@ namespace RBI
             switch (levelNode)
             {
                 case 1: // edit data cho Facility
-                    frmFacilityInput fcInput = new frmFacilityInput(listTree1[hi.Node.Id].ID - (hi.Node.Level - 0) * 100000);
+                    frmFacilityInput fcInput = new frmFacilityInput(listTree1[hi.Node.Id].ID - hi.Node.Level * 100000);
                     fcInput.doubleEditClicked = true;
                     fcInput.ShowInTaskbar = false;
                     fcInput.ShowDialog();
@@ -683,6 +1000,37 @@ namespace RBI
         }
         private void treeListProject_PopupMenuShowing(object sender, DevExpress.XtraTreeList.PopupMenuShowingEventArgs e)
         {
+            TreeList tree = sender as TreeList;
+            TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+            if (hi.Node == null)
+                return;
+            selectedLevel = hi.Node.Level;
+            switch (selectedLevel)
+            {
+                //lấy id của node phục vụ cho việc xóa
+                case 0:
+                    IDNodeTreeList = listTree[hi.Node.Id].ID;
+                    Console.WriteLine("case 0 Id " + IDNodeTreeList);
+                    break;
+                case 1:
+                    IDNodeTreeList = listTree[hi.Node.Id].ID - hi.Node.Level * 100000;
+                    Console.WriteLine("case 1 Id " + IDNodeTreeList);
+                    break;
+                case 2:
+                    IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000;
+                    Console.WriteLine("case 2 Id " + IDNodeTreeList);
+                    break;
+                case 3:
+                    IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
+                    Console.WriteLine("case 3 Id " + IDNodeTreeList);
+                    break;
+                case 4:
+                    IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 3) * 400000;
+                    break;
+                default:
+                    break;
+            }
+
             if (e.Menu is TreeListNodeMenu)
             {
                 if (selectedLevel == 0)
@@ -691,21 +1039,29 @@ namespace RBI
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Site", btn_add_site_click));
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Facility", btn_add_facility_click));
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Edit Site Name", btn_edit_site_name));
+                    e.Menu.Items.Add(new DXMenuItem("Delete Site", deleteSite));
                 }
                 else if (selectedLevel == 1)
                 {
                     treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Equipment", btn_add_Equipment_click));
+                    e.Menu.Items.Add(new DXMenuItem("Delete Facility", deleteFacility));
                 }
                 else if (selectedLevel == 2)
                 {
                     treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Component", btn_add_Component_click));
+                    e.Menu.Items.Add(new DXMenuItem("Delete Equipment", deleteEquipment));
+                }
+                else if (selectedLevel == 3)
+                {
+                    treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
+                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Record", addNewRecord));
+                    e.Menu.Items.Add(new DXMenuItem("Delete Component", deleteComponent));
                 }
                 else
                 {
                     treeListProject.FocusedNode = ((TreeListNodeMenu)e.Menu).Node;
-                    e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Add Record", addNewRecord));
                     e.Menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Delete Record", deleteRecord));
                 }
             }
@@ -740,17 +1096,6 @@ namespace RBI
                         break;
                 }
             }
-        }
-        private void dockPanel1_Collapsing(object sender, DevExpress.XtraBars.Docking.DockPanelEventArgs e)
-        {
-            Console.WriteLine("X = " + dockPanel1.Location.X);
-            //int a = xtraTabData.Location.X - (dockPanel1.Location.X - dockPanel2.Location.X);
-            System.Drawing.Point pt = new System.Drawing.Point();
-            pt.X = dockPanel2.Location.X + dockPanel1.Width;
-            pt.Y = xtraTabData.Location.Y;
-            //xtraTabData.Width += a;
-            xtraTabData.Location = pt;
-            //xtraTabData.Width += 100;
         }
         #endregion
 
@@ -979,7 +1324,7 @@ namespace RBI
 
             float[] Df = new float[21];
             float[] age = new float[14];
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < 14; i++)
             {
                 age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
             }
@@ -1005,7 +1350,12 @@ namespace RBI
             Df[18] = cal.DF_885();
             Df[19] = cal.DF_SIGMA();
             Df[20] = cal.DF_PIPE();
-
+            for(int i = 0; i < 14; i++)
+            {
+                Console.WriteLine("age[{0}] {1} ",i, age[i],Df[i]);
+                Console.WriteLine("Df[{0}] {1}", i, Df[i]);
+            }
+            
             List<float> DFSSCAgePlus3 = new List<float>();
             List<float> DFSSCAgePlus6 = new List<float>();
             float[] thinningPlusAge = { 0, 0 };
@@ -1038,6 +1388,7 @@ namespace RBI
                             damage.DF3 = cal.DF_THIN(age[0] + 6);
                             thinningPlusAge[0] = damage.DF2;
                             thinningPlusAge[1] = damage.DF3;
+                            Console.WriteLine("Thinning 1 {0}, Thinning 2 {1}", thinningPlusAge[0], thinningPlusAge[1]);
                             break;
                         case 1: //Linning
                             damage.DF2 = cal.DF_LINNING(age[1] + 3);
@@ -1136,22 +1487,19 @@ namespace RBI
                     listDamageMachenism.Add(damage);
                 }
             }
-            //Console.WriteLine("Df thin" + Df[0]);
+            
             //Tính DF_Thin_Total
+            /*
+             *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
+             *  Df_thinning_total = Df_thinning  
+             */
             float[] DF_Thin_Total = { 0, 0, 0 };
-            if (Df[1] != 0)
-            {
-                DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
-                DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
-                DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-            }
-            else
-            {
-                DF_Thin_Total[0] = Df[0];
-                DF_Thin_Total[1] = thinningPlusAge[0];
-                DF_Thin_Total[2] = thinningPlusAge[1];
-            }
-            //Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
+            DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
+            DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
+            DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
+            Console.WriteLine("Df Thinning linning {0} {1} {2}", DF_Thin_Total[0], DF_Thin_Total[1], DF_Thin_Total[2]);
+            Console.WriteLine("Internal lining " + linningPlusAge[0] + " " + linningPlusAge[1]);
+            Console.WriteLine("Year in service " + cal.YEAR_IN_SERVICE);
             //Tính Df_SSC_Total
             float[] DF_SSC_Total = { 0, 0, 0 };
             DF_SSC_Total[0] = Df[2];
@@ -1302,184 +1650,184 @@ namespace RBI
 
             #region CA
 
-            MSSQL_CA_CAL CA_CAL = new MSSQL_CA_CAL();
-            //<input CA Lavel 1>
-            CA_CAL.NominalDiameter = com.NominalDiameter;
-            CA_CAL.MATERIAL_COST = ma.CostFactor;
-            CA_CAL.FLUID = caInput.API_FLUID;
-            CA_CAL.FLUID_PHASE = caInput.SYSTEM;
-            CA_CAL.API_COMPONENT_TYPE_NAME = API_ComponentType_Name;
-            CA_CAL.DETECTION_TYPE = caInput.Detection_Type;
-            CA_CAL.ISULATION_TYPE = caInput.Isulation_Type;
-            CA_CAL.STORED_PRESSURE = caInput.Stored_Pressure;
-            CA_CAL.ATMOSPHERIC_PRESSURE = 101;
-            CA_CAL.STORED_TEMP = caInput.Stored_Temp;
-            CA_CAL.MASS_INVERT = caInput.Mass_Inventory;
-            CA_CAL.MASS_COMPONENT = caInput.Mass_Component;
-            CA_CAL.MITIGATION_SYSTEM = caInput.Mitigation_System;
-            CA_CAL.TOXIC_PERCENT = caInput.Toxic_Percent;
-            CA_CAL.RELEASE_DURATION = caInput.Release_Duration;
-            CA_CAL.PRODUCTION_COST = caInput.Production_Cost;
-            CA_CAL.INJURE_COST = caInput.Injure_Cost;
-            CA_CAL.ENVIRON_COST = caInput.Environment_Cost;
-            CA_CAL.PERSON_DENSITY = caInput.Personal_Density;
-            CA_CAL.EQUIPMENT_COST = caInput.Equipment_Cost;
-            //</CA Level 1>
+            //MSSQL_CA_CAL CA_CAL = new MSSQL_CA_CAL();
+            ////<input CA Lavel 1>
+            //CA_CAL.NominalDiameter = com.NominalDiameter;
+            //CA_CAL.MATERIAL_COST = ma.CostFactor;
+            //CA_CAL.FLUID = caInput.API_FLUID;
+            //CA_CAL.FLUID_PHASE = caInput.SYSTEM;
+            //CA_CAL.API_COMPONENT_TYPE_NAME = API_ComponentType_Name;
+            //CA_CAL.DETECTION_TYPE = caInput.Detection_Type;
+            //CA_CAL.ISULATION_TYPE = caInput.Isulation_Type;
+            //CA_CAL.STORED_PRESSURE = caInput.Stored_Pressure;
+            //CA_CAL.ATMOSPHERIC_PRESSURE = 101;
+            //CA_CAL.STORED_TEMP = caInput.Stored_Temp;
+            //CA_CAL.MASS_INVERT = caInput.Mass_Inventory;
+            //CA_CAL.MASS_COMPONENT = caInput.Mass_Component;
+            //CA_CAL.MITIGATION_SYSTEM = caInput.Mitigation_System;
+            //CA_CAL.TOXIC_PERCENT = caInput.Toxic_Percent;
+            //CA_CAL.RELEASE_DURATION = caInput.Release_Duration;
+            //CA_CAL.PRODUCTION_COST = caInput.Production_Cost;
+            //CA_CAL.INJURE_COST = caInput.Injure_Cost;
+            //CA_CAL.ENVIRON_COST = caInput.Environment_Cost;
+            //CA_CAL.PERSON_DENSITY = caInput.Personal_Density;
+            //CA_CAL.EQUIPMENT_COST = caInput.Equipment_Cost;
+            ////</CA Level 1>
 
-            //<calculate CA>
-            RW_CA_LEVEL_1 caLvl1 = new RW_CA_LEVEL_1();
-            caLvl1.ID = caInput.ID;
-            caLvl1.Release_Phase = CA_CAL.GET_RELEASE_PHASE();
-            caLvl1.fact_di = CA_CAL.fact_di();
-            caLvl1.fact_mit = CA_CAL.fact_mit();
-            caLvl1.fact_ait = CA_CAL.fact_ait();
-            caLvl1.CA_cmd = float.IsNaN(CA_CAL.ca_cmd()) ? 0 : CA_CAL.ca_cmd();
-            caLvl1.CA_inj_flame = float.IsNaN(CA_CAL.ca_inj_flame()) ? 0 : CA_CAL.ca_inj_flame();
-            caLvl1.CA_inj_toxic = float.IsNaN(CA_CAL.ca_inj_tox()) ? 0 : CA_CAL.ca_inj_tox();
-            caLvl1.CA_inj_ntnf = float.IsNaN(CA_CAL.ca_inj_nfnt()) ? 0 : CA_CAL.ca_inj_nfnt();
-            caLvl1.FC_cmd = float.IsNaN(CA_CAL.fc_cmd()) ? 0 : CA_CAL.fc_cmd();
-            caLvl1.FC_affa = float.IsNaN(CA_CAL.fc_affa()) ? 0 : CA_CAL.fc_affa();
-            caLvl1.FC_prod = float.IsNaN(CA_CAL.fc_prod()) ? 0 : CA_CAL.fc_prod();
-            caLvl1.FC_inj = float.IsNaN(CA_CAL.fc_inj()) ? 0 : CA_CAL.fc_inj();
-            caLvl1.FC_envi = float.IsNaN(CA_CAL.fc_environ()) ? 0 : CA_CAL.fc_environ();
-            caLvl1.FC_total = float.IsNaN(CA_CAL.fc()) ? 100000000 : CA_CAL.fc();
-            if (caLvl1.FC_total == 0)
-            {
-                caLvl1.FC_total = 100000000;
-            }
+            ////<calculate CA>
+            //RW_CA_LEVEL_1 caLvl1 = new RW_CA_LEVEL_1();
+            //caLvl1.ID = caInput.ID;
+            //caLvl1.Release_Phase = CA_CAL.GET_RELEASE_PHASE();
+            //caLvl1.fact_di = CA_CAL.fact_di();
+            //caLvl1.fact_mit = CA_CAL.fact_mit();
+            //caLvl1.fact_ait = CA_CAL.fact_ait();
+            //caLvl1.CA_cmd = float.IsNaN(CA_CAL.ca_cmd()) ? 0 : CA_CAL.ca_cmd();
+            //caLvl1.CA_inj_flame = float.IsNaN(CA_CAL.ca_inj_flame()) ? 0 : CA_CAL.ca_inj_flame();
+            //caLvl1.CA_inj_toxic = float.IsNaN(CA_CAL.ca_inj_tox()) ? 0 : CA_CAL.ca_inj_tox();
+            //caLvl1.CA_inj_ntnf = float.IsNaN(CA_CAL.ca_inj_nfnt()) ? 0 : CA_CAL.ca_inj_nfnt();
+            //caLvl1.FC_cmd = float.IsNaN(CA_CAL.fc_cmd()) ? 0 : CA_CAL.fc_cmd();
+            //caLvl1.FC_affa = float.IsNaN(CA_CAL.fc_affa()) ? 0 : CA_CAL.fc_affa();
+            //caLvl1.FC_prod = float.IsNaN(CA_CAL.fc_prod()) ? 0 : CA_CAL.fc_prod();
+            //caLvl1.FC_inj = float.IsNaN(CA_CAL.fc_inj()) ? 0 : CA_CAL.fc_inj();
+            //caLvl1.FC_envi = float.IsNaN(CA_CAL.fc_environ()) ? 0 : CA_CAL.fc_environ();
+            //caLvl1.FC_total = float.IsNaN(CA_CAL.fc()) ? 100000000 : CA_CAL.fc();
+            //if (caLvl1.FC_total == 0)
+            //{
+            //    caLvl1.FC_total = 100000000;
+            //}
 
-            caLvl1.FCOF_Category = CA_CAL.FC_Category(caLvl1.FC_total);
-            RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
-            fullFCoF.ID = caLvl1.ID;
-            fullFCoF.FCoFValue = caLvl1.FC_total;
-            fullFCoF.FCoFCategory = caLvl1.FCOF_Category;
+            //caLvl1.FCOF_Category = CA_CAL.FC_Category(caLvl1.FC_total);
+            //RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
+            //fullFCoF.ID = caLvl1.ID;
+            //fullFCoF.FCoFValue = caLvl1.FC_total;
+            //fullFCoF.FCoFCategory = caLvl1.FCOF_Category;
 
-            //fullFCoF.AIL = 
-            fullFCoF.envcost = CA_CAL.ENVIRON_COST;
-            fullFCoF.equipcost = CA_CAL.EQUIPMENT_COST;
-            fullFCoF.prodcost = CA_CAL.PRODUCTION_COST;
-            fullFCoF.popdens = CA_CAL.PERSON_DENSITY;
-            fullFCoF.injcost = CA_CAL.INJURE_COST;
-            //fullFCoF.FCoFMatrixValue
-            //</calculate CA>
-            //MessageBox.Show("fact_di " + caLvl1.fact_di +"\n"+
-            //    "fact_mit " + caLvl1.fact_mit +"\n"+
-            //    "fact_ait " + caLvl1.fact_ait +"\n"+
-            //    "CA cmd " + caLvl1.CA_cmd +"\n"+
-            //    "CA_inj_flame " + caLvl1.CA_inj_flame +"\n"+
-            //    "CA inj ntnf " + caLvl1.CA_inj_ntnf +"\n"+
-            //    "CA FC cmd " + caLvl1.FC_cmd +"\n"+
-            //    "FC affa " + caLvl1.FC_affa +"\n"+
-            //    "FC prod " + caLvl1.FC_prod +"\n"+
-            //    "FC inj " + caLvl1.FC_inj +"\n"+
-            //    "FC env " + caLvl1.FC_envi +"\n"+
-            //    "FC total " + caLvl1.FC_total +"\n"
-            //        , "Cortek");
-            //save to Database
-            RW_CA_LEVEL_1_BUS caLvl1Bus = new RW_CA_LEVEL_1_BUS();
-            RW_FULL_FCOF_BUS fullFCoFBus = new RW_FULL_FCOF_BUS();
+            ////fullFCoF.AIL = 
+            //fullFCoF.envcost = CA_CAL.ENVIRON_COST;
+            //fullFCoF.equipcost = CA_CAL.EQUIPMENT_COST;
+            //fullFCoF.prodcost = CA_CAL.PRODUCTION_COST;
+            //fullFCoF.popdens = CA_CAL.PERSON_DENSITY;
+            //fullFCoF.injcost = CA_CAL.INJURE_COST;
+            ////fullFCoF.FCoFMatrixValue
+            ////</calculate CA>
+            ////MessageBox.Show("fact_di " + caLvl1.fact_di +"\n"+
+            ////    "fact_mit " + caLvl1.fact_mit +"\n"+
+            ////    "fact_ait " + caLvl1.fact_ait +"\n"+
+            ////    "CA cmd " + caLvl1.CA_cmd +"\n"+
+            ////    "CA_inj_flame " + caLvl1.CA_inj_flame +"\n"+
+            ////    "CA inj ntnf " + caLvl1.CA_inj_ntnf +"\n"+
+            ////    "CA FC cmd " + caLvl1.FC_cmd +"\n"+
+            ////    "FC affa " + caLvl1.FC_affa +"\n"+
+            ////    "FC prod " + caLvl1.FC_prod +"\n"+
+            ////    "FC inj " + caLvl1.FC_inj +"\n"+
+            ////    "FC env " + caLvl1.FC_envi +"\n"+
+            ////    "FC total " + caLvl1.FC_total +"\n"
+            ////        , "Cortek");
+            ////save to Database
+            //RW_CA_LEVEL_1_BUS caLvl1Bus = new RW_CA_LEVEL_1_BUS();
+            //RW_FULL_FCOF_BUS fullFCoFBus = new RW_FULL_FCOF_BUS();
 
-            if (caLvl1Bus.checkExist(caLvl1.ID))
-                caLvl1Bus.edit(caLvl1);
-            else
-                caLvl1Bus.add(caLvl1);
+            //if (caLvl1Bus.checkExist(caLvl1.ID))
+            //    caLvl1Bus.edit(caLvl1);
+            //else
+            //    caLvl1Bus.add(caLvl1);
 
-            if (fullFCoFBus.checkExist(fullFCoF.ID))
-                fullFCoFBus.edit(fullFCoF);
-            else
-                fullFCoFBus.add(fullFCoF);
+            //if (fullFCoFBus.checkExist(fullFCoF.ID))
+            //    fullFCoFBus.edit(fullFCoF);
+            //else
+            //    fullFCoFBus.add(fullFCoF);
 
             #endregion
 
             #region INSPECTION HISTORY
-            int FaciID = eqMaBus.getFacilityID(equipmentID);
-            FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
-            float risktaget = busRiskTarget.getRiskTarget(FaciID);
-            float DF_thamchieu = risktaget / (CA_CAL.fc() * GFFTotal * FMS);
-            float[] tempDf = new float[21];
-            int k = 15;
-            for (int i = 1; i < 16; i++)
-            {
-                tempDf[0] = cal.DF_THIN(age[0] + i);
-                tempDf[1] = cal.DF_LINNING(age[1] + i);
-                tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
-                tempDf[3] = cal.DF_AMINE(age[3] + i);
-                tempDf[4] = cal.DF_SULPHIDE(age[4] + i);
-                tempDf[5] = cal.DF_HICSOHIC_H2S(age[5] + i);
-                tempDf[6] = cal.DF_CACBONATE(age[6] + i);
-                tempDf[7] = cal.DF_PTA(age[7] + i);
-                tempDf[8] = cal.DF_CLSCC(age[8] + i);
-                tempDf[9] = cal.DF_HSCHF(age[9] + i);
-                tempDf[10] = cal.DF_HIC_SOHIC_HF(age[10] + i);
-                tempDf[11] = cal.DF_EXTERNAL_CORROSION(age[11] + i);
-                tempDf[12] = cal.DF_CUI(age[12] + i);
-                tempDf[13] = cal.DF_EXTERN_CLSCC();
-                tempDf[14] = cal.DF_CUI_CLSCC();
-                tempDf[15] = cal.DF_HTHA(age[13] + i);
-                tempDf[16] = cal.DF_BRITTLE();
-                tempDf[17] = cal.DF_TEMP_EMBRITTLE();
-                tempDf[18] = cal.DF_885();
-                tempDf[19] = cal.DF_SIGMA();
-                tempDf[20] = cal.DF_PIPE();
-                float maxThin = cal.INTERNAL_LINNING ? Math.Min(tempDf[0], tempDf[1]) : tempDf[0];
-                float maxSCC = tempDf[2];
-                float maxExt = tempDf[12];
-                for (int j = 3; j < 11; j++)
-                {
-                    if (maxSCC < tempDf[j])
-                        maxSCC = tempDf[j];
-                }
-                for (int j = 13; j < 15; j++)
-                {
-                    if (maxExt < tempDf[j])
-                        maxExt = tempDf[j];
-                }
-                float maxBritt = tempDf[16] + tempDf[17]; //Df_brittle + Df_temp_Embrittle
-                for (int j = 18; j < 21; j++)
-                {
-                    if (maxBritt < tempDf[j])
-                        maxBritt = tempDf[j];
-                }
-                if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
-                {
-                    k = i;
-                    break;
-                }
-            }
-            //gán cho Object inspection plan
-            float[] inspec = { DF_Thin_Total[0], DF_SSC_Total[0], DF_Ext_Total, DF_Brit_Total };
-            for (int i = 0; i < inspec.Length; i++)
-            {
-                if (inspec[i] != 0)
-                {
-                    InspectionPlant insp = new InspectionPlant();
-                    insp.System = "Inspection Plan";
-                    insp.ItemNo = eqMaBus.getEquipmentNumber(equipmentID);
-                    insp.Method = "No Name";
-                    insp.Coverage = "N/A";
-                    insp.Availability = "Online";
-                    insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
-                    insp.InspectionInterval = k.ToString();
-                    //thay get last inspection = assessment date
-                    insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
-                    switch (i)
-                    {
-                        case 0:
-                            insp.DamageMechanism = "Internal Thinning";
-                            break;
-                        case 1:
-                            insp.DamageMechanism = "SSC Damage Factor";
-                            break;
-                        case 2:
-                            insp.DamageMechanism = "External Damage Factor";
-                            break;
-                        default:
-                            insp.DamageMechanism = "Brittle";
-                            break;
-                    }
-                    listInspectionPlan.Add(insp);
-                }
-            }
+            //int FaciID = eqMaBus.getFacilityID(equipmentID);
+            //FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
+            //float risktaget = busRiskTarget.getRiskTarget(FaciID);
+            //float DF_thamchieu = risktaget / (CA_CAL.fc() * GFFTotal * FMS);
+            //float[] tempDf = new float[21];
+            //int k = 15;
+            //for (int i = 1; i < 16; i++)
+            //{
+            //    tempDf[0] = cal.DF_THIN(age[0] + i);
+            //    tempDf[1] = cal.DF_LINNING(age[1] + i);
+            //    tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
+            //    tempDf[3] = cal.DF_AMINE(age[3] + i);
+            //    tempDf[4] = cal.DF_SULPHIDE(age[4] + i);
+            //    tempDf[5] = cal.DF_HICSOHIC_H2S(age[5] + i);
+            //    tempDf[6] = cal.DF_CACBONATE(age[6] + i);
+            //    tempDf[7] = cal.DF_PTA(age[7] + i);
+            //    tempDf[8] = cal.DF_CLSCC(age[8] + i);
+            //    tempDf[9] = cal.DF_HSCHF(age[9] + i);
+            //    tempDf[10] = cal.DF_HIC_SOHIC_HF(age[10] + i);
+            //    tempDf[11] = cal.DF_EXTERNAL_CORROSION(age[11] + i);
+            //    tempDf[12] = cal.DF_CUI(age[12] + i);
+            //    tempDf[13] = cal.DF_EXTERN_CLSCC();
+            //    tempDf[14] = cal.DF_CUI_CLSCC();
+            //    tempDf[15] = cal.DF_HTHA(age[13] + i);
+            //    tempDf[16] = cal.DF_BRITTLE();
+            //    tempDf[17] = cal.DF_TEMP_EMBRITTLE();
+            //    tempDf[18] = cal.DF_885();
+            //    tempDf[19] = cal.DF_SIGMA();
+            //    tempDf[20] = cal.DF_PIPE();
+            //    float maxThin = cal.INTERNAL_LINNING ? Math.Min(tempDf[0], tempDf[1]) : tempDf[0];
+            //    float maxSCC = tempDf[2];
+            //    float maxExt = tempDf[12];
+            //    for (int j = 3; j < 11; j++)
+            //    {
+            //        if (maxSCC < tempDf[j])
+            //            maxSCC = tempDf[j];
+            //    }
+            //    for (int j = 13; j < 15; j++)
+            //    {
+            //        if (maxExt < tempDf[j])
+            //            maxExt = tempDf[j];
+            //    }
+            //    float maxBritt = tempDf[16] + tempDf[17]; //Df_brittle + Df_temp_Embrittle
+            //    for (int j = 18; j < 21; j++)
+            //    {
+            //        if (maxBritt < tempDf[j])
+            //            maxBritt = tempDf[j];
+            //    }
+            //    if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
+            //    {
+            //        k = i;
+            //        break;
+            //    }
+            //}
+            ////gán cho Object inspection plan
+            //float[] inspec = { DF_Thin_Total[0], DF_SSC_Total[0], DF_Ext_Total, DF_Brit_Total };
+            //for (int i = 0; i < inspec.Length; i++)
+            //{
+            //    if (inspec[i] != 0)
+            //    {
+            //        InspectionPlant insp = new InspectionPlant();
+            //        insp.System = "Inspection Plan";
+            //        insp.ItemNo = eqMaBus.getEquipmentNumber(equipmentID);
+            //        insp.Method = "No Name";
+            //        insp.Coverage = "N/A";
+            //        insp.Availability = "Online";
+            //        insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
+            //        insp.InspectionInterval = k.ToString();
+            //        //thay get last inspection = assessment date
+            //        insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
+            //        switch (i)
+            //        {
+            //            case 0:
+            //                insp.DamageMechanism = "Internal Thinning";
+            //                break;
+            //            case 1:
+            //                insp.DamageMechanism = "SSC Damage Factor";
+            //                break;
+            //            case 2:
+            //                insp.DamageMechanism = "External Damage Factor";
+            //                break;
+            //            default:
+            //                insp.DamageMechanism = "Brittle";
+            //                break;
+            //        }
+            //        listInspectionPlan.Add(insp);
+            //    }
+            //}
             #endregion
         }
         private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
@@ -2539,25 +2887,25 @@ namespace RBI
                     worksheet.Cells["D3"].Value = risk.ComponentName; //component name
                     worksheet.Cells["E3"].Value = risk.RepresentFluid; //Represent fluid
                     worksheet.Cells["F3"].Value = risk.FluidPhase;  //fluid phase
-                    worksheet.Cells["G3"].Value = risk.currentRisk == 0 ? "N/A" : risk.currentRisk.ToString();
-                    worksheet.Cells["H3"].Value = risk.cofcatFlammable == 0 ? "N/A" : risk.cofcatFlammable.ToString();
-                    worksheet.Cells["I3"].Value = risk.cofcatPeople == 0 ? "N/A" : risk.cofcatPeople.ToString();
-                    worksheet.Cells["J3"].Value = risk.cofcatAsset == 0 ? "N/A" : risk.cofcatAsset.ToString();
-                    worksheet.Cells["K3"].Value = risk.cofcatEnv == 0 ? "N/A" : risk.cofcatEnv.ToString();
-                    worksheet.Cells["L3"].Value = risk.cofcatReputation == 0 ? "N/A" : risk.cofcatReputation.ToString();
-                    worksheet.Cells["M3"].Value = risk.cofcatCombined == 0 ? "N/A" : risk.cofcatCombined.ToString();
+                    worksheet.Cells["G3"].Value = risk.currentRisk == 0 ? 0 : risk.currentRisk;
+                    worksheet.Cells["H3"].Value = risk.cofcatFlammable == 0 ? 0 : risk.cofcatFlammable;
+                    worksheet.Cells["I3"].Value = risk.cofcatPeople == 0 ? 0 : risk.cofcatPeople;
+                    worksheet.Cells["J3"].Value = risk.cofcatAsset == 0 ? 0 : risk.cofcatAsset;
+                    worksheet.Cells["K3"].Value = risk.cofcatEnv == 0 ? 0 : risk.cofcatEnv;
+                    worksheet.Cells["L3"].Value = risk.cofcatReputation == 0 ? 0 : risk.cofcatReputation;
+                    worksheet.Cells["M3"].Value = risk.cofcatCombined == 0 ? 0 : risk.cofcatCombined;
                     worksheet.Cells["N3"].Value = risk.componentMaterialGrade; //component material glade
-                    worksheet.Cells["O3"].Value = risk.initThinningPoF == 0 ? "N/A" : risk.initThinningPoF.ToString();
-                    worksheet.Cells["P3"].Value = risk.initEnvCracking == 0 ? "N/A" : risk.initEnvCracking.ToString();
-                    worksheet.Cells["Q3"].Value = risk.initOtherPoF == 0 ? "N/A" : risk.initOtherPoF.ToString();
-                    worksheet.Cells["R3"].Value = risk.initPoF == 0 ? "N/A" : risk.initPoF.ToString();
-                    worksheet.Cells["S3"].Value = risk.extThinningPoF == 0 ? "N/A" : risk.extThinningPoF.ToString();
-                    worksheet.Cells["T3"].Value = risk.extEnvCrackingPoF == 0 ? "N/A" : risk.extEnvCrackingPoF.ToString();
-                    worksheet.Cells["U3"].Value = risk.extOtherPoF == 0 ? "N/A" : risk.extOtherPoF.ToString();
-                    worksheet.Cells["V3"].Value = risk.extPoF == 0 ? "N/A" : risk.extPoF.ToString();
-                    worksheet.Cells["W3"].Value = risk.PoF == 0 ? "N/A" : risk.PoF.ToString();
-                    worksheet.Cells["X3"].Value = risk.CurrentRiskCalculation == 0 ? "N/A" : risk.CurrentRiskCalculation.ToString();
-                    worksheet.Cells["Y3"].Value = risk.futureRisk == 0 ? "N/A" : risk.futureRisk.ToString();
+                    worksheet.Cells["O3"].Value = risk.initThinningPoF == 0 ? 0 : risk.initThinningPoF;
+                    worksheet.Cells["P3"].Value = risk.initEnvCracking == 0 ? 0 : risk.initEnvCracking;
+                    worksheet.Cells["Q3"].Value = risk.initOtherPoF == 0 ? 0 : risk.initOtherPoF;
+                    worksheet.Cells["R3"].Value = risk.initPoF == 0 ? 0 : risk.initPoF;
+                    worksheet.Cells["S3"].Value = risk.extThinningPoF == 0 ? 0 : risk.extThinningPoF;
+                    worksheet.Cells["T3"].Value = risk.extEnvCrackingPoF == 0 ? 0 : risk.extEnvCrackingPoF;
+                    worksheet.Cells["U3"].Value = risk.extOtherPoF == 0 ? 0 : risk.extOtherPoF;
+                    worksheet.Cells["V3"].Value = risk.extPoF == 0 ? 0 : risk.extPoF;
+                    worksheet.Cells["W3"].Value = risk.PoF == 0 ? 0 : risk.PoF;
+                    worksheet.Cells["X3"].Value = risk.CurrentRiskCalculation == 0 ? 0 : risk.CurrentRiskCalculation;
+                    worksheet.Cells["Y3"].Value = risk.futureRisk == 0 ? 0 : risk.futureRisk;
                 }
                 SaveFileDialog save = new SaveFileDialog();
                 save.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*xlsx)|*.xlsx";
@@ -2782,25 +3130,25 @@ namespace RBI
                     worksheet.Cells["D3"].Value = risk.ComponentName; //component name
                     worksheet.Cells["E3"].Value = risk.RepresentFluid; //Represent fluid
                     worksheet.Cells["F3"].Value = risk.FluidPhase;  //fluid phase
-                    worksheet.Cells["G3"].Value = risk.currentRisk == 0 ? "N/A" : risk.currentRisk.ToString();
-                    worksheet.Cells["H3"].Value = risk.cofcatFlammable == 0 ? "N/A" : risk.cofcatFlammable.ToString();
-                    worksheet.Cells["I3"].Value = risk.cofcatPeople == 0 ? "N/A" : risk.cofcatPeople.ToString();
-                    worksheet.Cells["J3"].Value = risk.cofcatAsset == 0 ? "N/A" : risk.cofcatAsset.ToString();
-                    worksheet.Cells["K3"].Value = risk.cofcatEnv == 0 ? "N/A" : risk.cofcatEnv.ToString();
-                    worksheet.Cells["L3"].Value = risk.cofcatReputation == 0 ? "N/A" : risk.cofcatReputation.ToString();
-                    worksheet.Cells["M3"].Value = risk.cofcatCombined == 0 ? "N/A" : risk.cofcatCombined.ToString();
+                    worksheet.Cells["G3"].Value = risk.currentRisk == 0 ? 0 : risk.currentRisk;
+                    worksheet.Cells["H3"].Value = risk.cofcatFlammable == 0 ? 0 : risk.cofcatFlammable;
+                    worksheet.Cells["I3"].Value = risk.cofcatPeople == 0 ? 0 : risk.cofcatPeople;
+                    worksheet.Cells["J3"].Value = risk.cofcatAsset == 0 ? 0 : risk.cofcatAsset;
+                    worksheet.Cells["K3"].Value = risk.cofcatEnv == 0 ? 0 : risk.cofcatEnv;
+                    worksheet.Cells["L3"].Value = risk.cofcatReputation == 0 ? 0 : risk.cofcatReputation;
+                    worksheet.Cells["M3"].Value = risk.cofcatCombined == 0 ? 0 : risk.cofcatCombined;
                     worksheet.Cells["N3"].Value = risk.componentMaterialGrade; //component material glade
-                    worksheet.Cells["O3"].Value = risk.initThinningPoF == 0 ? "N/A" : risk.initThinningPoF.ToString();
-                    worksheet.Cells["P3"].Value = risk.initEnvCracking == 0 ? "N/A" : risk.initEnvCracking.ToString();
-                    worksheet.Cells["Q3"].Value = risk.initOtherPoF == 0 ? "N/A" : risk.initOtherPoF.ToString();
-                    worksheet.Cells["R3"].Value = risk.initPoF == 0 ? "N/A" : risk.initPoF.ToString();
-                    worksheet.Cells["S3"].Value = risk.extThinningPoF == 0 ? "N/A" : risk.extThinningPoF.ToString();
-                    worksheet.Cells["T3"].Value = risk.extEnvCrackingPoF == 0 ? "N/A" : risk.extEnvCrackingPoF.ToString();
-                    worksheet.Cells["U3"].Value = risk.extOtherPoF == 0 ? "N/A" : risk.extOtherPoF.ToString();
-                    worksheet.Cells["V3"].Value = risk.extPoF == 0 ? "N/A" : risk.extPoF.ToString();
-                    worksheet.Cells["W3"].Value = risk.PoF == 0 ? "N/A" : risk.PoF.ToString();
-                    worksheet.Cells["X3"].Value = risk.CurrentRiskCalculation == 0 ? "N/A" : risk.CurrentRiskCalculation.ToString();
-                    worksheet.Cells["Y3"].Value = risk.futureRisk == 0 ? "N/A" : risk.futureRisk.ToString();
+                    worksheet.Cells["O3"].Value = risk.initThinningPoF == 0 ? 0 : risk.initThinningPoF;
+                    worksheet.Cells["P3"].Value = risk.initEnvCracking == 0 ? 0 : risk.initEnvCracking;
+                    worksheet.Cells["Q3"].Value = risk.initOtherPoF == 0 ? 0 : risk.initOtherPoF;
+                    worksheet.Cells["R3"].Value = risk.initPoF == 0 ? 0 : risk.initPoF;
+                    worksheet.Cells["S3"].Value = risk.extThinningPoF == 0 ? 0 : risk.extThinningPoF;
+                    worksheet.Cells["T3"].Value = risk.extEnvCrackingPoF == 0 ? 0 : risk.extEnvCrackingPoF;
+                    worksheet.Cells["U3"].Value = risk.extOtherPoF == 0 ? 0 : risk.extOtherPoF;
+                    worksheet.Cells["V3"].Value = risk.extPoF == 0 ? 0 : risk.extPoF;
+                    worksheet.Cells["W3"].Value = risk.PoF == 0 ? 0 : risk.PoF;
+                    worksheet.Cells["X3"].Value = risk.CurrentRiskCalculation == 0 ? 0 : risk.CurrentRiskCalculation;
+                    worksheet.Cells["Y3"].Value = risk.futureRisk == 0 ? 0 : risk.futureRisk;
                 }
                 SaveFileDialog save = new SaveFileDialog();
                 save.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*xlsx)|*.xlsx";
@@ -2985,5 +3333,39 @@ namespace RBI
                 ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 10, checkTank);
         }
         #endregion
+
+        #region Parameters
+        //<treeListProject_MouseDoubleClick>
+        List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
+        List<UCCoatLiningIsulationCladding> listUCCoating = new List<UCCoatLiningIsulationCladding>();
+        List<UCComponentProperties> listUCComponent = new List<UCComponentProperties>();
+        List<UCEquipmentProperties> listUCEquipment = new List<UCEquipmentProperties>();
+        List<UCMaterial> listUCMaterial = new List<UCMaterial>();
+        List<UCStream> listUCStream = new List<UCStream>();
+        List<UCOperatingCondition> listUCOperating = new List<UCOperatingCondition>();
+        List<UCRiskFactor> listUCRiskFactor = new List<UCRiskFactor>();
+        private List<TestData> listTree1 = null;
+        private int IDProposal = 0;
+        private bool checkTank = false;
+        //</treeListProject_MouseDoubleClick>
+
+        //<initDataforTreeList>
+        List<TestData> listTree;
+        //</initDataforTreeList>
+
+        //<treeListProject_FocusedNodeChanged>
+        private int selectedLevel = -1;
+        //</treeListProject_FocusedNodeChanged>
+
+        //<btnPlanInsp_ItemClick>
+        List<InspectionPlant> listInspectionPlan = new List<InspectionPlant>();
+        //</btnPlanInsp_ItemClick>
+        List<ucTabNormal> listUC = new List<ucTabNormal>();
+        List<ucTabTank> listUCTank = new List<ucTabTank>();
+
+        private int IDNodeTreeList = 0;
+        #endregion
+
+        
     }
 }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonForm1));
             this.ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnPlant = new DevExpress.XtraBars.BarButtonItem();
@@ -40,7 +39,7 @@
             this.barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
             this.btnSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
-            this.popNew = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.popNew = new DevExpress.XtraBars.PopupMenu();
             this.btnNewEq = new DevExpress.XtraBars.BarButtonItem();
             this.btnNewCom = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem7 = new DevExpress.XtraBars.BarButtonItem();
@@ -50,7 +49,7 @@
             this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem17 = new DevExpress.XtraBars.BarButtonItem();
-            this.popExportExcel = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.popExportExcel = new DevExpress.XtraBars.PopupMenu();
             this.btnExportGeneral = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportDetail = new DevExpress.XtraBars.BarButtonItem();
             this.btnInspectionPlan = new DevExpress.XtraBars.BarButtonItem();
@@ -76,7 +75,7 @@
             this.btnImportNormalExcel = new DevExpress.XtraBars.BarButtonItem();
             this.btnImportExcelTank = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
-            this.popImportExcel = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.popImportExcel = new DevExpress.XtraBars.PopupMenu();
             this.btnImportInspection = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -91,13 +90,13 @@
             this.ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.repositoryItemMarqueeProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar();
             this.ribStatusbar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
-            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
+            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel();
             this.xtraTabData = new DevExpress.XtraTab.XtraTabControl();
             this.xTabHome = new DevExpress.XtraTab.XtraTabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.treeListProject = new DevExpress.XtraTreeList.TreeList();
-            this.imageTreeList = new DevExpress.Utils.ImageCollection(this.components);
-            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
+            this.imageTreeList = new DevExpress.Utils.ImageCollection();
+            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager();
             this.dockPanel2 = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.dockPanel1 = new DevExpress.XtraBars.Docking.DockPanel();
@@ -121,7 +120,7 @@
             this.navRiskFactor = new DevExpress.XtraNavBar.NavBarItem();
             this.navCA = new DevExpress.XtraNavBar.NavBarItem();
             this.navRiskSummary = new DevExpress.XtraNavBar.NavBarItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.navGrRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::RBI.WaitForm1), true, true);
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
@@ -376,6 +375,7 @@
             this.btnExportGeneral.Id = 4;
             this.btnExportGeneral.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnExportGeneral.ImageOptions.Image")));
             this.btnExportGeneral.Name = "btnExportGeneral";
+            this.btnExportGeneral.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportGeneral_ItemClick);
             // 
             // btnExportDetail
             // 
@@ -383,6 +383,7 @@
             this.btnExportDetail.Id = 5;
             this.btnExportDetail.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnExportDetail.ImageOptions.Image")));
             this.btnExportDetail.Name = "btnExportDetail";
+            this.btnExportDetail.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportDetail_ItemClick);
             // 
             // btnInspectionPlan
             // 
@@ -390,6 +391,7 @@
             this.btnInspectionPlan.Id = 6;
             this.btnInspectionPlan.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnInspectionPlan.ImageOptions.Image")));
             this.btnInspectionPlan.Name = "btnInspectionPlan";
+            this.btnInspectionPlan.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnInspectionPlan_ItemClick);
             // 
             // btnBackupData
             // 
@@ -666,14 +668,12 @@
             // 
             // xtraTabData
             // 
-            this.xtraTabData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.xtraTabData.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InActiveTabPageAndTabControlHeader;
-            this.xtraTabData.Location = new System.Drawing.Point(400, 147);
+            this.xtraTabData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.xtraTabData.Location = new System.Drawing.Point(398, 147);
             this.xtraTabData.Name = "xtraTabData";
             this.xtraTabData.SelectedTabPage = this.xTabHome;
-            this.xtraTabData.Size = new System.Drawing.Size(684, 517);
+            this.xtraTabData.Size = new System.Drawing.Size(686, 520);
             this.xtraTabData.TabIndex = 2;
             this.xtraTabData.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xTabHome});
@@ -690,7 +690,7 @@
             this.xTabHome.Controls.Add(this.panel1);
             this.xTabHome.Name = "xTabHome";
             this.xTabHome.ShowCloseButton = DevExpress.Utils.DefaultBoolean.False;
-            this.xTabHome.Size = new System.Drawing.Size(682, 490);
+            this.xTabHome.Size = new System.Drawing.Size(684, 493);
             this.xTabHome.Text = "Home";
             // 
             // panel1
@@ -700,7 +700,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(682, 490);
+            this.panel1.Size = new System.Drawing.Size(684, 493);
             this.panel1.TabIndex = 1;
             // 
             // treeListProject
@@ -777,7 +777,6 @@
             this.dockPanel1.OriginalSize = new System.Drawing.Size(187, 200);
             this.dockPanel1.Size = new System.Drawing.Size(187, 520);
             this.dockPanel1.Text = "Main Menu";
-            this.dockPanel1.Collapsing += new DevExpress.XtraBars.Docking.DockPanelEventHandler(this.dockPanel1_Collapsing);
             // 
             // dockPanel1_Container
             // 

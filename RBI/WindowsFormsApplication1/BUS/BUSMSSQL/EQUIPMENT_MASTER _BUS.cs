@@ -15,6 +15,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getIDbyNumber(number);
         }
+        public List<int> getAllEqIDbyFaciID(int ID)
+        {
+            return DAL.getAlleqIDbyFaciID(ID);
+        }
         public void add(EQUIPMENT_MASTER obj)
         {
             DAL.add( obj.EquipmentNumber, obj.EquipmentTypeID, obj.EquipmentName, obj.CommissionDate, obj.DesignCodeID, obj.SiteID, obj.FacilityID, obj.ManufacturerID, obj.PFDNo, obj.ProcessDescription, obj.EquipmentDesc, obj.IsArchived, obj.Archived, obj.ArchivedBy);
@@ -26,6 +30,10 @@ namespace RBI.BUS.BUSMSSQL
         public void delete(EQUIPMENT_MASTER obj)
         {
             DAL.delete(obj.EquipmentID);
+        }
+        public void delete(int eqID)
+        {
+            DAL.delete(eqID);
         }
         public List<EQUIPMENT_MASTER> getDataSource()
         {

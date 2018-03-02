@@ -452,5 +452,36 @@ namespace RBI.DAL.MSSQL
             }
             return check;
         }
+        public List<int> getIDbyEqID(int EqID)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            List<int> ListCompID = new List<int>();
+            String sql = "Select ComponentID from rbi.dbo.COMPONENT_MASTER where EquipmentID = '" + EqID + "'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            ListCompID.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Get Data Fail");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return ListCompID;
+        }
     }
 }

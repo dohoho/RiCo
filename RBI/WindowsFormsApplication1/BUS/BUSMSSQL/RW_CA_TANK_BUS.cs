@@ -23,6 +23,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.delete(obj.ID);
         }
+        public void delete(int ID)
+        {
+            DAL.delete(ID);
+        }
         public RW_CA_TANK getData(int ID)
         {
             return DAL.getData(ID);

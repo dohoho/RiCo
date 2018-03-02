@@ -512,6 +512,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
         /// <returns></returns>
         private float DFB_LINNING(float age)
         {
+            Console.WriteLine("Linning type " + LinningType);
             String SUSCEP_LINNING;
             if (LinningType == "Organic")
             {
@@ -521,11 +522,11 @@ namespace RBI.BUS.BUSMSSQL_CAL
                     SUSCEP_LINNING = "WithinLast6Years";
                 else
                     SUSCEP_LINNING = "MoreThan6Years";
-
                 return DAL_CAL.GET_TBL_65(YEAR_IN_SERVICE, SUSCEP_LINNING);
             }
             else
             {
+                age = age > 25 ? 25 : age;
                 return DAL_CAL.GET_TBL_64((int)age, LinningType);
             }
         }
@@ -1791,7 +1792,6 @@ namespace RBI.BUS.BUSMSSQL_CAL
         private String HTHA_SUSCEP(float age)
         {
             float PV = HTHA_PV(age);
-            Debug.WriteLine("pv " + PV.ToString());
             String SUSCEP = null;
             if (HTHA_PRESSURE > 8.274) HTHA_MATERIAL = "1.25Cr-0.5Mo";
             switch (HTHA_MATERIAL)
@@ -2156,36 +2156,61 @@ namespace RBI.BUS.BUSMSSQL_CAL
         private float DFB_PIPE()
         {
             float DFB_PF = 1, DFB_AS = 1, FFB_AS = 1, DFB_CF = 1;
-            if (PREVIOUS_FAIL == "Greater than one")
-                DFB_PF = 500;
-            else if (PREVIOUS_FAIL == "One")
-                DFB_PF = 50;
-            else
-                DFB_PF = 1;
-
-            if (AMOUNT_SHAKING == "Severe")
-                DFB_AS = 500;
-            else if (AMOUNT_SHAKING == "Moderate")
-                DFB_AS = 50;
-            else
-                DFB_AS = 1;
-
-            if (TIME_SHAKING == "13 to 52 weeks")
-                FFB_AS = 0.02f;
-            else if (TIME_SHAKING == "2 to 13 weeks")
-                FFB_AS = 0.2f;
-            else
-                FFB_AS = 1;
-
-            if (CYLIC_LOAD == "Reciprocating machinery")
-                DFB_CF = 50;
-            else if (CYLIC_LOAD == "PRV chatter")
-                DFB_CF = 25;
-            else if (CYLIC_LOAD == "Valve with high pressure drop")
-                DFB_CF = 10;
-            else
-                DFB_CF = 1;
-
+            
+            switch(PREVIOUS_FAIL)
+            {
+                case "Greater than one":
+                    DFB_PF = 500;
+                    break;
+                case "One":
+                    DFB_PF = 50;
+                    break;
+                default:
+                    DFB_PF = 1;
+                    break;
+            }
+            
+            switch(AMOUNT_SHAKING)
+            {
+                case "Severe":
+                    DFB_AS = 500;
+                    break;
+                case "Moderate":
+                    DFB_AS = 50;
+                    break;
+                default:
+                    DFB_AS = 1;
+                    break;
+            }
+            
+            switch(TIME_SHAKING)
+            {
+                case "13 to 52 weeks":
+                    FFB_AS = 0.02f;
+                    break;
+                case "2 to 13 weeks":
+                    FFB_AS = 0.2f;
+                    break;
+                default:
+                    FFB_AS = 1;
+                    break;
+            }
+            
+            switch (CYLIC_LOAD)
+            {
+                case "Reciprocating machinery":
+                    DFB_CF = 50;
+                    break;
+                case "PRV chatter":
+                    DFB_CF = 25;
+                    break;
+                case "Valve with high pressure drop":
+                    DFB_CF = 10;
+                    break;
+                default:
+                    DFB_CF = 1;
+                    break;
+            }
             return Math.Max(DFB_PF, Math.Max(DFB_AS * FFB_AS, DFB_CF));
         }
         public float DF_PIPE()

@@ -11,6 +11,7 @@ namespace RBI.BUS.BUSMSSQL
     class FACILITY_BUS
     {
         FACILITY_ConnectUtils DAL = new FACILITY_ConnectUtils();
+        
         public void add(FACILITY obj)
         {
             DAL.add(obj.SiteID, obj.FacilityName, obj.ManagementFactor);
@@ -22,6 +23,10 @@ namespace RBI.BUS.BUSMSSQL
         public void delete(FACILITY obj)
         {
             DAL.delete(obj.FacilityID);
+        }
+        public void delete(int ID)
+        {
+            DAL.delete(ID);
         }
         public List<FACILITY> getDataSource()
         {
@@ -58,6 +63,10 @@ namespace RBI.BUS.BUSMSSQL
         public int getLastFacilityID()
         {
             return DAL.getLastFacilityID();
+        }
+        public List<int> getAllFaciIDbySiteID(int SiteID)
+        {
+            return DAL.getIDbySiteID(SiteID);
         }
     }
 }

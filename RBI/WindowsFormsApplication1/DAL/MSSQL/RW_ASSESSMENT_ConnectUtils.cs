@@ -580,6 +580,33 @@ namespace RBI.DAL.MSSQL
             }
             return temp;
         }
+        public List<int> getAllIDbyComponentID(int ComponentID)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            string sql = "Select ID from rbi.dbo.RW_ASSESSMENT where ComponentID = '" + ComponentID + "'";
+            List<int> listID = new List<int>();
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            listID.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Get list ID fail." + ex.ToString());
+            }
+            return listID;
+        }
     }
 }
 

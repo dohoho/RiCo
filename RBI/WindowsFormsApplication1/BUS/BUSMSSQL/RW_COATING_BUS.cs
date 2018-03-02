@@ -24,6 +24,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.delete(obj.ID);
         }
+        public void delete(int ID)
+        {
+            DAL.delete(ID);
+        }
         public List<RW_COATING> getDataSource()
         {
             return DAL.getDataSource();

@@ -584,7 +584,7 @@ namespace RBI.DAL.MSSQL_CAL
             float data = 0;
             conn = MSSQLDBUtils.GetDBConnection();
             conn.Open();
-            String sql = "USE[rbi] SELECT [" + SUSCEP + "] FROM [rbi].[dbo].[TBL_65_DM_LINNING_ORGANIC] WHERE [YearInService] = '" + YEAR + "'";
+            String sql = "SELECT "+SUSCEP+" FROM dbo.TBL_65_DM_LINNING_ORGANIC WHERE YearInService = '"+YEAR+"'";
             try
             {
                 SqlCommand cmd = new SqlCommand();
@@ -592,12 +592,13 @@ namespace RBI.DAL.MSSQL_CAL
                 cmd.CommandText = sql;
                 using (DbDataReader reader = cmd.ExecuteReader())
                 {
-                    data = (float)reader.GetDouble(0);
+                    while(reader.Read())
+                        data = (float)reader.GetDouble(0);
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                //MessageBox.Show("GET DF_LIN FAIL!");
+                MessageBox.Show(ex.ToString(),"GET DF_LIN FAIL!");
             }
             finally
             {

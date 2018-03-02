@@ -28,6 +28,10 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.delete(obj.ComponentID);
         }
+        public void delete(int comID)
+        {
+            DAL.delete(comID);
+        }
         public List<COMPONENT_MASTER> getDataSource()
         {
             return DAL.getDataSource();
@@ -59,6 +63,10 @@ namespace RBI.BUS.BUSMSSQL
         public string getComponentNumber(int comID)
         {
             return DAL.getComponentNumber(comID);
+        }
+        public List<int> getAllIDbyEquipmentID(int ID)
+        {
+            return DAL.getIDbyEqID(ID);
         }
     }
 }
