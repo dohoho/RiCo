@@ -49,6 +49,7 @@ namespace RBI
             treeListProject.OptionsView.ShowColumns = false;
             treeListProject.OptionsView.ShowHorzLines = true;
             treeListProject.OptionsView.ShowVertLines = false;
+            treeListProject.ExpandAll();
             barStaticItem1.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
@@ -1166,14 +1167,14 @@ namespace RBI
             cal.STEAM_OUT = eq.SteamOutWaterFlush == 1 ? true : false;
             //</SCC CAUSTIC>
 
-            //<input SSC Amine>
+            //<input SCC Amine>
             cal.AMINE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[3]);
             cal.AMINE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[3]);
             cal.AMINE_EXPOSED = st.ExposedToGasAmine == 1 ? true : false;
             cal.AMINE_SOLUTION = st.AmineSolution;
-            //</input SSC Amine>
+            //</input SCC Amine>
 
-            //<input Sulphide Stress Cracking>
+            //<input SCC Sulphide Stress Cracking>
             cal.ENVIRONMENT_H2S_CONTENT = st.H2S == 1 ? true : false;
             cal.AQUEOUS_OPERATOR = st.AqueousOperation == 1 ? true : false;
             cal.AQUEOUS_SHUTDOWN = st.AqueousShutdown == 1 ? true : false;
@@ -1352,12 +1353,14 @@ namespace RBI
             Df[20] = cal.DF_PIPE();
             for(int i = 0; i < 14; i++)
             {
-                Console.WriteLine("age[{0}] {1} ",i, age[i],Df[i]);
+                Console.WriteLine("age[{0}] {1} ",i, age[i]);
+            }
+            for(int i = 0; i < 21; i++)
+            {
                 Console.WriteLine("Df[{0}] {1}", i, Df[i]);
             }
-            
-            List<float> DFSSCAgePlus3 = new List<float>();
-            List<float> DFSSCAgePlus6 = new List<float>();
+            List<float> DFSCCAgePlus3 = new List<float>();
+            List<float> DFSCCAgePlus6 = new List<float>();
             float[] thinningPlusAge = { 0, 0 };
             float[] linningPlusAge = { 0, 0 };
             float[] DF_HTHAPlusAge = { 0, 0 };
@@ -1388,7 +1391,6 @@ namespace RBI
                             damage.DF3 = cal.DF_THIN(age[0] + 6);
                             thinningPlusAge[0] = damage.DF2;
                             thinningPlusAge[1] = damage.DF3;
-                            Console.WriteLine("Thinning 1 {0}, Thinning 2 {1}", thinningPlusAge[0], thinningPlusAge[1]);
                             break;
                         case 1: //Linning
                             damage.DF2 = cal.DF_LINNING(age[1] + 3);
@@ -1399,56 +1401,56 @@ namespace RBI
                         case 2: //Caustic
                             damage.DF2 = cal.DF_CAUSTIC(age[2] + 3);
                             damage.DF3 = cal.DF_CAUSTIC(age[2] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 3: //Amine
                             damage.DF2 = cal.DF_AMINE(age[3] + 3);
                             damage.DF3 = cal.DF_AMINE(age[3] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 4: //Sulphide
                             damage.DF2 = cal.DF_SULPHIDE(age[4] + 3);
                             damage.DF3 = cal.DF_SULPHIDE(age[4] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 5: //HIC/SOHIC-H2S
                             damage.DF2 = cal.DF_HICSOHIC_H2S(age[5] + 3);
                             damage.DF3 = cal.DF_HICSOHIC_H2S(age[5] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 6: //Carbonate
                             damage.DF2 = cal.DF_CACBONATE(age[6] + 3);
                             damage.DF3 = cal.DF_CACBONATE(age[6] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 7: //PTA (Polythionic Acid Stress Corrosion Cracking)
                             damage.DF2 = cal.DF_PTA(age[7] + 3);
                             damage.DF3 = cal.DF_PTA(age[7] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 8: //CLSCC (Chloride Stress Corrosion Cracking)
                             damage.DF2 = cal.DF_CLSCC(age[8] + 3);
                             damage.DF3 = cal.DF_CLSCC(age[8] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 9: //HSC-HF
                             damage.DF2 = cal.DF_HSCHF(age[9] + 3);
                             damage.DF3 = cal.DF_HSCHF(age[9] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 10: //HIC/SOHIC-HF
                             damage.DF2 = cal.DF_HIC_SOHIC_HF(age[10] + 3);
                             damage.DF3 = cal.DF_HIC_SOHIC_HF(age[10] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
+                            DFSCCAgePlus3.Add(damage.DF2);
+                            DFSCCAgePlus6.Add(damage.DF3);
                             break;
                         case 11: //External Corrosion
                             damage.DF2 = cal.DF_EXTERNAL_CORROSION(age[11] + 3);
@@ -1488,8 +1490,8 @@ namespace RBI
                 }
             }
             
-            //Tính DF_Thin_Total
-            /*
+            /*  Tính DF_Thin_Total
+             *  page 2-11 (125/654)
              *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
              *  Df_thinning_total = Df_thinning  
              */
@@ -1497,23 +1499,27 @@ namespace RBI
             DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
             DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
             DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-            Console.WriteLine("Df Thinning linning {0} {1} {2}", DF_Thin_Total[0], DF_Thin_Total[1], DF_Thin_Total[2]);
-            Console.WriteLine("Internal lining " + linningPlusAge[0] + " " + linningPlusAge[1]);
-            Console.WriteLine("Year in service " + cal.YEAR_IN_SERVICE);
-            //Tính Df_SSC_Total
-            float[] DF_SSC_Total = { 0, 0, 0 };
-            DF_SSC_Total[0] = Df[2];
+            
+
+            /*  Tính Df_SCC_Total
+             *  Df_SCC_Total = Max(Df_caustic, Df_Anime, Df_SSC, Df_HIC/SOHIC-H2S, Df_Carbonate, Df_PTA, Df_CLSCC, Df_HSC-HF, Df_HIC/SOHIC-HF)
+             */
+            float[] DF_SCC_Total = { 0, 0, 0 };
+            DF_SCC_Total[0] = Df[2];
             for (int i = 2; i < 11; i++)
             {
-                if (DF_SSC_Total[0] < Df[i])
-                    DF_SSC_Total[0] = Df[i];
+                if (DF_SCC_Total[0] < Df[i])
+                    DF_SCC_Total[0] = Df[i];
             }
-            if (DFSSCAgePlus3.Count != 0)
+            //Console.WriteLine("Df_SCC Total 1 " + DF_SCC_Total[0]);
+            if (DFSCCAgePlus3.Count != 0)
             {
-                DF_SSC_Total[1] = DFSSCAgePlus3.Max();
-                DF_SSC_Total[2] = DFSSCAgePlus6.Max();
+                DF_SCC_Total[1] = DFSCCAgePlus3.Max();
+                DF_SCC_Total[2] = DFSCCAgePlus6.Max();
+                //Console.WriteLine("Df_SCC Total 2 " + DF_SCC_Total[1]);
+                //Console.WriteLine("Df_SCC Total 3 " + DF_SCC_Total[2]);
             }
-            //Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
+            
             //Tính DF_Ext_Total
             float DF_Ext_Total = Df[11];
             for (int i = 12; i < 15; i++)
@@ -1550,14 +1556,14 @@ namespace RBI
             switch (ThinningType)
             {
                 case "Local":
-                    DF_Total[0] = Math.Max(DF_Thin_Total[0], DF_Ext_Total) + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20];
-                    DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
-                    DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
+                    DF_Total[0] = Math.Max(DF_Thin_Total[0], DF_Ext_Total) + DF_SCC_Total[0] + Df[15] + DF_Brit_Total + Df[20];
+                    DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SCC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
+                    DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SCC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
                     break;
                 case "General":
-                    DF_Total[0] = DF_Thin_Total[0] + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
-                    DF_Total[1] = DF_Thin_Total[1] + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
-                    DF_Total[2] = DF_Thin_Total[1] + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
+                    DF_Total[0] = DF_Thin_Total[0] + DF_SCC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
+                    DF_Total[1] = DF_Thin_Total[1] + DF_SCC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
+                    DF_Total[2] = DF_Thin_Total[1] + DF_SCC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
                     break;
                 default:
                     break;
@@ -1583,9 +1589,9 @@ namespace RBI
             fullPOF.FatigueAP1 = Df[20];
             fullPOF.FatigueAP2 = Df[20];
             fullPOF.FatigueAP3 = Df[20];
-            fullPOF.SCCAP1 = DF_SSC_Total[0];
-            fullPOF.SCCAP2 = DF_SSC_Total[1];
-            fullPOF.SCCAP3 = DF_SSC_Total[2];
+            fullPOF.SCCAP1 = DF_SCC_Total[0];
+            fullPOF.SCCAP2 = DF_SCC_Total[1];
+            fullPOF.SCCAP3 = DF_SCC_Total[2];
             fullPOF.TotalDFAP1 = DF_Total[0];
             fullPOF.TotalDFAP2 = DF_Total[1];
             fullPOF.TotalDFAP3 = DF_Total[2];
@@ -2202,7 +2208,7 @@ namespace RBI
             DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
             DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
             DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-            Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
+            //Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
             //Tính Df_SSC_Total
             float[] DF_SSC_Total = { 0, 0, 0 };
             DF_SSC_Total[0] = Df[2];
@@ -2216,7 +2222,7 @@ namespace RBI
                 DF_SSC_Total[1] = DFSSCAgePlus3.Max();
                 DF_SSC_Total[2] = DFSSCAgePlus6.Max();
             }
-            Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
+            //Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
 
             /////Tính DF_Ext_Total
             float DF_Ext_Total = Df[11];
@@ -2300,13 +2306,13 @@ namespace RBI
             FACILITY_BUS faciBus = new FACILITY_BUS();
             FMS = faciBus.getFMS(eqMaBus.getSiteID(equipmentID));
             fullPOF.FMS = FMS;
-            Console.WriteLine("FMS " + FMS);
+            //Console.WriteLine("FMS " + FMS);
             //get GFFtotal
             float GFFTotal = 0;
             API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
             GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
             fullPOF.GFFTotal = GFFTotal;
-            Console.WriteLine("GFF total " + GFFTotal);
+            //Console.WriteLine("GFF total " + GFFTotal);
             fullPOF.ThinningType = ThinningType;
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;

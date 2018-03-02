@@ -445,15 +445,21 @@ namespace RBI.BUS.BUSMSSQL_CAL
                     Fam = 5;
                 else
                     Fam = 1;
-
-                if (AdjustmentSettle == "Recorded settlement exceeds API 653 criteria")
-                    Fsm = 2;
-                else if (AdjustmentSettle == "Recorded settlement meets API 653 criteria")
-                    Fsm = 1;
-                else if (AdjustmentSettle == "Settlement never evaluated")
-                    Fsm = 1.5f;
-                else
-                    Fsm = 1;
+                switch(AdjustmentSettle)
+                { 
+                    case "Recorded settlement exceeds API 653 criteria":
+                        Fsm = 2;
+                        break;
+                    case "Recorded settlement meets API 653 criteria":
+                        Fsm = 1;
+                        break;
+                    case "Settlement never evaluated":
+                        Fsm = 1.5f;
+                        break;
+                    default:
+                        Fsm = 1;
+                        break;
+                }
             }
             switch(OnlineMonitoring)
             {
@@ -493,16 +499,6 @@ namespace RBI.BUS.BUSMSSQL_CAL
                     Fom = 1;
                     break;
             }
-            //if (OnlineMonitoring == "Amine high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Amine high velocity corrosion - Key process variable" || OnlineMonitoring == "Amine low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Electrical resistance probes" || OnlineMonitoring == "HCI corrosion - Key process variable" || OnlineMonitoring == "HF corrosion - Key process variable" || OnlineMonitoring == "High temperature H2S/H2 corrosion - Electrical resistance probes" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes"
-            //    || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable" || OnlineMonitoring == "Sour water high velocity corrosion - Key process variable" || OnlineMonitoring == "Sour water low velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes")
-            //    Fom = 10;
-            //else if (OnlineMonitoring == "Amine low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "HCI corrosion - Corrosion coupons" || OnlineMonitoring == "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sour water high velocity corrosion - Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Corrosion coupons" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons")
-            //    Fom = 2;
-            //else if (OnlineMonitoring == "Amine low velocity corrosion - Key process variable" || OnlineMonitoring == "HCI corrosion - Key process variable & Electrical resistance probes" || OnlineMonitoring == "Sour water low velocity corrosion - Key process variable" || OnlineMonitoring == "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes" || OnlineMonitoring == "Sulfuric acid(H2S / H2) corrosion low velocity - Key process parameters")
-            //    Fom = 20;
-            //else
-            //    Fom = 1;
-
             return DFB_THIN(age) * Fip * Fdl * Fwd * Fsm * Fam / Fom;
         }
 
@@ -512,7 +508,6 @@ namespace RBI.BUS.BUSMSSQL_CAL
         /// <returns></returns>
         private float DFB_LINNING(float age)
         {
-            Console.WriteLine("Linning type " + LinningType);
             String SUSCEP_LINNING;
             if (LinningType == "Organic")
             {
@@ -522,6 +517,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
                     SUSCEP_LINNING = "WithinLast6Years";
                 else
                     SUSCEP_LINNING = "MoreThan6Years";
+                YEAR_IN_SERVICE = YEAR_IN_SERVICE > 25 ? 25 : YEAR_IN_SERVICE;
                 return DAL_CAL.GET_TBL_65(YEAR_IN_SERVICE, SUSCEP_LINNING);
             }
             else
@@ -1889,7 +1885,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
         ///<summary>
         /// CAL BRITTLE
         ///</summary>
-        private float DFB_BRIITLE()
+        private float DFB_BRITTLE()
         {
             float TEMP_BRITTLE = Math.Min(MIN_DESIGN_TEMP, MIN_OP_TEMP);
             if (PWHT)
@@ -1902,9 +1898,9 @@ namespace RBI.BUS.BUSMSSQL_CAL
             if (CARBON_ALLOY && (CRITICAL_TEMP < MIN_DESIGN_TEMP || MAX_OP_TEMP < MIN_DESIGN_TEMP))
             {
                 if (LOWEST_TEMP)
-                    return DFB_BRIITLE() * 0.01f;
+                    return DFB_BRITTLE() * 0.01f;
                 else
-                    return DFB_BRIITLE();
+                    return DFB_BRITTLE();
             }
             else
                 return 0;
@@ -1968,7 +1964,9 @@ namespace RBI.BUS.BUSMSSQL_CAL
             {
                 float TEMP_EMBRITTLE = Math.Min(MIN_DESIGN_TEMP, MIN_OP_TEMP) - (REF_TEMP + DELTA_FATT);
                 if (PWHT)
+                {
                     return DAL_CAL.GET_TBL_215(API_TEMP(TEMP_EMBRITTLE), API_SIZE_BRITTLE(BRITTLE_THICK));
+                }
                 else
                     return DAL_CAL.GET_TBL_214(API_TEMP(TEMP_EMBRITTLE), API_SIZE_BRITTLE(BRITTLE_THICK));
             }
@@ -1981,6 +1979,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
         ///</summary>
         public float DF_885()
         {
+            Console.WriteLine("hasdjha " + CHROMIUM_12 + MIN_OP_TEMP);
             if (CHROMIUM_12 && !(MIN_OP_TEMP > 566 || MAX_OP_TEMP < 371))
             {
                 float TEMP_885 = Math.Min(MIN_DESIGN_TEMP, MIN_OP_TEMP) - REF_TEMP;
