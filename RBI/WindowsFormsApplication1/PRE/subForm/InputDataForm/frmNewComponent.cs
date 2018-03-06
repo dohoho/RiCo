@@ -275,6 +275,15 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             if (txtComponentNumber.Text == "" || cbComponentType.Text == "" || cbAPIComponentType.Text == "")
                 return;
+            List<string> comNum = componentMaster_Bus.getAllComponentNumber();
+            foreach(string s in comNum)
+            {
+                if (s == txtComponentNumber.Text) 
+                {
+                    MessageBox.Show("Component Number already exist!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
             ButtonOKClicked = true;
             if (doubleEditClicked)
             {

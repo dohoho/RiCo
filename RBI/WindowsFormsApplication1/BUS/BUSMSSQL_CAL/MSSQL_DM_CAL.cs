@@ -1735,13 +1735,11 @@ namespace RBI.BUS.BUSMSSQL_CAL
             {
                 if (SCP == "High")
                     SCP = "Medium";
-                else if (SCP == "Medium")
+                else// if (SCP == "Medium")
                     SCP = "Low";
-                else
-                    SCP = "Low";
+                //else
+                //    SCP = "Low";
             }
-            else
-                SCP = ADJUST_ISULATION();
             return SCP;
         }
         private float DFB_CUI_CLSCC()
@@ -2229,27 +2227,46 @@ namespace RBI.BUS.BUSMSSQL_CAL
                         FCA = 2;
                         break;
                 }
-                if (NUM_PIPE == "Up to 5")
-                    FPC = 0.5f;
-                else if (NUM_PIPE == "6 to 10")
-                    FPC = 1;
-                else
-                    FPC = 2;
+                
+                switch(NUM_PIPE)
+                {
+                    case "Up to 5":
+                        FPC = 0.5f;
+                        break;
+                    case "6 to 10":
+                        FPC = 1;
+                        break;
+                    default:
+                        FPC = 2;
+                        break;
+                }
 
-                if (PIPE_CONDITION == "Broken gussets or gussets welded directly to pipe" || PIPE_CONDITION == "Missing or damage supports, improper support")
-                    FCP = 2;
-                else
-                    FCP = 1;
+                switch(PIPE_CONDITION)
+                {
+                    case "Broken gussets or gussets welded directly to pipe":
+                    case "Missing or damage supports, improper support":
+                        FCP = 2;
+                        break;
+                    default:
+                        FCP = 1;
+                        break;
+                }
 
-                if (JOINT_TYPE == "Sweepolets")
-                    FJB = 0.02f;
-                else if (JOINT_TYPE == "Piping tee weldolets")
-                    FJB = 0.2f;
-                else if (JOINT_TYPE == "Threaded, socket welded, or saddle on")
-                    FJB = 2;
-                else
-                    FJB = 1;
-
+                switch(JOINT_TYPE)
+                {
+                    case "Sweepolets":
+                        FJB = 0.02f;
+                        break;
+                    case "Piping tee weldolets":
+                        FJB = 0.2f;
+                        break;
+                    case "Threaded, socket welded, or saddle on":
+                        FJB = 2;
+                        break;
+                    default:
+                        FJB = 1;
+                        break;
+                }
                 if (BRANCH_DIAMETER == "All branches greater than 2\" Nominal OD")
                     FBD = 0.02f;
                 else

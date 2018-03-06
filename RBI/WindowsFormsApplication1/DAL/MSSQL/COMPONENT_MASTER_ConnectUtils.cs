@@ -483,5 +483,64 @@ namespace RBI.DAL.MSSQL
             }
             return ListCompID;
         }
+        public List<string> getAllComponentNumber()
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            List<string> ListCompID = new List<string>();
+            String sql = "SELECT ComponentNumber FROM rbi.dbo.COMPONENT_MASTER";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            ListCompID.Add(reader.GetString(0));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Get Data Fail");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return ListCompID;
+        }
+        public int getComponentTypeID(string comNum)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            int comTypeID = 0;
+            String sql = "SELECT ComponentTypeID FROM rbi.dbo.COMPONENT_MASTER WHERE ComponentNumber = '"+comNum+"'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        comTypeID = reader.GetInt32(0);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Get Data Fail");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return comTypeID;
+        }
     }
 }

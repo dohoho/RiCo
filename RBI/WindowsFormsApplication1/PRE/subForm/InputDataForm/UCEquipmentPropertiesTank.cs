@@ -63,7 +63,7 @@ namespace RBI.PRE.subForm.InputDataForm
             additemsThermalHistory();
             additemsEnvironmental();
         }
-        public UCEquipmentPropertiesTank(int ID)
+        public UCEquipmentPropertiesTank(int ID, string type)
         {
             InitializeComponent();
             additemsAdjustmentSettlement();
@@ -72,6 +72,8 @@ namespace RBI.PRE.subForm.InputDataForm
             additemsThermalHistory();
             additemsEnvironmental();
             ShowDataToControl(ID);
+            if (type == "Shell")
+                txtDistanceGroundWater.Enabled = false;
         }
         public void ShowDataToControl(int ID)
         {

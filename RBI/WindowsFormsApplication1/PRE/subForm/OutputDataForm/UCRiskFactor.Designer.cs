@@ -370,7 +370,7 @@
             this.tabPoF.Controls.Add(this.groupBox2);
             this.tabPoF.Controls.Add(this.groupBox3);
             this.tabPoF.Name = "tabPoF";
-            this.tabPoF.Size = new System.Drawing.Size(961, 665);
+            this.tabPoF.Size = new System.Drawing.Size(957, 664);
             this.tabPoF.Text = "Probability of Failure";
             // 
             // groupBox2
@@ -458,7 +458,8 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.label39);
             this.groupBox3.Controls.Add(this.label38);

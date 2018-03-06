@@ -203,6 +203,15 @@ namespace RBI.PRE.subForm.InputDataForm
             if (txtEquipmentNumber.Text == "" || cbEquipmentType.Text == "" || dateCommission.DateTime == null || cbDesignCode.Text == "" || cbManufacturer.Text == "")
                 return;
             EQUIPMENT_MASTER_BUS bs = new EQUIPMENT_MASTER_BUS();
+            List<string> eqNum = bs.getListEquipmentNumber();
+            foreach(string s in eqNum)
+            {
+                if(s == txtEquipmentNumber.Text)
+                {
+                    MessageBox.Show("Equipment number already exists!", "Cortek", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
             if (doubleEditClicked)
             {
                 bs.edit(getDataEquipmentMaster());

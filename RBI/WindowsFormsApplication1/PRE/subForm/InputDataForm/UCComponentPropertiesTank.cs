@@ -20,10 +20,17 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             InitializeComponent();
         }
-        public UCComponentPropertiesTank(int ID)
+        public UCComponentPropertiesTank(int ID, string type)
         {
             InitializeComponent();
             ShowDataToControl(ID);
+            if (type == "Shell")
+            {
+                chkConcreteAsphalt.Enabled = false;
+                chkPreventionBarrier.Enabled = false;
+            }
+            else
+                txtShellCourseHeight.Enabled = false;
         }
         private void ShowDataToControl(int ID)
         {

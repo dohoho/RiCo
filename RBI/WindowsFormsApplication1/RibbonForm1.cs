@@ -978,12 +978,26 @@ namespace RBI
                     }
                     else
                     {
+                        COMPONENT_MASTER_BUS busComMaster = new COMPONENT_MASTER_BUS();
+                        int componentTypeID = busComMaster.getComponentTypeID(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString());
+                        string type = null;
+                        switch(componentTypeID)
+                        {
+                            case 8:
+                                type = "Shell";
+                                break;
+                            case 12:
+                                type = "Bottom";
+                                break;
+                            default:
+                                break;
+                        }
                         navCA.Enabled = false;
                         checkTank = true;
-                        ucTabTank ucTabTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal), new UCComponentPropertiesTank(IDProposal), new UCOperatingCondition(IDProposal)
+                        ucTabTank ucTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal, type), new UCComponentPropertiesTank(IDProposal, type), new UCOperatingCondition(IDProposal)
                             , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
-                        listUCTank.Add(ucTabTank);
-                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabTank.ucAss);
+                        listUCTank.Add(ucTank);
+                        addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTank.ucAss);
                     }
                     if (checkTank)
                     {
@@ -1613,6 +1627,9 @@ namespace RBI
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
+            Console.WriteLine("PoF 1 = {0}, Pof2 = {1}, Pof3 = {2}", fullPOF.PoFAP1, fullPOF.PoFAP2, fullPOF.PoFAP3);
+            Console.WriteLine("Total Df1 = {0}, total Df2 = {1}, total df3 = {2}", fullPOF.TotalDFAP1, fullPOF.TotalDFAP1, fullPOF.TotalDFAP1);
+            Console.WriteLine("FMS {0}, Gff {1}", fullPOF.FMS, fullPOF.GFFTotal);
             //lưu kết quả vào bảng RW_DAMAGE_MECHANISM
             RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
             foreach (RW_DAMAGE_MECHANISM d in listDamageMachenism)
@@ -2680,10 +2697,23 @@ namespace RBI
             {
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
                 u.Dock = DockStyle.Fill;
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
+                switch(Num)
+                {   //2 UC cần được cập nhập lại dữ liệu sau mỗi lần tính toán
+                    case 9:
+                        UCRiskFactor rf = new UCRiskFactor(IDProposal);
+                        xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rf);
+                        break;
+                    case 10:
+                        UCRiskSummary rs = new UCRiskSummary(IDProposal);
+                        xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rs);
+                        break;
+                    default:
+                        xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
+                        break;
+                }
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
                 xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
-                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(20, 20);
+                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(80, 80);
                 xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMinSize = new Size(xtraTabData.TabPages.TabControl.SelectedTabPage.Width, xtraTabData.TabPages.TabControl.SelectedTabPage.Height);
             }
         }
