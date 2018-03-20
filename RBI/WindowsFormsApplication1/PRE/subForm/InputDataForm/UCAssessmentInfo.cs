@@ -16,8 +16,6 @@ namespace RBI.PRE.subForm.InputDataForm
     {
         List<COMPONENT_TYPE> listComponentType = new List<COMPONENT_TYPE>();
         COMPONENT_TYPE__BUS componentTypeBus = new COMPONENT_TYPE__BUS();
-        
-        
         public UCAssessmentInfo()
         {
             InitializeComponent();
@@ -87,88 +85,13 @@ namespace RBI.PRE.subForm.InputDataForm
             txtComponentType.Text = comTypeBus.getComponentTypeName(comMa.ComponentTypeID);
             txtAPIComponentType.Text = apiComponentBus.getAPIComponentTypeName(comMa.APIComponentTypeID);
             txtComponentName.Text = comMa.ComponentName;
-            chkRiskLinksEquipmentRisk.Checked = comMa.IsEquipmentLinked == 1 ? true : false;
-            //foreach(RW_ASSESSMENT a in listAssessment)
-            //{
-            //    if(a.ID == ID)
-            //    {
-            //        txtAssessmentName.Text = a.ProposalName;
-            //        ProposalName = a.ProposalName;
-            //        dateAssessmentDate.DateTime = a.AssessmentDate;
-            //        txtRiskAnalysisPeriod.Text = a.RiskAnalysisPeriod.ToString();
-            //        foreach (EQUIPMENT_MASTER e in listEquipmentMaster)
-            //        {
-            //            if (e.EquipmentID == a.EquipmentID)
-            //            {
-            //                txtEquipmentNumber.Text = e.EquipmentNumber;
-            //                dateComissionDate.DateTime = e.CommissionDate;
-            //                txtEquipmentName.Text = e.EquipmentName;
-            //                foreach (EQUIPMENT_TYPE t in listEquipmentType)
-            //                {
-            //                    if (t.EquipmentTypeID == e.EquipmentTypeID)
-            //                        txtEquipmentType.Text = t.EquipmentTypeName;
-            //                }
-            //                foreach (DESIGN_CODE d in listDesignCode)
-            //                {
-            //                    if (d.DesignCodeID == e.DesignCodeID)
-            //                        txtDesignCode.Text = d.DesignCode;
-            //                }
-            //                foreach (FACILITY f in listFacility)
-            //                {
-            //                    if (e.FacilityID == f.FacilityID)
-            //                        txtFacility.Text = f.FacilityName;
-            //                }
-            //                foreach (SITES s in listSite)
-            //                {
-            //                    if (s.SiteID == e.SiteID)
-            //                        txtSites.Text = s.SiteName;
-            //                }
-            //                foreach (MANUFACTURER m in listManu)
-            //                {
-            //                    if (m.ManufacturerID == e.ManufacturerID)
-            //                        txtManufacturer.Text = m.ManufacturerName;
-            //                }
-            //            }
-            //            break;
-            //        }
-            //        foreach (COMPONENT_MASTER c in listComMa)
-            //        {
-            //            if (c.ComponentID == a.ComponentID)
-            //            {
-            //                txtComponentNumber.Text = c.ComponentNumber;
-            //                foreach (COMPONENT_TYPE t in listComponentType)
-            //                {
-            //                    if (c.ComponentTypeID == t.ComponentTypeID)
-            //                    {
-            //                        txtComponentType.Text = t.ComponentTypeName;
-            //                    }
-            //                }
-            //                txtComponentName.Text = c.ComponentName;
-            //                foreach (API_COMPONENT_TYPE a1 in listAPICom)
-            //                {
-            //                    if (a1.APIComponentTypeID == c.APIComponentTypeID)
-            //                    {
-            //                        txtAPIComponentType.Text = a1.APIComponentTypeName;
-            //                    }
-            //                }
-            //            }
-            //            break;
-            //        }
-                    
-            //}
-            //foreach (RW_ASSESSMENT a in listAssessment)
-            //{
-            //    if (a.ID == assID)
-            //    {
-            //        txtAssessmentName.Text = a.ProposalName;
-            //    }
-            //}
-            //đổ dữ liệu lên control cho Equipment
-            
+            chkRiskLinksEquipmentRisk.Checked = comMa.IsEquipmentLinked == 1 ? true : false;  
+        }
 
-            
-            
-            
+        //public event 
+        private void txtAssessmentName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

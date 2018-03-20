@@ -30,7 +30,6 @@ namespace RBI.PRE.subForm.InputDataForm
             addItemsAmineSolutionComposition();
             addItemsTankFluid();
             ShowDataToControl(ID);
-
         }
         private void ShowDataToControl(int ID)
         {

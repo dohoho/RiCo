@@ -1,6 +1,6 @@
 ﻿namespace RBI.PRE.subForm.InputDataForm
 {
-    partial class UCAssessmentInfo
+    public partial class UCAssessmentInfo
     {
         /// <summary> 
         /// Required designer variable.
@@ -504,6 +504,7 @@
             this.txtAssessmentName.Name = "txtAssessmentName";
             this.txtAssessmentName.Size = new System.Drawing.Size(240, 22);
             this.txtAssessmentName.TabIndex = 1;
+            this.txtAssessmentName.TextChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
             // 
             // label5
             // 

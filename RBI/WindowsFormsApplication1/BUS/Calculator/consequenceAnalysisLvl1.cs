@@ -10,7 +10,7 @@ namespace RBI.BUS.Calculator
     class consequenceAnalysisLvl1
     {
         RBICalculatorConn rbi = new RBICalculatorConn();
-        BusEquipmentTemp busTemp = new BusEquipmentTemp();
+        //BusEquipmentTemp busTemp = new BusEquipmentTemp();
 
         ///<summary>
         /// 1Mpa = 145.0377 Psia

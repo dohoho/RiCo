@@ -20,7 +20,6 @@ namespace RBI.PRE.subForm.OutputDataForm
         public UCRisk()
         {
             InitializeComponent();
-            //getData();
             initData();
             this.AutoScroll = true;
         }

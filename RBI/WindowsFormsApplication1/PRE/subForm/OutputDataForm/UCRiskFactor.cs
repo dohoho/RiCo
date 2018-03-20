@@ -17,7 +17,6 @@ namespace RBI.PRE.subForm.OutputDataForm
         public UCRiskFactor()
         {
             InitializeComponent();
-            
         }
         public UCRiskFactor(int ID)
         {
@@ -130,7 +129,9 @@ namespace RBI.PRE.subForm.OutputDataForm
         {
             RW_ASSESSMENT_BUS busAssess = new RW_ASSESSMENT_BUS();
             COMPONENT_MASTER_BUS busCompMaster = new COMPONENT_MASTER_BUS();
-            int compTypeID = busCompMaster.getComponentTypeID(busAssess.getEquipmentID_ComponentID(ID)[1]);
+            int[] temp = busAssess.getEquipmentID_ComponentID(ID);
+            int compTypeID = busCompMaster.getComponentTypeID(temp[1]);
+            Console.WriteLine("tank gi " + temp[1]);
             if (compTypeID == 12)
             {
                 initData_Tank(ID);

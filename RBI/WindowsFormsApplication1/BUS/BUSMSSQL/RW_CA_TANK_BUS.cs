@@ -31,5 +31,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getData(ID);
         }
+        public bool  CheckExistID(int ID)
+        {
+            return DAL.CheckExistID(ID);
+        }
     }
 }

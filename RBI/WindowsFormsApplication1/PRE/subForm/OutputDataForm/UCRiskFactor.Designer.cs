@@ -370,7 +370,7 @@
             this.tabPoF.Controls.Add(this.groupBox2);
             this.tabPoF.Controls.Add(this.groupBox3);
             this.tabPoF.Name = "tabPoF";
-            this.tabPoF.Size = new System.Drawing.Size(957, 664);
+            this.tabPoF.Size = new System.Drawing.Size(961, 665);
             this.tabPoF.Text = "Probability of Failure";
             // 
             // groupBox2
@@ -386,7 +386,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(13, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(949, 116);
+            this.groupBox2.Size = new System.Drawing.Size(953, 116);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Initial Factor";
@@ -516,7 +516,7 @@
             this.groupBox3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(13, 135);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(949, 516);
+            this.groupBox3.Size = new System.Drawing.Size(953, 517);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Damage Factors and Probability of Failure";

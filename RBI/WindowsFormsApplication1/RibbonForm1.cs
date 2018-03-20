@@ -49,7 +49,7 @@ namespace RBI
             treeListProject.OptionsView.ShowColumns = false;
             treeListProject.OptionsView.ShowHorzLines = true;
             treeListProject.OptionsView.ShowVertLines = false;
-            treeListProject.ExpandAll();
+            //treeListProject.ExpandAll();
             barStaticItem1.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
@@ -196,7 +196,6 @@ namespace RBI
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
                     String ThinningType = uc.ucRiskFactor.type;
-                    Console.WriteLine("Thinning Type " + ThinningType);
 
                     Calculation(ThinningType, componentNumber, eq, com, ma, stream, coat, extTemp, caInput);
                     MessageBox.Show("Calculation Finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -251,13 +250,13 @@ namespace RBI
 
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
-                    String ThinningType = "Local"; ;
+                    String ThinningType = uc.ucRiskFactor.type;
                     Calculation_CA_TANK(componentTypeName, apiComName, ThinningType, componentNumber, eq, com, ma, stream, coat, extTemp, caTank);
                     MessageBox.Show("Calculation finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     SaveDatatoDatabase(ass, eq, com, stream, extTemp, coat, ma, caTank);
-                    UCRiskFactor resultRisk = new UCRiskFactor();
-                    resultRisk.ShowDataOutputCA(IDProposal);
-                    resultRisk.riskPoF(IDProposal);
+                    UCRiskFactor resultRisk = new UCRiskFactor(IDProposal);
+                    //resultRisk.ShowDataOutputCA(IDProposal);
+                    //resultRisk.riskPoF(IDProposal);
                     showUCinTabpage(resultRisk);
                 }
 
@@ -959,9 +958,9 @@ namespace RBI
             if (hi.Node != null)
             {
                 IDProposal = listTree1[hi.Node.Id].ID - hi.Node.Level * 100000;
+                Console.WriteLine("ID Proposal " + IDProposal);
                 if (treeListProject.FocusedNode.GetValue(0).ToString() != xtraTabData.SelectedTabPage.Name && treeListProject.FocusedNode.Level == 4)
                 {
-
                     RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
                     int equipmentID = busAss.getEquipmentID(IDProposal);
                     EQUIPMENT_MASTER_BUS busEquipment = new EQUIPMENT_MASTER_BUS();
@@ -1115,18 +1114,11 @@ namespace RBI
         #endregion
 
         #region Function Tu viet
-        private void Calculation(String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_LEVEL_1 caInput)
+        private void PoF(out InputInspectionCalculation insplant, out MSSQL_DM_CAL calDM, out List<RW_DAMAGE_MECHANISM> DMmachenism, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem)
         {
+            InputInspectionCalculation inspl = new InputInspectionCalculation();
+            inspl.ComponentNumber = componentNumber;
             #region PoF
-            int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
-            string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
-                                 "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S",
-                                 "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking",
-                                 "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC",
-                                 "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking",
-                                 "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
-                                 "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
-                                 "Vibration-Induced Mechanical Fatigue" };
             RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
             //get EquipmentID ----> get EquipmentTypeName and APIComponentType
             int equipmentID = assBus.getEquipmentID(IDProposal);
@@ -1136,10 +1128,12 @@ namespace RBI
             COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
             API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
             int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
-            String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
+            string API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
             RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
             MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
             cal.APIComponentType = API_ComponentType_Name;
+            inspl.ApiComponentType = API_ComponentType_Name;
+            inspl.EquipmentID = equipmentID;
             //age = assessment date - comission date
             //DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
 
@@ -1294,7 +1288,6 @@ namespace RBI
             cal.HTHA_PRESSURE = st.H2SPartialPressure * 0.006895f;
             cal.CRITICAL_TEMP = st.CriticalExposureTemperature; //check lai
             cal.DAMAGE_FOUND = com.DamageFoundInspection == 1 ? true : false;
-            Console.WriteLine("Number of Inspection HTHA " + cal.HTHA_NUM_INSP);
             //</HTHA>
 
             //<input Brittle>
@@ -1339,11 +1332,12 @@ namespace RBI
 
             float[] Df = new float[21];
             float[] age = new float[14];
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 13; i++)
             {
                 age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
             }
-            age[13] = historyBus.getAge(componentNumber, DM_Name[13], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+            age[13] = historyBus.getAge(componentNumber, DM_Name[15], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+            inspl.Age = age;
             Df[0] = cal.DF_THIN(age[0]);
             Df[1] = cal.DF_LINNING(age[1]);
             Df[2] = cal.DF_CAUSTIC(age[2]);
@@ -1365,14 +1359,8 @@ namespace RBI
             Df[18] = cal.DF_885();
             Df[19] = cal.DF_SIGMA();
             Df[20] = cal.DF_PIPE();
-            for(int i = 0; i < 14; i++)
-            {
-                Console.WriteLine("age[{0}] {1} ",i, age[i]);
-            }
-            for(int i = 0; i < 21; i++)
-            {
-                Console.WriteLine("Df[{0}] {1}", i, Df[i]);
-            }
+
+            inspl.DF = Df;
             List<float> DFSCCAgePlus3 = new List<float>();
             List<float> DFSCCAgePlus6 = new List<float>();
             float[] thinningPlusAge = { 0, 0 };
@@ -1395,8 +1383,8 @@ namespace RBI
                     damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
                     damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
                     damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
-                    damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], );
-                    damage.LastInspDate = DateTime.Now;
+                    //damage.InspDueDate = tính ở trong Hàm InspectionCalculation = lastInspection + k
+                    damage.LastInspDate = historyBus.getLastInsp(componentNumber, DM_Name[i], eq.CommissionDate);
                     damage.DF1 = Df[i];
                     switch (i)
                     {
@@ -1503,7 +1491,7 @@ namespace RBI
                     listDamageMachenism.Add(damage);
                 }
             }
-            
+            DMmachenism = listDamageMachenism;
             /*  Tính DF_Thin_Total
              *  page 2-11 (125/654)
              *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
@@ -1513,9 +1501,10 @@ namespace RBI
             DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
             DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
             DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-            
 
-            /*  Tính Df_SCC_Total
+
+            /*  
+             * Tính Df_SCC_Total
              *  Df_SCC_Total = Max(Df_caustic, Df_Anime, Df_SSC, Df_HIC/SOHIC-H2S, Df_Carbonate, Df_PTA, Df_CLSCC, Df_HSC-HF, Df_HIC/SOHIC-HF)
              */
             float[] DF_SCC_Total = { 0, 0, 0 };
@@ -1525,16 +1514,16 @@ namespace RBI
                 if (DF_SCC_Total[0] < Df[i])
                     DF_SCC_Total[0] = Df[i];
             }
-            //Console.WriteLine("Df_SCC Total 1 " + DF_SCC_Total[0]);
             if (DFSCCAgePlus3.Count != 0)
             {
                 DF_SCC_Total[1] = DFSCCAgePlus3.Max();
                 DF_SCC_Total[2] = DFSCCAgePlus6.Max();
-                //Console.WriteLine("Df_SCC Total 2 " + DF_SCC_Total[1]);
-                //Console.WriteLine("Df_SCC Total 3 " + DF_SCC_Total[2]);
             }
-            
-            //Tính DF_Ext_Total
+
+            /*
+             * Tính DF_Ext_Total
+             * Df_extd_Total = Max(Df_extcor, Df_CUIF, Df_ext-CLSCC, Df_CUI-CLSCC)
+             */
             float DF_Ext_Total = Df[11];
             for (int i = 12; i < 15; i++)
             {
@@ -1556,17 +1545,26 @@ namespace RBI
                     DF_ext_total3 = listDF_ext2[i];
             }
 
-            //Console.WriteLine("DF_Ext total " + DF_Ext_Total);
-            //Tính DF_Brit_Total
+            /*
+             * Tính DF_Brit_Total
+             * Df_Brit = Max((Df_britfract + Df_tempe), Df_885, Df_sigma)
+             * 
+             */ 
             float DF_Brit_Total = Df[16] + Df[17]; //Df_brittle + Df_temp_Embrittle
             for (int i = 18; i < 21; i++)
             {
                 if (DF_Brit_Total < Df[i])
                     DF_Brit_Total = Df[i];
             }
-            //Tính Df_Total
+            
+            float[] dftotal = { DF_Thin_Total[0], DF_SCC_Total[0], DF_Ext_Total, DF_Brit_Total };
+            inspl.DFTotal = dftotal;
+            
+            /*
+             * Tính Df_Total
+             * DF_Total = Max(Df_thinning, DF_ext) + DF_SCC + DF_HTHA + DF_Brit + DF_Pipe ---> if thinning is local 
+             */
             float[] DF_Total = { 0, 0, 0 };
-            //DF_Total = Max(Df_thinning, DF_ext) + DF_SCC + DF_HTHA + DF_Brit + DF_Pipe ---> if thinning is local
             switch (ThinningType)
             {
                 case "Local":
@@ -1574,12 +1572,10 @@ namespace RBI
                     DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SCC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
                     DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SCC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
                     break;
-                case "General":
+                default:
                     DF_Total[0] = DF_Thin_Total[0] + DF_SCC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
                     DF_Total[1] = DF_Thin_Total[1] + DF_SCC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
                     DF_Total[2] = DF_Thin_Total[1] + DF_SCC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
-                    break;
-                default:
                     break;
             }
             fullPOF.ThinningAP1 = DF_Thin_Total[0];
@@ -1627,146 +1623,888 @@ namespace RBI
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
-            Console.WriteLine("PoF 1 = {0}, Pof2 = {1}, Pof3 = {2}", fullPOF.PoFAP1, fullPOF.PoFAP2, fullPOF.PoFAP3);
-            Console.WriteLine("Total Df1 = {0}, total Df2 = {1}, total df3 = {2}", fullPOF.TotalDFAP1, fullPOF.TotalDFAP1, fullPOF.TotalDFAP1);
-            Console.WriteLine("FMS {0}, Gff {1}", fullPOF.FMS, fullPOF.GFFTotal);
+            inspl.GFFTotal = fullPOF.GFFTotal;
+            inspl.FMS = fullPOF.FMS;
+            insplant = inspl;
+            calDM = cal;
             //lưu kết quả vào bảng RW_DAMAGE_MECHANISM
-            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
-            foreach (RW_DAMAGE_MECHANISM d in listDamageMachenism)
-            {
-                if (damageBus.checkExistDM(d.ID, d.DMItemID))
-                    damageBus.edit(d);
-                else
-                    damageBus.add(d);
-            }
+            
+
             //lưu kết quả vào bảng RW_FULL_POF
             RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
             if (fullPOFBus.checkExistPoF(fullPOF.ID))
                 fullPOFBus.edit(fullPOF);
             else
                 fullPOFBus.add(fullPOF);
-
-            //MessageBox.Show("Df_Thinning = " + cal.DF_THIN(10).ToString() + "\n" +
-            // "Df_Linning = " + cal.DF_LINNING(10).ToString() + "\n" +
-            // "Df_Caustic = " + cal.DF_CAUSTIC(10).ToString() + "\n" +
-            // "Df_Amine = " + cal.DF_AMINE(10).ToString() + "\n" +
-            // "Df_Sulphide = " + cal.DF_SULPHIDE(10).ToString() + "\n" +
-            // "Df_PTA = " + cal.DF_PTA(11).ToString() + "\n" +
-            // "Df_PTA = " + cal.DF_PTA(10) + "\n" +
-            // "Df_CLSCC = " + cal.DF_CLSCC(10) + "\n" +
-            // "Df_HSC-HF = " + cal.DF_HSCHF(10) + "\n" +
-            // "Df_HIC/SOHIC-HF = " + cal.DF_HIC_SOHIC_HF(10) + "\n" +
-            // "Df_ExternalCorrosion = " + cal.DF_EXTERNAL_CORROSION(10) + "\n" +
-            // "Df_CUI = " + cal.DF_CUI(10) + "\n" +
-            // "Df_EXTERNAL_CLSCC = " + cal.DF_EXTERN_CLSCC() + "\n" +
-            // "Df_EXTERNAL_CUI_CLSCC = " + cal.DF_CUI_CLSCC() + "\n" +
-            // "Df_HTHA = " + cal.DF_HTHA(10) + "\n" +
-            // "Df_Brittle = " + cal.DF_BRITTLE() + "\n" +
-            // "Df_Temper_Embrittle = " + cal.DF_TEMP_EMBRITTLE() + "\n" +
-            // "Df_885 = " + cal.DF_885() + "\n" +
-            // "Df_Sigma = " + cal.DF_SIGMA() + "\n" +
-            // "Df_Piping = " + cal.DF_PIPE()+ "\n" +
-            // "Art = " + cal.Art(10)
-            // , "Damage Factor");
-            //</Calculate DF>
             #endregion
-
+        }
+        private void InspectionPlan(InputInspectionCalculation inspl, MSSQL_DM_CAL cal, List<RW_DAMAGE_MECHANISM> DMmachenism, float FC)
+        {
+            #region INSPECTION HISTORY
+            EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
+            int FaciID = eqMaBus.getFacilityID(inspl.EquipmentID);
+            FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
+            float risktaget = busRiskTarget.getRiskTarget(FaciID);
+            float DF_thamchieu = risktaget / (FC * inspl.GFFTotal * inspl.FMS);
+            float[] tempDf = new float[21];
+            int k = 15;
+            InputInspectionCalculation a = new InputInspectionCalculation();
+            float[] age = inspl.Age;
+            for (int i = 1; i < 16; i++)
+            {
+                tempDf[0] = cal.DF_THIN(age[0] + i);
+                tempDf[1] = cal.DF_LINNING(age[1] + i);
+                tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
+                tempDf[3] = cal.DF_AMINE(age[3] + i);
+                tempDf[4] = cal.DF_SULPHIDE(age[4] + i);
+                tempDf[5] = cal.DF_HICSOHIC_H2S(age[5] + i);
+                tempDf[6] = cal.DF_CACBONATE(age[6] + i);
+                tempDf[7] = cal.DF_PTA(age[7] + i);
+                tempDf[8] = cal.DF_CLSCC(age[8] + i);
+                tempDf[9] = cal.DF_HSCHF(age[9] + i);
+                tempDf[10] = cal.DF_HIC_SOHIC_HF(age[10] + i);
+                tempDf[11] = cal.DF_EXTERNAL_CORROSION(age[11] + i);
+                tempDf[12] = cal.DF_CUI(age[12] + i);
+                tempDf[13] = cal.DF_EXTERN_CLSCC();
+                tempDf[14] = cal.DF_CUI_CLSCC();
+                tempDf[15] = cal.DF_HTHA(age[13] + i);
+                tempDf[16] = cal.DF_BRITTLE();
+                tempDf[17] = cal.DF_TEMP_EMBRITTLE();
+                tempDf[18] = cal.DF_885();
+                tempDf[19] = cal.DF_SIGMA();
+                tempDf[20] = cal.DF_PIPE();
+                float maxThin = cal.INTERNAL_LINNING ? Math.Min(tempDf[0], tempDf[1]) : tempDf[0];
+                float maxSCC = tempDf[2];
+                float maxExt = tempDf[12];
+                for (int j = 3; j < 11; j++)
+                {
+                    if (maxSCC < tempDf[j])
+                        maxSCC = tempDf[j];
+                }
+                for (int j = 13; j < 15; j++)
+                {
+                    if (maxExt < tempDf[j])
+                        maxExt = tempDf[j];
+                }
+                float maxBritt = tempDf[16] + tempDf[17]; //Df_brittle + Df_temp_Embrittle
+                for (int j = 18; j < 21; j++)
+                {
+                    if (maxBritt < tempDf[j])
+                        maxBritt = tempDf[j];
+                }
+                if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
+                {
+                    k = i;
+                    break;
+                }
+                
+                
+            }
+            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
+            foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
+            {
+                d.InspDueDate = d.LastInspDate + k;
+                if (damageBus.checkExistDM(d.ID, d.DMItemID))
+                    damageBus.edit(d);
+                else
+                    damageBus.add(d);
+            }
+            RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
+            //gán cho Object inspection plan
+            float[] inspec = inspl.DFTotal;
+            for (int i = 0; i < inspec.Length; i++)
+            {
+                if (inspec[i] != 0)
+                {
+                    InspectionPlant insp = new InspectionPlant();
+                    insp.System = "Inspection Plan";
+                    insp.ItemNo = eqMaBus.getEquipmentNumber(inspl.EquipmentID);
+                    insp.Method = "No Name";
+                    insp.Coverage = "N/A";
+                    insp.Availability = "Online";
+                    insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(inspl.ComponentNumber, DM_Name[1], eqMaBus.getComissionDate(inspl.EquipmentID)));
+                    insp.InspectionInterval = k.ToString();
+                    //thay get last inspection = assessment date
+                    insp.DueDate = Convert.ToString(historyBus.getLastInsp(inspl.ComponentNumber, DM_Name[1], eqMaBus.getComissionDate(inspl.EquipmentID)).AddYears(k));
+                    switch (i)
+                    {
+                        case 0:
+                            insp.DamageMechanism = "Internal Thinning";
+                            break;
+                        case 1:
+                            insp.DamageMechanism = "SSC Damage Factor";
+                            break;
+                        case 2:
+                            insp.DamageMechanism = "External Damage Factor";
+                            break;
+                        default:
+                            insp.DamageMechanism = "Brittle";
+                            break;
+                    }
+                    listInspectionPlan.Add(insp);
+                }
+            }
+            #endregion
+        }
+        private void CA(out float fc, string apiComponentTypeName, RW_COMPONENT com, RW_MATERIAL ma, RW_INPUT_CA_LEVEL_1 caInput)
+        {
             #region CA
+            MSSQL_CA_CAL CA_CAL = new MSSQL_CA_CAL();
+            //<input CA Lavel 1>
+            CA_CAL.NominalDiameter = com.NominalDiameter;
+            CA_CAL.MATERIAL_COST = ma.CostFactor;
+            CA_CAL.FLUID = caInput.API_FLUID;
+            CA_CAL.FLUID_PHASE = caInput.SYSTEM;
+            CA_CAL.API_COMPONENT_TYPE_NAME = apiComponentTypeName;
+            CA_CAL.DETECTION_TYPE = caInput.Detection_Type;
+            CA_CAL.ISULATION_TYPE = caInput.Isulation_Type;
+            CA_CAL.STORED_PRESSURE = caInput.Stored_Pressure;
+            CA_CAL.ATMOSPHERIC_PRESSURE = 101;
+            CA_CAL.STORED_TEMP = caInput.Stored_Temp;
+            CA_CAL.MASS_INVERT = caInput.Mass_Inventory;
+            CA_CAL.MASS_COMPONENT = caInput.Mass_Component;
+            CA_CAL.MITIGATION_SYSTEM = caInput.Mitigation_System;
+            CA_CAL.TOXIC_PERCENT = caInput.Toxic_Percent;
+            CA_CAL.RELEASE_DURATION = caInput.Release_Duration;
+            CA_CAL.PRODUCTION_COST = caInput.Production_Cost;
+            CA_CAL.INJURE_COST = caInput.Injure_Cost;
+            CA_CAL.ENVIRON_COST = caInput.Environment_Cost;
+            CA_CAL.PERSON_DENSITY = caInput.Personal_Density;
+            CA_CAL.EQUIPMENT_COST = caInput.Equipment_Cost;
+            //</CA Level 1>
 
-            //MSSQL_CA_CAL CA_CAL = new MSSQL_CA_CAL();
-            ////<input CA Lavel 1>
-            //CA_CAL.NominalDiameter = com.NominalDiameter;
-            //CA_CAL.MATERIAL_COST = ma.CostFactor;
-            //CA_CAL.FLUID = caInput.API_FLUID;
-            //CA_CAL.FLUID_PHASE = caInput.SYSTEM;
-            //CA_CAL.API_COMPONENT_TYPE_NAME = API_ComponentType_Name;
-            //CA_CAL.DETECTION_TYPE = caInput.Detection_Type;
-            //CA_CAL.ISULATION_TYPE = caInput.Isulation_Type;
-            //CA_CAL.STORED_PRESSURE = caInput.Stored_Pressure;
-            //CA_CAL.ATMOSPHERIC_PRESSURE = 101;
-            //CA_CAL.STORED_TEMP = caInput.Stored_Temp;
-            //CA_CAL.MASS_INVERT = caInput.Mass_Inventory;
-            //CA_CAL.MASS_COMPONENT = caInput.Mass_Component;
-            //CA_CAL.MITIGATION_SYSTEM = caInput.Mitigation_System;
-            //CA_CAL.TOXIC_PERCENT = caInput.Toxic_Percent;
-            //CA_CAL.RELEASE_DURATION = caInput.Release_Duration;
-            //CA_CAL.PRODUCTION_COST = caInput.Production_Cost;
-            //CA_CAL.INJURE_COST = caInput.Injure_Cost;
-            //CA_CAL.ENVIRON_COST = caInput.Environment_Cost;
-            //CA_CAL.PERSON_DENSITY = caInput.Personal_Density;
-            //CA_CAL.EQUIPMENT_COST = caInput.Equipment_Cost;
-            ////</CA Level 1>
+            //<calculate CA>
+            RW_CA_LEVEL_1 caLvl1 = new RW_CA_LEVEL_1();
+            caLvl1.ID = caInput.ID;
+            caLvl1.Release_Phase = CA_CAL.GET_RELEASE_PHASE();
+            caLvl1.fact_di = CA_CAL.fact_di();
+            caLvl1.fact_mit = CA_CAL.fact_mit();
+            caLvl1.fact_ait = CA_CAL.fact_ait();
+            caLvl1.CA_cmd = float.IsNaN(CA_CAL.ca_cmd()) ? 0 : CA_CAL.ca_cmd();
+            caLvl1.CA_inj_flame = float.IsNaN(CA_CAL.ca_inj_flame()) ? 0 : CA_CAL.ca_inj_flame();
+            caLvl1.CA_inj_toxic = float.IsNaN(CA_CAL.ca_inj_tox()) ? 0 : CA_CAL.ca_inj_tox();
+            caLvl1.CA_inj_ntnf = float.IsNaN(CA_CAL.ca_inj_nfnt()) ? 0 : CA_CAL.ca_inj_nfnt();
+            caLvl1.FC_cmd = float.IsNaN(CA_CAL.fc_cmd()) ? 0 : CA_CAL.fc_cmd();
+            caLvl1.FC_affa = float.IsNaN(CA_CAL.fc_affa()) ? 0 : CA_CAL.fc_affa();
+            caLvl1.FC_prod = float.IsNaN(CA_CAL.fc_prod()) ? 0 : CA_CAL.fc_prod();
+            caLvl1.FC_inj = float.IsNaN(CA_CAL.fc_inj()) ? 0 : CA_CAL.fc_inj();
+            caLvl1.FC_envi = float.IsNaN(CA_CAL.fc_environ()) ? 0 : CA_CAL.fc_environ();
+            caLvl1.FC_total = float.IsNaN(CA_CAL.fc()) ? 100000000 : CA_CAL.fc();
+            fc = caLvl1.FC_total;
+            if (caLvl1.FC_total == 0)
+            {
+                caLvl1.FC_total = 100000000;
+            }
 
-            ////<calculate CA>
-            //RW_CA_LEVEL_1 caLvl1 = new RW_CA_LEVEL_1();
-            //caLvl1.ID = caInput.ID;
-            //caLvl1.Release_Phase = CA_CAL.GET_RELEASE_PHASE();
-            //caLvl1.fact_di = CA_CAL.fact_di();
-            //caLvl1.fact_mit = CA_CAL.fact_mit();
-            //caLvl1.fact_ait = CA_CAL.fact_ait();
-            //caLvl1.CA_cmd = float.IsNaN(CA_CAL.ca_cmd()) ? 0 : CA_CAL.ca_cmd();
-            //caLvl1.CA_inj_flame = float.IsNaN(CA_CAL.ca_inj_flame()) ? 0 : CA_CAL.ca_inj_flame();
-            //caLvl1.CA_inj_toxic = float.IsNaN(CA_CAL.ca_inj_tox()) ? 0 : CA_CAL.ca_inj_tox();
-            //caLvl1.CA_inj_ntnf = float.IsNaN(CA_CAL.ca_inj_nfnt()) ? 0 : CA_CAL.ca_inj_nfnt();
-            //caLvl1.FC_cmd = float.IsNaN(CA_CAL.fc_cmd()) ? 0 : CA_CAL.fc_cmd();
-            //caLvl1.FC_affa = float.IsNaN(CA_CAL.fc_affa()) ? 0 : CA_CAL.fc_affa();
-            //caLvl1.FC_prod = float.IsNaN(CA_CAL.fc_prod()) ? 0 : CA_CAL.fc_prod();
-            //caLvl1.FC_inj = float.IsNaN(CA_CAL.fc_inj()) ? 0 : CA_CAL.fc_inj();
-            //caLvl1.FC_envi = float.IsNaN(CA_CAL.fc_environ()) ? 0 : CA_CAL.fc_environ();
-            //caLvl1.FC_total = float.IsNaN(CA_CAL.fc()) ? 100000000 : CA_CAL.fc();
-            //if (caLvl1.FC_total == 0)
+            caLvl1.FCOF_Category = CA_CAL.FC_Category(caLvl1.FC_total);
+            RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
+            fullFCoF.ID = caLvl1.ID;
+            fullFCoF.FCoFValue = caLvl1.FC_total;
+            fullFCoF.FCoFCategory = caLvl1.FCOF_Category;
+
+            //fullFCoF.AIL = 
+            fullFCoF.envcost = CA_CAL.ENVIRON_COST;
+            fullFCoF.equipcost = CA_CAL.EQUIPMENT_COST;
+            fullFCoF.prodcost = CA_CAL.PRODUCTION_COST;
+            fullFCoF.popdens = CA_CAL.PERSON_DENSITY;
+            fullFCoF.injcost = CA_CAL.INJURE_COST;
+            //fullFCoF.FCoFMatrixValue
+            //</calculate CA>
+
+            //<Save to Database>
+            RW_CA_LEVEL_1_BUS caLvl1Bus = new RW_CA_LEVEL_1_BUS();
+            RW_FULL_FCOF_BUS fullFCoFBus = new RW_FULL_FCOF_BUS();
+
+            if (caLvl1Bus.checkExist(caLvl1.ID))
+                caLvl1Bus.edit(caLvl1);
+            else
+                caLvl1Bus.add(caLvl1);
+
+            if (fullFCoFBus.checkExist(fullFCoF.ID))
+                fullFCoFBus.edit(fullFCoF);
+            else
+                fullFCoFBus.add(fullFCoF);
+            //</Save to Database>
+            #endregion
+        }
+        private void CA_Tank(out float fc, string API_component, string componentTypeName,RW_EQUIPMENT eq, RW_MATERIAL ma, RW_INPUT_CA_TANK caTank)
+        {
+            #region CA
+            MSSQL_CA_CAL CA = new MSSQL_CA_CAL();
+            CA.MATERIAL_COST = ma.CostFactor;
+            CA.PRODUCTION_COST = caTank.ProductionCost;
+            float FC_Total = 0;
+            RW_CA_TANK rwCATank = new RW_CA_TANK();
+            if (componentTypeName == "Shell")
+            {
+
+                CA.FLUID_HEIGHT = caTank.FLUID_HEIGHT;
+                CA.SHELL_COURSE_HEIGHT = caTank.SHELL_COURSE_HEIGHT;
+                CA.TANK_DIAMETER = caTank.TANK_DIAMETTER;
+                CA.PREVENTION_BARRIER = caTank.Prevention_Barrier == 1 ? true : false;
+                CA.EnvironSensitivity = caTank.Environ_Sensitivity;
+                CA.P_lvdike = caTank.P_lvdike;
+                CA.P_offsite = caTank.P_offsite;
+                CA.P_onsite = caTank.P_onsite;
+                CA.API_COMPONENT_TYPE_NAME = API_component;
+
+                rwCATank.ID = eq.ID;
+                // bieu thuc trung gian
+                rwCATank.Flow_Rate_D1 = !float.IsNaN(CA.W_n_Tank(1)) && CA.W_n_Tank(1) > 0 ? CA.W_n_Tank(1) : 0;
+                rwCATank.Flow_Rate_D2 = !float.IsNaN(CA.W_n_Tank(2)) && CA.W_n_Tank(2) > 0 ? CA.W_n_Tank(2) : 0;
+                rwCATank.Flow_Rate_D3 = !float.IsNaN(CA.W_n_Tank(3)) && CA.W_n_Tank(3) > 0 ? CA.W_n_Tank(3) : 0;
+                rwCATank.Flow_Rate_D4 = !float.IsNaN(CA.W_n_Tank(4)) && CA.W_n_Tank(4) > 0 ? CA.W_n_Tank(4) : 0;
+
+                rwCATank.Leak_Duration_D1 = !float.IsNaN(CA.ld_tank(1)) && CA.ld_tank(1) > 0 ? CA.ld_tank(1) : 0;
+                rwCATank.Leak_Duration_D2 = !float.IsNaN(CA.ld_tank(2)) && CA.ld_tank(2) > 0 ? CA.ld_tank(2) : 0;
+                rwCATank.Leak_Duration_D3 = !float.IsNaN(CA.ld_tank(3)) && CA.ld_tank(3) > 0 ? CA.ld_tank(3) : 0;
+                rwCATank.Leak_Duration_D4 = !float.IsNaN(CA.ld_tank(4)) && CA.ld_tank(4) > 0 ? CA.ld_tank(4) : 0;
+
+                rwCATank.Release_Volume_Leak_D1 = !float.IsNaN(CA.Bbl_leak_n(1)) && CA.Bbl_leak_n(1) > 0 ? CA.Bbl_leak_n(1) : 0;
+                rwCATank.Release_Volume_Leak_D2 = !float.IsNaN(CA.Bbl_leak_n(2)) && CA.Bbl_leak_n(2) > 0 ? CA.Bbl_leak_n(2) : 0;
+                rwCATank.Release_Volume_Leak_D3 = !float.IsNaN(CA.Bbl_leak_n(3)) && CA.Bbl_leak_n(3) > 0 ? CA.Bbl_leak_n(3) : 0;
+                rwCATank.Release_Volume_Leak_D4 = !float.IsNaN(CA.Bbl_leak_n(4)) && CA.Bbl_leak_n(4) > 0 ? CA.Bbl_leak_n(4) : 0;
+
+                rwCATank.Release_Volume_Rupture = !float.IsNaN(CA.Bbl_rupture_release()) && CA.Bbl_rupture_release() > 0 ? CA.Bbl_rupture_release() : 0;
+                rwCATank.Liquid_Height = CA.FLUID_HEIGHT;
+                rwCATank.Volume_Fluid = CA.BBL_TOTAL_SHELL();
+
+                rwCATank.Barrel_Dike_Leak = !float.IsNaN(CA.Bbl_leak_indike()) && CA.Bbl_leak_indike() > 0 ? CA.Bbl_leak_indike() : 0;
+                rwCATank.Barrel_Dike_Rupture = !float.IsNaN(CA.Bbl_rupture_indike()) && CA.Bbl_rupture_indike() > 0 ? CA.Bbl_rupture_indike() : 0;
+
+                rwCATank.Barrel_Onsite_Leak = !float.IsNaN(CA.Bbl_leak_ssonsite()) && CA.Bbl_leak_ssonsite() > 0 ? CA.Bbl_leak_ssonsite() : 0;
+                rwCATank.Barrel_Onsite_Rupture = !float.IsNaN(CA.Bbl_rupture_ssonsite()) && CA.Bbl_rupture_ssonsite() > 0 ? CA.Bbl_rupture_ssonsite() : 0;
+
+                rwCATank.Barrel_Offsite_Leak = !float.IsNaN(CA.Bbl_leak_ssoffsite()) && CA.Bbl_leak_ssoffsite() > 0 ? CA.Bbl_leak_ssoffsite() : 0;
+                rwCATank.Barrel_Offsite_Rupture = !float.IsNaN(CA.Bbl_rupture_ssoffsite()) && CA.Bbl_rupture_ssoffsite() > 0 ? CA.Bbl_rupture_ssoffsite() : 0;
+
+                rwCATank.Barrel_Water_Leak = !float.IsNaN(CA.Bbl_leak_water()) && CA.Bbl_leak_water() > 0 ? CA.Bbl_leak_water() : 0;
+                rwCATank.Barrel_Water_Rupture = !float.IsNaN(CA.Bbl_rupture_water()) && CA.Bbl_rupture_water() > 0 ? CA.Bbl_rupture_water() : 0;
+
+                rwCATank.Material_Factor = CA.MATERIAL_COST;
+
+                //bieu thuc tinh toan
+                rwCATank.FC_Environ_Rupture = float.IsNaN(CA.FC_rupture_environ()) ? 0 : CA.FC_rupture_environ();
+                rwCATank.FC_Environ_Leak = float.IsNaN(CA.FC_leak_environ()) ? 0 : CA.FC_leak_environ();
+                rwCATank.FC_Environ = rwCATank.FC_Environ_Rupture + rwCATank.FC_Environ_Leak;
+                rwCATank.Business_Cost = float.IsNaN(CA.FC_PROD_SHELL()) ? 0 : CA.FC_PROD_SHELL();
+                rwCATank.Component_Damage_Cost = float.IsNaN(CA.fc_cmd()) ? 0 : CA.fc_cmd();
+                rwCATank.Consequence = rwCATank.FC_Environ + rwCATank.Business_Cost + rwCATank.Component_Damage_Cost;
+                rwCATank.ConsequenceCategory = CA.FC_Category(rwCATank.Consequence);
+                FC_Total = rwCATank.Consequence;
+                //Console.WriteLine("CA tank " + rwCATank.FC_Environ_Rupture + "\n" +
+                //                     rwCATank.FC_Environ_Leak + "\n" +
+                //                     rwCATank.FC_Environ + "\n" +
+                //                     rwCATank.Business_Cost + "\n" +
+                //                     rwCATank.Component_Damage_Cost + "\n" +
+                //                     rwCATank.ConsequenceCategory
+                //                    );
+
+                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
+                if (tankBus.CheckExistID(rwCATank.ID))
+                    tankBus.edit(rwCATank);
+                else
+                    tankBus.add(rwCATank);
+            }
+            else
+            {
+                CA.Swg = caTank.SW;
+                CA.Soil_type = caTank.Soil_Type;
+                CA.TANK_FLUID = caTank.TANK_FLUID;
+                CA.FLUID = caTank.API_FLUID;
+                CA.API_COMPONENT_TYPE_NAME = "TANKBOTTOM";
+
+                rwCATank.ID = eq.ID;
+                // bieu thuc trung gian
+                rwCATank.Hydraulic_Water = CA.k_h_water();
+                rwCATank.Hydraulic_Fluid = CA.k_h_prod();
+                rwCATank.Seepage_Velocity = CA.vel_s_prod();
+
+                rwCATank.Flow_Rate_D1 = float.IsNaN(CA.rate_n_tank_bottom(1)) ? 0 : CA.rate_n_tank_bottom(1);
+                rwCATank.Flow_Rate_D4 = float.IsNaN(CA.rate_n_tank_bottom(4)) ? 0 : CA.rate_n_tank_bottom(4);
+
+                rwCATank.Leak_Duration_D1 = float.IsNaN(CA.ld_n_tank_bottom(1)) ? 0 : CA.ld_n_tank_bottom(1);
+                rwCATank.Leak_Duration_D4 = float.IsNaN(CA.ld_n_tank_bottom(4)) ? 0 : CA.ld_n_tank_bottom(4);
+
+                rwCATank.Release_Volume_Leak_D1 = float.IsNaN(CA.Bbl_leak_n_bottom(1)) ? 0 : CA.Bbl_leak_n_bottom(1);
+                rwCATank.Release_Volume_Leak_D4 = float.IsNaN(CA.Bbl_leak_n_bottom(4)) ? 0 : CA.Bbl_leak_n_bottom(4);
+
+                rwCATank.Release_Volume_Rupture = float.IsNaN(CA.Bbl_rupture_release_bottom()) ? 0 : CA.Bbl_rupture_release_bottom();
+                rwCATank.Volume_Fluid = float.IsNaN(CA.BBL_TOTAL_TANKBOTTOM()) ? 0 : CA.BBL_TOTAL_TANKBOTTOM();
+                rwCATank.Time_Leak_Ground = float.IsNaN(CA.t_gl_bottom()) ? 0 : CA.t_gl_bottom();
+
+                rwCATank.Volume_SubSoil_Leak_D1 = float.IsNaN(CA.Bbl_leak_subsoil(1)) ? 0 : CA.Bbl_leak_subsoil(1);
+                rwCATank.Volume_SubSoil_Leak_D4 = float.IsNaN(CA.Bbl_leak_subsoil(4)) ? 0 : CA.Bbl_leak_subsoil(4);
+
+                rwCATank.Volume_Ground_Water_Leak_D1 = float.IsNaN(CA.Bbl_leak_groundwater(1)) ? 0 : CA.Bbl_leak_groundwater(1);
+                rwCATank.Volume_Ground_Water_Leak_D4 = float.IsNaN(CA.Bbl_leak_groundwater(4)) ? 0 : CA.Bbl_leak_groundwater(4);
+
+                rwCATank.Barrel_Dike_Rupture = float.IsNaN(CA.Bbl_rupture_indike_bottom()) ? 0 : CA.Bbl_rupture_indike_bottom();
+                rwCATank.Barrel_Onsite_Rupture = float.IsNaN(CA.Bbl_rupture_ssonsite_bottom()) ? 0 : CA.Bbl_rupture_ssonsite_bottom();
+                rwCATank.Barrel_Offsite_Rupture = float.IsNaN(CA.Bbl_rupture_ssoffsite_bottom()) ? 0 : CA.Bbl_rupture_ssoffsite_bottom();
+                rwCATank.Barrel_Water_Rupture = float.IsNaN(CA.Bbl_rupture_water_bottom()) ? 0 : CA.Bbl_rupture_water_bottom();
+
+                // gia tri tinh toan
+                rwCATank.FC_Environ_Rupture = float.IsNaN(CA.FC_rupture_environ_bottom()) ? 0 : CA.FC_rupture_environ_bottom();
+                rwCATank.FC_Environ_Leak = float.IsNaN(CA.FC_leak_environ_bottom()) ? 0 : CA.FC_leak_environ_bottom();
+                rwCATank.FC_Environ = rwCATank.FC_Environ_Rupture + rwCATank.FC_Environ_Leak;
+                rwCATank.Business_Cost = float.IsNaN(CA.FC_PROD_SHELL()) ? 0 : CA.FC_PROD_SHELL();
+                rwCATank.Component_Damage_Cost = float.IsNaN(CA.FC_cmd_bottom()) ? 0 : CA.FC_cmd_bottom();
+                rwCATank.Consequence = rwCATank.FC_Environ + rwCATank.Business_Cost + rwCATank.Component_Damage_Cost;
+
+                rwCATank.ConsequenceCategory = CA.FC_Category(rwCATank.Consequence);
+
+                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
+
+                if (tankBus.CheckExistID(rwCATank.ID))
+                    tankBus.edit(rwCATank);
+                else
+                    tankBus.add(rwCATank);
+                FC_Total = rwCATank.Consequence;
+            }
+            fc = FC_Total;
+            RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
+            RW_FULL_FCOF_BUS busFCoF = new RW_FULL_FCOF_BUS();
+            fullFCoF.ID = rwCATank.ID;
+            fullFCoF.FCoFValue = FC_Total;
+            fullFCoF.FCoFCategory = CA.FC_Category(FC_Total);
+
+            if (busFCoF.checkExist(fullFCoF.ID))
+                busFCoF.edit(fullFCoF);
+            else
+                busFCoF.add(fullFCoF);
+
+            //fullFCoF.AIL = 
+            //fullFCoF.envcost = rwCATank.ENVIRON_COST;
+            //fullFCoF.equipcost = rwCATank.EQUIPMENT_COST;
+            //fullFCoF.prodcost = rwCATank.PRODUCTION_COST;
+            //fullFCoF.popdens = rwCATank.PERSON_DENSITY;
+            //fullFCoF.injcost = rwCATank.INJURE_COST;
+            #endregion
+        }
+        private void Calculation(String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_LEVEL_1 caInput)
+        {
+            InputInspectionCalculation inputInsp;
+            MSSQL_DM_CAL cacal;
+            List<RW_DAMAGE_MECHANISM> DMmachenism;
+            float FC = 0;
+            PoF(out inputInsp, out cacal, out DMmachenism, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            CA(out FC, inputInsp.ApiComponentType, com, ma, caInput);
+            InspectionPlan(inputInsp, cacal, DMmachenism, FC);
+        }
+        private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
+        {
+            #region PoF Tank
+            //int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
+            //string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S", "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC", "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack", "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement", "Vibration-Induced Mechanical Fatigue" };
+            //RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+            ////get EquipmentID ----> get EquipmentTypeName and APIComponentType
+            //int equipmentID = assBus.getEquipmentID(IDProposal);
+            //EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
+            //EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
+            //String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
+            //COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
+            //API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
+            //int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
+            //String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
+            //RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
+            //MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
+            //cal.APIComponentType = API_ComponentType_Name;
+            ////age = assessment date - comission date
+            ////DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
+
+            ////<input thinning>
+            //cal.Diametter = com.NominalDiameter;
+            //cal.NomalThick = com.NominalThickness;
+            //cal.CurrentThick = com.CurrentThickness;
+            //cal.MinThickReq = com.MinReqThickness;
+            //cal.CorrosionRate = com.CurrentCorrosionRate;
+            //cal.ProtectedBarrier = eq.DowntimeProtectionUsed == 1 ? true : false; //xem lai
+            //cal.CladdingCorrosionRate = coat.CladdingCorrosionRate;
+            //cal.InternalCladding = coat.InternalCladding == 1 ? true : false;
+            //cal.NoINSP_THINNING = historyBus.InspectionNumber(componentNumber, DM_Name[0]);
+            //cal.EFF_THIN = historyBus.getHighestInspEffec(componentNumber, DM_Name[0]);
+            //cal.OnlineMonitoring = eq.OnlineMonitoring;
+            //cal.HighlyEffectDeadleg = eq.HighlyDeadlegInsp == 1 ? true : false;
+            //cal.ContainsDeadlegs = eq.ContainsDeadlegs == 1 ? true : false;
+            //cal.CA = ma.CorrosionAllowance;
+            ////tank maintain653 trong Tank
+            //cal.AdjustmentSettle = eq.AdjustmentSettle;
+            //cal.ComponentIsWeld = eq.ComponentIsWelded == 1 ? true : false;
+            ////</thinning>
+
+            ////<input linning>
+            //cal.LinningType = coat.InternalLinerType;
+            //cal.LINNER_ONLINE = eq.LinerOnlineMonitoring == 1 ? true : false;
+            //cal.LINNER_CONDITION = coat.InternalLinerCondition;
+            //cal.INTERNAL_LINNING = coat.InternalLining == 1 ? true : false;
+            //TimeSpan year = assBus.getAssessmentDate(IDProposal) - historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID));
+            //cal.YEAR_IN_SERVICE = (int)(year.Days / 365); //Yearinservice hiệu tham số giữa lần tính toán và ngày cài đặt hệ thống
+            ////</input linning>
+
+            ////<input SCC CAUSTIC>
+            //cal.CAUSTIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[2]);
+            //cal.CAUSTIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[2]);
+            //cal.HEAT_TREATMENT = ma.HeatTreatment;
+            //cal.NaOHConcentration = st.NaOHConcentration;
+            //cal.HEAT_TRACE = eq.HeatTraced == 1 ? true : false;
+            //cal.STEAM_OUT = eq.SteamOutWaterFlush == 1 ? true : false;
+            ////</SCC CAUSTIC>
+
+            ////<input SSC Amine>
+            //cal.AMINE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[3]);
+            //cal.AMINE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[3]);
+            //cal.AMINE_EXPOSED = st.ExposedToGasAmine == 1 ? true : false;
+            //cal.AMINE_SOLUTION = st.AmineSolution;
+            ////</input SSC Amine>
+
+            ////<input Sulphide Stress Cracking>
+            //cal.ENVIRONMENT_H2S_CONTENT = st.H2S == 1 ? true : false;
+            //cal.AQUEOUS_OPERATOR = st.AqueousOperation == 1 ? true : false;
+            //cal.AQUEOUS_SHUTDOWN = st.AqueousShutdown == 1 ? true : false;
+            //cal.SULPHIDE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[4]);
+            //cal.SULPHIDE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[4]);
+            //cal.H2SContent = st.H2SInWater;
+            //cal.PH = st.WaterpH;
+            //cal.PRESENT_CYANIDE = st.Cyanide == 1 ? true : false;
+            //cal.BRINNEL_HARDNESS = com.BrinnelHardness;
+            ////</Sulphide Stress Cracking>
+
+            ////<input HIC/SOHIC-H2S>
+            //cal.SULFUR_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[5]);
+            //cal.SULFUR_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[5]);
+            //cal.SULFUR_CONTENT = ma.SulfurContent;
+            ////</HIC/SOHIC-H2S>
+
+            ////<input PTA Cracking>
+            //cal.PTA_SUSCEP = ma.IsPTA == 1 ? true : false;
+            //cal.NICKEL_ALLOY = ma.NickelBased == 1 ? true : false;
+            //cal.EXPOSED_SULFUR = st.ExposedToSulphur == 1 ? true : false;
+            //cal.PTA_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[7]);
+            //cal.PTA_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[7]);
+            //cal.ExposedSH2OOperation = eq.PresenceSulphidesO2 == 1 ? true : false;
+            //cal.ExposedSH2OShutdown = eq.PresenceSulphidesO2Shutdown == 1 ? true : false;
+            //cal.ThermalHistory = eq.ThermalHistory;
+            //cal.PTAMaterial = ma.PTAMaterialCode;
+            //cal.DOWNTIME_PROTECTED = eq.DowntimeProtectionUsed == 1 ? true : false;
+            ////</PTA Cracking>
+
+            ////<input CLSCC>
+            //cal.CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[8]);
+            //cal.CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[8]);
+            //cal.EXTERNAL_EXPOSED_FLUID_MIST = eq.MaterialExposedToClExt == 1 ? true : false;
+            //cal.INTERNAL_EXPOSED_FLUID_MIST = st.MaterialExposedToClInt == 1 ? true : false;
+            //cal.CHLORIDE_ION_CONTENT = st.Chloride;
+            ////</CLSCC>
+
+            ////<input HSC-HF>
+            //cal.HSC_HF_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[9]);
+            //cal.HSC_HF_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[9]);
+            ////</HSC-HF>
+
+            ////<input External Corrosion>
+            //cal.EXTERNAL_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[11]);
+            //cal.EXTERNAL_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[11]);
+            ////</External Corrosion>
+
+            ////<input HIC/SOHIC-HF>
+            //cal.HICSOHIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[10]);
+            //cal.HICSOHIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[10]);
+            //cal.HF_PRESENT = st.Hydrofluoric == 1 ? true : false;
+            ////</HIC/SOHIC-HF>
+
+            ////<input CUI DM>
+            //cal.INTERFACE_SOIL_WATER = eq.InterfaceSoilWater == 1 ? true : false;
+            //cal.SUPPORT_COATING = coat.SupportConfigNotAllowCoatingMaint == 1 ? true : false;
+            //cal.INSULATION_TYPE = coat.ExternalInsulationType;
+            //cal.CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[12]);
+            //cal.CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[12]);
+            //cal.CUI_INSP_DATE = coat.ExternalCoatingDate;
+            //cal.CUI_PERCENT_1 = tem.Minus12ToMinus8;
+            //cal.CUI_PERCENT_2 = tem.Minus8ToPlus6;
+            //cal.CUI_PERCENT_3 = tem.Plus6ToPlus32;
+            //cal.CUI_PERCENT_4 = tem.Plus32ToPlus71;
+            //cal.CUI_PERCENT_5 = tem.Plus71ToPlus107;
+            //cal.CUI_PERCENT_6 = tem.Plus107ToPlus121;
+            //cal.CUI_PERCENT_7 = tem.Plus121ToPlus135;
+            //cal.CUI_PERCENT_8 = tem.Plus135ToPlus162;
+            //cal.CUI_PERCENT_9 = tem.Plus162ToPlus176;
+            //cal.CUI_PERCENT_10 = tem.MoreThanPlus176;
+            ////</CUI DM>
+
+            ////<input External CLSCC>
+            //cal.EXTERN_CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[13]);
+            //cal.EXTERN_CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[13]);
+            ////</External CLSCC>
+
+            ////<input External CUI CLSCC>
+            //cal.EXTERN_CLSCC_CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[14]);
+            //cal.EXTERN_CLSCC_CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[14]);
+            //cal.EXTERNAL_INSULATION = coat.ExternalInsulation == 1 ? true : false;
+            //cal.COMPONENT_INSTALL_DATE = eq.CommissionDate;
+            //cal.CRACK_PRESENT = com.CracksPresent == 1 ? true : false;
+            //cal.EXTERNAL_EVIRONMENT = eq.ExternalEnvironment;
+            //cal.EXTERN_COAT_QUALITY = coat.ExternalCoatingQuality;
+            //cal.PIPING_COMPLEXITY = com.ComplexityProtrusion;
+            //cal.INSULATION_CONDITION = coat.InsulationCondition;
+            //cal.INSULATION_CHLORIDE = coat.InsulationContainsChloride == 1 ? true : false;
+            ////</External CUI CLSCC>
+
+            ////<input HTHA>
+            //cal.HTHA_EFFECT = historyBus.getHighestInspEffec(componentNumber, DM_Name[15]);
+            //cal.HTHA_NUM_INSP = historyBus.InspectionNumber(componentNumber, DM_Name[15]);
+            //cal.MATERIAL_SUSCEP_HTHA = ma.IsHTHA == 1 ? true : false;
+            //cal.HTHA_MATERIAL = ma.HTHAMaterialCode; //check lai
+            //cal.HTHA_PRESSURE = st.H2SPartialPressure;
+            //cal.CRITICAL_TEMP = st.CriticalExposureTemperature; //check lai
+            //cal.DAMAGE_FOUND = com.DamageFoundInspection == 1 ? true : false;
+            ////</HTHA>
+
+            ////<input Brittle>
+            //cal.LOWEST_TEMP = eq.YearLowestExpTemp == 1 ? true : false;
+            ////</Brittle>
+
+            ////<input temper Embrittle>
+            //cal.TEMPER_SUSCEP = ma.Temper == 1 ? true : false;
+            //cal.PWHT = eq.PWHT == 1 ? true : false;
+            //cal.BRITTLE_THICK = ma.BrittleFractureThickness;
+            //cal.CARBON_ALLOY = ma.CarbonLowAlloy == 1 ? true : false;
+            //cal.DELTA_FATT = com.DeltaFATT;
+            ////</Temper Embrittle>
+
+            ////<input 885>
+            //cal.MAX_OP_TEMP = st.MaxOperatingTemperature;
+            //cal.MIN_OP_TEMP = st.MinOperatingTemperature;
+            //cal.MIN_DESIGN_TEMP = ma.MinDesignTemperature;
+            //cal.REF_TEMP = ma.ReferenceTemperature;
+            //cal.CHROMIUM_12 = ma.ChromeMoreEqual12 == 1 ? true : false;
+            ////</885>
+
+            ////<input Sigma>
+            //cal.AUSTENITIC_STEEL = ma.Austenitic == 1 ? true : false;
+            //cal.PERCENT_SIGMA = ma.SigmaPhase;
+            ////</Sigma>
+
+            ////<input Piping Mechanical>
+            //cal.EquipmentType = equipmentTypename;
+            //cal.PREVIOUS_FAIL = com.PreviousFailures;
+            //cal.AMOUNT_SHAKING = com.ShakingAmount;
+            //cal.TIME_SHAKING = com.ShakingTime;
+            //cal.CYLIC_LOAD = com.CyclicLoadingWitin15_25m;
+            //cal.CORRECT_ACTION = com.CorrectiveAction;
+            //cal.NUM_PIPE = com.NumberPipeFittings;
+            //cal.PIPE_CONDITION = com.PipeCondition;
+            //cal.JOINT_TYPE = com.BranchJointType; //check lai
+            //cal.BRANCH_DIAMETER = com.BranchDiameter;
+            ////</Piping Mechanical>
+
+            ////<Calculate DF>
+
+            //float[] Df = new float[21];
+            //float[] age = new float[14];
+            //for (int i = 0; i < 13; i++)
             //{
-            //    caLvl1.FC_total = 100000000;
+            //    age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+            //}
+            //age[13] = historyBus.getAge(componentNumber, DM_Name[13], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+            //Df[0] = cal.DF_THIN(age[0]);
+            //Df[1] = cal.DF_LINNING(age[1]);
+            //Df[2] = cal.DF_CAUSTIC(age[2]);
+            //Df[3] = cal.DF_AMINE(age[3]);
+            //Df[4] = cal.DF_SULPHIDE(age[4]);
+            //Df[5] = cal.DF_HICSOHIC_H2S(age[5]);
+            //Df[6] = cal.DF_CACBONATE(age[6]);
+            //Df[7] = cal.DF_PTA(age[7]);
+            //Df[8] = cal.DF_CLSCC(age[8]);
+            //Df[9] = cal.DF_HSCHF(age[9]);
+            //Df[10] = cal.DF_HIC_SOHIC_HF(age[10]);
+            //Df[11] = cal.DF_EXTERNAL_CORROSION(age[11]);
+            //Df[12] = cal.DF_CUI(age[12]);
+            //Df[13] = cal.DF_EXTERN_CLSCC();
+            //Df[14] = cal.DF_CUI_CLSCC();
+            //Df[15] = cal.DF_HTHA(age[13]);
+            //Df[16] = cal.DF_BRITTLE();
+            //Df[17] = cal.DF_TEMP_EMBRITTLE();
+            //Df[18] = cal.DF_885();
+            //Df[19] = cal.DF_SIGMA();
+            //Df[20] = cal.DF_PIPE();
+
+            //List<float> DFSSCAgePlus3 = new List<float>();
+            //List<float> DFSSCAgePlus6 = new List<float>();
+            //float[] thinningPlusAge = { 0, 0 };
+            //float[] linningPlusAge = { 0, 0 };
+            //float[] DF_HTHAPlusAge = { 0, 0 };
+            //float[] DF_EXTERN_CORROSIONPlusAge = { 0, 0 };
+            //float[] DF_CUIPlusAge = { 0, 0 };
+
+            //List<RW_DAMAGE_MECHANISM> listDamageMachenism = new List<RW_DAMAGE_MECHANISM>();
+            //RW_FULL_POF fullPOF = new RW_FULL_POF();
+            //fullPOF.ID = IDProposal;
+            //for (int i = 0; i < 21; i++)
+            //{
+            //    if (Df[i] > 1)
+            //    {
+            //        RW_DAMAGE_MECHANISM damage = new RW_DAMAGE_MECHANISM();
+            //        damage.ID = IDProposal;
+            //        damage.DMItemID = DM_ID[i];
+            //        damage.IsActive = 1;
+            //        damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
+            //        damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
+            //        damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
+            //        damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], )
+            //        damage.LastInspDate = DateTime.Now;
+            //        damage.DF1 = Df[i];
+            //        switch (i)
+            //        {
+            //            case 0: //Thinning
+            //                damage.DF2 = cal.DF_THIN(age[0] + 3);
+            //                damage.DF3 = cal.DF_THIN(age[0] + 6);
+            //                thinningPlusAge[0] = damage.DF2;
+            //                thinningPlusAge[1] = damage.DF3;
+            //                break;
+            //            case 1: //Linning
+            //                damage.DF2 = cal.DF_LINNING(age[1] + 3);
+            //                damage.DF3 = cal.DF_LINNING(age[1] + 6);
+            //                linningPlusAge[0] = damage.DF2;
+            //                linningPlusAge[1] = damage.DF3;
+            //                break;
+            //            case 2: //Caustic
+            //                damage.DF2 = cal.DF_CAUSTIC(age[2] + 3);
+            //                damage.DF3 = cal.DF_CAUSTIC(age[2] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 3: //Amine
+            //                damage.DF2 = cal.DF_AMINE(age[3] + 3);
+            //                damage.DF3 = cal.DF_AMINE(age[3] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 4: //Sulphide
+            //                damage.DF2 = cal.DF_SULPHIDE(age[4] + 3);
+            //                damage.DF3 = cal.DF_SULPHIDE(age[4] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 5: //HIC/SOHIC-H2S
+            //                damage.DF2 = cal.DF_HICSOHIC_H2S(age[5] + 3);
+            //                damage.DF3 = cal.DF_HICSOHIC_H2S(age[5] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 6: //Carbonate
+            //                damage.DF2 = cal.DF_CACBONATE(age[6] + 3);
+            //                damage.DF3 = cal.DF_CACBONATE(age[6] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 7: //PTA (Polythionic Acid Stress Corrosion Cracking)
+            //                damage.DF2 = cal.DF_PTA(age[7] + 3);
+            //                damage.DF3 = cal.DF_PTA(age[7] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 8: //CLSCC (Chloride Stress Corrosion Cracking)
+            //                damage.DF2 = cal.DF_CLSCC(age[8] + 3);
+            //                damage.DF3 = cal.DF_CLSCC(age[8] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 9: //HSC-HF
+            //                damage.DF2 = cal.DF_HSCHF(age[9] + 3);
+            //                damage.DF3 = cal.DF_HSCHF(age[9] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 10: //HIC/SOHIC-HF
+            //                damage.DF2 = cal.DF_HIC_SOHIC_HF(age[10] + 3);
+            //                damage.DF3 = cal.DF_HIC_SOHIC_HF(age[10] + 6);
+            //                DFSSCAgePlus3.Add(damage.DF2);
+            //                DFSSCAgePlus6.Add(damage.DF3);
+            //                break;
+            //            case 11: //External Corrosion
+            //                damage.DF2 = cal.DF_EXTERNAL_CORROSION(age[11] + 3);
+            //                damage.DF3 = cal.DF_EXTERNAL_CORROSION(age[11] + 6);
+            //                DF_EXTERN_CORROSIONPlusAge[0] = damage.DF2;
+            //                DF_EXTERN_CORROSIONPlusAge[1] = damage.DF2;
+            //                break;
+            //            case 12: //CUI (Corrosion Under Insulation)
+            //                damage.DF2 = cal.DF_CUI(age[12] + 3);
+            //                damage.DF3 = cal.DF_CUI(age[12] + 6);
+            //                DF_CUIPlusAge[0] = damage.DF2;
+            //                DF_CUIPlusAge[1] = damage.DF3;
+            //                break;
+            //            case 15: //HTHA
+            //                damage.DF2 = cal.DF_HTHA(age[13] + 3);
+            //                damage.DF3 = cal.DF_HTHA(age[13] + 6);
+            //                DF_HTHAPlusAge[0] = damage.DF2;
+            //                DF_HTHAPlusAge[1] = damage.DF3;
+            //                fullPOF.HTHA_AP1 = damage.DF1;
+            //                fullPOF.HTHA_AP2 = damage.DF2;
+            //                fullPOF.HTHA_AP3 = damage.DF3;
+            //                break;
+            //            case 16: //Brittle
+            //                damage.DF2 = damage.DF3 = damage.DF1;
+            //                fullPOF.BrittleAP1 = fullPOF.BrittleAP2 = fullPOF.BrittleAP3 = damage.DF1;
+            //                break;
+            //            case 20: //Piping Fatigure
+            //                damage.DF2 = damage.DF3 = damage.DF1;
+            //                fullPOF.FatigueAP1 = fullPOF.FatigueAP2 = fullPOF.FatigueAP3 = damage.DF1;
+            //                break;
+            //            default:
+            //                damage.DF2 = damage.DF1;
+            //                damage.DF3 = damage.DF1;
+            //                break;
+            //        }
+            //        listDamageMachenism.Add(damage);
+            //    }
+            //}
+            ///*  Tính DF_Thin_Total
+            // *  page 2-11 (125/654)
+            // *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
+            // *  Df_thinning_total = Df_thinning  
+            // */
+            //float[] DF_Thin_Total = { 0, 0, 0 };
+            //DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
+            //DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
+            //DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
+
+            ///*  Tính Df_SCC_Total
+            // *  Df_SCC_Total = Max(Df_caustic, Df_Anime, Df_SSC, Df_HIC/SOHIC-H2S, Df_Carbonate, Df_PTA, Df_CLSCC, Df_HSC-HF, Df_HIC/SOHIC-HF)
+            // */
+            //float[] DF_SSC_Total = { 0, 0, 0 };
+            //DF_SSC_Total[0] = Df[2];
+            //for (int i = 2; i < 11; i++)
+            //{
+            //    if (DF_SSC_Total[0] < Df[i])
+            //        DF_SSC_Total[0] = Df[i];
+            //}
+            //if (DFSSCAgePlus3.Count != 0)
+            //{
+            //    DF_SSC_Total[1] = DFSSCAgePlus3.Max();
+            //    DF_SSC_Total[2] = DFSSCAgePlus6.Max();
+            //}
+            ////Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
+
+            ///////Tính DF_Ext_Total
+            //float DF_Ext_Total = Df[11];
+            //for (int i = 12; i < 15; i++)
+            //{
+            //    if (DF_Ext_Total < Df[i])
+            //        DF_Ext_Total = Df[i];
             //}
 
-            //caLvl1.FCOF_Category = CA_CAL.FC_Category(caLvl1.FC_total);
-            //RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
-            //fullFCoF.ID = caLvl1.ID;
-            //fullFCoF.FCoFValue = caLvl1.FC_total;
-            //fullFCoF.FCoFCategory = caLvl1.FCOF_Category;
-
-            ////fullFCoF.AIL = 
-            //fullFCoF.envcost = CA_CAL.ENVIRON_COST;
-            //fullFCoF.equipcost = CA_CAL.EQUIPMENT_COST;
-            //fullFCoF.prodcost = CA_CAL.PRODUCTION_COST;
-            //fullFCoF.popdens = CA_CAL.PERSON_DENSITY;
-            //fullFCoF.injcost = CA_CAL.INJURE_COST;
-            ////fullFCoF.FCoFMatrixValue
-            ////</calculate CA>
-            ////MessageBox.Show("fact_di " + caLvl1.fact_di +"\n"+
-            ////    "fact_mit " + caLvl1.fact_mit +"\n"+
-            ////    "fact_ait " + caLvl1.fact_ait +"\n"+
-            ////    "CA cmd " + caLvl1.CA_cmd +"\n"+
-            ////    "CA_inj_flame " + caLvl1.CA_inj_flame +"\n"+
-            ////    "CA inj ntnf " + caLvl1.CA_inj_ntnf +"\n"+
-            ////    "CA FC cmd " + caLvl1.FC_cmd +"\n"+
-            ////    "FC affa " + caLvl1.FC_affa +"\n"+
-            ////    "FC prod " + caLvl1.FC_prod +"\n"+
-            ////    "FC inj " + caLvl1.FC_inj +"\n"+
-            ////    "FC env " + caLvl1.FC_envi +"\n"+
-            ////    "FC total " + caLvl1.FC_total +"\n"
-            ////        , "Cortek");
-            ////save to Database
-            //RW_CA_LEVEL_1_BUS caLvl1Bus = new RW_CA_LEVEL_1_BUS();
-            //RW_FULL_FCOF_BUS fullFCoFBus = new RW_FULL_FCOF_BUS();
-
-            //if (caLvl1Bus.checkExist(caLvl1.ID))
-            //    caLvl1Bus.edit(caLvl1);
+            //float[] listDF_Ext1 = { DF_EXTERN_CORROSIONPlusAge[0], DF_CUIPlusAge[0], Df[13], Df[14] };
+            //float[] listDF_ext2 = { DF_EXTERN_CORROSIONPlusAge[1], DF_CUIPlusAge[1], Df[13], Df[14] };
+            //float DF_Ext_Total2 = listDF_Ext1[0];
+            //float DF_ext_total3 = listDF_ext2[0];
+            //for (int i = 0; i < listDF_Ext1.Length; i++)
+            //{
+            //    if (DF_Ext_Total2 < listDF_Ext1[i])
+            //        DF_Ext_Total2 = listDF_Ext1[i];
+            //}
+            //for (int i = 0; i < listDF_ext2.Length; i++)
+            //{
+            //    if (DF_ext_total3 < listDF_ext2[i])
+            //        DF_ext_total3 = listDF_ext2[i];
+            //}
+            //////Tính DF_Brit_Total
+            //float DF_Brit_Total = Df[16] + Df[17]; //Df_brittle + Df_temp_Embrittle
+            //for (int i = 18; i < 21; i++)
+            //{
+            //    if (DF_Brit_Total < Df[i])
+            //        DF_Brit_Total = Df[i];
+            //}
+            ////Tính Df_Total
+            //float[] DF_Total = { 0, 0, 0 };
+            ////DF_Total = Max(Df_thinning, DF_ext) + DF_SCC + DF_HTHA + DF_Brit + DF_Pipe ---> if thinning is local
+            //switch (ThinningType)
+            //{
+            //    case "Local":
+            //        DF_Total[0] = Math.Max(DF_Thin_Total[0], DF_Ext_Total) + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20];
+            //        DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
+            //        DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
+            //        break;
+            //    default:
+            //        DF_Total[0] = DF_Thin_Total[0] + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
+            //        DF_Total[1] = DF_Thin_Total[1] + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
+            //        DF_Total[2] = DF_Thin_Total[1] + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
+            //        break;
+            //}
+            //fullPOF.ThinningAP1 = DF_Thin_Total[0];
+            //fullPOF.ThinningAP2 = DF_Thin_Total[1];
+            //fullPOF.ThinningAP3 = DF_Thin_Total[2];
+            //fullPOF.ThinningLocalAP1 = Math.Max(DF_Thin_Total[0], DF_Ext_Total);
+            //fullPOF.ThinningLocalAP2 = Math.Max(DF_Thin_Total[1], DF_Ext_Total2);
+            //fullPOF.ThinningLocalAP3 = Math.Max(DF_Thin_Total[2], DF_ext_total3);
+            //fullPOF.ThinningGeneralAP1 = DF_Thin_Total[0] + DF_Ext_Total;
+            //fullPOF.ThinningGeneralAP2 = DF_Thin_Total[1] + DF_Ext_Total2;
+            //fullPOF.ThinningGeneralAP3 = DF_Thin_Total[2] + DF_ext_total3;
+            //fullPOF.ExternalAP1 = DF_Ext_Total;
+            //fullPOF.ExternalAP2 = DF_Ext_Total2;
+            //fullPOF.ExternalAP3 = DF_ext_total3;
+            //fullPOF.HTHA_AP1 = Df[15];
+            //fullPOF.HTHA_AP2 = DF_HTHAPlusAge[0];
+            //fullPOF.HTHA_AP3 = DF_HTHAPlusAge[1];
+            //fullPOF.BrittleAP1 = DF_Brit_Total;
+            //fullPOF.BrittleAP2 = DF_Brit_Total;
+            //fullPOF.BrittleAP3 = DF_Brit_Total;
+            //fullPOF.FatigueAP1 = Df[20];
+            //fullPOF.FatigueAP2 = Df[20];
+            //fullPOF.FatigueAP3 = Df[20];
+            //fullPOF.SCCAP1 = DF_SSC_Total[0];
+            //fullPOF.SCCAP2 = DF_SSC_Total[1];
+            //fullPOF.SCCAP3 = DF_SSC_Total[2];
+            //fullPOF.TotalDFAP1 = DF_Total[0];
+            //fullPOF.TotalDFAP2 = DF_Total[1];
+            //fullPOF.TotalDFAP3 = DF_Total[2];
+            //fullPOF.PoFAP1Category = cal.PoFCategory(DF_Total[0]);
+            //fullPOF.PoFAP2Category = cal.PoFCategory(DF_Total[1]);
+            //fullPOF.PoFAP3Category = cal.PoFCategory(DF_Total[2]);
+            ////get Managerment Factor 
+            //float FMS = 0;
+            //FACILITY_BUS faciBus = new FACILITY_BUS();
+            //FMS = faciBus.getFMS(eqMaBus.getSiteID(equipmentID));
+            //fullPOF.FMS = FMS;
+            ////Console.WriteLine("FMS " + FMS);
+            ////get GFFtotal
+            //float GFFTotal = 0;
+            //API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
+            //GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
+            //fullPOF.GFFTotal = GFFTotal;
+            ////Console.WriteLine("GFF total " + GFFTotal);
+            //fullPOF.ThinningType = ThinningType;
+            //fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
+            //fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
+            //fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
+            ////lưu kết quả vào bảng RW_DAMAGE_MECHANISM
+            //RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
+            //foreach (RW_DAMAGE_MECHANISM d in listDamageMachenism)
+            //{
+            //    if (damageBus.checkExistDM(d.ID, d.DMItemID))
+            //        damageBus.edit(d);
+            //    else
+            //        damageBus.add(d);
+            //}
+            ////lưu kết quả vào bảng RW_FULL_POF
+            //RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
+            //if (fullPOFBus.checkExistPoF(fullPOF.ID))
+            //    fullPOFBus.edit(fullPOF);
             //else
-            //    caLvl1Bus.add(caLvl1);
-
-            //if (fullFCoFBus.checkExist(fullFCoF.ID))
-            //    fullFCoFBus.edit(fullFCoF);
-            //else
-            //    fullFCoFBus.add(fullFCoF);
-
+            //    fullPOFBus.add(fullPOF);
+            ////</Calculate DF>
             #endregion
-
-            #region INSPECTION HISTORY
+            InputInspectionCalculation insp;
+            MSSQL_DM_CAL cacal;
+            float FC = 0;
+            //PoF(out  insp, out  cacal, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            //CA_Tank(out FC, API_component, componentTypeName, eq, ma, caTank);
+            //InspectionPlan(insp, cacal, FC);
+            #region Inspection Plan
             //int FaciID = eqMaBus.getFacilityID(equipmentID);
             //FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
             //float risktaget = busRiskTarget.getRiskTarget(FaciID);
-            //float DF_thamchieu = risktaget / (CA_CAL.fc() * GFFTotal * FMS);
+            //float DF_thamchieu = risktaget / (FC_Total * GFFTotal * FMS);
             //float[] tempDf = new float[21];
             //int k = 15;
             //for (int i = 1; i < 16; i++)
@@ -1831,7 +2569,6 @@ namespace RBI
             //        insp.Availability = "Online";
             //        insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
             //        insp.InspectionInterval = k.ToString();
-            //        //thay get last inspection = assessment date
             //        insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
             //        switch (i)
             //        {
@@ -1851,739 +2588,6 @@ namespace RBI
             //        listInspectionPlan.Add(insp);
             //    }
             //}
-            #endregion
-        }
-        private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
-        {
-            #region PoF Tank
-            int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
-            string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S", "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC", "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack", "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement", "Vibration-Induced Mechanical Fatigue" };
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            //get EquipmentID ----> get EquipmentTypeName and APIComponentType
-            int equipmentID = assBus.getEquipmentID(IDProposal);
-            EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-            EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
-            String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
-            COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
-            API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
-            int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
-            String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
-            RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
-            MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
-            cal.APIComponentType = API_ComponentType_Name;
-            //age = assessment date - comission date
-            //DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
-
-            //<input thinning>
-            cal.Diametter = com.NominalDiameter;
-            cal.NomalThick = com.NominalThickness;
-            cal.CurrentThick = com.CurrentThickness;
-            cal.MinThickReq = com.MinReqThickness;
-            cal.CorrosionRate = com.CurrentCorrosionRate;
-            cal.ProtectedBarrier = eq.DowntimeProtectionUsed == 1 ? true : false; //xem lai
-            cal.CladdingCorrosionRate = coat.CladdingCorrosionRate;
-            cal.InternalCladding = coat.InternalCladding == 1 ? true : false;
-            cal.NoINSP_THINNING = historyBus.InspectionNumber(componentNumber, DM_Name[0]);
-            cal.EFF_THIN = historyBus.getHighestInspEffec(componentNumber, DM_Name[0]);
-            cal.OnlineMonitoring = eq.OnlineMonitoring;
-            cal.HighlyEffectDeadleg = eq.HighlyDeadlegInsp == 1 ? true : false;
-            cal.ContainsDeadlegs = eq.ContainsDeadlegs == 1 ? true : false;
-            cal.CA = ma.CorrosionAllowance;
-            //tank maintain653 tro ng Tank
-            cal.AdjustmentSettle = eq.AdjustmentSettle;
-            cal.ComponentIsWeld = eq.ComponentIsWelded == 1 ? true : false;
-            //</thinning>
-
-            //<input linning>
-            cal.LinningType = coat.InternalLinerType;
-            cal.LINNER_ONLINE = eq.LinerOnlineMonitoring == 1 ? true : false;
-            cal.LINNER_CONDITION = coat.InternalLinerCondition;
-            cal.INTERNAL_LINNING = coat.InternalLining == 1 ? true : false;
-            TimeSpan year = assBus.getAssessmentDate(IDProposal) - historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID));
-            cal.YEAR_IN_SERVICE = (int)(year.Days / 365); //Yearinservice hiệu tham số giữa lần tính toán và ngày cài đặt hệ thống
-            //</input linning>
-
-            //<input SCC CAUSTIC>
-            cal.CAUSTIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[2]);
-            cal.CAUSTIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[2]);
-            cal.HEAT_TREATMENT = ma.HeatTreatment;
-            cal.NaOHConcentration = st.NaOHConcentration;
-            cal.HEAT_TRACE = eq.HeatTraced == 1 ? true : false;
-            cal.STEAM_OUT = eq.SteamOutWaterFlush == 1 ? true : false;
-            //</SCC CAUSTIC>
-
-            //<input SSC Amine>
-            cal.AMINE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[3]);
-            cal.AMINE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[3]);
-            cal.AMINE_EXPOSED = st.ExposedToGasAmine == 1 ? true : false;
-            cal.AMINE_SOLUTION = st.AmineSolution;
-            //</input SSC Amine>
-
-            //<input Sulphide Stress Cracking>
-            cal.ENVIRONMENT_H2S_CONTENT = st.H2S == 1 ? true : false;
-            cal.AQUEOUS_OPERATOR = st.AqueousOperation == 1 ? true : false;
-            cal.AQUEOUS_SHUTDOWN = st.AqueousShutdown == 1 ? true : false;
-            cal.SULPHIDE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[4]);
-            cal.SULPHIDE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[4]);
-            cal.H2SContent = st.H2SInWater;
-            cal.PH = st.WaterpH;
-            cal.PRESENT_CYANIDE = st.Cyanide == 1 ? true : false;
-            cal.BRINNEL_HARDNESS = com.BrinnelHardness;
-            //</Sulphide Stress Cracking>
-
-            //<input HIC/SOHIC-H2S>
-            cal.SULFUR_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[5]);
-            cal.SULFUR_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[5]);
-            cal.SULFUR_CONTENT = ma.SulfurContent;
-            //</HIC/SOHIC-H2S>
-
-            //<input PTA Cracking>
-            cal.PTA_SUSCEP = ma.IsPTA == 1 ? true : false;
-            cal.NICKEL_ALLOY = ma.NickelBased == 1 ? true : false;
-            cal.EXPOSED_SULFUR = st.ExposedToSulphur == 1 ? true : false;
-            cal.PTA_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[7]);
-            cal.PTA_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[7]);
-            cal.ExposedSH2OOperation = eq.PresenceSulphidesO2 == 1 ? true : false;
-            cal.ExposedSH2OShutdown = eq.PresenceSulphidesO2Shutdown == 1 ? true : false;
-            cal.ThermalHistory = eq.ThermalHistory;
-            cal.PTAMaterial = ma.PTAMaterialCode;
-            cal.DOWNTIME_PROTECTED = eq.DowntimeProtectionUsed == 1 ? true : false;
-            //</PTA Cracking>
-
-            //<input CLSCC>
-            cal.CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[8]);
-            cal.CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[8]);
-            cal.EXTERNAL_EXPOSED_FLUID_MIST = eq.MaterialExposedToClExt == 1 ? true : false;
-            cal.INTERNAL_EXPOSED_FLUID_MIST = st.MaterialExposedToClInt == 1 ? true : false;
-            cal.CHLORIDE_ION_CONTENT = st.Chloride;
-            //</CLSCC>
-
-            //<input HSC-HF>
-            cal.HSC_HF_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[9]);
-            cal.HSC_HF_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[9]);
-            //</HSC-HF>
-
-            //<input External Corrosion>
-            cal.EXTERNAL_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[11]);
-            cal.EXTERNAL_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[11]);
-            //</External Corrosion>
-
-            //<input HIC/SOHIC-HF>
-            cal.HICSOHIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[10]);
-            cal.HICSOHIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[10]);
-            cal.HF_PRESENT = st.Hydrofluoric == 1 ? true : false;
-            //</HIC/SOHIC-HF>
-
-            //<input CUI DM>
-            cal.INTERFACE_SOIL_WATER = eq.InterfaceSoilWater == 1 ? true : false;
-            cal.SUPPORT_COATING = coat.SupportConfigNotAllowCoatingMaint == 1 ? true : false;
-            cal.INSULATION_TYPE = coat.ExternalInsulationType;
-            cal.CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[12]);
-            cal.CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[12]);
-            cal.CUI_INSP_DATE = coat.ExternalCoatingDate;
-            cal.CUI_PERCENT_1 = tem.Minus12ToMinus8;
-            cal.CUI_PERCENT_2 = tem.Minus8ToPlus6;
-            cal.CUI_PERCENT_3 = tem.Plus6ToPlus32;
-            cal.CUI_PERCENT_4 = tem.Plus32ToPlus71;
-            cal.CUI_PERCENT_5 = tem.Plus71ToPlus107;
-            cal.CUI_PERCENT_6 = tem.Plus107ToPlus121;
-            cal.CUI_PERCENT_7 = tem.Plus121ToPlus135;
-            cal.CUI_PERCENT_8 = tem.Plus135ToPlus162;
-            cal.CUI_PERCENT_9 = tem.Plus162ToPlus176;
-            cal.CUI_PERCENT_10 = tem.MoreThanPlus176;
-            //</CUI DM>
-
-            //<input External CLSCC>
-            cal.EXTERN_CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[13]);
-            cal.EXTERN_CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[13]);
-            //</External CLSCC>
-
-            //<input External CUI CLSCC>
-            cal.EXTERN_CLSCC_CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[14]);
-            cal.EXTERN_CLSCC_CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[14]);
-            cal.EXTERNAL_INSULATION = coat.ExternalInsulation == 1 ? true : false;
-            cal.COMPONENT_INSTALL_DATE = eq.CommissionDate;
-            cal.CRACK_PRESENT = com.CracksPresent == 1 ? true : false;
-            cal.EXTERNAL_EVIRONMENT = eq.ExternalEnvironment;
-            cal.EXTERN_COAT_QUALITY = coat.ExternalCoatingQuality;
-            cal.PIPING_COMPLEXITY = com.ComplexityProtrusion;
-            cal.INSULATION_CONDITION = coat.InsulationCondition;
-            cal.INSULATION_CHLORIDE = coat.InsulationContainsChloride == 1 ? true : false;
-            //</External CUI CLSCC>
-
-            //<input HTHA>
-            cal.HTHA_EFFECT = historyBus.getHighestInspEffec(componentNumber, DM_Name[15]);
-            cal.HTHA_NUM_INSP = historyBus.InspectionNumber(componentNumber, DM_Name[15]);
-            cal.MATERIAL_SUSCEP_HTHA = ma.IsHTHA == 1 ? true : false;
-            cal.HTHA_MATERIAL = ma.HTHAMaterialCode; //check lai
-            cal.HTHA_PRESSURE = st.H2SPartialPressure;
-            cal.CRITICAL_TEMP = st.CriticalExposureTemperature; //check lai
-            cal.DAMAGE_FOUND = com.DamageFoundInspection == 1 ? true : false;
-            //</HTHA>
-
-            //<input Brittle>
-            cal.LOWEST_TEMP = eq.YearLowestExpTemp == 1 ? true : false;
-            //</Brittle>
-
-            //<input temper Embrittle>
-            cal.TEMPER_SUSCEP = ma.Temper == 1 ? true : false;
-            cal.PWHT = eq.PWHT == 1 ? true : false;
-            cal.BRITTLE_THICK = ma.BrittleFractureThickness;
-            cal.CARBON_ALLOY = ma.CarbonLowAlloy == 1 ? true : false;
-            cal.DELTA_FATT = com.DeltaFATT;
-            //</Temper Embrittle>
-
-            //<input 885>
-            cal.MAX_OP_TEMP = st.MaxOperatingTemperature;
-            cal.MIN_OP_TEMP = st.MinOperatingTemperature;
-            cal.MIN_DESIGN_TEMP = ma.MinDesignTemperature;
-            cal.REF_TEMP = ma.ReferenceTemperature;
-            cal.CHROMIUM_12 = ma.ChromeMoreEqual12 == 1 ? true : false;
-            //</885>
-
-            //<input Sigma>
-            cal.AUSTENITIC_STEEL = ma.Austenitic == 1 ? true : false;
-            cal.PERCENT_SIGMA = ma.SigmaPhase;
-            //</Sigma>
-
-            //<input Piping Mechanical>
-            cal.EquipmentType = equipmentTypename;
-            cal.PREVIOUS_FAIL = com.PreviousFailures;
-            cal.AMOUNT_SHAKING = com.ShakingAmount;
-            cal.TIME_SHAKING = com.ShakingTime;
-            cal.CYLIC_LOAD = com.CyclicLoadingWitin15_25m;
-            cal.CORRECT_ACTION = com.CorrectiveAction;
-            cal.NUM_PIPE = com.NumberPipeFittings;
-            cal.PIPE_CONDITION = com.PipeCondition;
-            cal.JOINT_TYPE = com.BranchJointType; //check lai
-            cal.BRANCH_DIAMETER = com.BranchDiameter;
-            //</Piping Mechanical>
-
-            //<Calculate DF>
-
-            float[] Df = new float[21];
-            float[] age = new float[14];
-            for (int i = 0; i < 13; i++)
-            {
-                age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
-            }
-            age[13] = historyBus.getAge(componentNumber, DM_Name[13], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
-            Df[0] = cal.DF_THIN(age[0]);
-            Df[1] = cal.DF_LINNING(age[1]);
-            Df[2] = cal.DF_CAUSTIC(age[2]);
-            Df[3] = cal.DF_AMINE(age[3]);
-            Df[4] = cal.DF_SULPHIDE(age[4]);
-            Df[5] = cal.DF_HICSOHIC_H2S(age[5]);
-            Df[6] = cal.DF_CACBONATE(age[6]);
-            Df[7] = cal.DF_PTA(age[7]);
-            Df[8] = cal.DF_CLSCC(age[8]);
-            Df[9] = cal.DF_HSCHF(age[9]);
-            Df[10] = cal.DF_HIC_SOHIC_HF(age[10]);
-            Df[11] = cal.DF_EXTERNAL_CORROSION(age[11]);
-            Df[12] = cal.DF_CUI(age[12]);
-            Df[13] = cal.DF_EXTERN_CLSCC();
-            Df[14] = cal.DF_CUI_CLSCC();
-            Df[15] = cal.DF_HTHA(age[13]);
-            Df[16] = cal.DF_BRITTLE();
-            Df[17] = cal.DF_TEMP_EMBRITTLE();
-            Df[18] = cal.DF_885();
-            Df[19] = cal.DF_SIGMA();
-            Df[20] = cal.DF_PIPE();
-
-            List<float> DFSSCAgePlus3 = new List<float>();
-            List<float> DFSSCAgePlus6 = new List<float>();
-            float[] thinningPlusAge = { 0, 0 };
-            float[] linningPlusAge = { 0, 0 };
-            float[] DF_HTHAPlusAge = { 0, 0 };
-            float[] DF_EXTERN_CORROSIONPlusAge = { 0, 0 };
-            float[] DF_CUIPlusAge = { 0, 0 };
-
-            List<RW_DAMAGE_MECHANISM> listDamageMachenism = new List<RW_DAMAGE_MECHANISM>();
-            RW_FULL_POF fullPOF = new RW_FULL_POF();
-            fullPOF.ID = IDProposal;
-            for (int i = 0; i < 21; i++)
-            {
-                if (Df[i] > 1)
-                {
-                    RW_DAMAGE_MECHANISM damage = new RW_DAMAGE_MECHANISM();
-                    damage.ID = IDProposal;
-                    damage.DMItemID = DM_ID[i];
-                    damage.IsActive = 1;
-                    damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
-                    damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
-                    damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
-                    damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], )
-                    damage.LastInspDate = DateTime.Now;
-                    damage.DF1 = Df[i];
-                    switch (i)
-                    {
-                        case 0: //Thinning
-                            damage.DF2 = cal.DF_THIN(age[0] + 3);
-                            damage.DF3 = cal.DF_THIN(age[0] + 6);
-                            thinningPlusAge[0] = damage.DF2;
-                            thinningPlusAge[1] = damage.DF3;
-                            break;
-                        case 1: //Linning
-                            damage.DF2 = cal.DF_LINNING(age[1] + 3);
-                            damage.DF3 = cal.DF_LINNING(age[1] + 6);
-                            linningPlusAge[0] = damage.DF2;
-                            linningPlusAge[1] = damage.DF3;
-                            break;
-                        case 2: //Caustic
-                            damage.DF2 = cal.DF_CAUSTIC(age[2] + 3);
-                            damage.DF3 = cal.DF_CAUSTIC(age[2] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 3: //Amine
-                            damage.DF2 = cal.DF_AMINE(age[3] + 3);
-                            damage.DF3 = cal.DF_AMINE(age[3] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 4: //Sulphide
-                            damage.DF2 = cal.DF_SULPHIDE(age[4] + 3);
-                            damage.DF3 = cal.DF_SULPHIDE(age[4] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 5: //HIC/SOHIC-H2S
-                            damage.DF2 = cal.DF_HICSOHIC_H2S(age[5] + 3);
-                            damage.DF3 = cal.DF_HICSOHIC_H2S(age[5] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 6: //Carbonate
-                            damage.DF2 = cal.DF_CACBONATE(age[6] + 3);
-                            damage.DF3 = cal.DF_CACBONATE(age[6] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 7: //PTA (Polythionic Acid Stress Corrosion Cracking)
-                            damage.DF2 = cal.DF_PTA(age[7] + 3);
-                            damage.DF3 = cal.DF_PTA(age[7] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 8: //CLSCC (Chloride Stress Corrosion Cracking)
-                            damage.DF2 = cal.DF_CLSCC(age[8] + 3);
-                            damage.DF3 = cal.DF_CLSCC(age[8] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 9: //HSC-HF
-                            damage.DF2 = cal.DF_HSCHF(age[9] + 3);
-                            damage.DF3 = cal.DF_HSCHF(age[9] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 10: //HIC/SOHIC-HF
-                            damage.DF2 = cal.DF_HIC_SOHIC_HF(age[10] + 3);
-                            damage.DF3 = cal.DF_HIC_SOHIC_HF(age[10] + 6);
-                            DFSSCAgePlus3.Add(damage.DF2);
-                            DFSSCAgePlus6.Add(damage.DF3);
-                            break;
-                        case 11: //External Corrosion
-                            damage.DF2 = cal.DF_EXTERNAL_CORROSION(age[11] + 3);
-                            damage.DF3 = cal.DF_EXTERNAL_CORROSION(age[11] + 6);
-                            DF_EXTERN_CORROSIONPlusAge[0] = damage.DF2;
-                            DF_EXTERN_CORROSIONPlusAge[1] = damage.DF2;
-                            break;
-                        case 12: //CUI (Corrosion Under Insulation)
-                            damage.DF2 = cal.DF_CUI(age[12] + 3);
-                            damage.DF3 = cal.DF_CUI(age[12] + 6);
-                            DF_CUIPlusAge[0] = damage.DF2;
-                            DF_CUIPlusAge[1] = damage.DF3;
-                            break;
-                        case 15: //HTHA
-                            damage.DF2 = cal.DF_HTHA(age[13] + 3);
-                            damage.DF3 = cal.DF_HTHA(age[13] + 6);
-                            DF_HTHAPlusAge[0] = damage.DF2;
-                            DF_HTHAPlusAge[1] = damage.DF3;
-                            fullPOF.HTHA_AP1 = damage.DF1;
-                            fullPOF.HTHA_AP2 = damage.DF2;
-                            fullPOF.HTHA_AP3 = damage.DF3;
-                            break;
-                        case 16: //Brittle
-                            damage.DF2 = damage.DF3 = damage.DF1;
-                            fullPOF.BrittleAP1 = fullPOF.BrittleAP2 = fullPOF.BrittleAP3 = damage.DF1;
-                            break;
-                        case 20: //Piping Fatigure
-                            damage.DF2 = damage.DF3 = damage.DF1;
-                            fullPOF.FatigueAP1 = fullPOF.FatigueAP2 = fullPOF.FatigueAP3 = damage.DF1;
-                            break;
-                        default:
-                            damage.DF2 = damage.DF1;
-                            damage.DF3 = damage.DF1;
-                            break;
-                    }
-                    listDamageMachenism.Add(damage);
-                }
-            }
-            //Tính DF_Thin_Total
-            float[] DF_Thin_Total = { 0, 0, 0 };
-            DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
-            DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
-            DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-            //Console.WriteLine("Thinning total " + DF_Thin_Total[0] + " " + DF_Thin_Total[1] + " " + DF_Thin_Total[2]);
-            //Tính Df_SSC_Total
-            float[] DF_SSC_Total = { 0, 0, 0 };
-            DF_SSC_Total[0] = Df[2];
-            for (int i = 2; i < 11; i++)
-            {
-                if (DF_SSC_Total[0] < Df[i])
-                    DF_SSC_Total[0] = Df[i];
-            }
-            if (DFSSCAgePlus3.Count != 0)
-            {
-                DF_SSC_Total[1] = DFSSCAgePlus3.Max();
-                DF_SSC_Total[2] = DFSSCAgePlus6.Max();
-            }
-            //Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
-
-            /////Tính DF_Ext_Total
-            float DF_Ext_Total = Df[11];
-            for (int i = 12; i < 15; i++)
-            {
-                if (DF_Ext_Total < Df[i])
-                    DF_Ext_Total = Df[i];
-            }
-
-            float[] listDF_Ext1 = { DF_EXTERN_CORROSIONPlusAge[0], DF_CUIPlusAge[0], Df[13], Df[14] };
-            float[] listDF_ext2 = { DF_EXTERN_CORROSIONPlusAge[1], DF_CUIPlusAge[1], Df[13], Df[14] };
-            float DF_Ext_Total2 = listDF_Ext1[0];
-            float DF_ext_total3 = listDF_ext2[0];
-            for (int i = 0; i < listDF_Ext1.Length; i++)
-            {
-                if (DF_Ext_Total2 < listDF_Ext1[i])
-                    DF_Ext_Total2 = listDF_Ext1[i];
-            }
-            for (int i = 0; i < listDF_ext2.Length; i++)
-            {
-                if (DF_ext_total3 < listDF_ext2[i])
-                    DF_ext_total3 = listDF_ext2[i];
-            }
-            ////Tính DF_Brit_Total
-            float DF_Brit_Total = Df[16] + Df[17]; //Df_brittle + Df_temp_Embrittle
-            for (int i = 18; i < 21; i++)
-            {
-                if (DF_Brit_Total < Df[i])
-                    DF_Brit_Total = Df[i];
-            }
-            //Tính Df_Total
-            float[] DF_Total = { 0, 0, 0 };
-            //DF_Total = Max(Df_thinning, DF_ext) + DF_SCC + DF_HTHA + DF_Brit + DF_Pipe ---> if thinning is local
-            switch (ThinningType)
-            {
-                case "Local":
-                    DF_Total[0] = Math.Max(DF_Thin_Total[0], DF_Ext_Total) + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20];
-                    DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
-                    DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
-                    break;
-                case "General":
-                    DF_Total[0] = DF_Thin_Total[0] + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
-                    DF_Total[1] = DF_Thin_Total[1] + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
-                    DF_Total[2] = DF_Thin_Total[1] + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
-                    break;
-                default:
-                    break;
-            }
-            fullPOF.ThinningAP1 = DF_Thin_Total[0];
-            fullPOF.ThinningAP2 = DF_Thin_Total[1];
-            fullPOF.ThinningAP3 = DF_Thin_Total[2];
-            fullPOF.ThinningLocalAP1 = Math.Max(DF_Thin_Total[0], DF_Ext_Total);
-            fullPOF.ThinningLocalAP2 = Math.Max(DF_Thin_Total[1], DF_Ext_Total2);
-            fullPOF.ThinningLocalAP3 = Math.Max(DF_Thin_Total[2], DF_ext_total3);
-            fullPOF.ThinningGeneralAP1 = DF_Thin_Total[0] + DF_Ext_Total;
-            fullPOF.ThinningGeneralAP2 = DF_Thin_Total[1] + DF_Ext_Total2;
-            fullPOF.ThinningGeneralAP3 = DF_Thin_Total[2] + DF_ext_total3;
-            fullPOF.ExternalAP1 = DF_Ext_Total;
-            fullPOF.ExternalAP2 = DF_Ext_Total2;
-            fullPOF.ExternalAP3 = DF_ext_total3;
-            fullPOF.HTHA_AP1 = Df[15];
-            fullPOF.HTHA_AP2 = DF_HTHAPlusAge[0];
-            fullPOF.HTHA_AP3 = DF_HTHAPlusAge[1];
-            fullPOF.BrittleAP1 = DF_Brit_Total;
-            fullPOF.BrittleAP2 = DF_Brit_Total;
-            fullPOF.BrittleAP3 = DF_Brit_Total;
-            fullPOF.FatigueAP1 = Df[20];
-            fullPOF.FatigueAP2 = Df[20];
-            fullPOF.FatigueAP3 = Df[20];
-            fullPOF.SCCAP1 = DF_SSC_Total[0];
-            fullPOF.SCCAP2 = DF_SSC_Total[1];
-            fullPOF.SCCAP3 = DF_SSC_Total[2];
-            fullPOF.TotalDFAP1 = DF_Total[0];
-            fullPOF.TotalDFAP2 = DF_Total[1];
-            fullPOF.TotalDFAP3 = DF_Total[2];
-            fullPOF.PoFAP1Category = cal.PoFCategory(DF_Total[0]);
-            fullPOF.PoFAP2Category = cal.PoFCategory(DF_Total[1]);
-            fullPOF.PoFAP3Category = cal.PoFCategory(DF_Total[2]);
-            //get Managerment Factor 
-            float FMS = 0;
-            FACILITY_BUS faciBus = new FACILITY_BUS();
-            FMS = faciBus.getFMS(eqMaBus.getSiteID(equipmentID));
-            fullPOF.FMS = FMS;
-            //Console.WriteLine("FMS " + FMS);
-            //get GFFtotal
-            float GFFTotal = 0;
-            API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
-            GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
-            fullPOF.GFFTotal = GFFTotal;
-            //Console.WriteLine("GFF total " + GFFTotal);
-            fullPOF.ThinningType = ThinningType;
-            fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
-            fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
-            fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
-            //lưu kết quả vào bảng RW_DAMAGE_MECHANISM
-            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
-            foreach (RW_DAMAGE_MECHANISM d in listDamageMachenism)
-            {
-                if (damageBus.checkExistDM(d.ID, d.DMItemID))
-                    damageBus.edit(d);
-                else
-                    damageBus.add(d);
-            }
-            //lưu kết quả vào bảng RW_FULL_POF
-            RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
-            if (fullPOFBus.checkExistPoF(fullPOF.ID))
-                fullPOFBus.edit(fullPOF);
-            else
-                fullPOFBus.add(fullPOF);
-
-            //MessageBox.Show("Df_Thinning = " + cal.DF_THIN(10).ToString() + "\n" +
-            // "Df_Linning = " + cal.DF_LINNING(10).ToString() + "\n" +
-            // "Df_Caustic = " + cal.DF_CAUSTIC(10).ToString() + "\n" +
-            // "Df_Amine = " + cal.DF_AMINE(10).ToString() + "\n" +
-            // "Df_Sulphide = " + cal.DF_SULPHIDE(10).ToString() + "\n" +
-            // "Df_PTA = " + cal.DF_PTA(11).ToString() + "\n" +
-            // "Df_PTA = " + cal.DF_PTA(10) + "\n" +
-            // "Df_CLSCC = " + cal.DF_CLSCC(10) + "\n" +
-            // "Df_HSC-HF = " + cal.DF_HSCHF(10) + "\n" +
-            // "Df_HIC/SOHIC-HF = " + cal.DF_HIC_SOHIC_HF(10) + "\n" +
-            // "Df_ExternalCorrosion = " + cal.DF_EXTERNAL_CORROSION(10) + "\n" +
-            // "Df_CUI = " + cal.DF_CUI(10) + "\n" +
-            // "Df_EXTERNAL_CLSCC = " + cal.DF_EXTERN_CLSCC() + "\n" +
-            // "Df_EXTERNAL_CUI_CLSCC = " + cal.DF_CUI_CLSCC() + "\n" +
-            // "Df_HTHA = " + cal.DF_HTHA(10) + "\n" +
-            // "Df_Brittle = " + cal.DF_BRITTLE() + "\n" +
-            // "Df_Temper_Embrittle = " + cal.DF_TEMP_EMBRITTLE() + "\n" +
-            // "Df_885 = " + cal.DF_885() + "\n" +
-            // "Df_Sigma = " + cal.DF_SIGMA() + "\n" +
-            // "Df_Piping = " + cal.DF_PIPE()+ "\n" +
-            // "Art = " + cal.Art(10)
-            // , "Damage Factor");
-            //</Calculate DF>
-            #endregion
-
-            #region CA
-            MSSQL_CA_CAL CA = new MSSQL_CA_CAL();
-            CA.MATERIAL_COST = ma.CostFactor;
-            CA.PRODUCTION_COST = caTank.ProductionCost;
-            float FC_Total = 0;
-            if (componentTypeName == "Shell")
-            {
-                CA.FLUID_HEIGHT = caTank.FLUID_HEIGHT;
-                CA.SHELL_COURSE_HEIGHT = caTank.SHELL_COURSE_HEIGHT;
-                CA.TANK_DIAMETER = caTank.TANK_DIAMETTER;
-                CA.PREVENTION_BARRIER = caTank.Prevention_Barrier == 1 ? true : false;
-                CA.EnvironSensitivity = caTank.Environ_Sensitivity;
-                CA.P_lvdike = caTank.P_lvdike;
-                CA.P_offsite = caTank.P_offsite;
-                CA.P_onsite = caTank.P_onsite;
-                CA.API_COMPONENT_TYPE_NAME = API_component;
-                RW_CA_TANK rwCATank = new RW_CA_TANK();
-
-                rwCATank.ID = eq.ID;
-                // bieu thuc trung gian
-                rwCATank.Flow_Rate_D1 = CA.W_n_Tank(1) > 0 ? CA.W_n_Tank(1) : 0;
-                rwCATank.Flow_Rate_D2 = CA.W_n_Tank(2) > 0 ? CA.W_n_Tank(2) : 0;
-                rwCATank.Flow_Rate_D3 = CA.W_n_Tank(3) > 0 ? CA.W_n_Tank(3) : 0;
-                rwCATank.Flow_Rate_D4 = CA.W_n_Tank(4) > 0 ? CA.W_n_Tank(4) : 0;
-
-                rwCATank.Leak_Duration_D1 = CA.ld_tank(1) > 0 ? CA.ld_tank(1) : 0;
-                rwCATank.Leak_Duration_D2 = CA.ld_tank(2) > 0 ? CA.ld_tank(2) : 0;
-                rwCATank.Leak_Duration_D3 = CA.ld_tank(3) > 0 ? CA.ld_tank(3) : 0;
-                rwCATank.Leak_Duration_D4 = CA.ld_tank(4) > 0 ? CA.ld_tank(4) : 0;
-
-                rwCATank.Release_Volume_Leak_D1 = CA.Bbl_leak_n(1) > 0 ? CA.Bbl_leak_n(1) : 0;
-                rwCATank.Release_Volume_Leak_D2 = CA.Bbl_leak_n(2) > 0 ? CA.Bbl_leak_n(2) : 0;
-                rwCATank.Release_Volume_Leak_D3 = CA.Bbl_leak_n(3) > 0 ? CA.Bbl_leak_n(3) : 0;
-                rwCATank.Release_Volume_Leak_D4 = CA.Bbl_leak_n(4) > 0 ? CA.Bbl_leak_n(4) : 0;
-
-                rwCATank.Release_Volume_Rupture = CA.Bbl_rupture_release() > 0 ? CA.Bbl_rupture_release() : 0;
-                rwCATank.Liquid_Height = CA.FLUID_HEIGHT;
-                rwCATank.Volume_Fluid = CA.BBL_TOTAL_SHELL();
-
-                rwCATank.Barrel_Dike_Leak = CA.Bbl_leak_indike() > 0 ? CA.Bbl_leak_indike() : 0;
-                rwCATank.Barrel_Dike_Rupture = CA.Bbl_rupture_indike() > 0 ? CA.Bbl_rupture_indike() : 0;
-
-                rwCATank.Barrel_Onsite_Leak = CA.Bbl_leak_ssonsite() > 0 ? CA.Bbl_leak_ssonsite() : 0;
-                rwCATank.Barrel_Onsite_Rupture = CA.Bbl_rupture_ssonsite() > 0 ? CA.Bbl_rupture_ssonsite() : 0;
-
-                rwCATank.Barrel_Offsite_Leak = CA.Bbl_leak_ssoffsite() > 0 ? CA.Bbl_leak_ssoffsite() : 0;
-                rwCATank.Barrel_Offsite_Rupture = CA.Bbl_rupture_ssoffsite() > 0 ? CA.Bbl_rupture_ssoffsite() : 0;
-
-                rwCATank.Barrel_Water_Leak = CA.Bbl_leak_water() > 0 ? CA.Bbl_leak_water() : 0;
-                rwCATank.Barrel_Water_Rupture = CA.Bbl_rupture_water() > 0 ? CA.Bbl_rupture_water() : 0;
-
-                rwCATank.Material_Factor = CA.MATERIAL_COST;
-
-                //bieu thuc tinh toan
-                rwCATank.FC_Environ_Rupture = float.IsNaN(CA.FC_rupture_environ()) ? 0 : CA.FC_rupture_environ();
-                rwCATank.FC_Environ_Leak = float.IsNaN(CA.FC_leak_environ()) ? 0 : CA.FC_leak_environ();
-                rwCATank.FC_Environ = rwCATank.FC_Environ_Rupture + rwCATank.FC_Environ_Leak;
-                rwCATank.Business_Cost = float.IsNaN(CA.FC_PROD_SHELL()) ? 0 : CA.FC_PROD_SHELL();
-                rwCATank.Component_Damage_Cost = float.IsNaN(CA.fc_cmd()) ? 0 : CA.fc_cmd();
-                rwCATank.Consequence = rwCATank.FC_Environ + rwCATank.Business_Cost + rwCATank.Component_Damage_Cost;
-                rwCATank.ConsequenceCategory = CA.FC_Category(rwCATank.Consequence);
-                FC_Total = rwCATank.Consequence;
-
-                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
-                tankBus.edit(rwCATank);
-
-            }
-            else
-            {
-                CA.Swg = caTank.SW;
-                CA.Soil_type = caTank.Soil_Type;
-                CA.TANK_FLUID = caTank.TANK_FLUID;
-                CA.FLUID = caTank.API_FLUID;
-                CA.API_COMPONENT_TYPE_NAME = "TANKBOTTOM";
-                RW_CA_TANK rwCATank = new RW_CA_TANK();
-
-                rwCATank.ID = eq.ID;
-                // bieu thuc trung gian
-                rwCATank.Hydraulic_Water = CA.k_h_water();
-                rwCATank.Hydraulic_Fluid = CA.k_h_prod();
-                rwCATank.Seepage_Velocity = CA.vel_s_prod();
-
-                rwCATank.Flow_Rate_D1 = CA.rate_n_tank_bottom(1);
-                rwCATank.Flow_Rate_D4 = CA.rate_n_tank_bottom(4);
-
-                rwCATank.Leak_Duration_D1 = CA.ld_n_tank_bottom(1);
-                rwCATank.Leak_Duration_D4 = CA.ld_n_tank_bottom(4);
-
-                rwCATank.Release_Volume_Leak_D1 = CA.Bbl_leak_n_bottom(1);
-                rwCATank.Release_Volume_Leak_D4 = CA.Bbl_leak_n_bottom(4);
-
-                rwCATank.Release_Volume_Rupture = CA.Bbl_rupture_release_bottom();
-                rwCATank.Volume_Fluid = CA.BBL_TOTAL_TANKBOTTOM();
-                rwCATank.Time_Leak_Ground = CA.t_gl_bottom();
-
-                rwCATank.Volume_SubSoil_Leak_D1 = CA.Bbl_leak_subsoil(1);
-                rwCATank.Volume_SubSoil_Leak_D4 = CA.Bbl_leak_subsoil(4);
-
-                rwCATank.Volume_Ground_Water_Leak_D1 = CA.Bbl_leak_groundwater(1);
-                rwCATank.Volume_Ground_Water_Leak_D4 = CA.Bbl_leak_groundwater(4);
-
-                rwCATank.Barrel_Dike_Rupture = CA.Bbl_rupture_indike_bottom();
-                rwCATank.Barrel_Onsite_Rupture = CA.Bbl_rupture_ssonsite_bottom();
-                rwCATank.Barrel_Offsite_Rupture = CA.Bbl_rupture_ssoffsite_bottom();
-                rwCATank.Barrel_Water_Rupture = CA.Bbl_rupture_water_bottom();
-
-                // gia tri tinh toan
-                rwCATank.FC_Environ_Rupture = float.IsNaN(CA.FC_rupture_environ_bottom()) ? 0 : CA.FC_rupture_environ_bottom();
-                rwCATank.FC_Environ_Leak = float.IsNaN(CA.FC_leak_environ_bottom()) ? 0 : CA.FC_leak_environ_bottom();
-                rwCATank.FC_Environ = rwCATank.FC_Environ_Rupture + rwCATank.FC_Environ_Leak;
-                rwCATank.Business_Cost = float.IsNaN(CA.FC_PROD_SHELL()) ? 0 : CA.FC_PROD_SHELL();
-                rwCATank.Component_Damage_Cost = float.IsNaN(CA.FC_cmd_bottom()) ? 0 : CA.FC_cmd_bottom();
-                rwCATank.Consequence = rwCATank.FC_Environ + rwCATank.Business_Cost + rwCATank.Component_Damage_Cost;
-
-                rwCATank.ConsequenceCategory = CA.FC_Category(rwCATank.Consequence);
-                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
-                tankBus.edit(rwCATank);
-                FC_Total = rwCATank.Consequence;
-            }
-            #endregion
-
-            #region Inspection Plan
-            int FaciID = eqMaBus.getFacilityID(equipmentID);
-            FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
-            float risktaget = busRiskTarget.getRiskTarget(FaciID);
-            float DF_thamchieu = risktaget / (FC_Total * GFFTotal * FMS);
-            float[] tempDf = new float[21];
-            int k = 15;
-            for (int i = 1; i < 16; i++)
-            {
-                tempDf[0] = cal.DF_THIN(age[0] + i);
-                tempDf[1] = cal.DF_LINNING(age[1] + i);
-                tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
-                tempDf[3] = cal.DF_AMINE(age[3] + i);
-                tempDf[4] = cal.DF_SULPHIDE(age[4] + i);
-                tempDf[5] = cal.DF_HICSOHIC_H2S(age[5] + i);
-                tempDf[6] = cal.DF_CACBONATE(age[6] + i);
-                tempDf[7] = cal.DF_PTA(age[7] + i);
-                tempDf[8] = cal.DF_CLSCC(age[8] + i);
-                tempDf[9] = cal.DF_HSCHF(age[9] + i);
-                tempDf[10] = cal.DF_HIC_SOHIC_HF(age[10] + i);
-                tempDf[11] = cal.DF_EXTERNAL_CORROSION(age[11] + i);
-                tempDf[12] = cal.DF_CUI(age[12] + i);
-                tempDf[13] = cal.DF_EXTERN_CLSCC();
-                tempDf[14] = cal.DF_CUI_CLSCC();
-                tempDf[15] = cal.DF_HTHA(age[13] + i);
-                tempDf[16] = cal.DF_BRITTLE();
-                tempDf[17] = cal.DF_TEMP_EMBRITTLE();
-                tempDf[18] = cal.DF_885();
-                tempDf[19] = cal.DF_SIGMA();
-                tempDf[20] = cal.DF_PIPE();
-                float maxThin = cal.INTERNAL_LINNING ? Math.Min(tempDf[0], tempDf[1]) : tempDf[0];
-                float maxSCC = tempDf[2];
-                float maxExt = tempDf[12];
-                for (int j = 3; j < 11; j++)
-                {
-                    if (maxSCC < tempDf[j])
-                        maxSCC = tempDf[j];
-                }
-                for (int j = 13; j < 15; j++)
-                {
-                    if (maxExt < tempDf[j])
-                        maxExt = tempDf[j];
-                }
-                float maxBritt = tempDf[16] + tempDf[17]; //Df_brittle + Df_temp_Embrittle
-                for (int j = 18; j < 21; j++)
-                {
-                    if (maxBritt < tempDf[j])
-                        maxBritt = tempDf[j];
-                }
-                if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
-                {
-                    k = i;
-                    break;
-                }
-            }
-            //gán cho Object inspection plan
-            float[] inspec = { DF_Thin_Total[0], DF_SSC_Total[0], DF_Ext_Total, DF_Brit_Total };
-            for (int i = 0; i < inspec.Length; i++)
-            {
-                if (inspec[i] != 0)
-                {
-                    InspectionPlant insp = new InspectionPlant();
-                    insp.System = "Inspection Plan";
-                    insp.ItemNo = eqMaBus.getEquipmentNumber(equipmentID);
-                    insp.Method = "No Name";
-                    insp.Coverage = "N/A";
-                    insp.Availability = "Online";
-                    insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
-                    insp.InspectionInterval = k.ToString();
-                    insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
-                    switch (i)
-                    {
-                        case 0:
-                            insp.DamageMechanism = "Internal Thinning";
-                            break;
-                        case 1:
-                            insp.DamageMechanism = "SSC Damage Factor";
-                            break;
-                        case 2:
-                            insp.DamageMechanism = "External Damage Factor";
-                            break;
-                        default:
-                            insp.DamageMechanism = "Brittle";
-                            break;
-                    }
-                    listInspectionPlan.Add(insp);
-                }
-            }
             #endregion
         }
 
@@ -2720,7 +2724,6 @@ namespace RBI
 
         private void addNewTab(string tabname, UserControl uc)
         {
-
             string _tabID = IDProposal.ToString();
             foreach (DevExpress.XtraTab.XtraTabPage tabpage in xtraTabData.TabPages)
             {
@@ -2756,7 +2759,6 @@ namespace RBI
                     return;
                 }
             }
-
             DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
             tabPage.Text = tabname;
             string[] _tabname = tabname.Split(' ');
@@ -2846,7 +2848,7 @@ namespace RBI
                 RW_INPUT_CA_TANK_BUS busInputCATank = new RW_INPUT_CA_TANK_BUS();
                 RW_INPUT_CA_TANK inputCATank = busInputCATank.getData(IDProposal);
 
-                risk.EquipmentNumber = eqMaBus.getEquipmentNumber(equipmentID);//Equipment Name or Equipment Number can dc gan lai
+                risk.EquipmentNumber = eqMaBus.getEquipmentName(equipmentID);//Equipment Name or Equipment Number can dc gan lai
                 risk.EquipmentDesc = eqMaBus.getEquipmentDesc(equipmentID);//Equipment Description gan lai
                 risk.EquipmentType = equipmentTypename; //Equipment type
                 risk.ComponentName = comMasterBus.getComponentName(equipmentID); //component name
@@ -2875,7 +2877,7 @@ namespace RBI
                 //risk.componentMaterialGrade; //component material glade
                 risk.initThinningPoF = fullPoF.ThinningAP1;//Thinning POF
                 risk.initEnvCracking = fullPoF.SCCAP1;//Cracking env
-                risk.initOtherPoF = fullPoF.HTHA_AP1 + fullPoF.BrittleAP1;//OtherPOF
+                risk.initOtherPoF = fullPoF.HTHA_AP1 + fullPoF.BrittleAP1 + fullPoF.FatigueAP1;//OtherPOF
                 risk.initPoF = risk.initThinningPoF + risk.initEnvCracking + risk.initOtherPoF;//Init POF
                 risk.extThinningPoF = fullPoF.ExternalAP1;//Ext Thinning POF
                 risk.extEnvCrackingPoF = 0;//ExtEnv Cracking
@@ -2968,9 +2970,9 @@ namespace RBI
                     }
                 }
             }
-            catch (Exception e)
+            catch 
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("Cannot create file", "Cortek", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -3228,8 +3230,6 @@ namespace RBI
             RW_COATING_BUS coatBus = new RW_COATING_BUS();
             RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
             RW_INPUT_CA_LEVEL_1_BUS caLv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            //if(assBus.checkExistAssessment(IDProposal))
-            //{
             assBus.edit(ass);
             eqBus.edit(eq);
             comBus.edit(com);
@@ -3238,8 +3238,6 @@ namespace RBI
             coatBus.edit(coat);
             maBus.edit(ma);
             caLv1Bus.edit(ca);
-            //}
-            //kiem tra trong CSDL xem neu chua co thi them vao
 
         }
         //thiet bi tank
@@ -3304,73 +3302,79 @@ namespace RBI
             history.Dock = DockStyle.Fill;
             addTabfromMainMenu("Inspection History", history);
         }
-
+        private void CheckAndShowTab(string tabname, int serial)
+        {
+            int n = 0;
+            if (int.TryParse(tabname, out n))
+                ShowItemTabpage(n, serial, checkTank);
+            else
+                return;
+        }
         private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-            {
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 1, checkTank);
-            }
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 1);
         }
         private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 2, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 2);
         }
 
         private void navComponent_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 3, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 3);
         }
 
         private void navOperating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 4, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 4);
         }
 
         private void navMaterial_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 6, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 6);
         }
 
         private void navCoating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 5, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 5);
         }
 
         private void navNoInspection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 11, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 11);
         }
 
         private void navStream_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 7, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 7);
         }
         private void navRiskFactor_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 9, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 9);
         }
         private void navCA_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 8, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 8);
         }
         private void navRiskSummary_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            if (this.xtraTabData.SelectedTabPageIndex != 0)
-                ShowItemTabpage(int.Parse(this.xtraTabData.SelectedTabPage.Name), 10, checkTank);
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 10);
         }
         #endregion
 
         #region Parameters
+        //<input DM>
+        int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
+        string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
+                                 "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S",
+                                 "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking",
+                                 "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC",
+                                 "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking",
+                                 "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
+                                 "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
+                                 "Vibration-Induced Mechanical Fatigue" };
+        //</input DM>
+
         //<treeListProject_MouseDoubleClick>
         List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
         List<UCCoatLiningIsulationCladding> listUCCoating = new List<UCCoatLiningIsulationCladding>();

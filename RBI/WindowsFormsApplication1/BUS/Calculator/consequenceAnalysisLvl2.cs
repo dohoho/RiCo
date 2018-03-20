@@ -10,7 +10,7 @@ namespace RBI.BUS.Calculator
     class consequenceAnalysisLvl2
     {
         RBICalculatorConn rbi = new RBICalculatorConn();
-        BusEquipmentTemp busTemp = new BusEquipmentTemp();
+        //BusEquipmentTemp busTemp = new BusEquipmentTemp();
         // material
         public String material { set; get; }   
         // fluid

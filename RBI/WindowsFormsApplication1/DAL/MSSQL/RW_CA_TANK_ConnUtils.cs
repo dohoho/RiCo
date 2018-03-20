@@ -18,7 +18,7 @@ namespace RBI.DAL.MSSQL
             conn.Open();
             String sql = "USE [rbi] " +
                         "INSERT INTO [dbo].[RW_CA_TANK]" +
-                        "([ID]"+
+                        "([ID]" +
                         ",[Hydraulic_Water]" +
                         ",[Hydraulic_Fluid]" +
                         ",[Seepage_Velocity]" +
@@ -99,6 +99,7 @@ namespace RBI.DAL.MSSQL
                         ",'" + Business_Cost + "'" +
                         ",'" + Consequence + "'" +
                         ",'" + ConsequenceCategory + "')";
+            
             try
             {
                 SqlCommand cmd = new SqlCommand();
@@ -313,6 +314,39 @@ namespace RBI.DAL.MSSQL
                 conn.Dispose();
             }
             return obj;
+        }
+        public bool CheckExistID(int ID)
+        {
+            Boolean IsExist = false;
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            String sql = "SELECT Hydraulic_Water FROM rbi.dbo.RW_CA_TANK WHERE ID = '"+ID+"'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsDBNull(0))
+                            IsExist = false;
+                        else
+                            IsExist = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "GET DATA FAIL!");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return IsExist;
         }
     }
 }

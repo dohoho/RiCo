@@ -109,10 +109,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BUS\BusComponents.cs" />
-    <Compile Include="BUS\BusEquipForRBI.cs" />
-    <Compile Include="BUS\BusEquipments.cs" />
-    <Compile Include="BUS\BusEquipmentTemp.cs" />
     <Compile Include="BUS\BUSExcel\BusComponentExcel.cs" />
     <Compile Include="BUS\BUSExcel\BusEquipmentForRBIExcel.cs" />
     <Compile Include="BUS\BUSExcel\BusEquipmentListExcel.cs" />
@@ -209,13 +205,10 @@
     <Compile Include="BUS\BUSMSSQL_CAL\MSSQL_DM_CAL.cs" />
     <Compile Include="DAL\ExcelConnect.cs" />
     <Compile Include="BUS\BUSExcel\FullPlantObjectExcel.cs" />
-    <Compile Include="BUS\BusFullPlant.cs" />
-    <Compile Include="BUS\BusInspectionPlant.cs" />
     <Compile Include="BUS\BUSXML\ReadXML.cs" />
     <Compile Include="BUS\Calculator\atmosphericStorageTanksConsequence.cs" />
     <Compile Include="BUS\Calculator\consequenceAnalysisLvl1.cs" />
     <Compile Include="BUS\Calculator\consequenceAnalysisLvl2.cs" />
-    <Compile Include="BUS\Calculator\NewCalculator.cs" />
     <Compile Include="BUS\Calculator\RiskBaseCalculate.cs" />
     <Compile Include="BUS\sendEmail.cs" />
     <Compile Include="DAL\ComponentsConnUtils.cs" />
@@ -317,6 +310,7 @@
     <Compile Include="DAL\RBICalculatorConn.cs" />
     <Compile Include="DAL\RBIScore\ScoreConn.cs" />
     <Compile Include="Object\Component.cs" />
+    <Compile Include="Object\InputInspectionCalculation.cs" />
     <Compile Include="Object\ObjectMSSQL\API_COMPONENT_TYPE.cs" />
     <Compile Include="Object\ObjectMSSQL\COMPONENT_DETAIL.cs" />
     <Compile Include="Object\ObjectMSSQL\COMPONENT_MASTER.cs" />
