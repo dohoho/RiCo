@@ -1700,15 +1700,16 @@ namespace RBI
                 
                 
             }
-            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
-            foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
-            {
-                d.InspDueDate = d.LastInspDate + k;
-                if (damageBus.checkExistDM(d.ID, d.DMItemID))
-                    damageBus.edit(d);
-                else
-                    damageBus.add(d);
-            }
+            //RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
+            //foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
+            //{
+            //    d.InspDueDate = d.LastInspDate.AddYears(k);
+            //    Console.WriteLine("Inspection Due date {0}, Last Inspection {1} ", d.InspDueDate, d.LastInspDate);
+            //    if (damageBus.checkExistDM(d.ID, d.DMItemID))
+            //        damageBus.edit(d);
+            //    else
+            //        damageBus.add(d);
+            //}
             RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
             //gán cho Object inspection plan
             float[] inspec = inspl.DFTotal;

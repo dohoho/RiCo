@@ -109,11 +109,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BUS\BUSExcel\BusComponentExcel.cs" />
-    <Compile Include="BUS\BUSExcel\BusEquipmentForRBIExcel.cs" />
-    <Compile Include="BUS\BUSExcel\BusEquipmentListExcel.cs" />
-    <Compile Include="BUS\BUSExcel\BusEquipmentTempExcel.cs" />
-    <Compile Include="BUS\BUSExcel\BusImportExcel.cs" />
     <Compile Include="BUS\BUSExcel\Bus_INSPECTION_HISTORY_Excel.cs" />
     <Compile Include="BUS\BUSExcel\Bus_PLANT_PROCESS_Excel.cs" />
     <Compile Include="BUS\BUSMSSQL\API_COMPONENT_TYPE_BUS.cs" />
@@ -203,21 +198,9 @@
     <Compile Include="BUS\BUSMSSQL_CAL\BUS_TOXIC.cs" />
     <Compile Include="BUS\BUSMSSQL_CAL\MSSQL_CA_CAL.cs" />
     <Compile Include="BUS\BUSMSSQL_CAL\MSSQL_DM_CAL.cs" />
-    <Compile Include="DAL\ExcelConnect.cs" />
-    <Compile Include="BUS\BUSExcel\FullPlantObjectExcel.cs" />
     <Compile Include="BUS\BUSXML\ReadXML.cs" />
-    <Compile Include="BUS\Calculator\atmosphericStorageTanksConsequence.cs" />
-    <Compile Include="BUS\Calculator\consequenceAnalysisLvl1.cs" />
-    <Compile Include="BUS\Calculator\consequenceAnalysisLvl2.cs" />
-    <Compile Include="BUS\Calculator\RiskBaseCalculate.cs" />
     <Compile Include="BUS\sendEmail.cs" />
-    <Compile Include="DAL\ComponentsConnUtils.cs" />
-    <Compile Include="DAL\DBUtils.cs" />
-    <Compile Include="DAL\EquipmentConnUtils.cs" />
-    <Compile Include="DAL\EquipmentForRBIConnUtils.cs" />
-    <Compile Include="DAL\EquipmentTempConnUtils.cs" />
-    <Compile Include="DAL\FullPlantConnUtils.cs" />
-    <Compile Include="DAL\InspectionPlantConnUtils.cs" />
+    <Compile Include="DAL\ExcelConnect.cs" />
     <Compile Include="DAL\MSSQL\API_ComponentTypeConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\COMPONENT_DETAIL_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\COMPONENT_MASTER_ConnectUtils.cs" />
@@ -306,9 +289,6 @@
     <Compile Include="DAL\MSSQL\USER_GROUPS_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\USER_PERMISSIONS_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL_CAL\MSSQL_RBI_CAL_ConnUtils.cs" />
-    <Compile Include="DAL\MySQLConnectionUtils.cs" />
-    <Compile Include="DAL\RBICalculatorConn.cs" />
-    <Compile Include="DAL\RBIScore\ScoreConn.cs" />
     <Compile Include="Object\Component.cs" />
     <Compile Include="Object\InputInspectionCalculation.cs" />
     <Compile Include="Object\ObjectMSSQL\API_COMPONENT_TYPE.cs" />
@@ -546,12 +526,6 @@
     <Compile Include="PRE\subForm\OutputDataForm\UCInspectionHistorySubform.Designer.cs">
       <DependentUpon>UCInspectionHistorySubform.cs</DependentUpon>
     </Compile>
-    <Compile Include="PRE\subForm\OutputDataForm\UCInternalThinningDamageFactor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PRE\subForm\OutputDataForm\UCInternalThinningDamageFactor.Designer.cs">
-      <DependentUpon>UCInternalThinningDamageFactor.cs</DependentUpon>
-    </Compile>
     <Compile Include="PRE\subForm\OutputDataForm\UCDamageMechanism.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -569,12 +543,6 @@
     </Compile>
     <Compile Include="PRE\subForm\InputDataForm\UCEquipmentProperties.Designer.cs">
       <DependentUpon>UCEquipmentProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PRE\subForm\InputDataForm\UCExternalCorrosionDamageFactor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PRE\subForm\InputDataForm\UCExternalCorrosionDamageFactor.Designer.cs">
-      <DependentUpon>UCExternalCorrosionDamageFactor.cs</DependentUpon>
     </Compile>
     <Compile Include="PRE\subForm\InputDataForm\UCMaterial.cs">
       <SubType>UserControl</SubType>
@@ -733,9 +701,6 @@
     <EmbeddedResource Include="PRE\subForm\InputDataForm\UCEquipmentProperties.resx">
       <DependentUpon>UCEquipmentProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PRE\subForm\InputDataForm\UCExternalCorrosionDamageFactor.resx">
-      <DependentUpon>UCExternalCorrosionDamageFactor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PRE\subForm\InputDataForm\UCMaterial.resx">
       <DependentUpon>UCMaterial.cs</DependentUpon>
     </EmbeddedResource>
@@ -756,9 +721,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PRE\subForm\OutputDataForm\UCInspectionHistorySubform.resx">
       <DependentUpon>UCInspectionHistorySubform.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PRE\subForm\OutputDataForm\UCInternalThinningDamageFactor.resx">
-      <DependentUpon>UCInternalThinningDamageFactor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PRE\subForm\OutputDataForm\UCRisk.resx">
       <DependentUpon>UCRisk.cs</DependentUpon>
