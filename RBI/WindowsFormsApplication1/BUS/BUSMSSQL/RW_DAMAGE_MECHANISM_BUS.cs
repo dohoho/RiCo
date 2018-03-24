@@ -39,5 +39,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.checkExistDamageMechanism(ID, DM_ID);
         }
+        public List<InspectionPlant> GetListInspectionPlant()
+        {
+            return DAL.GetListInspectionPlant();
+        }
     }
 }

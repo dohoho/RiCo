@@ -31,13 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImportExcelTank));
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtPathFileExcel = new System.Windows.Forms.TextBox();
-            this.btnImportExcel = new System.Windows.Forms.Button();
+            this.btnFilter = new System.Windows.Forms.Button();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSaveAs = new System.Windows.Forms.Button();
-            this.btnFinish = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -61,15 +61,15 @@
             this.txtPathFileExcel.Size = new System.Drawing.Size(266, 20);
             this.txtPathFileExcel.TabIndex = 1;
             // 
-            // btnImportExcel
+            // btnFilter
             // 
-            this.btnImportExcel.Location = new System.Drawing.Point(717, 465);
-            this.btnImportExcel.Name = "btnImportExcel";
-            this.btnImportExcel.Size = new System.Drawing.Size(75, 23);
-            this.btnImportExcel.TabIndex = 2;
-            this.btnImportExcel.Text = "Filter";
-            this.btnImportExcel.UseVisualStyleBackColor = true;
-            this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
+            this.btnFilter.Location = new System.Drawing.Point(717, 465);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(75, 23);
+            this.btnFilter.TabIndex = 2;
+            this.btnFilter.Text = "Filter";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // panelControl1
             // 
@@ -120,15 +120,16 @@
             this.btnSaveAs.UseVisualStyleBackColor = true;
             this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
             // 
-            // btnFinish
+            // btnImport
             // 
-            this.btnFinish.Location = new System.Drawing.Point(821, 465);
-            this.btnFinish.Name = "btnFinish";
-            this.btnFinish.Size = new System.Drawing.Size(75, 23);
-            this.btnFinish.TabIndex = 9;
-            this.btnFinish.Text = "Import";
-            this.btnFinish.UseVisualStyleBackColor = true;
-            this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
+            this.btnImport.Enabled = false;
+            this.btnImport.Location = new System.Drawing.Point(821, 465);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(75, 23);
+            this.btnImport.TabIndex = 9;
+            this.btnImport.Text = "Import";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
             // btnCancel
             // 
@@ -142,20 +143,21 @@
             // 
             // frmImportExcelTank
             // 
-            this.AcceptButton = this.btnFinish;
+            this.AcceptButton = this.btnImport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(989, 495);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnFinish);
+            this.Controls.Add(this.btnImport);
             this.Controls.Add(this.btnSaveAs);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnImportExcel);
+            this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.txtPathFileExcel);
             this.Controls.Add(this.btnBrowse);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmImportExcelTank";
             this.Text = "Import Plant Proccess Tank";
@@ -172,13 +174,13 @@
 
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox txtPathFileExcel;
-        private System.Windows.Forms.Button btnImportExcel;
+        private System.Windows.Forms.Button btnFilter;
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnSaveAs;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnFinish;
+        private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -13,13 +13,13 @@ namespace RBI.BUS.BUSExcel
 {
     class Bus_PLANT_PROCESS_Excel
     {
-        RW_COATING rwCoat;
-        RW_COMPONENT rwComp;
-        RW_ASSESSMENT rwAss;
-        RW_EQUIPMENT rwEq;
-        RW_STREAM rwStream;
-        RW_MATERIAL rwMaterial;
-        RW_EXTCOR_TEMPERATURE rwExtcor;
+        //RW_COATING rwCoat;
+        //RW_COMPONENT rwComp;
+        //RW_ASSESSMENT rwAss;
+        //RW_EQUIPMENT rwEq;
+        //RW_STREAM rwStream;
+        //RW_MATERIAL rwMaterial;
+        //RW_EXTCOR_TEMPERATURE rwExtcor;
         SITES site;
         FACILITY facility;
 
@@ -69,41 +69,7 @@ namespace RBI.BUS.BUSExcel
         {
             return exConn.connectionExcel(path);
         }
-
-        //check xem file input la cho Tank hay cho thuong
-        public bool checkFileTank()
-        {
-            bool isTank = false;
-            OleDbConnection conn = getConnect();
-            try
-            {
-                conn.Open();
-                String sql = "SELECT * FROM [Equipment$]";
-                OleDbCommand cmd = new OleDbCommand(sql, conn);
-                OleDbDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    try
-                    {
-                        if (!reader.IsDBNull(35))
-                        {
-                            isTank = true;
-                        }
-                    }
-                    catch
-                    {
-                        isTank = false;
-                    }
-                }
-            }
-            finally
-            {
-                conn.Close();
-                conn.Dispose();
-            }
-            return isTank;
-        }
-
+        
 
         /// <summary>
         /// get data
@@ -135,7 +101,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-                //MessageBox.Show("ERROR SITE");
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -171,7 +137,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-                //MessageBox.Show("ERROR FACILITY");
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -207,7 +173,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -243,7 +209,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-
+                MessageBox.Show("Format sheet Component error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -275,7 +241,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -307,7 +273,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -351,7 +317,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-               // MessageBox.Show("LOI CMNR");
+                MessageBox.Show("Format sheet Stream error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -398,7 +364,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch (Exception e)
             {
-                MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -448,9 +414,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -468,7 +434,6 @@ namespace RBI.BUS.BUSExcel
             try
             {
                 conn.Open();
-                //String sql = "SELECT [Equipment Number], [Component Number], [Component Type], [API Component Type],[Component Name],[Component Risk Links to Equipment Risk],[Description] FROM [Component$] ";
                 String sql = "SELECT * FROM [Component$] ";
                 OleDbCommand cmd = new OleDbCommand(sql, conn);
                 OleDbDataReader reader = cmd.ExecuteReader();
@@ -499,9 +464,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Component error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -559,9 +524,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Component error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -745,9 +710,9 @@ namespace RBI.BUS.BUSExcel
                 }
 
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -948,9 +913,9 @@ namespace RBI.BUS.BUSExcel
                 }
 
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1099,9 +1064,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Component error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1241,9 +1206,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Component error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1365,9 +1330,9 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                //MessageBox.Show("ERROR!" + e.ToString());
+                MessageBox.Show("Format sheet Operating Condition error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1467,7 +1432,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-               // MessageBox.Show("Loi cmnr");
+                MessageBox.Show("Format sheet Operating Condition error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1647,7 +1612,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-               // MessageBox.Show("Loi cmnr");
+                MessageBox.Show("Format sheet Stream error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -1860,7 +1825,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-               // MessageBox.Show("Loi cmnr");
+                MessageBox.Show("Format sheet Operating Condition error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -2127,7 +2092,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-                //MessageBox.Show("ERROR RW_MATERIAL");
+                MessageBox.Show("Format sheet Material error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -2277,7 +2242,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-                //MessageBox.Show("ERROR RW_MATERIAL");
+                MessageBox.Show("Format sheet Material error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -2397,7 +2362,7 @@ namespace RBI.BUS.BUSExcel
             }
             catch
             {
-                //MessageBox.Show("ERROR COAT");
+                MessageBox.Show("Format sheet CoatingCladdingLiningInsulation error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

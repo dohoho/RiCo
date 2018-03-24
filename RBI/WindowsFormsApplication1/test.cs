@@ -26,6 +26,10 @@ namespace RBI
         public string Name { set; get; }
         public static int theValue;
         public void SayHello() { }
+        public static class A
+        {
+            public static int a;
+        }
     }
     public partial class test : Form
     {
@@ -33,10 +37,10 @@ namespace RBI
         public test()
         {
             InitializeComponent();
-            Type type = typeof(MyClass);
-            MemberInfo[] members = type.GetMembers();
-            Array.ForEach(members, mem =>
-            Console.WriteLine(mem.MemberType.ToString().PadRight(12) + ": " + mem));
+            DateTime a = DateTime.Now;
+            DateTime b = DateTime.Now.AddYears(2);
+            TimeSpan c = b - a;
+            MessageBox.Show((c.Days/365).ToString());
         }
 
         private void button1_Click_1(object sender, EventArgs e)

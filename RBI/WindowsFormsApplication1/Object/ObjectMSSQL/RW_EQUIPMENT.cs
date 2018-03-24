@@ -31,7 +31,7 @@ namespace RBI.Object.ObjectMSSQL
         public String ThermalHistory { get; set; }
         public int YearLowestExpTemp { get; set; }
         public float Volume { get; set; }
-        public String TypeOfSoil { get; set; }            //6 truong nay chua duoc gan
+        public String TypeOfSoil { get; set; }//6 truong nay chua duoc gan
         public String EnvironmentSensitivity { get; set; }
         public float DistanceToGroundWater { get; set; }
         public String AdjustmentSettle { get; set; }

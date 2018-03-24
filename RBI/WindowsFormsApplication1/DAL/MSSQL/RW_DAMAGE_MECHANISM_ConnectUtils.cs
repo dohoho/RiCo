@@ -294,5 +294,56 @@ namespace RBI.DAL.MSSQL
             }
             return IsExist;
         }
+
+        public List<InspectionPlant> GetListInspectionPlant()
+        {
+            List<InspectionPlant> lstInsp = new List<InspectionPlant>();
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            String sql = "SELECT ID, DMItemID, LastInspDate, InspDueDate FROM [rbi].[dbo].[RW_DAMAGE_MECHANISM]";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if(reader.HasRows)
+                        {
+                            InspectionPlant ins = new InspectionPlant();
+                            if(!reader.IsDBNull(0))
+                            {
+                                ins.IDProposal = reader.GetInt32(0);
+                            }
+                            if(!reader.IsDBNull(1))
+                            {
+                                ins.DMItemID = reader.GetInt32(1);
+                            }
+                            if(!reader.IsDBNull(2))
+                            {
+                                ins.LastInspectionDate = reader.GetDateTime(2).ToString();
+                            }
+                            if(!reader.IsDBNull(3))
+                            {
+                                ins.DueDate = reader.GetDateTime(3).ToString();
+                            }
+                            lstInsp.Add(ins);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "GET DATA FAIL!");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return lstInsp;
+        }
     }
 }

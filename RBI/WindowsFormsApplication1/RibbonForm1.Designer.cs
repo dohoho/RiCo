@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonForm1));
             this.ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnPlant = new DevExpress.XtraBars.BarButtonItem();
@@ -39,7 +40,7 @@
             this.barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
             this.btnSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
-            this.popNew = new DevExpress.XtraBars.PopupMenu();
+            this.popNew = new DevExpress.XtraBars.PopupMenu(this.components);
             this.btnNewEq = new DevExpress.XtraBars.BarButtonItem();
             this.btnNewCom = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem7 = new DevExpress.XtraBars.BarButtonItem();
@@ -49,7 +50,7 @@
             this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem17 = new DevExpress.XtraBars.BarButtonItem();
-            this.popExportExcel = new DevExpress.XtraBars.PopupMenu();
+            this.popExportExcel = new DevExpress.XtraBars.PopupMenu(this.components);
             this.btnExportGeneral = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportDetail = new DevExpress.XtraBars.BarButtonItem();
             this.btnInspectionPlan = new DevExpress.XtraBars.BarButtonItem();
@@ -75,7 +76,7 @@
             this.btnImportNormalExcel = new DevExpress.XtraBars.BarButtonItem();
             this.btnImportExcelTank = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
-            this.popImportExcel = new DevExpress.XtraBars.PopupMenu();
+            this.popImportExcel = new DevExpress.XtraBars.PopupMenu(this.components);
             this.btnImportInspection = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -90,13 +91,13 @@
             this.ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.repositoryItemMarqueeProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar();
             this.ribStatusbar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
-            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
             this.xtraTabData = new DevExpress.XtraTab.XtraTabControl();
             this.xTabHome = new DevExpress.XtraTab.XtraTabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.treeListProject = new DevExpress.XtraTreeList.TreeList();
-            this.imageTreeList = new DevExpress.Utils.ImageCollection();
-            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager();
+            this.imageTreeList = new DevExpress.Utils.ImageCollection(this.components);
+            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
             this.dockPanel2 = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.dockPanel1 = new DevExpress.XtraBars.Docking.DockPanel();
@@ -120,10 +121,11 @@
             this.navRiskFactor = new DevExpress.XtraNavBar.NavBarItem();
             this.navCA = new DevExpress.XtraNavBar.NavBarItem();
             this.navRiskSummary = new DevExpress.XtraNavBar.NavBarItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.navGrRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::RBI.WaitForm1), true, true);
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            this.navExportAllInsp = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).BeginInit();
@@ -808,7 +810,8 @@
             this.navAddNewSite,
             this.navAddNewFacility,
             this.navRiskSummaryMainMenu,
-            this.navFullInspHis});
+            this.navFullInspHis,
+            this.navExportAllInsp});
             this.navBarControl2.Location = new System.Drawing.Point(2, 0);
             this.navBarControl2.Name = "navBarControl2";
             this.navBarControl2.OptionsNavPane.ExpandedWidth = 175;
@@ -825,7 +828,8 @@
             new DevExpress.XtraNavBar.NavBarItemLink(this.navAddNewSite),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navAddNewFacility),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navRiskSummaryMainMenu),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navFullInspHis)});
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navFullInspHis),
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navExportAllInsp)});
             this.navBarMainmenu.Name = "navBarMainmenu";
             // 
             // navBarItem1
@@ -986,6 +990,12 @@
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             // 
+            // navExportAllInsp
+            // 
+            this.navExportAllInsp.Caption = "Export All Inspection";
+            this.navExportAllInsp.Name = "navExportAllInsp";
+            this.navExportAllInsp.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navExportAllInsp_LinkClicked);
+            // 
             // RibbonForm1
             // 
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.True;
@@ -1125,5 +1135,6 @@
         private DevExpress.XtraBars.BarButtonItem btnNewEq;
         private DevExpress.XtraBars.BarButtonItem btnNewCom;
         private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraNavBar.NavBarItem navExportAllInsp;
     }
 }

@@ -12,9 +12,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
     {
         MSSQL_RBI_CAL_ConnUtils DAL_CAL = new MSSQL_RBI_CAL_ConnUtils();
         public String APIComponentType { set; get; }
-        ///<summary>
-        /// INPUT THINNING
-        ///</summary>
+        //<Thinning>
         public float Diametter { set; get; }
         public float NomalThick { set; get; }
         public float CurrentThick { set; get; }
@@ -32,42 +30,39 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public Boolean TankMaintain653 { set; get; }
         public String AdjustmentSettle { set; get; }
         public Boolean ComponentIsWeld { set; get; }
-
-        ///<summary>
-        /// INPUT LINNING
-        ///</summary>
+        //</Thinning>
+        
+        //<Lining>
         public String LinningType { set; get; }
         public Boolean LINNER_ONLINE { set; get; }
         public String LINNER_CONDITION { set; get; }
         public int YEAR_IN_SERVICE { set; get; }
         public bool INTERNAL_LINNING { set; get; }
-        ///<summary>
-        /// INPUT SCC CAUSTIC
-        /// 1. material is cacbon or allow stell
-        /// 2. Enviroment contain caustic
-        ///</summary>
+        //</Lining>
+
+        //<SCC CAUSTIC>
+        // 1. material is cacbon or allow stell
+        // 2. Enviroment contain caustic
         public String CAUSTIC_INSP_EFF { set; get; }// effect caustic
         public int CAUSTIC_INSP_NUM { set; get; }
         public String HEAT_TREATMENT { set; get; }
         public float NaOHConcentration { set; get; }
         public bool HEAT_TRACE { set; get; }
         public bool STEAM_OUT { set; get; }
+        //</SCC CAUSTIC>
 
-        ///<summary>
-        /// INPUT SCC Amine
-        /// 1. material is cacbon or allow stell
-        ///</summary>
+        //<SCC Amine>
+        // 1. material is cacbon or allow stell
         public string AMINE_INSP_EFF { set; get; }
         public int AMINE_INSP_NUM { set; get; }
         public bool AMINE_EXPOSED { set; get; }
         public String AMINE_SOLUTION { set; get; }
+        //</SCC Amine>
 
-        ///<summary>
-        /// INPUT Sulphide Stress Cracking
-        /// 1. material is carbon or allow stell
-        /// 2.  the process environment contains water
-        /// 3. Environment Content H2S
-        ///</summary>
+        //<Sulphide Stress Cracking>
+        // 1. material is carbon or allow stell
+        // 2.  the process environment contains water
+        // 3. Environment Content H2S
         public Boolean ENVIRONMENT_H2S_CONTENT { set; get; }
         public Boolean AQUEOUS_OPERATOR { set; get; }
         public Boolean AQUEOUS_SHUTDOWN { set; get; }
@@ -77,30 +72,27 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public float PH { set; get; }
         public bool PRESENT_CYANIDE { set; get; }
         public String BRINNEL_HARDNESS { set; get; }
+        //</Sulphide Stress Cracking>
 
-        ///<summary>
-        /// INPUT HIC/SOHIC H2S
-        /// dieu kien giong voi sulphide
-        ///</summary>
+        //<HIC/SOHIC H2S>
+        // dieu kien giong voi sulphide
         public String SULFUR_INSP_EFF { set; get; }
         public int SULFUR_INSP_NUM { set; get; }
         public String SULFUR_CONTENT { set; get; }
+        //</HIC/SOHIC H2S>
 
-        ///<summary>
-        /// INPUT Carboonate Cracking
-        /// 1. material is carbon or allow stell
-        /// 2.the process environment contains water
-        /// 3. PH > 7.5
-        ///</summary>
+        //<Carboonate Cracking>
+        // 1. material is carbon or allow stell
+        // 2.the process environment contains water
+        // 3. PH > 7.5
         public String CACBONATE_INSP_EFF { set; get; }
         public int CACBONATE_INSP_NUM { set; get; }
         public float CO3_CONCENTRATION { set; get; }
+        //</Carboonate Cracking>
 
-        ///<summary>
-        /// INPUT PTA Cracking
-        /// 1. material is an austenitic stainless steel or nickel based alloys
-        /// 2. component is exposed to sulfur bearing compounds
-        ///</summary>
+        //<PTA Cracking>
+        // 1. material is an austenitic stainless steel or nickel based alloys
+        // 2. component is exposed to sulfur bearing compounds
         public Boolean PTA_SUSCEP { set; get; }
         public Boolean NICKEL_ALLOY { set; get; }
         public Boolean EXPOSED_SULFUR { set; get; }
@@ -111,47 +103,42 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public string ThermalHistory { set; get; }
         public string PTAMaterial { set; get; }
         public bool DOWNTIME_PROTECTED { set; get; }
+        //</PTA Cracking>
 
-        ///<summary>
-        /// INPUT CLSCC
-        /// 1. The component’s material of construction is an austenitic stainless steel
-        /// 2. The component is exposed or potentially exposed to chlorides and water also considering upsets and
-        ///    hydrotest water remaining in component, and cooling tower drift(consider both under insulation and
-        ///    process conditions, and
-        /// 3. The operating temperature is above 38°C
-        ///</summary>
+        //<CLSCC>
+        // 1. The component’s material of construction is an austenitic stainless steel
+        // 2. The component is exposed or potentially exposed to chlorides and water also considering upsets and
+        //    hydrotest water remaining in component, and cooling tower drift(consider both under insulation and
+        //    process conditions, and
+        // 3. The operating temperature is above 38°C
         public Boolean INTERNAL_EXPOSED_FLUID_MIST { set; get; }
         public Boolean EXTERNAL_EXPOSED_FLUID_MIST { set; get; }
         public float CHLORIDE_ION_CONTENT { set; get; }
         public String CLSCC_INSP_EFF { set; get; }
         public int CLSCC_INSP_NUM { set; get; }
+        //</CLSCC>
 
-        ///<summary>
-        /// INPUT HSC-HF
-        /// 1. is carbon or low alloy steel 
-        /// 2. component is exposed to
-        ///    hydrofluoric acid
-        ///</summary>
+        //<HSC-HF>
+        // 1. is carbon or low alloy steel 
+        // 2. component is exposed to
+        //    hydrofluoric acid
         public String HSC_HF_INSP_EFF { set; get; }
         public int HSC_HF_INSP_NUM { set; get; }
+        //</HSC-HF>
 
-        ///<summary>
-        /// INPUT HICSOHIC_HF
-        /// 1.giong HSC_HF
-        ///</summary>
+        //<HICSOHIC_HF>
+        // 1.giong HSC_HF
         public String HICSOHIC_INSP_EFF { set; get; }
         public int HICSOHIC_INSP_NUM { set; get; }
         public Boolean HF_PRESENT { set; get; }
+        //<HICSOHIC_HF>
 
-        ///<summary>
-        /// INPUT EXTERNAL CORROSION
-        /// 
-        ///</summary>
+        //<EXTERNAL CORROSION>
         public int EXTERNAL_INSP_NUM { set; get; }
         public String EXTERNAL_INSP_EFF { set; get; }
-        ///<summary>
-        /// INPUT CUI DM
-        ///</summary>
+        //</EXTERNAL CORROSION>
+
+        //<CUI DM>
         public Boolean INTERFACE_SOIL_WATER { set; get; }
         public Boolean SUPPORT_COATING { set; get; }// Support Configuration Which Does Not Allow Coating Maintenance
         public String INSULATION_TYPE { set; get; }
@@ -168,23 +155,22 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public float CUI_PERCENT_8 { set; get; }// % Operating at 135 °C to 162 °C
         public float CUI_PERCENT_9 { set; get; }// % Operating at 162 °C to 176 °C
         public float CUI_PERCENT_10 { set; get; }// % Operating at 176 °C or above
+        //</CUI DM>
 
-        ///<summary>
+        //<EXTERNAL CLSCC>
         /// INPUT EXTERNAL CLSCC
-        /// 1. Material is austenitic stainless steel
-        /// 2. The component external surface is exposed to chloride containing fluids, mists, or solids
-        /// 3. OP TEMP 49-149*C
-        ///</summary>
+        // 1. Material is austenitic stainless steel
+        // 2. The component external surface is exposed to chloride containing fluids, mists, or solids
+        // 3. OP TEMP 49-149*C
         public int EXTERN_CLSCC_INSP_NUM { set; get; }
         public String EXTERN_CLSCC_INSP_EFF { set; get; }
+        //</EXTERNAL CLSCC>
 
-        ///<summary>
-        /// INPUT EXTERN CUI CLSCC
-        /// 1. Material is austenitic stainless steel
-        /// 2. component is insulated( EXTERNAL ISULATION)
-        /// 3. The component’s external surface is exposed to chloride containing fluids, mists, or solids, and
-        /// 4. OP TEMP 50-150*C
-        ///</summary>
+        //<EXTERN CUI CLSCC>
+        // 1. Material is austenitic stainless steel
+        // 2. component is insulated( EXTERNAL ISULATION)
+        // 3. The component’s external surface is exposed to chloride containing fluids, mists, or solids, and
+        // 4. OP TEMP 50-150*C
         public Boolean EXTERNAL_INSULATION { set; get; }
         public DateTime COMPONENT_INSTALL_DATE { set; get; }
         public Boolean CRACK_PRESENT { set; get; }
@@ -195,11 +181,11 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public String PIPING_COMPLEXITY { set; get; }// Complexity of Protrusions
         public String INSULATION_CONDITION { set; get; }// coating
         public Boolean INSULATION_CHLORIDE { set; get; }// Chloride
-        ///<summary>
-        /// INPUT HTHA
-        /// 1.The material is carbon steel, C-0.5Mo, or a Cr-Mo low alloy steel
-        /// 2.OP_TEMP > 204*C, PH2 > 0.552MPa( 80 Pisa)
-        ///</summary>
+        //</EXTERN CUI CLSCC>
+
+        //<HTHA>
+        // 1.The material is carbon steel, C-0.5Mo, or a Cr-Mo low alloy steel
+        // 2.OP_TEMP > 204*C, PH2 > 0.552MPa( 80 Pisa)
         public Boolean MATERIAL_SUSCEP_HTHA { set; get; }
         public String HTHA_MATERIAL { set; get; }
         public int HTHA_NUM_INSP { set; get; }
@@ -207,53 +193,52 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public float HTHA_PRESSURE { set; get; }
         public float CRITICAL_TEMP { set; get; }
         public Boolean DAMAGE_FOUND { set; get; }
-        ///<summary>
-        /// INPUT BRITTLE
-        /// 1. Carbon or Low Alloy steel
-        /// 2. The Minimum Design Metal Temperature (MDMT) is unknown, or the MDMT is known but the component may
-        ///    operate at below the MDMT under normal or upset conditions
-        ///</summary>
+        //</HTHA>
+
+        //<BRITTLE>
+        // 1. Carbon or Low Alloy steel
+        // 2. The Minimum Design Metal Temperature (MDMT) is unknown, or the MDMT is known but the component may
+        //    operate at below the MDMT under normal or upset conditions
         public Boolean LOWEST_TEMP { set; get; }
-        ///<summary>
-        /// INPUT TEMPER EMBRITTLE
-        /// TEMPER EMBRITTLE chi duoc danh gia khi thoa man:
-        /// 1.The material is 1.25Cr -0.5Mo, 2.25Cr -0.5Mo, or 3Cr-1 Mo low alloy steel
-        /// 2.Op temp 343-577*C 
-        ///</summary>
+        //</BRITTLE>
+
+        //<TEMPER EMBRITTLE>
+        // TEMPER EMBRITTLE chi duoc danh gia khi thoa man:
+        // 1.The material is 1.25Cr -0.5Mo, 2.25Cr -0.5Mo, or 3Cr-1 Mo low alloy steel
+        // 2.Op temp 343-577*C
         public Boolean TEMPER_SUSCEP { set; get; }
         public Boolean PWHT { set; get; }
         public float BRITTLE_THICK { set; get; }
         public Boolean CARBON_ALLOY { set; get; }
         public float DELTA_FATT { set; get; }
-        ///<summary>
-        /// INPUT 885
-        ///  885 chi danh gia khi thoa man hai dieu kien
-        ///  1. Chromium ≥ 12%
-        ///  2. nhiet do hoat dong trong khoang 371-566*C
-        ///</summary>
+        //</TEMPER EMBRITTLE>
+        
+        //<885>
+        //  885 chi danh gia khi thoa man hai dieu kien
+        //  1. Chromium ≥ 12%
+        //  2. nhiet do hoat dong trong khoang 371-566*C
         public float MAX_OP_TEMP { set; get; }
         public Boolean CHROMIUM_12 { set; get; } // Chromium ≥ 12%
         public float MIN_OP_TEMP { set; get; }
         public float MIN_DESIGN_TEMP { set; get; }
         public float REF_TEMP { set; get; }
+        //</885>
 
-        ///<summary>
-        /// INPUT SIGMA
-        /// SIGMA chi co khi thoa man hai dieu kien:
-        /// 1. material an austenitic stainless steel.
-        /// 2. nhiet do hoat dong 593-927*C
-        ///</summary>
+        //<SIGMA>
+        // SIGMA chi co khi thoa man hai dieu kien:
+        // 1. material an austenitic stainless steel.
+        // 2. nhiet do hoat dong 593-927*C
         public Boolean AUSTENITIC_STEEL { set; get; }
         public float PERCENT_SIGMA { set; get; }
-        ///<summary>
-        /// INPUT PIPING MECHANICAL
-        /// PIPING chi duoc danh gia khi thoa man 2 dieu kien:
-        /// 1. Component is PIPE( Equipment is pipe)
-        /// 2. There have been past fatigue failures in this piping system or there is visible/audible shaking in this piping
-        ///     system or there is a source of cyclic vibration within approximately 15.24 meters[50 feet] and connected to the
-        ///     piping(directly or indirectly via structure). Shaking and source of shaking can be continuous or intermittent.
-        ///     Transient conditions often cause intermittent vibration
-        ///</summary>
+        //</SIGMA>
+
+        //<PIPING MECHANICAL>
+        // PIPING chi duoc danh gia khi thoa man 2 dieu kien:
+        // 1. Component is PIPE( Equipment is pipe)
+        // 2. There have been past fatigue failures in this piping system or there is visible/audible shaking in this piping
+        //     system or there is a source of cyclic vibration within approximately 15.24 meters[50 feet] and connected to the
+        //    piping(directly or indirectly via structure). Shaking and source of shaking can be continuous or intermittent.
+        //    Transient conditions often cause intermittent vibration
         public String EquipmentType { set; get; }
         public String PREVIOUS_FAIL { set; get; }
         public String AMOUNT_SHAKING { set; get; }
@@ -264,12 +249,12 @@ namespace RBI.BUS.BUSMSSQL_CAL
         public String PIPE_CONDITION { set; get; }
         public String JOINT_TYPE { set; get; }
         public String BRANCH_DIAMETER { set; get; }
+        //</PIPING MECHANICAL>
 
         /// <summary>
         ///  CAL THINNING
         /// </summary>
         /// <returns></returns>
-        
         public String PoFCategory(float Df_Total) //table 4.1 page 1-19
         {
             if (Df_Total <= 2)

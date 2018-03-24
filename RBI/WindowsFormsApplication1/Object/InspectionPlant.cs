@@ -8,15 +8,8 @@ namespace RBI.Object
 {
     class InspectionPlant
     {
-        String itemNo;
-        String damageMechanism;
-        String method;
-        String coverage;
-        String availability;
-        String lastInspectionDate;
-        String inspectionInterval;
-        String dueDate;
-        String system;
+        public int IDProposal { set { idProposal = value; } get { return idProposal; } }
+        public int DMItemID { set { dmItemID = value; } get { return dmItemID; } }
         public String ItemNo
         {
             set
@@ -116,5 +109,16 @@ namespace RBI.Object
                 return system;
             }
         }
+        private int dmItemID;
+        private int idProposal;
+        private string itemNo;
+        private string damageMechanism;
+        private string method;
+        private string coverage;
+        private string availability;
+        private string lastInspectionDate;
+        private string inspectionInterval;
+        private string dueDate;
+        private string system;
     }
 }

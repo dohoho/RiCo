@@ -15,8 +15,6 @@ using DevExpress.XtraTreeList.Columns;
 using DevExpress.XtraTreeList.Nodes;
 using DevExpress.XtraTreeList.Menu;
 using DevExpress.Utils.Menu;
-
-using RBI.BUS.Calculator;
 using Microsoft.Office.Interop.Excel;
 using app = Microsoft.Office.Interop.Excel.Application;
 using RBI.DAL;
@@ -50,6 +48,7 @@ namespace RBI
             treeListProject.OptionsView.ShowHorzLines = true;
             treeListProject.OptionsView.ShowVertLines = false;
             //treeListProject.ExpandAll();
+            InitDictionaryDMMachenism();
             barStaticItem1.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
@@ -118,8 +117,7 @@ namespace RBI
         }
         private void btnPlanInsp_ItemClick(object sender, ItemClickEventArgs e)
         {
-
-            createInspectionPlanExcel(listInspectionPlan);
+            createInspectionPlanExcel(false);
         }
         private void btnPlant_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -175,6 +173,8 @@ namespace RBI
                     UCAssessmentInfo uAssTest = uc.ucAss;
                     RW_ASSESSMENT ass = uAssTest.getData(IDProposal);
                     RW_EQUIPMENT eq = uc.ucEq.getData(IDProposal);
+                    EQUIPMENT_MASTER_BUS busEq = new EQUIPMENT_MASTER_BUS();
+                    eq.CommissionDate = busEq.getComissionDate(ass.EquipmentID);
                     RW_COMPONENT com = uc.ucComp.getData(IDProposal);
                     RW_STREAM stream = uc.ucStream.getData(IDProposal);
                     RW_STREAM op = uc.ucOpera.getDataforStream(IDProposal);
@@ -301,7 +301,7 @@ namespace RBI
 
         private void btnInspectionPlan_ItemClick(object sender, ItemClickEventArgs e)
         {
-            createInspectionPlanExcel(listInspectionPlan);
+            createInspectionPlanExcel(false);
         }
         #endregion
 
@@ -1024,19 +1024,15 @@ namespace RBI
                 //lấy id của node phục vụ cho việc xóa
                 case 0:
                     IDNodeTreeList = listTree[hi.Node.Id].ID;
-                    Console.WriteLine("case 0 Id " + IDNodeTreeList);
                     break;
                 case 1:
                     IDNodeTreeList = listTree[hi.Node.Id].ID - hi.Node.Level * 100000;
-                    Console.WriteLine("case 1 Id " + IDNodeTreeList);
                     break;
                 case 2:
                     IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000;
-                    Console.WriteLine("case 2 Id " + IDNodeTreeList);
                     break;
                 case 3:
                     IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
-                    Console.WriteLine("case 3 Id " + IDNodeTreeList);
                     break;
                 case 4:
                     IDNodeTreeList = listTree[hi.Node.Id].ID - (hi.Node.Level - 3) * 400000;
@@ -1114,10 +1110,17 @@ namespace RBI
         #endregion
 
         #region Function Tu viet
+        private void InitDictionaryDMMachenism()
+        {
+            for(int i = 0; i < DM_ID.Length; i++)
+            {
+                damageMachenism.Add(DM_ID[i], DM_Name[i]);
+            }
+        }
         private void PoF(out InputInspectionCalculation insplant, out MSSQL_DM_CAL calDM, out List<RW_DAMAGE_MECHANISM> DMmachenism, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem)
         {
             InputInspectionCalculation inspl = new InputInspectionCalculation();
-            inspl.ComponentNumber = componentNumber;
+            
             #region PoF
             RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
             //get EquipmentID ----> get EquipmentTypeName and APIComponentType
@@ -1132,8 +1135,6 @@ namespace RBI
             RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
             MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
             cal.APIComponentType = API_ComponentType_Name;
-            inspl.ApiComponentType = API_ComponentType_Name;
-            inspl.EquipmentID = equipmentID;
             //age = assessment date - comission date
             //DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
 
@@ -1337,7 +1338,7 @@ namespace RBI
                 age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
             }
             age[13] = historyBus.getAge(componentNumber, DM_Name[15], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
-            inspl.Age = age;
+            
             Df[0] = cal.DF_THIN(age[0]);
             Df[1] = cal.DF_LINNING(age[1]);
             Df[2] = cal.DF_CAUSTIC(age[2]);
@@ -1360,7 +1361,7 @@ namespace RBI
             Df[19] = cal.DF_SIGMA();
             Df[20] = cal.DF_PIPE();
 
-            inspl.DF = Df;
+            
             List<float> DFSCCAgePlus3 = new List<float>();
             List<float> DFSCCAgePlus6 = new List<float>();
             float[] thinningPlusAge = { 0, 0 };
@@ -1556,9 +1557,8 @@ namespace RBI
                 if (DF_Brit_Total < Df[i])
                     DF_Brit_Total = Df[i];
             }
-            
             float[] dftotal = { DF_Thin_Total[0], DF_SCC_Total[0], DF_Ext_Total, DF_Brit_Total };
-            inspl.DFTotal = dftotal;
+            
             
             /*
              * Tính Df_Total
@@ -1623,12 +1623,18 @@ namespace RBI
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
+
+            inspl.ComponentNumber = componentNumber;
+            inspl.ApiComponentType = API_ComponentType_Name;
+            inspl.EquipmentID = equipmentID;
+            inspl.Age = age;
+            inspl.DF = Df;
             inspl.GFFTotal = fullPOF.GFFTotal;
             inspl.FMS = fullPOF.FMS;
             insplant = inspl;
+            inspl.DFTotal = dftotal;
             calDM = cal;
             //lưu kết quả vào bảng RW_DAMAGE_MECHANISM
-            
 
             //lưu kết quả vào bảng RW_FULL_POF
             RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
@@ -1697,19 +1703,16 @@ namespace RBI
                     k = i;
                     break;
                 }
-                
-                
             }
-            //RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
-            //foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
-            //{
-            //    d.InspDueDate = d.LastInspDate.AddYears(k);
-            //    Console.WriteLine("Inspection Due date {0}, Last Inspection {1} ", d.InspDueDate, d.LastInspDate);
-            //    if (damageBus.checkExistDM(d.ID, d.DMItemID))
-            //        damageBus.edit(d);
-            //    else
-            //        damageBus.add(d);
-            //}
+            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
+            foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
+            {
+                d.InspDueDate = DateTime.Now.AddYears(k);
+                if (damageBus.checkExistDM(d.ID, d.DMItemID))
+                    damageBus.edit(d);
+                else
+                    damageBus.add(d);
+            }
             RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
             //gán cho Object inspection plan
             float[] inspec = inspl.DFTotal;
@@ -1987,11 +1990,11 @@ namespace RBI
         {
             InputInspectionCalculation inputInsp;
             MSSQL_DM_CAL cacal;
-            List<RW_DAMAGE_MECHANISM> DMmachenism;
+            List<RW_DAMAGE_MECHANISM> DMmache;
             float FC = 0;
-            PoF(out inputInsp, out cacal, out DMmachenism, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            PoF(out inputInsp, out cacal, out DMmache, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
             CA(out FC, inputInsp.ApiComponentType, com, ma, caInput);
-            InspectionPlan(inputInsp, cacal, DMmachenism, FC);
+            InspectionPlan(inputInsp, cacal, DMmache, FC);
         }
         private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
         {
@@ -2977,8 +2980,9 @@ namespace RBI
             }
         }
 
-        private void createInspectionPlanExcel(List<InspectionPlant> listInspec)
+        private void createInspectionPlanExcel(bool IsExportAllData)
         {
+            //<format file Excel>
             DevExpress.XtraSpreadsheet.SpreadsheetControl exportData = new SpreadsheetControl();
             exportData.CreateNewDocument();
             IWorkbook workbook = exportData.Document;
@@ -2987,7 +2991,8 @@ namespace RBI
             string[] header = { "System", "Equipment", "Damage Mechanism", "Method", "Coverage", "Availability", "Last Inspection Date", "Inspection Interval", "Due Date" };
             //header
             worksheet.Import(header, 0, 0, false);
-            worksheet.Columns.AutoFit(0, 8);
+            
+            
             //format
             DevExpress.Spreadsheet.Range range2 = worksheet.Range["A1:I1"];
             Formatting rangeFormat2 = range2.BeginUpdateFormatting();
@@ -2999,18 +3004,54 @@ namespace RBI
             DevExpress.Spreadsheet.Range range3 = worksheet.Range["A1:I1"];
             range3.SetInsideBorders(Color.Gray, BorderLineStyle.Thin);
             range3.Borders.SetOutsideBorders(Color.Black, BorderLineStyle.Medium);
-            for (int i = 0; i < listInspec.Count; i++)
+            //<end format file Excel>
+
+            RW_DAMAGE_MECHANISM_BUS busDmgMechanism = new RW_DAMAGE_MECHANISM_BUS();
+            RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
+            FACILITY_BUS busFaci = new FACILITY_BUS();
+            EQUIPMENT_MASTER_BUS busEqMa = new EQUIPMENT_MASTER_BUS();
+            List<InspectionPlant> lstDmgMechanism = busDmgMechanism.GetListInspectionPlant();
+            
+            if (IsExportAllData)
             {
-                worksheet.Cells["A" + (i + 2).ToString()].Value = listInspec[i].System;
-                worksheet.Cells["B" + (i + 2).ToString()].Value = listInspec[i].ItemNo;
-                worksheet.Cells["C" + (i + 2).ToString()].Value = listInspec[i].DamageMechanism;
-                worksheet.Cells["D" + (i + 2).ToString()].Value = listInspec[i].Method;
-                worksheet.Cells["E" + (i + 2).ToString()].Value = listInspec[i].Coverage;
-                worksheet.Cells["F" + (i + 2).ToString()].Value = listInspec[i].Availability;
-                worksheet.Cells["H" + (i + 2).ToString()].Value = listInspec[i].InspectionInterval;
-                worksheet.Cells["G" + (i + 2).ToString()].Value = listInspec[i].LastInspectionDate;
-                worksheet.Cells["I" + (i + 2).ToString()].Value = listInspec[i].DueDate;
+                for (int i = 0; i < lstDmgMechanism.Count; i++)
+                {
+                    int eqId = busAss.getEquipmentID(lstDmgMechanism[i].IDProposal);
+                    int faciID = busEqMa.getFacilityID(eqId);
+                    worksheet.Cells["A" + (i + 2).ToString()].Value = busFaci.getFacilityName(faciID);
+                    worksheet.Cells["B" + (i + 2).ToString()].Value = busEqMa.getEquipmentName(eqId);
+                    worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
+                    worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
+                    worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
+                    worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
+                    
+                    worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
+                    worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
+                    TimeSpan interval = Convert.ToDateTime(lstDmgMechanism[i].DueDate) - Convert.ToDateTime(lstDmgMechanism[i].LastInspectionDate);
+                    worksheet.Cells["H" + (i + 2).ToString()].Value = interval.Days / 365;
+                }
             }
+            else
+            {
+                for (int i = 0; i < lstDmgMechanism.Count; i++)
+                {
+                    if (lstDmgMechanism[i].IDProposal == IDProposal)
+                    {
+                        int eqId = busAss.getEquipmentID(lstDmgMechanism[i].IDProposal);
+                        int faciID = busEqMa.getFacilityID(eqId);
+                        worksheet.Cells["A" + (i + 2).ToString()].Value = busFaci.getFacilityName(faciID);
+                        worksheet.Cells["B" + (i + 2).ToString()].Value = busEqMa.getEquipmentName(eqId);
+                        worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
+                        worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
+                        worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
+                        worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
+                        worksheet.Cells["H" + (i + 2).ToString()].Value = 1;//lstDmgMechanism[i].DueDate.//listInspec[i].InspectionInterval;
+                        worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
+                        worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
+                    }
+                }
+            }
+            worksheet.Columns.AutoFit(0, 8);
             SaveFileDialog save = new SaveFileDialog();
             save.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*xlsx)|*.xlsx";
             save.Title = "Save File";
@@ -3271,6 +3312,10 @@ namespace RBI
         #endregion
 
         #region Navigation Link
+        private void navExportAllInsp_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            createInspectionPlanExcel(true);
+        }
         private void navAddNewSite_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             frmNewSite site = new frmNewSite();
@@ -3374,6 +3419,8 @@ namespace RBI
                                  "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
                                  "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
                                  "Vibration-Induced Mechanical Fatigue" };
+        Dictionary<int, string> damageMachenism = new Dictionary<int, string>();
+        
         //</input DM>
 
         //<treeListProject_MouseDoubleClick>
@@ -3406,6 +3453,8 @@ namespace RBI
 
         private int IDNodeTreeList = 0;
         #endregion
+
+        
 
         
     }

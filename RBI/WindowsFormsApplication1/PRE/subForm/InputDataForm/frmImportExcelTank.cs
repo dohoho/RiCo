@@ -34,12 +34,6 @@ namespace RBI.PRE.subForm.InputDataForm
         DevExpress.XtraSpreadsheet.SpreadsheetControl spreadExcel = new SpreadsheetControl();
         string fileName = null;
         string extension = null;
-        //string[] sheetEquipment;
-        //string[] sheetComponent;
-        //string[] sheetOperatingCondition;
-        //string[] sheetStream;
-        //string[] sheetMaterial;
-        //string[] sheetCoating;
         #endregion
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -50,23 +44,93 @@ namespace RBI.PRE.subForm.InputDataForm
                 txtPathFileExcel.Text = op.FileName;
             }
         }
-        private void btnImportExcel_Click(object sender, EventArgs e)
+        private bool CheckFormatFile()
+        {
+            IWorkbook workbook = spreadExcel.Document;
+            DevExpress.Spreadsheet.Worksheet worksheet = workbook.Worksheets[0];
+            bool isCorrect = true;
+            if (workbook.Worksheets.Count != 7)
+            {
+                MessageBox.Show("Format is not correct! Please check again", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return
+                    false;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                string sheetName = workbook.Worksheets[i].Name;
+                switch (i)
+                {
+                    case 0:
+                        if (sheetName != "Equipment")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                    case 1:
+                        if (sheetName != "Component")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                    case 2:
+                        if (sheetName != "Operating Condition")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                    case 3:
+                        if (sheetName != "Stream")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                    case 4:
+                        if (sheetName != "Material")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                    default:
+                        if (sheetName != "CoatingCladdingLiningInsulation")
+                        {
+                            MessageBox.Show("Sheet Name " + sheetName + " is not correct!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            isCorrect = false;
+                        }
+                        break;
+                }
+            }
+            if (worksheet.Columns.LastUsedIndex <= 31)
+            {
+                MessageBox.Show("This is Plant Process excel file! Select again", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return isCorrect;
+        }
+        private void btnFilter_Click(object sender, EventArgs e)
         {
             fileName = Path.GetFileName(txtPathFileExcel.Text);
             extension = Path.GetExtension(fileName);
             if (extension == ".xls")
             {
                 spreadExcel.LoadDocument(txtPathFileExcel.Text, DocumentFormat.Xls);
+                if (!CheckFormatFile()) return;
             }
             else if (extension == ".xlsx")
             {
                 spreadExcel.LoadDocument(txtPathFileExcel.Text, DocumentFormat.Xlsx);
+                if (!CheckFormatFile()) return;
             }
             else
             {
                 MessageBox.Show("This file is not supported!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            btnImport.Enabled = true;
             pictureBox1.Hide();
             label1.Hide();
             spreadExcel.Dock = DockStyle.Fill;
@@ -85,7 +149,7 @@ namespace RBI.PRE.subForm.InputDataForm
             MessageBox.Show("This file has been saved!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
-        private void btnFinish_Click(object sender, EventArgs e)
+        private void btnImport_Click(object sender, EventArgs e)
         {
             SplashScreenManager.ShowForm(typeof(WaitForm2));
             SITES_BUS busSite = new SITES_BUS();
@@ -105,8 +169,6 @@ namespace RBI.PRE.subForm.InputDataForm
             RW_INPUT_CA_TANK_BUS busInputCATank = new RW_INPUT_CA_TANK_BUS();
             Bus_PLANT_PROCESS_Excel busExcel = new Bus_PLANT_PROCESS_Excel();
             busExcel.path = txtPathFileExcel.Text;
-            if (!busExcel.checkFileTank())
-                return;
             //Sites
             List<SITES> lstSite = busExcel.getAllSite();
             foreach(SITES s in lstSite)
