@@ -109,6 +109,7 @@
             this.navAddNewFacility = new DevExpress.XtraNavBar.NavBarItem();
             this.navRiskSummaryMainMenu = new DevExpress.XtraNavBar.NavBarItem();
             this.navFullInspHis = new DevExpress.XtraNavBar.NavBarItem();
+            this.navExportAllInsp = new DevExpress.XtraNavBar.NavBarItem();
             this.navBarRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.navAssessmentInfo = new DevExpress.XtraNavBar.NavBarItem();
             this.navEquipment = new DevExpress.XtraNavBar.NavBarItem();
@@ -125,7 +126,6 @@
             this.navGrRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::RBI.WaitForm1), true, true);
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
-            this.navExportAllInsp = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).BeginInit();
@@ -867,6 +867,13 @@
             this.navFullInspHis.SmallImage = ((System.Drawing.Image)(resources.GetObject("navFullInspHis.SmallImage")));
             this.navFullInspHis.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navFullInspHis_LinkClicked);
             // 
+            // navExportAllInsp
+            // 
+            this.navExportAllInsp.Caption = "Export All Inspection";
+            this.navExportAllInsp.Name = "navExportAllInsp";
+            this.navExportAllInsp.SmallImage = ((System.Drawing.Image)(resources.GetObject("navExportAllInsp.SmallImage")));
+            this.navExportAllInsp.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navExportAllInsp_LinkClicked);
+            // 
             // navBarRecord
             // 
             this.navBarRecord.Caption = "Record";
@@ -989,12 +996,6 @@
             this.barButtonItem4.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem4.ImageOptions.Image")));
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            // 
-            // navExportAllInsp
-            // 
-            this.navExportAllInsp.Caption = "Export All Inspection";
-            this.navExportAllInsp.Name = "navExportAllInsp";
-            this.navExportAllInsp.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navExportAllInsp_LinkClicked);
             // 
             // RibbonForm1
             // 

@@ -91,5 +91,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getEquipmentName(eqID);
         }
+        public List<int> GetAllAssessmentIDbyEquipmentID(int eqID)
+        {
+            return DAL.GetAllAssessmentIDbyEquipmentID(eqID);
+        }
     }
 }

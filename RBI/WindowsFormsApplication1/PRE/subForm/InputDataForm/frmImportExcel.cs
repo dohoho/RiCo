@@ -42,12 +42,16 @@ namespace RBI.PRE.subForm.InputDataForm
             if (op.ShowDialog() == DialogResult.OK)
             {
                 txtPathFileExcel.Text = op.FileName;
+                btnImport.Enabled = false;
             }
+            
         }
         private bool CheckFormatFile()
         {
             IWorkbook workbook = spreadExcel.Document;
             DevExpress.Spreadsheet.Worksheet worksheet = workbook.Worksheets[0];
+            if (!workbook.IsProtected)
+                workbook.Protect("hoang", true, true);
             bool isCorrect = true;
             if (workbook.Worksheets.Count != 7)
             {
@@ -255,7 +259,6 @@ namespace RBI.PRE.subForm.InputDataForm
                             rwAss.ID = ID_checkAddbyExcel[i][1];
                             editExcel.Add(rwAss.ID);
                             busAss.edit(rwAss);
-                            //Console.WriteLine("Edit Excel ID " + rwAss.ID);
                         }
                     }
                 }
@@ -264,7 +267,6 @@ namespace RBI.PRE.subForm.InputDataForm
                     rwAss.AddByExcel = 1;
                     busAss.add(rwAss);
                     int assID = busAss.getLastID();
-                    //Console.WriteLine("Add Excel ID " + assID);
                     addExcel.Add(assID);
                     RW_INPUT_CA_LEVEL_1 inputCA = new RW_INPUT_CA_LEVEL_1();
                     inputCA.ID = assID;
@@ -292,7 +294,6 @@ namespace RBI.PRE.subForm.InputDataForm
                     {
                         if (listRw_eq[i].ID == addExcel[j])
                         {
-                            //Console.WriteLine("RW Equipment ID " + listRw_eq[i].ID);
                             busEq.add(listRw_eq[i]);
                         }
                     }
@@ -352,7 +353,6 @@ namespace RBI.PRE.subForm.InputDataForm
             List<RW_STREAM> listRw_stream = busExcelProcess.getRwStream();
             for (int i = 0; i < listRw_stream.Count; i++)
             {
-                //Console.WriteLine("Stream ID " + listRw_stream[i].ID);
                 if (editExcel.Count != 0)
                 {
                     for (int j = 0; j < editExcel.Count; j++)
@@ -369,7 +369,6 @@ namespace RBI.PRE.subForm.InputDataForm
                     {
                         if (listRw_stream[i].ID == addExcel[j])
                         {
-                            //Console.WriteLine("Add to Stream " + listRw_stream[i].ID);
                             busStream.add(listRw_stream[i]);
                         }
                     }

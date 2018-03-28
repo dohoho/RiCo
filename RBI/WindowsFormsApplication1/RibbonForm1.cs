@@ -173,8 +173,7 @@ namespace RBI
                     UCAssessmentInfo uAssTest = uc.ucAss;
                     RW_ASSESSMENT ass = uAssTest.getData(IDProposal);
                     RW_EQUIPMENT eq = uc.ucEq.getData(IDProposal);
-                    EQUIPMENT_MASTER_BUS busEq = new EQUIPMENT_MASTER_BUS();
-                    eq.CommissionDate = busEq.getComissionDate(ass.EquipmentID);
+                    eq.CommissionDate = busEquipmentMaster.getComissionDate(ass.EquipmentID);
                     RW_COMPONENT com = uc.ucComp.getData(IDProposal);
                     RW_STREAM stream = uc.ucStream.getData(IDProposal);
                     RW_STREAM op = uc.ucOpera.getDataforStream(IDProposal);
@@ -196,7 +195,6 @@ namespace RBI
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
                     String ThinningType = uc.ucRiskFactor.type;
-
                     Calculation(ThinningType, componentNumber, eq, com, ma, stream, coat, extTemp, caInput);
                     MessageBox.Show("Calculation Finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     //Save Data
@@ -216,15 +214,14 @@ namespace RBI
                             break;
                         }
                     }
-                    RW_ASSESSMENT_BUS rwAssBus = new RW_ASSESSMENT_BUS();
-                    COMPONENT_MASTER_BUS comMaBus = new COMPONENT_MASTER_BUS();
-                    int[] eq_comID = rwAssBus.getEquipmentID_ComponentID(IDProposal);
-                    COMPONENT_MASTER componentMaster = comMaBus.getData(eq_comID[1]);
-                    COMPONENT_TYPE__BUS comTypeBus = new COMPONENT_TYPE__BUS();
-                    String componentTypeName = comTypeBus.getComponentTypeName(componentMaster.ComponentTypeID);
+                    
+                    int[] eq_comID = busAssessment.getEquipmentID_ComponentID(IDProposal);
+                    COMPONENT_MASTER componentMaster = busComponentMaster.getData(eq_comID[1]);
+                    
+                    String componentTypeName = busComponentType.getComponentTypeName(componentMaster.ComponentTypeID);
                     int APICompID = componentMaster.APIComponentTypeID;
-                    API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
-                    String apiComName = apiBus.getAPIComponentTypeName(APICompID);
+                    
+                    String apiComName = busApiComponentType.getAPIComponentTypeName(APICompID);
                     UCAssessmentInfo uAssTest = uc.ucAss;
                     RW_ASSESSMENT ass = uAssTest.getData(IDProposal);
                     RW_EQUIPMENT eq = uc.ucEquipmentTank.getData(IDProposal);
@@ -314,21 +311,16 @@ namespace RBI
         {
             treeListProject.StateImageList = imageTreeList;
             List<SITES> readListSite = new List<SITES>();
-            SITES_BUS siteBus = new SITES_BUS();
             List<FACILITY> readListFacility = new List<FACILITY>();
-            FACILITY_BUS facilityBus = new FACILITY_BUS();
             List<EQUIPMENT_MASTER> readListEquipmentMaster = new List<EQUIPMENT_MASTER>();
-            EQUIPMENT_MASTER_BUS equipmentMasterBus = new EQUIPMENT_MASTER_BUS();
             List<COMPONENT_MASTER> readListComponentMaster = new List<COMPONENT_MASTER>();
-            COMPONENT_MASTER_BUS componentMasterBus = new COMPONENT_MASTER_BUS();
             List<RW_ASSESSMENT> readListAssessment = new List<RW_ASSESSMENT>();
-            RW_ASSESSMENT_BUS assessmentBus = new RW_ASSESSMENT_BUS();
             listTree = new List<TestData>();
-            readListSite = siteBus.getData();
-            readListFacility = facilityBus.getDataSource();
-            readListEquipmentMaster = equipmentMasterBus.getDataSource();
-            readListComponentMaster = componentMasterBus.getDataSource();
-            readListAssessment = assessmentBus.getDataSource();
+            readListSite = busSites.getData();
+            readListFacility = busFacility.getDataSource();
+            readListEquipmentMaster = busEquipmentMaster.getDataSource();
+            readListComponentMaster = busComponentMaster.getDataSource();
+            readListAssessment = busAssessment.getDataSource();
             List<int> _siteID = new List<int>();
             List<int> _facilityID = new List<int>();
             List<int> _equipmentID = new List<int>();
@@ -342,7 +334,6 @@ namespace RBI
             foreach (FACILITY f in readListFacility)
             {
                 listTree.Add(new TestData(f.FacilityID + 100000, f.SiteID, f.FacilityName));
-
             }
 
             foreach (EQUIPMENT_MASTER e in readListEquipmentMaster)
@@ -475,19 +466,6 @@ namespace RBI
         {
             UCAssessmentInfo ucAss = new UCAssessmentInfo();
             RW_ASSESSMENT rwass = new RW_ASSESSMENT();
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS rwEqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS rwComBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS rwStreamBus = new RW_STREAM_BUS();
-            RW_MATERIAL_BUS rwMaterialBus = new RW_MATERIAL_BUS();
-            RW_COATING_BUS rwCoatBus = new RW_COATING_BUS();
-            RW_CA_LEVEL_1_BUS rwCABus = new RW_CA_LEVEL_1_BUS();
-            RW_FULL_POF_BUS rwFullPoFBus = new RW_FULL_POF_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS rwExtTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS inputCAlv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            RW_CA_TANK_BUS rwCATankBus = new RW_CA_TANK_BUS();
-            RW_INPUT_CA_TANK_BUS rwInputCATankBus = new RW_INPUT_CA_TANK_BUS();
-
             RW_EXTCOR_TEMPERATURE rwExtTemp = new RW_EXTCOR_TEMPERATURE();
             RW_EQUIPMENT rwEq = new RW_EQUIPMENT();
             RW_COMPONENT rwCom = new RW_COMPONENT();
@@ -501,10 +479,8 @@ namespace RBI
             RW_INPUT_CA_TANK rwInputCATank = new RW_INPUT_CA_TANK();
             String ProposalName = "New Record Test";
             String componentNumber = treeListProject.FocusedNode.GetValue(0).ToString();
-            COMPONENT_MASTER_BUS componentBus = new COMPONENT_MASTER_BUS();
-            List<COMPONENT_MASTER> listComponentMaster = componentBus.getDataSource();
-            EQUIPMENT_MASTER_BUS eqBus = new EQUIPMENT_MASTER_BUS();
-            List<EQUIPMENT_MASTER> listEq = eqBus.getDataSource();
+            List<COMPONENT_MASTER> listComponentMaster = busComponentMaster.getDataSource();
+            List<EQUIPMENT_MASTER> listEq = busEquipmentMaster.getDataSource();
             foreach (COMPONENT_MASTER c in listComponentMaster)
             {
                 if (c.ComponentNumber == componentNumber)
@@ -528,8 +504,8 @@ namespace RBI
             rwass.AdoptedDate = DateTime.Now;
             rwass.RecommendedDate = DateTime.Now;
             rwass.AddByExcel = 0;
-            assBus.add(rwass);
-            List<RW_ASSESSMENT> listAss = assBus.getDataSource();
+            busAssessment.add(rwass);
+            List<RW_ASSESSMENT> listAss = busAssessment.getDataSource();
             int ID = listAss.Max(RW_ASSESSMENT => RW_ASSESSMENT.ID);
             rwEq.ID = ID;
             rwCom.ID = ID;
@@ -541,31 +517,29 @@ namespace RBI
             rwExtTemp.ID = ID;
             rwCoat.ExternalCoatingDate = DateTime.Now;
 
-            rwEqBus.add(rwEq);
-            rwComBus.add(rwCom);
-            rwCoatBus.add(rwCoat);
-            rwMaterialBus.add(rwMaterial);
-            rwStreamBus.add(rwStream);
-            rwExtTempBus.add(rwExtTemp);
-            RW_ASSESSMENT_BUS rwAssBus = new RW_ASSESSMENT_BUS();
-            COMPONENT_MASTER_BUS comMaBus = new COMPONENT_MASTER_BUS();
-            int[] eq_comID = rwAssBus.getEquipmentID_ComponentID(ID);
-            COMPONENT_MASTER componentMaster = comMaBus.getData(eq_comID[1]);
+            busEquipment.add(rwEq);
+            busComponent.add(rwCom);
+            busCoating.add(rwCoat);
+            busMaterial.add(rwMaterial);
+            busStream.add(rwStream);
+            busExtcorTemp.add(rwExtTemp);
+            int[] eq_comID = busAssessment.getEquipmentID_ComponentID(ID);
+            COMPONENT_MASTER componentMaster = busComponentMaster.getData(eq_comID[1]);
             COMPONENT_TYPE__BUS comTypeBus = new COMPONENT_TYPE__BUS();
             String componentTypeName = comTypeBus.getComponentTypeName(componentMaster.ComponentTypeID);
             if (componentTypeName == "Shell" || componentTypeName == "Tank Bottom")
             {
                 rwCATank.ID = ID;
                 rwInputCATank.ID = ID;
-                rwCATankBus.add(rwCATank);
-                rwInputCATankBus.add(rwInputCATank);
+                busCATank.add(rwCATank);
+                busInputCATank.add(rwInputCATank);
             }
             else
             {
                 rwCA.ID = ID;
                 rwCALevel1.ID = ID;
-                inputCAlv1Bus.add(rwCALevel1);
-                rwCABus.add(rwCA);
+                busInputCALevel1.add(rwCALevel1);
+                busCALevel1.add(rwCA);
             }
             initDataforTreeList();
         }
@@ -589,43 +563,32 @@ namespace RBI
             DialogResult da = MessageBox.Show("Do you want to delete record?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (da == DialogResult.Yes)
             {
-                RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
-                RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
-                RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
-                RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-                RW_COATING_BUS coatingBus = new RW_COATING_BUS();
-                RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
-                RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-                RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
-                RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
-                RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
-                RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
-                RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-                RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
-
-                rwEquipmentBus.delete(IDNodeTreeList);
-                compBus.delete(IDNodeTreeList);
-                extcorTempBus.delete(IDNodeTreeList);
-                coatingBus.delete(IDNodeTreeList);
-                materialBus.delete(IDNodeTreeList);
-                inputCALv1Bus.delete(IDNodeTreeList);
-                inputCAtankBus.delete(IDNodeTreeList);
-                CAlv1Bus.delete(IDNodeTreeList);
-                CAtankBus.delete(IDNodeTreeList);
-                fullPoFbus.delete(IDNodeTreeList);
-                streamBus.delete(IDNodeTreeList);
-                fullFCoFbus.delete(IDNodeTreeList);
-                rwAssessBus.delete(IDNodeTreeList);
-                initDataforTreeList();
-                //close tab nếu nó đang được mở
                 foreach (XtraTabPage x in xtraTabData.TabPages)
                 {
                     if (x.Name == IDNodeTreeList.ToString())
                     {
-                        xtraTabData.TabPages.Remove(x);
-                        break;
+                        if (MessageBox.Show("Record is opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                        {
+                            xtraTabData.TabPages.Remove(x); //close tab nếu nó đang được mở
+                            break;
+                        }
+                        else return;
                     }
                 }
+                busEquipment.delete(IDNodeTreeList);
+                busComponent.delete(IDNodeTreeList);
+                busExtcorTemp.delete(IDNodeTreeList);
+                busCoating.delete(IDNodeTreeList);
+                busMaterial.delete(IDNodeTreeList);
+                busInputCALevel1.delete(IDNodeTreeList);
+                busCATank.delete(IDNodeTreeList);
+                busCALevel1.delete(IDNodeTreeList);
+                busCATank.delete(IDNodeTreeList);
+                busFullPoF.delete(IDNodeTreeList);
+                busStream.delete(IDNodeTreeList);
+                busFullFCoF.delete(IDNodeTreeList);
+                busAssessment.delete(IDNodeTreeList);
+                initDataforTreeList();
             }
             else return;
         }
@@ -648,44 +611,51 @@ namespace RBI
              * RW_FULL_FCOF
              * COMPONENT_MASTER
              */
+            List<int> lstAssessmentID = busComponentMaster.GetAllIDbyComponentID(IDNodeTreeList);
             DialogResult da = MessageBox.Show("Do you want to delete component?\nAll Record of Component will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (da == DialogResult.Yes)
             {
-                COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
-                RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
-                RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
-                RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
-                RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-                RW_COATING_BUS coatingBus = new RW_COATING_BUS();
-                RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
-                RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-                RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
-                RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
-                RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
-                RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
-                RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-                RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
-
-
+                List<XtraTabPage> temp = new List<XtraTabPage>();
+                foreach (XtraTabPage x in xtraTabData.TabPages)
+                {
+                    foreach(int i in lstAssessmentID)
+                    {
+                        if (x.Name == i.ToString())
+                        {
+                            temp.Add(x);
+                        }
+                    }
+                }
+                if(temp.Count != 0)
+                {
+                    if (MessageBox.Show(temp.Count + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        foreach (XtraTabPage x in temp)
+                        {
+                            xtraTabData.TabPages.Remove(x);
+                        }
+                    }
+                    else return;
+                }
                 List<int> allID = new List<int>();
-                allID = rwAssessBus.getAllIDbyComponentID(IDNodeTreeList);
+                allID = busAssessment.getAllIDbyComponentID(IDNodeTreeList);
                 foreach (int id in allID)
                 {
-                    rwEquipmentBus.delete(rwEquipmentBus.getData(id));
-                    compBus.delete(compBus.getData(id));
-                    extcorTempBus.delete(id);
-                    coatingBus.delete(id);
-                    materialBus.delete(id);
-                    inputCALv1Bus.delete(id);
-                    inputCAtankBus.delete(id);
-                    CAlv1Bus.delete(id);
-                    CAtankBus.delete(id);
-                    fullPoFbus.delete(id);
-                    streamBus.delete(id);
-                    fullFCoFbus.delete(id);
-                    rwAssessBus.delete(id);
+                    busEquipment.delete(busEquipment.getData(id));
+                    busComponent.delete(busComponent.getData(id));
+                    busExtcorTemp.delete(id);
+                    busCoating.delete(id);
+                    busMaterial.delete(id);
+                    busInputCALevel1.delete(id);
+                    busInputCATank.delete(id);
+                    busCALevel1.delete(id);
+                    busCATank.delete(id);
+                    busFullPoF.delete(id);
+                    busStream.delete(id);
+                    busFullFCoF.delete(id);
+                    busAssessment.delete(id);
                 }
-                compMasterBus.delete(IDNodeTreeList);
+                busComponentMaster.delete(IDNodeTreeList);
                 initDataforTreeList();
                 treeListProject.ExpandToLevel(treeListProject.FocusedNode.Level);
             }
@@ -711,53 +681,61 @@ namespace RBI
              * COMPONENT_MASTER
              * EQUIPMENT_MASTER
              */
-
-            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
-            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
-            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
-            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
-            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
-            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+            List<int> lstAssessmentID = busEquipmentMaster.GetAllAssessmentIDbyEquipmentID(IDNodeTreeList);
             DialogResult da = MessageBox.Show("Do you want to delete equipment?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (da == DialogResult.Yes)
             {
-                List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(IDNodeTreeList);
+                
+                List<XtraTabPage> temp = new List<XtraTabPage>();
+                foreach (XtraTabPage x in xtraTabData.TabPages)
+                {
+                    foreach (int i in lstAssessmentID)
+                    {
+                        if (x.Name == i.ToString())
+                        {
+                            temp.Add(x);
+                        }
+                    }
+                }
+                if (temp.Count != 0)
+                {
+                    if (MessageBox.Show(temp.Count + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        foreach (XtraTabPage x in temp)
+                        {
+                            xtraTabData.TabPages.Remove(x);
+                        }
+                    }
+                    else return;
+                }
+                List<int> listCompID = busComponentMaster.getAllIDbyEquipmentID(IDNodeTreeList);
                 foreach (int compID in listCompID)
                 {
-                    List<int> allAssessID = rwAssessBus.getAllIDbyComponentID(compID);
+                    List<int> allAssessID = busAssessment.getAllIDbyComponentID(compID);
                     foreach (int id in allAssessID)
                     {
-                        rwEquipmentBus.delete(rwEquipmentBus.getData(id));
-                        compBus.delete(compBus.getData(id));
-                        extcorTempBus.delete(id);
-                        coatingBus.delete(id);
-                        materialBus.delete(id);
-                        inputCALv1Bus.delete(id);
-                        inputCAtankBus.delete(id);
-                        CAlv1Bus.delete(id);
-                        CAtankBus.delete(id);
-                        fullPoFbus.delete(id);
-                        streamBus.delete(id);
-                        fullFCoFbus.delete(id);
-                        rwAssessBus.delete(id);
+                        busEquipment.delete(busEquipment.getData(id));
+                        busComponent.delete(busComponent.getData(id));
+                        busExtcorTemp.delete(id);
+                        busCoating.delete(id);
+                        busMaterial.delete(id);
+                        busInputCALevel1.delete(id);
+                        busInputCATank.delete(id);
+                        busCALevel1.delete(id);
+                        busCATank.delete(id);
+                        busFullPoF.delete(id);
+                        busStream.delete(id);
+                        busFullFCoF.delete(id);
+                        busAssessment.delete(id);
                     }
-                    compMasterBus.delete(compID);
+                    busComponentMaster.delete(compID);
                 }
-                eqMasterBus.delete(IDNodeTreeList);
+                busEquipmentMaster.delete(IDNodeTreeList);
                 initDataforTreeList();
             }
             else return;
         }
-
+        
         private void deleteFacility(object sender, EventArgs e)
         {
             /*Cần xóa dữ liệu ở các bảng:
@@ -778,58 +756,75 @@ namespace RBI
              * EQUIPMENT_MASTER
              * FACILITY
              */
-            FACILITY_BUS faciBus = new FACILITY_BUS();
-            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
-            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
-            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
-            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
-            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
-            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
+            List<int> lstEquipmentID = busEquipmentMaster.getAllEqIDbyFaciID(IDNodeTreeList);
             DialogResult da = MessageBox.Show("Do you want to delete facility?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (da == DialogResult.Yes)
             {
-                List<int> listEqID = eqMasterBus.getAllEqIDbyFaciID(IDNodeTreeList);
-                foreach (int eqID in listEqID)
+                int k = 0;
+                List<XtraTabPage> x = new List<XtraTabPage>();
+                k = CountAssessmentOpen(IDNodeTreeList, out x);
+                if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
-                    List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(eqID);
+                    foreach(XtraTabPage x1 in x)
+                    {
+                        xtraTabData.TabPages.Remove(x1);
+                    }
+                }
+                else return;
+                foreach (int eqID in lstEquipmentID)
+                {
+                    List<int> listCompID = busComponentMaster.getAllIDbyEquipmentID(eqID);
                     foreach (int compID in listCompID)
                     {
-                        List<int> allAssessID = rwAssessBus.getAllIDbyComponentID(compID);
+                        List<int> allAssessID = busAssessment.getAllIDbyComponentID(compID);
                         foreach (int id in allAssessID)
                         {
-                            rwEquipmentBus.delete(rwEquipmentBus.getData(id));
-                            compBus.delete(compBus.getData(id));
-                            extcorTempBus.delete(id);
-                            coatingBus.delete(id);
-                            materialBus.delete(id);
-                            inputCALv1Bus.delete(id);
-                            inputCAtankBus.delete(id);
-                            CAlv1Bus.delete(id);
-                            CAtankBus.delete(id);
-                            fullPoFbus.delete(id);
-                            streamBus.delete(id);
-                            fullFCoFbus.delete(id);
-                            rwAssessBus.delete(id);
+                            busEquipment.delete(busEquipment.getData(id));
+                            busComponent.delete(busComponent.getData(id));
+                            busExtcorTemp.delete(id);
+                            busCoating.delete(id);
+                            busMaterial.delete(id);
+                            busInputCALevel1.delete(id);
+                            busInputCATank.delete(id);
+                            busCALevel1.delete(id);
+                            busCATank.delete(id);
+                            busFullPoF.delete(id);
+                            busStream.delete(id);
+                            busFullFCoF.delete(id);
+                            busAssessment.delete(id);
                         }
-                        compMasterBus.delete(compID);
+                        busComponentMaster.delete(compID);
                     }
-                    eqMasterBus.delete(eqID);
+                    busEquipmentMaster.delete(eqID);
                 }
-                faciBus.delete(IDNodeTreeList);
+                busFacility.delete(IDNodeTreeList);
                 initDataforTreeList();
             }
             else return;
         }
-
+        private int CountAssessmentOpen(int faciID, out List<XtraTabPage> x1)
+        {
+            List<int> lstEquipmentID = busEquipmentMaster.getAllEqIDbyFaciID(faciID);
+            int k = 0;
+            List<XtraTabPage> xtab = new List<XtraTabPage>();
+            foreach (int i in lstEquipmentID)
+            {
+                List<int> lstAss = busEquipmentMaster.GetAllAssessmentIDbyEquipmentID(i);
+                foreach (XtraTabPage x in xtraTabData.TabPages)
+                {
+                    foreach (int j in lstAss)
+                    {
+                        if (j.ToString() == x.Name)
+                        {
+                            k++;
+                            xtab.Add(x);
+                        }
+                    }
+                }
+            }
+            x1 = xtab;
+            return k;
+        }
         private void deleteSite(object sender, EventArgs e)
         {
             /*Cần xóa dữ liệu ở các bảng:
@@ -851,60 +846,59 @@ namespace RBI
              * FACILITY
              * SITES
              */
-            SITES_BUS siteBus = new SITES_BUS();
-            FACILITY_BUS faciBus = new FACILITY_BUS();
-            EQUIPMENT_MASTER_BUS eqMasterBus = new EQUIPMENT_MASTER_BUS();
-            COMPONENT_MASTER_BUS compMasterBus = new COMPONENT_MASTER_BUS();
-            RW_ASSESSMENT_BUS rwAssessBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS rwEquipmentBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS compBus = new RW_COMPONENT_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extcorTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatingBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS materialBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS inputCALv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            RW_INPUT_CA_TANK_BUS inputCAtankBus = new RW_INPUT_CA_TANK_BUS();
-            RW_CA_LEVEL_1_BUS CAlv1Bus = new RW_CA_LEVEL_1_BUS();
-            RW_CA_TANK_BUS CAtankBus = new RW_CA_TANK_BUS();
-            RW_FULL_POF_BUS fullPoFbus = new RW_FULL_POF_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_FULL_FCOF_BUS fullFCoFbus = new RW_FULL_FCOF_BUS();
             DialogResult da = MessageBox.Show("Do you want to delete site?\nAll data below will be loss", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (da == DialogResult.Yes)
             {
-                List<int> listFaciId = faciBus.getAllFaciIDbySiteID(IDNodeTreeList);
+                int k = 0;
+                List<int> listFaciId = busFacility.getAllFaciIDbySiteID(IDNodeTreeList);
+                List<XtraTabPage> xtratab = new List<XtraTabPage>();
+                foreach(int i in listFaciId)
+                {
+                    List<XtraTabPage> a = new List<XtraTabPage>();
+                    k += CountAssessmentOpen(i, out a);
+                    xtratab.AddRange(a);
+                }
+                if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    foreach (XtraTabPage x in xtratab)
+                    {
+                        xtraTabData.TabPages.Remove(x);
+                    }
+                }
+                else return;
                 foreach (int faciID in listFaciId)
                 {
-                    List<int> listEqID = eqMasterBus.getAllEqIDbyFaciID(faciID);
+                    List<int> listEqID = busEquipmentMaster.getAllEqIDbyFaciID(faciID);
                     foreach (int EqID in listEqID)
                     {
-                        List<int> listCompID = compMasterBus.getAllIDbyEquipmentID(EqID);
+                        List<int> listCompID = busComponentMaster.getAllIDbyEquipmentID(EqID);
                         foreach (int compID in listCompID)
                         {
                             List<int> allID = new List<int>();
-                            allID = rwAssessBus.getAllIDbyComponentID(compID);
+                            allID = busAssessment.getAllIDbyComponentID(compID);
                             foreach (int id in allID)
                             {
-                                rwEquipmentBus.delete(rwEquipmentBus.getData(id));
-                                compBus.delete(compBus.getData(id));
-                                extcorTempBus.delete(id);
-                                coatingBus.delete(id);
-                                materialBus.delete(id);
-                                inputCALv1Bus.delete(id);
-                                inputCAtankBus.delete(id);
-                                CAlv1Bus.delete(id);
-                                CAtankBus.delete(id);
-                                fullPoFbus.delete(id);
-                                streamBus.delete(id);
-                                fullFCoFbus.delete(id);
-                                rwAssessBus.delete(id);
+                                busEquipment.delete(busEquipment.getData(id));
+                                busComponent.delete(busComponent.getData(id));
+                                busExtcorTemp.delete(id);
+                                busCoating.delete(id);
+                                busMaterial.delete(id);
+                                busInputCALevel1.delete(id);
+                                busInputCATank.delete(id);
+                                busCALevel1.delete(id);
+                                busCATank.delete(id);
+                                busFullPoF.delete(id);
+                                busStream.delete(id);
+                                busFullFCoF.delete(id);
+                                busAssessment.delete(id);
                             }
-                            compMasterBus.delete(compID);
+                            busComponentMaster.delete(compID);
                         }
-                        eqMasterBus.delete(EqID);
+                        busEquipmentMaster.delete(EqID);
                     }
-                    faciBus.delete(faciID);
+                    busFacility.delete(faciID);
                 }
-                siteBus.delete(IDNodeTreeList);
+                busSites.delete(IDNodeTreeList);
             }
             initDataforTreeList();
         }
@@ -961,12 +955,9 @@ namespace RBI
                 Console.WriteLine("ID Proposal " + IDProposal);
                 if (treeListProject.FocusedNode.GetValue(0).ToString() != xtraTabData.SelectedTabPage.Name && treeListProject.FocusedNode.Level == 4)
                 {
-                    RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
-                    int equipmentID = busAss.getEquipmentID(IDProposal);
-                    EQUIPMENT_MASTER_BUS busEquipment = new EQUIPMENT_MASTER_BUS();
-                    int equipmentTypeID = busEquipment.getEquipmentTypeID(equipmentID);
-                    EQUIPMENT_TYPE_BUS busEqType = new EQUIPMENT_TYPE_BUS();
-                    String EquipmentTypeName = busEqType.getEquipmentTypeName(equipmentTypeID);
+                    int equipmentID = busAssessment.getEquipmentID(IDProposal);
+                    int equipmentTypeID = busEquipmentMaster.getEquipmentTypeID(equipmentID);
+                    String EquipmentTypeName = busEquipmentType.getEquipmentTypeName(equipmentTypeID);
                     if (EquipmentTypeName != "Tank")
                     {
                         checkTank = false;
@@ -977,8 +968,8 @@ namespace RBI
                     }
                     else
                     {
-                        COMPONENT_MASTER_BUS busComMaster = new COMPONENT_MASTER_BUS();
-                        int componentTypeID = busComMaster.getComponentTypeID(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString());
+                        
+                        int componentTypeID = busComponentMaster.getComponentTypeID(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString());
                         string type = null;
                         switch(componentTypeID)
                         {
@@ -1076,7 +1067,6 @@ namespace RBI
                 }
             }
         }
-
         private void xtraTabData_CloseButtonClick(object sender, EventArgs e)
         {
             DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
@@ -1088,10 +1078,8 @@ namespace RBI
             int id_proposal;
             if (int.TryParse(xtraTabData.SelectedTabPage.Name, out id_proposal))
             {
-                RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
-                int eqID = busAss.getEquipmentID(id_proposal);
-                EQUIPMENT_MASTER_BUS busEqMaster = new EQUIPMENT_MASTER_BUS();
-                int eqTypeID = busEqMaster.getEqTypeID(eqID);
+                int eqID = busAssessment.getEquipmentID(id_proposal);
+                int eqTypeID = busEquipmentMaster.getEqTypeID(eqID);
                 switch (eqTypeID)
                 {
                     case 10: //tank
@@ -1122,22 +1110,14 @@ namespace RBI
             InputInspectionCalculation inspl = new InputInspectionCalculation();
             
             #region PoF
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
             //get EquipmentID ----> get EquipmentTypeName and APIComponentType
-            int equipmentID = assBus.getEquipmentID(IDProposal);
-            EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-            EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
-            String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
-            COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
-            API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
-            int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
-            string API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
-            RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
+            int equipmentID = busAssessment.getEquipmentID(IDProposal);
+            String equipmentTypename = busEquipmentType.getEquipmentTypeName(busEquipmentMaster.getEquipmentTypeID(equipmentID));
+            int apiID = busComponentMaster.getAPIComponentTypeID(equipmentID);
+            string API_ComponentType_Name = busApiComponentType.getAPIComponentTypeName(apiID);
+            
             MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
             cal.APIComponentType = API_ComponentType_Name;
-            //age = assessment date - comission date
-            //DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
-
             //<input thinning>
             cal.Diametter = com.NominalDiameter;
             cal.NomalThick = com.NominalThickness;
@@ -1147,8 +1127,8 @@ namespace RBI
             cal.ProtectedBarrier = eq.DowntimeProtectionUsed == 1 ? true : false; //xem lai
             cal.CladdingCorrosionRate = coat.CladdingCorrosionRate;
             cal.InternalCladding = coat.InternalCladding == 1 ? true : false;
-            cal.NoINSP_THINNING = historyBus.InspectionNumber(componentNumber, DM_Name[0]);
-            cal.EFF_THIN = historyBus.getHighestInspEffec(componentNumber, DM_Name[0]);
+            cal.NoINSP_THINNING = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[0]);
+            cal.EFF_THIN = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[0]);
             cal.OnlineMonitoring = eq.OnlineMonitoring;
             cal.HighlyEffectDeadleg = eq.HighlyDeadlegInsp == 1 ? true : false;
             cal.ContainsDeadlegs = eq.ContainsDeadlegs == 1 ? true : false;
@@ -1163,13 +1143,13 @@ namespace RBI
             cal.LINNER_ONLINE = eq.LinerOnlineMonitoring == 1 ? true : false;
             cal.LINNER_CONDITION = coat.InternalLinerCondition;
             cal.INTERNAL_LINNING = coat.InternalLining == 1 ? true : false;
-            TimeSpan year = assBus.getAssessmentDate(IDProposal) - historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID));
+            TimeSpan year = busAssessment.getAssessmentDate(IDProposal) - busInspectionHistory.getLastInsp(componentNumber, DM_Name[1], busEquipmentMaster.getComissionDate(equipmentID));
             cal.YEAR_IN_SERVICE = (int)(year.Days / 365); //Yearinservice hiệu tham số giữa lần tính toán và ngày cài đặt hệ thống
             //</input linning>
 
             //<input SCC CAUSTIC>
-            cal.CAUSTIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[2]);
-            cal.CAUSTIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[2]);
+            cal.CAUSTIC_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[2]);
+            cal.CAUSTIC_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[2]);
             cal.HEAT_TREATMENT = ma.HeatTreatment;
             cal.NaOHConcentration = st.NaOHConcentration;
             cal.HEAT_TRACE = eq.HeatTraced == 1 ? true : false;
@@ -1177,8 +1157,8 @@ namespace RBI
             //</SCC CAUSTIC>
 
             //<input SCC Amine>
-            cal.AMINE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[3]);
-            cal.AMINE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[3]);
+            cal.AMINE_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[3]);
+            cal.AMINE_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[3]);
             cal.AMINE_EXPOSED = st.ExposedToGasAmine == 1 ? true : false;
             cal.AMINE_SOLUTION = st.AmineSolution;
             //</input SCC Amine>
@@ -1187,8 +1167,8 @@ namespace RBI
             cal.ENVIRONMENT_H2S_CONTENT = st.H2S == 1 ? true : false;
             cal.AQUEOUS_OPERATOR = st.AqueousOperation == 1 ? true : false;
             cal.AQUEOUS_SHUTDOWN = st.AqueousShutdown == 1 ? true : false;
-            cal.SULPHIDE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[4]);
-            cal.SULPHIDE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[4]);
+            cal.SULPHIDE_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[4]);
+            cal.SULPHIDE_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[4]);
             cal.H2SContent = st.H2SInWater;
             cal.PH = st.WaterpH;
             cal.PRESENT_CYANIDE = st.Cyanide == 1 ? true : false;
@@ -1196,23 +1176,23 @@ namespace RBI
             //</Sulphide Stress Cracking>
 
             //<input HIC/SOHIC-H2S>
-            cal.SULFUR_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[5]);
-            cal.SULFUR_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[5]);
+            cal.SULFUR_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[5]);
+            cal.SULFUR_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[5]);
             cal.SULFUR_CONTENT = ma.SulfurContent;
             //</HIC/SOHIC-H2S>
 
             //<input SCC Damage Factor Carbonate Cracking>
             cal.CO3_CONCENTRATION = st.CO3Concentration;
-            cal.CACBONATE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[6]);
-            cal.CACBONATE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[6]);
+            cal.CACBONATE_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[6]);
+            cal.CACBONATE_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[6]);
             //</SCC Damage Factor Carbonate Cracking>
 
             //<input PTA Cracking>
             cal.PTA_SUSCEP = ma.IsPTA == 1 ? true : false;
             cal.NICKEL_ALLOY = ma.NickelBased == 1 ? true : false;
             cal.EXPOSED_SULFUR = st.ExposedToSulphur == 1 ? true : false;
-            cal.PTA_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[7]);
-            cal.PTA_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[7]);
+            cal.PTA_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[7]);
+            cal.PTA_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[7]);
             cal.ExposedSH2OOperation = eq.PresenceSulphidesO2 == 1 ? true : false;
             cal.ExposedSH2OShutdown = eq.PresenceSulphidesO2Shutdown == 1 ? true : false;
             cal.ThermalHistory = eq.ThermalHistory;
@@ -1221,26 +1201,26 @@ namespace RBI
             //</PTA Cracking>
 
             //<input CLSCC>
-            cal.CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[8]);
-            cal.CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[8]);
+            cal.CLSCC_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[8]);
+            cal.CLSCC_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[8]);
             cal.EXTERNAL_EXPOSED_FLUID_MIST = eq.MaterialExposedToClExt == 1 ? true : false;
             cal.INTERNAL_EXPOSED_FLUID_MIST = st.MaterialExposedToClInt == 1 ? true : false;
             cal.CHLORIDE_ION_CONTENT = st.Chloride;
             //</CLSCC>
 
             //<input HSC-HF>
-            cal.HSC_HF_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[9]);
-            cal.HSC_HF_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[9]);
+            cal.HSC_HF_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[9]);
+            cal.HSC_HF_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[9]);
             //</HSC-HF>
 
             //<input External Corrosion>
-            cal.EXTERNAL_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[11]);
-            cal.EXTERNAL_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[11]);
+            cal.EXTERNAL_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[11]);
+            cal.EXTERNAL_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[11]);
             //</External Corrosion>
 
             //<input HIC/SOHIC-HF>
-            cal.HICSOHIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[10]);
-            cal.HICSOHIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[10]);
+            cal.HICSOHIC_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[10]);
+            cal.HICSOHIC_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[10]);
             cal.HF_PRESENT = st.Hydrofluoric == 1 ? true : false;
             //</HIC/SOHIC-HF>
 
@@ -1248,8 +1228,8 @@ namespace RBI
             cal.INTERFACE_SOIL_WATER = eq.InterfaceSoilWater == 1 ? true : false;
             cal.SUPPORT_COATING = coat.SupportConfigNotAllowCoatingMaint == 1 ? true : false;
             cal.INSULATION_TYPE = coat.ExternalInsulationType;
-            cal.CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[12]);
-            cal.CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[12]);
+            cal.CUI_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[12]);
+            cal.CUI_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[12]);
             cal.CUI_INSP_DATE = coat.ExternalCoatingDate;
             cal.CUI_PERCENT_1 = tem.Minus12ToMinus8;
             cal.CUI_PERCENT_2 = tem.Minus8ToPlus6;
@@ -1264,13 +1244,13 @@ namespace RBI
             //</CUI DM>
 
             //<input External CLSCC>
-            cal.EXTERN_CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[13]);
-            cal.EXTERN_CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[13]);
+            cal.EXTERN_CLSCC_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[13]);
+            cal.EXTERN_CLSCC_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[13]);
             //</External CLSCC>
 
             //<input External CUI CLSCC>
-            cal.EXTERN_CLSCC_CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[14]);
-            cal.EXTERN_CLSCC_CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[14]);
+            cal.EXTERN_CLSCC_CUI_INSP_EFF = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[14]);
+            cal.EXTERN_CLSCC_CUI_INSP_NUM = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[14]);
             cal.EXTERNAL_INSULATION = coat.ExternalInsulation == 1 ? true : false;
             cal.COMPONENT_INSTALL_DATE = eq.CommissionDate;
             cal.CRACK_PRESENT = com.CracksPresent == 1 ? true : false;
@@ -1282,8 +1262,8 @@ namespace RBI
             //</External CUI CLSCC>
 
             //<input HTHA>
-            cal.HTHA_EFFECT = historyBus.getHighestInspEffec(componentNumber, DM_Name[15]);
-            cal.HTHA_NUM_INSP = historyBus.InspectionNumber(componentNumber, DM_Name[15]);
+            cal.HTHA_EFFECT = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[15]);
+            cal.HTHA_NUM_INSP = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[15]);
             cal.MATERIAL_SUSCEP_HTHA = ma.IsHTHA == 1 ? true : false;
             cal.HTHA_MATERIAL = ma.HTHAMaterialCode; //check lai
             cal.HTHA_PRESSURE = st.H2SPartialPressure * 0.006895f;
@@ -1335,9 +1315,9 @@ namespace RBI
             float[] age = new float[14];
             for (int i = 0; i < 13; i++)
             {
-                age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+                age[i] = busInspectionHistory.getAge(componentNumber, DM_Name[i], busEquipmentMaster.getComissionDate(equipmentID), busAssessment.getAssessmentDate(IDProposal));
             }
-            age[13] = historyBus.getAge(componentNumber, DM_Name[15], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
+            age[13] = busInspectionHistory.getAge(componentNumber, DM_Name[15], busEquipmentMaster.getComissionDate(equipmentID), busAssessment.getAssessmentDate(IDProposal));
             
             Df[0] = cal.DF_THIN(age[0]);
             Df[1] = cal.DF_LINNING(age[1]);
@@ -1381,11 +1361,11 @@ namespace RBI
                     damage.ID = IDProposal;
                     damage.DMItemID = DM_ID[i];
                     damage.IsActive = 1;
-                    damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
+                    damage.HighestInspectionEffectiveness = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[i]);
                     damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
-                    damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
+                    damage.NumberOfInspections = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[i]);
                     //damage.InspDueDate = tính ở trong Hàm InspectionCalculation = lastInspection + k
-                    damage.LastInspDate = historyBus.getLastInsp(componentNumber, DM_Name[i], eq.CommissionDate);
+                    damage.LastInspDate = busInspectionHistory.getLastInsp(componentNumber, DM_Name[i], eq.CommissionDate);
                     damage.DF1 = Df[i];
                     switch (i)
                     {
@@ -1610,13 +1590,11 @@ namespace RBI
             fullPOF.PoFAP3Category = cal.PoFCategory(DF_Total[2]);
             //get Managerment Factor 
             float FMS = 0;
-            FACILITY_BUS faciBus = new FACILITY_BUS();
-            FMS = faciBus.getFMS(eqMaBus.getSiteID(equipmentID));
+            FMS = busFacility.getFMS(busEquipmentMaster.getSiteID(equipmentID));
             fullPOF.FMS = FMS;
             //get GFFtotal
             float GFFTotal = 0;
-            API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
-            GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
+            GFFTotal = busApiComponentType.getGFFTotal(cal.APIComponentType);
             fullPOF.GFFTotal = GFFTotal;
             //Console.WriteLine("GFF total " + GFFTotal);
             fullPOF.ThinningType = ThinningType;
@@ -1637,19 +1615,17 @@ namespace RBI
             //lưu kết quả vào bảng RW_DAMAGE_MECHANISM
 
             //lưu kết quả vào bảng RW_FULL_POF
-            RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
-            if (fullPOFBus.checkExistPoF(fullPOF.ID))
-                fullPOFBus.edit(fullPOF);
+            if (busFullPoF.checkExistPoF(fullPOF.ID))
+                busFullPoF.edit(fullPOF);
             else
-                fullPOFBus.add(fullPOF);
+                busFullPoF.add(fullPOF);
             #endregion
         }
         private void InspectionPlan(InputInspectionCalculation inspl, MSSQL_DM_CAL cal, List<RW_DAMAGE_MECHANISM> DMmachenism, float FC)
         {
             #region INSPECTION HISTORY
-            EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-            int FaciID = eqMaBus.getFacilityID(inspl.EquipmentID);
-            FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
+            int FaciID = busEquipmentMaster.getFacilityID(inspl.EquipmentID);
+            
             float risktaget = busRiskTarget.getRiskTarget(FaciID);
             float DF_thamchieu = risktaget / (FC * inspl.GFFTotal * inspl.FMS);
             float[] tempDf = new float[21];
@@ -1713,7 +1689,7 @@ namespace RBI
                 else
                     damageBus.add(d);
             }
-            RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
+            RW_INSPECTION_HISTORY_BUS busInspectionHistory = new RW_INSPECTION_HISTORY_BUS();
             //gán cho Object inspection plan
             float[] inspec = inspl.DFTotal;
             for (int i = 0; i < inspec.Length; i++)
@@ -1722,14 +1698,14 @@ namespace RBI
                 {
                     InspectionPlant insp = new InspectionPlant();
                     insp.System = "Inspection Plan";
-                    insp.ItemNo = eqMaBus.getEquipmentNumber(inspl.EquipmentID);
+                    insp.ItemNo = busEquipmentMaster.getEquipmentNumber(inspl.EquipmentID);
                     insp.Method = "No Name";
                     insp.Coverage = "N/A";
                     insp.Availability = "Online";
-                    insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(inspl.ComponentNumber, DM_Name[1], eqMaBus.getComissionDate(inspl.EquipmentID)));
+                    insp.LastInspectionDate = Convert.ToString(busInspectionHistory.getLastInsp(inspl.ComponentNumber, DM_Name[1], busEquipmentMaster.getComissionDate(inspl.EquipmentID)));
                     insp.InspectionInterval = k.ToString();
                     //thay get last inspection = assessment date
-                    insp.DueDate = Convert.ToString(historyBus.getLastInsp(inspl.ComponentNumber, DM_Name[1], eqMaBus.getComissionDate(inspl.EquipmentID)).AddYears(k));
+                    insp.DueDate = Convert.ToString(busInspectionHistory.getLastInsp(inspl.ComponentNumber, DM_Name[1], busEquipmentMaster.getComissionDate(inspl.EquipmentID)).AddYears(k));
                     switch (i)
                     {
                         case 0:
@@ -1816,18 +1792,15 @@ namespace RBI
             //</calculate CA>
 
             //<Save to Database>
-            RW_CA_LEVEL_1_BUS caLvl1Bus = new RW_CA_LEVEL_1_BUS();
-            RW_FULL_FCOF_BUS fullFCoFBus = new RW_FULL_FCOF_BUS();
-
-            if (caLvl1Bus.checkExist(caLvl1.ID))
-                caLvl1Bus.edit(caLvl1);
+            if (busCALevel1.checkExist(caLvl1.ID))
+                busCALevel1.edit(caLvl1);
             else
-                caLvl1Bus.add(caLvl1);
+                busCALevel1.add(caLvl1);
 
-            if (fullFCoFBus.checkExist(fullFCoF.ID))
-                fullFCoFBus.edit(fullFCoF);
+            if (busFullFCoF.checkExist(fullFCoF.ID))
+                busFullFCoF.edit(fullFCoF);
             else
-                fullFCoFBus.add(fullFCoF);
+                busFullFCoF.add(fullFCoF);
             //</Save to Database>
             #endregion
         }
@@ -1841,7 +1814,6 @@ namespace RBI
             RW_CA_TANK rwCATank = new RW_CA_TANK();
             if (componentTypeName == "Shell")
             {
-
                 CA.FLUID_HEIGHT = caTank.FLUID_HEIGHT;
                 CA.SHELL_COURSE_HEIGHT = caTank.SHELL_COURSE_HEIGHT;
                 CA.TANK_DIAMETER = caTank.TANK_DIAMETTER;
@@ -1904,11 +1876,10 @@ namespace RBI
                 //                     rwCATank.ConsequenceCategory
                 //                    );
 
-                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
-                if (tankBus.CheckExistID(rwCATank.ID))
-                    tankBus.edit(rwCATank);
+                if (busCATank.CheckExistID(rwCATank.ID))
+                    busCATank.edit(rwCATank);
                 else
-                    tankBus.add(rwCATank);
+                    busCATank.add(rwCATank);
             }
             else
             {
@@ -1957,33 +1928,22 @@ namespace RBI
                 rwCATank.Consequence = rwCATank.FC_Environ + rwCATank.Business_Cost + rwCATank.Component_Damage_Cost;
 
                 rwCATank.ConsequenceCategory = CA.FC_Category(rwCATank.Consequence);
-
-                RW_CA_TANK_BUS tankBus = new RW_CA_TANK_BUS();
-
-                if (tankBus.CheckExistID(rwCATank.ID))
-                    tankBus.edit(rwCATank);
+                if (busCATank.CheckExistID(rwCATank.ID))
+                    busCATank.edit(rwCATank);
                 else
-                    tankBus.add(rwCATank);
+                    busCATank.add(rwCATank);
                 FC_Total = rwCATank.Consequence;
             }
             fc = FC_Total;
             RW_FULL_FCOF fullFCoF = new RW_FULL_FCOF();
-            RW_FULL_FCOF_BUS busFCoF = new RW_FULL_FCOF_BUS();
             fullFCoF.ID = rwCATank.ID;
             fullFCoF.FCoFValue = FC_Total;
             fullFCoF.FCoFCategory = CA.FC_Category(FC_Total);
 
-            if (busFCoF.checkExist(fullFCoF.ID))
-                busFCoF.edit(fullFCoF);
+            if (busFullFCoF.checkExist(fullFCoF.ID))
+                busFullFCoF.edit(fullFCoF);
             else
-                busFCoF.add(fullFCoF);
-
-            //fullFCoF.AIL = 
-            //fullFCoF.envcost = rwCATank.ENVIRON_COST;
-            //fullFCoF.equipcost = rwCATank.EQUIPMENT_COST;
-            //fullFCoF.prodcost = rwCATank.PRODUCTION_COST;
-            //fullFCoF.popdens = rwCATank.PERSON_DENSITY;
-            //fullFCoF.injcost = rwCATank.INJURE_COST;
+                busFullFCoF.add(fullFCoF);
             #endregion
         }
         private void Calculation(String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_LEVEL_1 caInput)
@@ -1998,601 +1958,13 @@ namespace RBI
         }
         private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
         {
-            #region PoF Tank
-            //int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
-            //string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S", "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC", "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking", "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack", "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement", "Vibration-Induced Mechanical Fatigue" };
-            //RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            ////get EquipmentID ----> get EquipmentTypeName and APIComponentType
-            //int equipmentID = assBus.getEquipmentID(IDProposal);
-            //EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-            //EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
-            //String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
-            //COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
-            //API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
-            //int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
-            //String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
-            //RW_INSPECTION_HISTORY_BUS historyBus = new RW_INSPECTION_HISTORY_BUS();
-            //MSSQL_DM_CAL cal = new MSSQL_DM_CAL();
-            //cal.APIComponentType = API_ComponentType_Name;
-            ////age = assessment date - comission date
-            ////DateTime _age = assBus.getAssessmentDate(IDProposal) - eqMaBus.getComissionDate(equipmentID);
-
-            ////<input thinning>
-            //cal.Diametter = com.NominalDiameter;
-            //cal.NomalThick = com.NominalThickness;
-            //cal.CurrentThick = com.CurrentThickness;
-            //cal.MinThickReq = com.MinReqThickness;
-            //cal.CorrosionRate = com.CurrentCorrosionRate;
-            //cal.ProtectedBarrier = eq.DowntimeProtectionUsed == 1 ? true : false; //xem lai
-            //cal.CladdingCorrosionRate = coat.CladdingCorrosionRate;
-            //cal.InternalCladding = coat.InternalCladding == 1 ? true : false;
-            //cal.NoINSP_THINNING = historyBus.InspectionNumber(componentNumber, DM_Name[0]);
-            //cal.EFF_THIN = historyBus.getHighestInspEffec(componentNumber, DM_Name[0]);
-            //cal.OnlineMonitoring = eq.OnlineMonitoring;
-            //cal.HighlyEffectDeadleg = eq.HighlyDeadlegInsp == 1 ? true : false;
-            //cal.ContainsDeadlegs = eq.ContainsDeadlegs == 1 ? true : false;
-            //cal.CA = ma.CorrosionAllowance;
-            ////tank maintain653 trong Tank
-            //cal.AdjustmentSettle = eq.AdjustmentSettle;
-            //cal.ComponentIsWeld = eq.ComponentIsWelded == 1 ? true : false;
-            ////</thinning>
-
-            ////<input linning>
-            //cal.LinningType = coat.InternalLinerType;
-            //cal.LINNER_ONLINE = eq.LinerOnlineMonitoring == 1 ? true : false;
-            //cal.LINNER_CONDITION = coat.InternalLinerCondition;
-            //cal.INTERNAL_LINNING = coat.InternalLining == 1 ? true : false;
-            //TimeSpan year = assBus.getAssessmentDate(IDProposal) - historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID));
-            //cal.YEAR_IN_SERVICE = (int)(year.Days / 365); //Yearinservice hiệu tham số giữa lần tính toán và ngày cài đặt hệ thống
-            ////</input linning>
-
-            ////<input SCC CAUSTIC>
-            //cal.CAUSTIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[2]);
-            //cal.CAUSTIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[2]);
-            //cal.HEAT_TREATMENT = ma.HeatTreatment;
-            //cal.NaOHConcentration = st.NaOHConcentration;
-            //cal.HEAT_TRACE = eq.HeatTraced == 1 ? true : false;
-            //cal.STEAM_OUT = eq.SteamOutWaterFlush == 1 ? true : false;
-            ////</SCC CAUSTIC>
-
-            ////<input SSC Amine>
-            //cal.AMINE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[3]);
-            //cal.AMINE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[3]);
-            //cal.AMINE_EXPOSED = st.ExposedToGasAmine == 1 ? true : false;
-            //cal.AMINE_SOLUTION = st.AmineSolution;
-            ////</input SSC Amine>
-
-            ////<input Sulphide Stress Cracking>
-            //cal.ENVIRONMENT_H2S_CONTENT = st.H2S == 1 ? true : false;
-            //cal.AQUEOUS_OPERATOR = st.AqueousOperation == 1 ? true : false;
-            //cal.AQUEOUS_SHUTDOWN = st.AqueousShutdown == 1 ? true : false;
-            //cal.SULPHIDE_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[4]);
-            //cal.SULPHIDE_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[4]);
-            //cal.H2SContent = st.H2SInWater;
-            //cal.PH = st.WaterpH;
-            //cal.PRESENT_CYANIDE = st.Cyanide == 1 ? true : false;
-            //cal.BRINNEL_HARDNESS = com.BrinnelHardness;
-            ////</Sulphide Stress Cracking>
-
-            ////<input HIC/SOHIC-H2S>
-            //cal.SULFUR_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[5]);
-            //cal.SULFUR_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[5]);
-            //cal.SULFUR_CONTENT = ma.SulfurContent;
-            ////</HIC/SOHIC-H2S>
-
-            ////<input PTA Cracking>
-            //cal.PTA_SUSCEP = ma.IsPTA == 1 ? true : false;
-            //cal.NICKEL_ALLOY = ma.NickelBased == 1 ? true : false;
-            //cal.EXPOSED_SULFUR = st.ExposedToSulphur == 1 ? true : false;
-            //cal.PTA_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[7]);
-            //cal.PTA_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[7]);
-            //cal.ExposedSH2OOperation = eq.PresenceSulphidesO2 == 1 ? true : false;
-            //cal.ExposedSH2OShutdown = eq.PresenceSulphidesO2Shutdown == 1 ? true : false;
-            //cal.ThermalHistory = eq.ThermalHistory;
-            //cal.PTAMaterial = ma.PTAMaterialCode;
-            //cal.DOWNTIME_PROTECTED = eq.DowntimeProtectionUsed == 1 ? true : false;
-            ////</PTA Cracking>
-
-            ////<input CLSCC>
-            //cal.CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[8]);
-            //cal.CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[8]);
-            //cal.EXTERNAL_EXPOSED_FLUID_MIST = eq.MaterialExposedToClExt == 1 ? true : false;
-            //cal.INTERNAL_EXPOSED_FLUID_MIST = st.MaterialExposedToClInt == 1 ? true : false;
-            //cal.CHLORIDE_ION_CONTENT = st.Chloride;
-            ////</CLSCC>
-
-            ////<input HSC-HF>
-            //cal.HSC_HF_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[9]);
-            //cal.HSC_HF_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[9]);
-            ////</HSC-HF>
-
-            ////<input External Corrosion>
-            //cal.EXTERNAL_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[11]);
-            //cal.EXTERNAL_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[11]);
-            ////</External Corrosion>
-
-            ////<input HIC/SOHIC-HF>
-            //cal.HICSOHIC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[10]);
-            //cal.HICSOHIC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[10]);
-            //cal.HF_PRESENT = st.Hydrofluoric == 1 ? true : false;
-            ////</HIC/SOHIC-HF>
-
-            ////<input CUI DM>
-            //cal.INTERFACE_SOIL_WATER = eq.InterfaceSoilWater == 1 ? true : false;
-            //cal.SUPPORT_COATING = coat.SupportConfigNotAllowCoatingMaint == 1 ? true : false;
-            //cal.INSULATION_TYPE = coat.ExternalInsulationType;
-            //cal.CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[12]);
-            //cal.CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[12]);
-            //cal.CUI_INSP_DATE = coat.ExternalCoatingDate;
-            //cal.CUI_PERCENT_1 = tem.Minus12ToMinus8;
-            //cal.CUI_PERCENT_2 = tem.Minus8ToPlus6;
-            //cal.CUI_PERCENT_3 = tem.Plus6ToPlus32;
-            //cal.CUI_PERCENT_4 = tem.Plus32ToPlus71;
-            //cal.CUI_PERCENT_5 = tem.Plus71ToPlus107;
-            //cal.CUI_PERCENT_6 = tem.Plus107ToPlus121;
-            //cal.CUI_PERCENT_7 = tem.Plus121ToPlus135;
-            //cal.CUI_PERCENT_8 = tem.Plus135ToPlus162;
-            //cal.CUI_PERCENT_9 = tem.Plus162ToPlus176;
-            //cal.CUI_PERCENT_10 = tem.MoreThanPlus176;
-            ////</CUI DM>
-
-            ////<input External CLSCC>
-            //cal.EXTERN_CLSCC_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[13]);
-            //cal.EXTERN_CLSCC_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[13]);
-            ////</External CLSCC>
-
-            ////<input External CUI CLSCC>
-            //cal.EXTERN_CLSCC_CUI_INSP_EFF = historyBus.getHighestInspEffec(componentNumber, DM_Name[14]);
-            //cal.EXTERN_CLSCC_CUI_INSP_NUM = historyBus.InspectionNumber(componentNumber, DM_Name[14]);
-            //cal.EXTERNAL_INSULATION = coat.ExternalInsulation == 1 ? true : false;
-            //cal.COMPONENT_INSTALL_DATE = eq.CommissionDate;
-            //cal.CRACK_PRESENT = com.CracksPresent == 1 ? true : false;
-            //cal.EXTERNAL_EVIRONMENT = eq.ExternalEnvironment;
-            //cal.EXTERN_COAT_QUALITY = coat.ExternalCoatingQuality;
-            //cal.PIPING_COMPLEXITY = com.ComplexityProtrusion;
-            //cal.INSULATION_CONDITION = coat.InsulationCondition;
-            //cal.INSULATION_CHLORIDE = coat.InsulationContainsChloride == 1 ? true : false;
-            ////</External CUI CLSCC>
-
-            ////<input HTHA>
-            //cal.HTHA_EFFECT = historyBus.getHighestInspEffec(componentNumber, DM_Name[15]);
-            //cal.HTHA_NUM_INSP = historyBus.InspectionNumber(componentNumber, DM_Name[15]);
-            //cal.MATERIAL_SUSCEP_HTHA = ma.IsHTHA == 1 ? true : false;
-            //cal.HTHA_MATERIAL = ma.HTHAMaterialCode; //check lai
-            //cal.HTHA_PRESSURE = st.H2SPartialPressure;
-            //cal.CRITICAL_TEMP = st.CriticalExposureTemperature; //check lai
-            //cal.DAMAGE_FOUND = com.DamageFoundInspection == 1 ? true : false;
-            ////</HTHA>
-
-            ////<input Brittle>
-            //cal.LOWEST_TEMP = eq.YearLowestExpTemp == 1 ? true : false;
-            ////</Brittle>
-
-            ////<input temper Embrittle>
-            //cal.TEMPER_SUSCEP = ma.Temper == 1 ? true : false;
-            //cal.PWHT = eq.PWHT == 1 ? true : false;
-            //cal.BRITTLE_THICK = ma.BrittleFractureThickness;
-            //cal.CARBON_ALLOY = ma.CarbonLowAlloy == 1 ? true : false;
-            //cal.DELTA_FATT = com.DeltaFATT;
-            ////</Temper Embrittle>
-
-            ////<input 885>
-            //cal.MAX_OP_TEMP = st.MaxOperatingTemperature;
-            //cal.MIN_OP_TEMP = st.MinOperatingTemperature;
-            //cal.MIN_DESIGN_TEMP = ma.MinDesignTemperature;
-            //cal.REF_TEMP = ma.ReferenceTemperature;
-            //cal.CHROMIUM_12 = ma.ChromeMoreEqual12 == 1 ? true : false;
-            ////</885>
-
-            ////<input Sigma>
-            //cal.AUSTENITIC_STEEL = ma.Austenitic == 1 ? true : false;
-            //cal.PERCENT_SIGMA = ma.SigmaPhase;
-            ////</Sigma>
-
-            ////<input Piping Mechanical>
-            //cal.EquipmentType = equipmentTypename;
-            //cal.PREVIOUS_FAIL = com.PreviousFailures;
-            //cal.AMOUNT_SHAKING = com.ShakingAmount;
-            //cal.TIME_SHAKING = com.ShakingTime;
-            //cal.CYLIC_LOAD = com.CyclicLoadingWitin15_25m;
-            //cal.CORRECT_ACTION = com.CorrectiveAction;
-            //cal.NUM_PIPE = com.NumberPipeFittings;
-            //cal.PIPE_CONDITION = com.PipeCondition;
-            //cal.JOINT_TYPE = com.BranchJointType; //check lai
-            //cal.BRANCH_DIAMETER = com.BranchDiameter;
-            ////</Piping Mechanical>
-
-            ////<Calculate DF>
-
-            //float[] Df = new float[21];
-            //float[] age = new float[14];
-            //for (int i = 0; i < 13; i++)
-            //{
-            //    age[i] = historyBus.getAge(componentNumber, DM_Name[i], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
-            //}
-            //age[13] = historyBus.getAge(componentNumber, DM_Name[13], eqMaBus.getComissionDate(equipmentID), assBus.getAssessmentDate(IDProposal));
-            //Df[0] = cal.DF_THIN(age[0]);
-            //Df[1] = cal.DF_LINNING(age[1]);
-            //Df[2] = cal.DF_CAUSTIC(age[2]);
-            //Df[3] = cal.DF_AMINE(age[3]);
-            //Df[4] = cal.DF_SULPHIDE(age[4]);
-            //Df[5] = cal.DF_HICSOHIC_H2S(age[5]);
-            //Df[6] = cal.DF_CACBONATE(age[6]);
-            //Df[7] = cal.DF_PTA(age[7]);
-            //Df[8] = cal.DF_CLSCC(age[8]);
-            //Df[9] = cal.DF_HSCHF(age[9]);
-            //Df[10] = cal.DF_HIC_SOHIC_HF(age[10]);
-            //Df[11] = cal.DF_EXTERNAL_CORROSION(age[11]);
-            //Df[12] = cal.DF_CUI(age[12]);
-            //Df[13] = cal.DF_EXTERN_CLSCC();
-            //Df[14] = cal.DF_CUI_CLSCC();
-            //Df[15] = cal.DF_HTHA(age[13]);
-            //Df[16] = cal.DF_BRITTLE();
-            //Df[17] = cal.DF_TEMP_EMBRITTLE();
-            //Df[18] = cal.DF_885();
-            //Df[19] = cal.DF_SIGMA();
-            //Df[20] = cal.DF_PIPE();
-
-            //List<float> DFSSCAgePlus3 = new List<float>();
-            //List<float> DFSSCAgePlus6 = new List<float>();
-            //float[] thinningPlusAge = { 0, 0 };
-            //float[] linningPlusAge = { 0, 0 };
-            //float[] DF_HTHAPlusAge = { 0, 0 };
-            //float[] DF_EXTERN_CORROSIONPlusAge = { 0, 0 };
-            //float[] DF_CUIPlusAge = { 0, 0 };
-
-            //List<RW_DAMAGE_MECHANISM> listDamageMachenism = new List<RW_DAMAGE_MECHANISM>();
-            //RW_FULL_POF fullPOF = new RW_FULL_POF();
-            //fullPOF.ID = IDProposal;
-            //for (int i = 0; i < 21; i++)
-            //{
-            //    if (Df[i] > 1)
-            //    {
-            //        RW_DAMAGE_MECHANISM damage = new RW_DAMAGE_MECHANISM();
-            //        damage.ID = IDProposal;
-            //        damage.DMItemID = DM_ID[i];
-            //        damage.IsActive = 1;
-            //        damage.HighestInspectionEffectiveness = historyBus.getHighestInspEffec(componentNumber, DM_Name[i]);
-            //        damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
-            //        damage.NumberOfInspections = historyBus.InspectionNumber(componentNumber, DM_Name[i]);
-            //        damage.InspDueDate = DateTime.Now;//historyBus.getLastInsp(componentNumber, DM_Name[i], )
-            //        damage.LastInspDate = DateTime.Now;
-            //        damage.DF1 = Df[i];
-            //        switch (i)
-            //        {
-            //            case 0: //Thinning
-            //                damage.DF2 = cal.DF_THIN(age[0] + 3);
-            //                damage.DF3 = cal.DF_THIN(age[0] + 6);
-            //                thinningPlusAge[0] = damage.DF2;
-            //                thinningPlusAge[1] = damage.DF3;
-            //                break;
-            //            case 1: //Linning
-            //                damage.DF2 = cal.DF_LINNING(age[1] + 3);
-            //                damage.DF3 = cal.DF_LINNING(age[1] + 6);
-            //                linningPlusAge[0] = damage.DF2;
-            //                linningPlusAge[1] = damage.DF3;
-            //                break;
-            //            case 2: //Caustic
-            //                damage.DF2 = cal.DF_CAUSTIC(age[2] + 3);
-            //                damage.DF3 = cal.DF_CAUSTIC(age[2] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 3: //Amine
-            //                damage.DF2 = cal.DF_AMINE(age[3] + 3);
-            //                damage.DF3 = cal.DF_AMINE(age[3] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 4: //Sulphide
-            //                damage.DF2 = cal.DF_SULPHIDE(age[4] + 3);
-            //                damage.DF3 = cal.DF_SULPHIDE(age[4] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 5: //HIC/SOHIC-H2S
-            //                damage.DF2 = cal.DF_HICSOHIC_H2S(age[5] + 3);
-            //                damage.DF3 = cal.DF_HICSOHIC_H2S(age[5] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 6: //Carbonate
-            //                damage.DF2 = cal.DF_CACBONATE(age[6] + 3);
-            //                damage.DF3 = cal.DF_CACBONATE(age[6] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 7: //PTA (Polythionic Acid Stress Corrosion Cracking)
-            //                damage.DF2 = cal.DF_PTA(age[7] + 3);
-            //                damage.DF3 = cal.DF_PTA(age[7] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 8: //CLSCC (Chloride Stress Corrosion Cracking)
-            //                damage.DF2 = cal.DF_CLSCC(age[8] + 3);
-            //                damage.DF3 = cal.DF_CLSCC(age[8] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 9: //HSC-HF
-            //                damage.DF2 = cal.DF_HSCHF(age[9] + 3);
-            //                damage.DF3 = cal.DF_HSCHF(age[9] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 10: //HIC/SOHIC-HF
-            //                damage.DF2 = cal.DF_HIC_SOHIC_HF(age[10] + 3);
-            //                damage.DF3 = cal.DF_HIC_SOHIC_HF(age[10] + 6);
-            //                DFSSCAgePlus3.Add(damage.DF2);
-            //                DFSSCAgePlus6.Add(damage.DF3);
-            //                break;
-            //            case 11: //External Corrosion
-            //                damage.DF2 = cal.DF_EXTERNAL_CORROSION(age[11] + 3);
-            //                damage.DF3 = cal.DF_EXTERNAL_CORROSION(age[11] + 6);
-            //                DF_EXTERN_CORROSIONPlusAge[0] = damage.DF2;
-            //                DF_EXTERN_CORROSIONPlusAge[1] = damage.DF2;
-            //                break;
-            //            case 12: //CUI (Corrosion Under Insulation)
-            //                damage.DF2 = cal.DF_CUI(age[12] + 3);
-            //                damage.DF3 = cal.DF_CUI(age[12] + 6);
-            //                DF_CUIPlusAge[0] = damage.DF2;
-            //                DF_CUIPlusAge[1] = damage.DF3;
-            //                break;
-            //            case 15: //HTHA
-            //                damage.DF2 = cal.DF_HTHA(age[13] + 3);
-            //                damage.DF3 = cal.DF_HTHA(age[13] + 6);
-            //                DF_HTHAPlusAge[0] = damage.DF2;
-            //                DF_HTHAPlusAge[1] = damage.DF3;
-            //                fullPOF.HTHA_AP1 = damage.DF1;
-            //                fullPOF.HTHA_AP2 = damage.DF2;
-            //                fullPOF.HTHA_AP3 = damage.DF3;
-            //                break;
-            //            case 16: //Brittle
-            //                damage.DF2 = damage.DF3 = damage.DF1;
-            //                fullPOF.BrittleAP1 = fullPOF.BrittleAP2 = fullPOF.BrittleAP3 = damage.DF1;
-            //                break;
-            //            case 20: //Piping Fatigure
-            //                damage.DF2 = damage.DF3 = damage.DF1;
-            //                fullPOF.FatigueAP1 = fullPOF.FatigueAP2 = fullPOF.FatigueAP3 = damage.DF1;
-            //                break;
-            //            default:
-            //                damage.DF2 = damage.DF1;
-            //                damage.DF3 = damage.DF1;
-            //                break;
-            //        }
-            //        listDamageMachenism.Add(damage);
-            //    }
-            //}
-            ///*  Tính DF_Thin_Total
-            // *  page 2-11 (125/654)
-            // *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
-            // *  Df_thinning_total = Df_thinning  
-            // */
-            //float[] DF_Thin_Total = { 0, 0, 0 };
-            //DF_Thin_Total[0] = cal.INTERNAL_LINNING ? Math.Min(Df[0], Df[1]) : Df[0];
-            //DF_Thin_Total[1] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[0], linningPlusAge[0]) : thinningPlusAge[0];
-            //DF_Thin_Total[2] = cal.INTERNAL_LINNING ? Math.Min(thinningPlusAge[1], linningPlusAge[1]) : thinningPlusAge[1];
-
-            ///*  Tính Df_SCC_Total
-            // *  Df_SCC_Total = Max(Df_caustic, Df_Anime, Df_SSC, Df_HIC/SOHIC-H2S, Df_Carbonate, Df_PTA, Df_CLSCC, Df_HSC-HF, Df_HIC/SOHIC-HF)
-            // */
-            //float[] DF_SSC_Total = { 0, 0, 0 };
-            //DF_SSC_Total[0] = Df[2];
-            //for (int i = 2; i < 11; i++)
-            //{
-            //    if (DF_SSC_Total[0] < Df[i])
-            //        DF_SSC_Total[0] = Df[i];
-            //}
-            //if (DFSSCAgePlus3.Count != 0)
-            //{
-            //    DF_SSC_Total[1] = DFSSCAgePlus3.Max();
-            //    DF_SSC_Total[2] = DFSSCAgePlus6.Max();
-            //}
-            ////Console.WriteLine("DFSSC total " + DF_SSC_Total[0] + " " + DF_SSC_Total[1] + " " + DF_SSC_Total[2]);
-
-            ///////Tính DF_Ext_Total
-            //float DF_Ext_Total = Df[11];
-            //for (int i = 12; i < 15; i++)
-            //{
-            //    if (DF_Ext_Total < Df[i])
-            //        DF_Ext_Total = Df[i];
-            //}
-
-            //float[] listDF_Ext1 = { DF_EXTERN_CORROSIONPlusAge[0], DF_CUIPlusAge[0], Df[13], Df[14] };
-            //float[] listDF_ext2 = { DF_EXTERN_CORROSIONPlusAge[1], DF_CUIPlusAge[1], Df[13], Df[14] };
-            //float DF_Ext_Total2 = listDF_Ext1[0];
-            //float DF_ext_total3 = listDF_ext2[0];
-            //for (int i = 0; i < listDF_Ext1.Length; i++)
-            //{
-            //    if (DF_Ext_Total2 < listDF_Ext1[i])
-            //        DF_Ext_Total2 = listDF_Ext1[i];
-            //}
-            //for (int i = 0; i < listDF_ext2.Length; i++)
-            //{
-            //    if (DF_ext_total3 < listDF_ext2[i])
-            //        DF_ext_total3 = listDF_ext2[i];
-            //}
-            //////Tính DF_Brit_Total
-            //float DF_Brit_Total = Df[16] + Df[17]; //Df_brittle + Df_temp_Embrittle
-            //for (int i = 18; i < 21; i++)
-            //{
-            //    if (DF_Brit_Total < Df[i])
-            //        DF_Brit_Total = Df[i];
-            //}
-            ////Tính Df_Total
-            //float[] DF_Total = { 0, 0, 0 };
-            ////DF_Total = Max(Df_thinning, DF_ext) + DF_SCC + DF_HTHA + DF_Brit + DF_Pipe ---> if thinning is local
-            //switch (ThinningType)
-            //{
-            //    case "Local":
-            //        DF_Total[0] = Math.Max(DF_Thin_Total[0], DF_Ext_Total) + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20];
-            //        DF_Total[1] = Math.Max(DF_Thin_Total[1], DF_Ext_Total2) + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20];
-            //        DF_Total[2] = Math.Max(DF_Thin_Total[1], DF_ext_total3) + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20];
-            //        break;
-            //    default:
-            //        DF_Total[0] = DF_Thin_Total[0] + DF_SSC_Total[0] + Df[15] + DF_Brit_Total + Df[20] + DF_Ext_Total;
-            //        DF_Total[1] = DF_Thin_Total[1] + DF_SSC_Total[1] + DF_HTHAPlusAge[0] + DF_Brit_Total + Df[20] + DF_Ext_Total2;
-            //        DF_Total[2] = DF_Thin_Total[1] + DF_SSC_Total[2] + DF_HTHAPlusAge[1] + DF_Brit_Total + Df[20] + DF_ext_total3;
-            //        break;
-            //}
-            //fullPOF.ThinningAP1 = DF_Thin_Total[0];
-            //fullPOF.ThinningAP2 = DF_Thin_Total[1];
-            //fullPOF.ThinningAP3 = DF_Thin_Total[2];
-            //fullPOF.ThinningLocalAP1 = Math.Max(DF_Thin_Total[0], DF_Ext_Total);
-            //fullPOF.ThinningLocalAP2 = Math.Max(DF_Thin_Total[1], DF_Ext_Total2);
-            //fullPOF.ThinningLocalAP3 = Math.Max(DF_Thin_Total[2], DF_ext_total3);
-            //fullPOF.ThinningGeneralAP1 = DF_Thin_Total[0] + DF_Ext_Total;
-            //fullPOF.ThinningGeneralAP2 = DF_Thin_Total[1] + DF_Ext_Total2;
-            //fullPOF.ThinningGeneralAP3 = DF_Thin_Total[2] + DF_ext_total3;
-            //fullPOF.ExternalAP1 = DF_Ext_Total;
-            //fullPOF.ExternalAP2 = DF_Ext_Total2;
-            //fullPOF.ExternalAP3 = DF_ext_total3;
-            //fullPOF.HTHA_AP1 = Df[15];
-            //fullPOF.HTHA_AP2 = DF_HTHAPlusAge[0];
-            //fullPOF.HTHA_AP3 = DF_HTHAPlusAge[1];
-            //fullPOF.BrittleAP1 = DF_Brit_Total;
-            //fullPOF.BrittleAP2 = DF_Brit_Total;
-            //fullPOF.BrittleAP3 = DF_Brit_Total;
-            //fullPOF.FatigueAP1 = Df[20];
-            //fullPOF.FatigueAP2 = Df[20];
-            //fullPOF.FatigueAP3 = Df[20];
-            //fullPOF.SCCAP1 = DF_SSC_Total[0];
-            //fullPOF.SCCAP2 = DF_SSC_Total[1];
-            //fullPOF.SCCAP3 = DF_SSC_Total[2];
-            //fullPOF.TotalDFAP1 = DF_Total[0];
-            //fullPOF.TotalDFAP2 = DF_Total[1];
-            //fullPOF.TotalDFAP3 = DF_Total[2];
-            //fullPOF.PoFAP1Category = cal.PoFCategory(DF_Total[0]);
-            //fullPOF.PoFAP2Category = cal.PoFCategory(DF_Total[1]);
-            //fullPOF.PoFAP3Category = cal.PoFCategory(DF_Total[2]);
-            ////get Managerment Factor 
-            //float FMS = 0;
-            //FACILITY_BUS faciBus = new FACILITY_BUS();
-            //FMS = faciBus.getFMS(eqMaBus.getSiteID(equipmentID));
-            //fullPOF.FMS = FMS;
-            ////Console.WriteLine("FMS " + FMS);
-            ////get GFFtotal
-            //float GFFTotal = 0;
-            //API_COMPONENT_TYPE_BUS APIComponentBus = new API_COMPONENT_TYPE_BUS();
-            //GFFTotal = APIComponentBus.getGFFTotal(cal.APIComponentType);
-            //fullPOF.GFFTotal = GFFTotal;
-            ////Console.WriteLine("GFF total " + GFFTotal);
-            //fullPOF.ThinningType = ThinningType;
-            //fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
-            //fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
-            //fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
-            ////lưu kết quả vào bảng RW_DAMAGE_MECHANISM
-            //RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
-            //foreach (RW_DAMAGE_MECHANISM d in listDamageMachenism)
-            //{
-            //    if (damageBus.checkExistDM(d.ID, d.DMItemID))
-            //        damageBus.edit(d);
-            //    else
-            //        damageBus.add(d);
-            //}
-            ////lưu kết quả vào bảng RW_FULL_POF
-            //RW_FULL_POF_BUS fullPOFBus = new RW_FULL_POF_BUS();
-            //if (fullPOFBus.checkExistPoF(fullPOF.ID))
-            //    fullPOFBus.edit(fullPOF);
-            //else
-            //    fullPOFBus.add(fullPOF);
-            ////</Calculate DF>
-            #endregion
             InputInspectionCalculation insp;
             MSSQL_DM_CAL cacal;
+            List<RW_DAMAGE_MECHANISM> DMmachenism;
             float FC = 0;
-            //PoF(out  insp, out  cacal, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
-            //CA_Tank(out FC, API_component, componentTypeName, eq, ma, caTank);
-            //InspectionPlan(insp, cacal, FC);
-            #region Inspection Plan
-            //int FaciID = eqMaBus.getFacilityID(equipmentID);
-            //FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
-            //float risktaget = busRiskTarget.getRiskTarget(FaciID);
-            //float DF_thamchieu = risktaget / (FC_Total * GFFTotal * FMS);
-            //float[] tempDf = new float[21];
-            //int k = 15;
-            //for (int i = 1; i < 16; i++)
-            //{
-            //    tempDf[0] = cal.DF_THIN(age[0] + i);
-            //    tempDf[1] = cal.DF_LINNING(age[1] + i);
-            //    tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
-            //    tempDf[3] = cal.DF_AMINE(age[3] + i);
-            //    tempDf[4] = cal.DF_SULPHIDE(age[4] + i);
-            //    tempDf[5] = cal.DF_HICSOHIC_H2S(age[5] + i);
-            //    tempDf[6] = cal.DF_CACBONATE(age[6] + i);
-            //    tempDf[7] = cal.DF_PTA(age[7] + i);
-            //    tempDf[8] = cal.DF_CLSCC(age[8] + i);
-            //    tempDf[9] = cal.DF_HSCHF(age[9] + i);
-            //    tempDf[10] = cal.DF_HIC_SOHIC_HF(age[10] + i);
-            //    tempDf[11] = cal.DF_EXTERNAL_CORROSION(age[11] + i);
-            //    tempDf[12] = cal.DF_CUI(age[12] + i);
-            //    tempDf[13] = cal.DF_EXTERN_CLSCC();
-            //    tempDf[14] = cal.DF_CUI_CLSCC();
-            //    tempDf[15] = cal.DF_HTHA(age[13] + i);
-            //    tempDf[16] = cal.DF_BRITTLE();
-            //    tempDf[17] = cal.DF_TEMP_EMBRITTLE();
-            //    tempDf[18] = cal.DF_885();
-            //    tempDf[19] = cal.DF_SIGMA();
-            //    tempDf[20] = cal.DF_PIPE();
-            //    float maxThin = cal.INTERNAL_LINNING ? Math.Min(tempDf[0], tempDf[1]) : tempDf[0];
-            //    float maxSCC = tempDf[2];
-            //    float maxExt = tempDf[12];
-            //    for (int j = 3; j < 11; j++)
-            //    {
-            //        if (maxSCC < tempDf[j])
-            //            maxSCC = tempDf[j];
-            //    }
-            //    for (int j = 13; j < 15; j++)
-            //    {
-            //        if (maxExt < tempDf[j])
-            //            maxExt = tempDf[j];
-            //    }
-            //    float maxBritt = tempDf[16] + tempDf[17]; //Df_brittle + Df_temp_Embrittle
-            //    for (int j = 18; j < 21; j++)
-            //    {
-            //        if (maxBritt < tempDf[j])
-            //            maxBritt = tempDf[j];
-            //    }
-            //    if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
-            //    {
-            //        k = i;
-            //        break;
-            //    }
-            //}
-            ////gán cho Object inspection plan
-            //float[] inspec = { DF_Thin_Total[0], DF_SSC_Total[0], DF_Ext_Total, DF_Brit_Total };
-            //for (int i = 0; i < inspec.Length; i++)
-            //{
-            //    if (inspec[i] != 0)
-            //    {
-            //        InspectionPlant insp = new InspectionPlant();
-            //        insp.System = "Inspection Plan";
-            //        insp.ItemNo = eqMaBus.getEquipmentNumber(equipmentID);
-            //        insp.Method = "No Name";
-            //        insp.Coverage = "N/A";
-            //        insp.Availability = "Online";
-            //        insp.LastInspectionDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)));
-            //        insp.InspectionInterval = k.ToString();
-            //        insp.DueDate = Convert.ToString(historyBus.getLastInsp(componentNumber, DM_Name[1], eqMaBus.getComissionDate(equipmentID)).AddYears(k));
-            //        switch (i)
-            //        {
-            //            case 0:
-            //                insp.DamageMechanism = "Internal Thinning";
-            //                break;
-            //            case 1:
-            //                insp.DamageMechanism = "SSC Damage Factor";
-            //                break;
-            //            case 2:
-            //                insp.DamageMechanism = "External Damage Factor";
-            //                break;
-            //            default:
-            //                insp.DamageMechanism = "Brittle";
-            //                break;
-            //        }
-            //        listInspectionPlan.Add(insp);
-            //    }
-            //}
-            #endregion
+            PoF(out  insp, out  cacal, out DMmachenism,ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            CA_Tank(out FC, API_component, componentTypeName, eq, ma, caTank);
+            InspectionPlan(insp, cacal, DMmachenism, FC);
         }
 
         private void ShowItemTabpage(int ID, int Num, bool checkTank)
@@ -2829,31 +2201,24 @@ namespace RBI
 
                 //init Data for Excel
                 RiskSummary risk = new RiskSummary();
-                RW_FULL_POF_BUS busPoF = new RW_FULL_POF_BUS();
-                RW_FULL_POF fullPoF = busPoF.getData(IDProposal);
-                RW_CA_LEVEL_1_BUS busCA = new RW_CA_LEVEL_1_BUS();
-                RW_CA_TANK_BUS busCA_Tank = new RW_CA_TANK_BUS();
-                RW_CA_LEVEL_1 CA = busCA.getData(IDProposal);
-                RW_CA_TANK CATank = busCA_Tank.getData(IDProposal);
+                RW_FULL_POF fullPoF = busFullPoF.getData(IDProposal);
+                RW_CA_LEVEL_1 CA = busCALevel1.getData(IDProposal);
+                RW_CA_TANK CATank = busCATank.getData(IDProposal);
 
                 RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
                 //get EquipmentID ----> get EquipmentTypeName and APIComponentType
                 int equipmentID = assBus.getEquipmentID(IDProposal);
-                EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-                EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
-                String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
+                String equipmentTypename = busEquipmentType.getEquipmentTypeName(busEquipmentMaster.getEquipmentTypeID(equipmentID));
                 COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
                 API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
                 int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
                 String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
 
-                RW_INPUT_CA_LEVEL_1_BUS busInputCA = new RW_INPUT_CA_LEVEL_1_BUS();
-                RW_INPUT_CA_LEVEL_1 inputCA = busInputCA.getData(IDProposal);
-                RW_INPUT_CA_TANK_BUS busInputCATank = new RW_INPUT_CA_TANK_BUS();
+                RW_INPUT_CA_LEVEL_1 inputCA = busInputCALevel1.getData(IDProposal);
                 RW_INPUT_CA_TANK inputCATank = busInputCATank.getData(IDProposal);
 
-                risk.EquipmentNumber = eqMaBus.getEquipmentName(equipmentID);//Equipment Name or Equipment Number can dc gan lai
-                risk.EquipmentDesc = eqMaBus.getEquipmentDesc(equipmentID);//Equipment Description gan lai
+                risk.EquipmentNumber = busEquipmentMaster.getEquipmentName(equipmentID);//Equipment Name or Equipment Number can dc gan lai
+                risk.EquipmentDesc = busEquipmentMaster.getEquipmentDesc(equipmentID);//Equipment Description gan lai
                 risk.EquipmentType = equipmentTypename; //Equipment type
                 risk.ComponentName = comMasterBus.getComponentName(equipmentID); //component name
                 if (inputCA.ID != 0)
@@ -3006,25 +2371,20 @@ namespace RBI
             range3.Borders.SetOutsideBorders(Color.Black, BorderLineStyle.Medium);
             //<end format file Excel>
 
-            RW_DAMAGE_MECHANISM_BUS busDmgMechanism = new RW_DAMAGE_MECHANISM_BUS();
-            RW_ASSESSMENT_BUS busAss = new RW_ASSESSMENT_BUS();
-            FACILITY_BUS busFaci = new FACILITY_BUS();
-            EQUIPMENT_MASTER_BUS busEqMa = new EQUIPMENT_MASTER_BUS();
-            List<InspectionPlant> lstDmgMechanism = busDmgMechanism.GetListInspectionPlant();
+            List<InspectionPlant> lstDmgMechanism = busDamageMechanism.GetListInspectionPlant();
             
             if (IsExportAllData)
             {
                 for (int i = 0; i < lstDmgMechanism.Count; i++)
                 {
-                    int eqId = busAss.getEquipmentID(lstDmgMechanism[i].IDProposal);
-                    int faciID = busEqMa.getFacilityID(eqId);
-                    worksheet.Cells["A" + (i + 2).ToString()].Value = busFaci.getFacilityName(faciID);
-                    worksheet.Cells["B" + (i + 2).ToString()].Value = busEqMa.getEquipmentName(eqId);
+                    int eqId = busAssessment.getEquipmentID(lstDmgMechanism[i].IDProposal);
+                    int faciID = busEquipmentMaster.getFacilityID(eqId);
+                    worksheet.Cells["A" + (i + 2).ToString()].Value = busFacility.getFacilityName(faciID);
+                    worksheet.Cells["B" + (i + 2).ToString()].Value = busEquipmentMaster.getEquipmentName(eqId);
                     worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
                     worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
                     worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
                     worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
-                    
                     worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
                     worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
                     TimeSpan interval = Convert.ToDateTime(lstDmgMechanism[i].DueDate) - Convert.ToDateTime(lstDmgMechanism[i].LastInspectionDate);
@@ -3037,17 +2397,18 @@ namespace RBI
                 {
                     if (lstDmgMechanism[i].IDProposal == IDProposal)
                     {
-                        int eqId = busAss.getEquipmentID(lstDmgMechanism[i].IDProposal);
-                        int faciID = busEqMa.getFacilityID(eqId);
-                        worksheet.Cells["A" + (i + 2).ToString()].Value = busFaci.getFacilityName(faciID);
-                        worksheet.Cells["B" + (i + 2).ToString()].Value = busEqMa.getEquipmentName(eqId);
+                        int eqId = busAssessment.getEquipmentID(lstDmgMechanism[i].IDProposal);
+                        int faciID = busEquipmentMaster.getFacilityID(eqId);
+                        worksheet.Cells["A" + (i + 2).ToString()].Value = busFacility.getFacilityName(faciID);
+                        worksheet.Cells["B" + (i + 2).ToString()].Value = busEquipmentMaster.getEquipmentName(eqId);
                         worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
                         worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
                         worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
                         worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
-                        worksheet.Cells["H" + (i + 2).ToString()].Value = 1;//lstDmgMechanism[i].DueDate.//listInspec[i].InspectionInterval;
                         worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
                         worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
+                        TimeSpan interval = Convert.ToDateTime(lstDmgMechanism[i].DueDate) - Convert.ToDateTime(lstDmgMechanism[i].LastInspectionDate);
+                        worksheet.Cells["H" + (i + 2).ToString()].Value = interval.Days / 365;
                     }
                 }
             }
@@ -3128,28 +2489,19 @@ namespace RBI
 
                 //init Data for Excel
                 RiskSummary risk = new RiskSummary();
-                RW_FULL_POF_BUS busPoF = new RW_FULL_POF_BUS();
-                RW_FULL_POF fullPoF = busPoF.getData(IDProposal);
-                RW_CA_LEVEL_1_BUS busCA = new RW_CA_LEVEL_1_BUS();
-                RW_CA_LEVEL_1 CA = busCA.getData(IDProposal);
-                RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
+                RW_FULL_POF fullPoF = busFullPoF.getData(IDProposal);
+                RW_CA_LEVEL_1 CA = busCALevel1.getData(IDProposal);
                 //get EquipmentID ----> get EquipmentTypeName and APIComponentType
-                int equipmentID = assBus.getEquipmentID(IDProposal);
-                EQUIPMENT_MASTER_BUS eqMaBus = new EQUIPMENT_MASTER_BUS();
-                EQUIPMENT_TYPE_BUS eqTypeBus = new EQUIPMENT_TYPE_BUS();
-                String equipmentTypename = eqTypeBus.getEquipmentTypeName(eqMaBus.getEquipmentTypeID(equipmentID));
-                COMPONENT_MASTER_BUS comMasterBus = new COMPONENT_MASTER_BUS();
-                API_COMPONENT_TYPE_BUS apiBus = new API_COMPONENT_TYPE_BUS();
-                int apiID = comMasterBus.getAPIComponentTypeID(equipmentID);
-                String API_ComponentType_Name = apiBus.getAPIComponentTypeName(apiID);
-                RW_INPUT_CA_LEVEL_1_BUS busInputCA = new RW_INPUT_CA_LEVEL_1_BUS();
-                RW_INPUT_CA_LEVEL_1 inputCA = busInputCA.getData(IDProposal);
-                RW_CA_TANK_BUS busCAtank = new RW_CA_TANK_BUS();
-                RW_CA_TANK caTank = busCAtank.getData(IDProposal);
-                risk.EquipmentNumber = eqMaBus.getEquipmentNumber(equipmentID);//Equipment Name or Equipment Number can dc gan lai
-                risk.EquipmentDesc = eqMaBus.getEquipmentDesc(equipmentID);//Equipment Description gan lai
+                int equipmentID = busAssessment.getEquipmentID(IDProposal);
+                String equipmentTypename = busEquipmentType.getEquipmentTypeName(busEquipmentMaster.getEquipmentTypeID(equipmentID));
+                int apiID = busComponentMaster.getAPIComponentTypeID(equipmentID);
+                String API_ComponentType_Name = busApiComponentType.getAPIComponentTypeName(apiID);
+                RW_INPUT_CA_LEVEL_1 inputCA = busInputCALevel1.getData(IDProposal);
+                RW_CA_TANK caTank = busCATank.getData(IDProposal);
+                risk.EquipmentNumber = busEquipmentMaster.getEquipmentNumber(equipmentID);//Equipment Name or Equipment Number can dc gan lai
+                risk.EquipmentDesc = busEquipmentMaster.getEquipmentDesc(equipmentID);//Equipment Description gan lai
                 risk.EquipmentType = equipmentTypename; //Equipment type
-                risk.ComponentName = comMasterBus.getComponentName(equipmentID); //component name
+                risk.ComponentName = busComponentMaster.getComponentName(equipmentID); //component name
                 risk.RepresentFluid = inputCA.API_FLUID; //Represent fluid
                 risk.FluidPhase = inputCA.SYSTEM;  //fluid phase
                 risk.currentRisk = 0;//current risk
@@ -3264,43 +2616,27 @@ namespace RBI
         //Thiet bi thuong
         private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_LEVEL_1 ca)
         {
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_LEVEL_1_BUS caLv1Bus = new RW_INPUT_CA_LEVEL_1_BUS();
-            assBus.edit(ass);
-            eqBus.edit(eq);
-            comBus.edit(com);
-            streamBus.edit(stream);
-            extTempBus.edit(extTemp);
-            coatBus.edit(coat);
-            maBus.edit(ma);
-            caLv1Bus.edit(ca);
+            busAssessment.edit(ass);
+            busEquipment.edit(eq);
+            busComponent.edit(com);
+            busStream.edit(stream);
+            busExtcorTemp.edit(extTemp);
+            busCoating.edit(coat);
+            busMaterial.edit(ma);
+            busInputCALevel1.edit(ca);
 
         }
         //thiet bi tank
         private void SaveDatatoDatabase(RW_ASSESSMENT ass, RW_EQUIPMENT eq, RW_COMPONENT com, RW_STREAM stream, RW_EXTCOR_TEMPERATURE extTemp, RW_COATING coat, RW_MATERIAL ma, RW_INPUT_CA_TANK ca)
         {
-            RW_ASSESSMENT_BUS assBus = new RW_ASSESSMENT_BUS();
-            RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
-            RW_COMPONENT_BUS comBus = new RW_COMPONENT_BUS();
-            RW_STREAM_BUS streamBus = new RW_STREAM_BUS();
-            RW_EXTCOR_TEMPERATURE_BUS extTempBus = new RW_EXTCOR_TEMPERATURE_BUS();
-            RW_COATING_BUS coatBus = new RW_COATING_BUS();
-            RW_MATERIAL_BUS maBus = new RW_MATERIAL_BUS();
-            RW_INPUT_CA_TANK_BUS caTankBus = new RW_INPUT_CA_TANK_BUS();
-            assBus.edit(ass);
-            eqBus.edit(eq);
-            comBus.edit(com);
-            streamBus.edit(stream);
-            extTempBus.edit(extTemp);
-            coatBus.edit(coat);
-            maBus.edit(ma);
-            caTankBus.edit(ca);
+            busAssessment.edit(ass);
+            busEquipment.edit(eq);
+            busComponent.edit(com);
+            busStream.edit(stream);
+            busExtcorTemp.edit(extTemp);
+            busCoating.edit(coat);
+            busMaterial.edit(ma);
+            busInputCATank.edit(ca);
         }
         private void showUCinTabpage(UserControl uc)
         {
@@ -3409,9 +2745,11 @@ namespace RBI
         #endregion
 
         #region Parameters
+        
+
         //<input DM>
-        int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
-        string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
+        private int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
+        private string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
                                  "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S",
                                  "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking",
                                  "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC",
@@ -3419,26 +2757,25 @@ namespace RBI
                                  "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
                                  "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
                                  "Vibration-Induced Mechanical Fatigue" };
-        Dictionary<int, string> damageMachenism = new Dictionary<int, string>();
-        
+        private Dictionary<int, string> damageMachenism = new Dictionary<int, string>();
         //</input DM>
 
         //<treeListProject_MouseDoubleClick>
-        List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
-        List<UCCoatLiningIsulationCladding> listUCCoating = new List<UCCoatLiningIsulationCladding>();
-        List<UCComponentProperties> listUCComponent = new List<UCComponentProperties>();
-        List<UCEquipmentProperties> listUCEquipment = new List<UCEquipmentProperties>();
-        List<UCMaterial> listUCMaterial = new List<UCMaterial>();
-        List<UCStream> listUCStream = new List<UCStream>();
-        List<UCOperatingCondition> listUCOperating = new List<UCOperatingCondition>();
-        List<UCRiskFactor> listUCRiskFactor = new List<UCRiskFactor>();
+        private List<UCAssessmentInfo> listUCAssessment = new List<UCAssessmentInfo>();
+        private List<UCCoatLiningIsulationCladding> listUCCoating = new List<UCCoatLiningIsulationCladding>();
+        private List<UCComponentProperties> listUCComponent = new List<UCComponentProperties>();
+        private List<UCEquipmentProperties> listUCEquipment = new List<UCEquipmentProperties>();
+        private List<UCMaterial> listUCMaterial = new List<UCMaterial>();
+        private List<UCStream> listUCStream = new List<UCStream>();
+        private List<UCOperatingCondition> listUCOperating = new List<UCOperatingCondition>();
+        private List<UCRiskFactor> listUCRiskFactor = new List<UCRiskFactor>();
         private List<TestData> listTree1 = null;
         private int IDProposal = 0;
         private bool checkTank = false;
         //</treeListProject_MouseDoubleClick>
 
         //<initDataforTreeList>
-        List<TestData> listTree;
+        private List<TestData> listTree;
         //</initDataforTreeList>
 
         //<treeListProject_FocusedNodeChanged>
@@ -3446,16 +2783,36 @@ namespace RBI
         //</treeListProject_FocusedNodeChanged>
 
         //<btnPlanInsp_ItemClick>
-        List<InspectionPlant> listInspectionPlan = new List<InspectionPlant>();
+        private List<InspectionPlant> listInspectionPlan = new List<InspectionPlant>();
         //</btnPlanInsp_ItemClick>
-        List<ucTabNormal> listUC = new List<ucTabNormal>();
-        List<ucTabTank> listUCTank = new List<ucTabTank>();
-
+        private List<ucTabNormal> listUC = new List<ucTabNormal>();
+        private List<ucTabTank> listUCTank = new List<ucTabTank>();
         private int IDNodeTreeList = 0;
+        //<BUS>
+        SITES_BUS busSites = new SITES_BUS();
+        FACILITY_BUS busFacility = new FACILITY_BUS();
+        EQUIPMENT_MASTER_BUS busEquipmentMaster = new EQUIPMENT_MASTER_BUS();
+        COMPONENT_MASTER_BUS busComponentMaster = new COMPONENT_MASTER_BUS();
+        EQUIPMENT_TYPE_BUS busEquipmentType = new EQUIPMENT_TYPE_BUS();
+        COMPONENT_TYPE__BUS busComponentType = new COMPONENT_TYPE__BUS();
+        RW_ASSESSMENT_BUS busAssessment = new RW_ASSESSMENT_BUS();
+        RW_EQUIPMENT_BUS busEquipment = new RW_EQUIPMENT_BUS();
+        RW_COMPONENT_BUS busComponent = new RW_COMPONENT_BUS();
+        RW_STREAM_BUS busStream = new RW_STREAM_BUS();
+        RW_EXTCOR_TEMPERATURE_BUS busExtcorTemp = new RW_EXTCOR_TEMPERATURE_BUS();
+        RW_MATERIAL_BUS busMaterial = new RW_MATERIAL_BUS();
+        RW_COATING_BUS busCoating = new RW_COATING_BUS();
+        RW_INPUT_CA_LEVEL_1_BUS busInputCALevel1 = new RW_INPUT_CA_LEVEL_1_BUS();
+        RW_INPUT_CA_TANK_BUS busInputCATank = new RW_INPUT_CA_TANK_BUS();
+        RW_CA_LEVEL_1_BUS busCALevel1 = new RW_CA_LEVEL_1_BUS();
+        RW_CA_TANK_BUS busCATank = new RW_CA_TANK_BUS();
+        RW_FULL_POF_BUS busFullPoF = new RW_FULL_POF_BUS();
+        RW_FULL_FCOF_BUS busFullFCoF = new RW_FULL_FCOF_BUS();
+        API_COMPONENT_TYPE_BUS busApiComponentType = new API_COMPONENT_TYPE_BUS();
+        RW_INSPECTION_HISTORY_BUS busInspectionHistory = new RW_INSPECTION_HISTORY_BUS();
+        FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
+        RW_DAMAGE_MECHANISM_BUS busDamageMechanism = new RW_DAMAGE_MECHANISM_BUS();
+        //</BUS>
         #endregion
-
-        
-
-        
     }
 }

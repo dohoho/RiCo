@@ -733,5 +733,36 @@ namespace RBI.DAL.MSSQL
             }
             return list;
         }
+        public List<int> GetAllAssessmentIDbyEquipmentID(int eqID)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            List<int> lstAssID = new List<int>();
+            String sql = "SELECT ID FROM rbi.dbo.RW_ASSESSMENT WHERE EquipmentID = '"+eqID+"'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            lstAssID.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Get Data Fail");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return lstAssID;
+        }
     }
 }

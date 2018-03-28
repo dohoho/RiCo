@@ -483,6 +483,42 @@ namespace RBI.DAL.MSSQL
             }
             return ListCompID;
         }
+        /// <summary>
+        /// return all Assessment ID by component ID
+        /// </summary>
+        /// <param name="componentID"></param>
+        /// <returns></returns>
+        public List<int> GetAllIDbyComponentID(int componentID)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            List<int> lstAssID = new List<int>();
+            String sql = "SELECT ID from rbi.dbo.RW_ASSESSMENT WHERE ComponentID = '" + componentID + "'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            lstAssID.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Get Data Fail");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return lstAssID;
+        }
         public List<string> getAllComponentNumber()
         {
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();
