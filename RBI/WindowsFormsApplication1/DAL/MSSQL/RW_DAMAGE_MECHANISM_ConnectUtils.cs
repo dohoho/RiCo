@@ -20,8 +20,7 @@ namespace RBI.DAL.MSSQL
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();
             conn.Open();
             String sql = "USE [rbi] " +
-                            "  " +
-                            " INSERT INTO[dbo].[RW_DAMAGE_MECHANISM]" +
+                            " INSERT INTO [dbo].[RW_DAMAGE_MECHANISM]" +
                             "([ID]" +
                             ",[DMItemID]" +
                             ",[IsActive]" +
@@ -60,9 +59,7 @@ namespace RBI.DAL.MSSQL
                             ",'" + SecondInspectionEffectiveness + "'" +
                             ",'" + NumberOfInspections + "'" +
                             ",'" + LastInspDate + "'" +
-                            ",'" + InspDueDate + "')" +
-                            
-                            "  ";
+                            ",'" + InspDueDate + "')";
             try
             {
                 SqlCommand cmd = new SqlCommand();

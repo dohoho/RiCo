@@ -53,20 +53,24 @@ namespace RBI.PRE.subForm.OutputDataForm
                     SqlCommand command;
                     command = new SqlCommand(@"backup database rbi to disk ='" + txtPath.Text + "' with init,stats=10", connect);
                     command.ExecuteNonQuery();
+                    SplashScreenManager.CloseForm();
+                    MessageBox.Show("Backup successfully", "Cortek RBI");
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show(ex.ToString());
+                    SplashScreenManager.CloseForm();
+                    MessageBox.Show("Cannot backup data to this destination! \n Backup Fail", "Backup Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 //Close connection
                 connect.Close();
-                SplashScreenManager.CloseForm();
-                this.Close();
             }
             else
             {
-                // do nothing
+                SplashScreenManager.CloseForm();
+                MessageBox.Show("Select a location to save the file", "Warning");
+                return;
             }
+            this.Close();
         }
     }
 }

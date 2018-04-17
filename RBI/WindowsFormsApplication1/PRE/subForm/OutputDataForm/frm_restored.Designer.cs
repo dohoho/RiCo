@@ -104,7 +104,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frm_restored";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Restored Data";
+            this.Text = "Restore Data";
             this.ResumeLayout(false);
             this.PerformLayout();
 

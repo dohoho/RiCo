@@ -59,21 +59,23 @@ namespace RBI.PRE.subForm.OutputDataForm
                     command = new SqlCommand("alter database rbi set online with rollback immediate; ", connect);
                     command.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show(ex.ToString());
+                    SplashScreenManager.CloseForm();
+                    MessageBox.Show("Restore Fail", "Cortek RBI");
+                    this.Close();
                 }
                 connect.Close();
                 SplashScreenManager.CloseForm();
                 Application.Restart();
-                this.Close();
-               
             }
             else
             {
-                // do nothing
+                SplashScreenManager.CloseForm();
+                MessageBox.Show("Please select a file", "Cortek RBI");
+                return;
             }
-
+            this.Close();
         }
     }
 }

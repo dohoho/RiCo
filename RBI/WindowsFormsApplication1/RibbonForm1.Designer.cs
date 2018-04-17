@@ -126,6 +126,7 @@
             this.navGrRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::RBI.WaitForm1), true, true);
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).BeginInit();
@@ -134,6 +135,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabData)).BeginInit();
             this.xtraTabData.SuspendLayout();
             this.xTabHome.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeListProject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageTreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).BeginInit();
@@ -697,8 +699,8 @@
             // 
             // panel1
             // 
-            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -726,7 +728,7 @@
             this.imageTreeList.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageTreeList.ImageStream")));
             this.imageTreeList.Images.SetKeyName(0, "factory48x48.png");
             this.imageTreeList.Images.SetKeyName(1, "Factory-Yellow48x48.png");
-            this.imageTreeList.Images.SetKeyName(2, "Equipment32x32.png");
+            this.imageTreeList.Images.SetKeyName(2, "equipment16x16.png");
             this.imageTreeList.Images.SetKeyName(3, "component32x32.png");
             this.imageTreeList.Images.SetKeyName(4, "Assessment32x32.png");
             // 
@@ -973,7 +975,7 @@
             // imageCollection1
             // 
             this.imageCollection1.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection1.ImageStream")));
-            this.imageCollection1.Images.SetKeyName(0, "_1496737190_Kitchen_33");
+            this.imageCollection1.Images.SetKeyName(0, "equipment16x16.png");
             this.imageCollection1.Images.SetKeyName(1, "_1496749121_5___Refresh");
             this.imageCollection1.Images.SetKeyName(2, "1496737190_Kitchen-33.png");
             this.imageCollection1.Images.SetKeyName(3, "1496737221_bonobo-component-browser.png");
@@ -996,6 +998,16 @@
             this.barButtonItem4.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem4.ImageOptions.Image")));
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Dosis", 71.99999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(104, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(458, 122);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Cortek RBI";
             // 
             // RibbonForm1
             // 
@@ -1024,6 +1036,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabData)).EndInit();
             this.xtraTabData.ResumeLayout(false);
             this.xTabHome.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeListProject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageTreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).EndInit();
@@ -1137,5 +1151,6 @@
         private DevExpress.XtraBars.BarButtonItem btnNewCom;
         private System.Windows.Forms.Panel panel1;
         private DevExpress.XtraNavBar.NavBarItem navExportAllInsp;
+        private System.Windows.Forms.Label label1;
     }
 }

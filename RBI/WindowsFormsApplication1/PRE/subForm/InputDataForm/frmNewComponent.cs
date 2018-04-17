@@ -32,6 +32,7 @@ namespace RBI.PRE.subForm.InputDataForm
         private string equipmentNumber;
         private string facilityName;
         private string siteName;
+        private string oldName;
         public frmNewComponent()
         {
             InitializeComponent();
@@ -42,6 +43,9 @@ namespace RBI.PRE.subForm.InputDataForm
             InitializeComponent();
             this.componentID = ID;
             ShowDataToControl(ID);
+            cbAPIComponentType.Enabled = false;
+            cbComponentType.Enabled = false;
+            oldName = txtComponentNumber.Text;
             label5.Text = "Edit Component";
         }
         public frmNewComponent(string equipmentNumber, string facilityName, string siteName)
@@ -276,9 +280,10 @@ namespace RBI.PRE.subForm.InputDataForm
             if (txtComponentNumber.Text == "" || cbComponentType.Text == "" || cbAPIComponentType.Text == "")
                 return;
             List<string> comNum = componentMaster_Bus.getAllComponentNumber();
+            Console.WriteLine("jshdjksdh " + doubleEditClicked);
             foreach(string s in comNum)
             {
-                if (s == txtComponentNumber.Text) 
+                if (s == txtComponentNumber.Text && s != oldName)
                 {
                     MessageBox.Show("Component Number already exist!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;

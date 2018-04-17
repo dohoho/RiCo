@@ -100,7 +100,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frm_backup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "backup form";
+            this.Text = "Backup Data";
             this.ResumeLayout(false);
             this.PerformLayout();
 

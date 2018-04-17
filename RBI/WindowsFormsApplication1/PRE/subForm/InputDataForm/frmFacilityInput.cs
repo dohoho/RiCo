@@ -213,6 +213,17 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void GioiHanPoF(TextBox txt)
         {
+            string a = txt.Text;
+            
+            if(a == "")
+                txt.Text = "0";
+            else
+            {
+                string b = a.Substring(0, 1);
+                if (b == ".")
+                    txt.Text = "0";
+            }
+            
             if (float.Parse(txt.Text) > 1)
             {
                 MessageBox.Show("Invalid Value", "Cortek RBI");

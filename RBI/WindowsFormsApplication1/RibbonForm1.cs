@@ -367,8 +367,8 @@ namespace RBI
             TreeListNode node = treeListProject.FocusedNode;
             treeListProject.StateImageList = imageTreeList;
             int nodeLevel = e.Node.Level;
-            foreach (TreeListNode item in node.Nodes)
-            {
+            //foreach (TreeListNode item in node.Nodes)
+            //{
                 switch(nodeLevel)
                 {
                     case 0:
@@ -390,15 +390,15 @@ namespace RBI
                         e.Node.StateImageIndex = 5;
                         break;
                 }
-            }
+            //}
             selectedLevel = nodeLevel;
         }
         private void treeListProject_CustomDrawNodeImages(object sender, CustomDrawNodeImagesEventArgs e)
         {
             TreeListNode node = treeListProject.FocusedNode;
             treeListProject.StateImageList = imageTreeList;
-            foreach (TreeListNode item in node.Nodes)
-            {
+            //foreach (TreeListNode item in node.Nodes)
+            //{
                 if (e.Node.Level == 0)
                 {
                     e.Node.StateImageIndex = 0;
@@ -424,7 +424,7 @@ namespace RBI
                     e.Node.StateImageIndex = 4;
                     e.Node.SelectImageIndex = 4;
                 }
-            }
+            //}
         }
         private void btn_add_Component_click(object sender, EventArgs e)
         {
@@ -763,14 +763,17 @@ namespace RBI
                 int k = 0;
                 List<XtraTabPage> x = new List<XtraTabPage>();
                 k = CountAssessmentOpen(IDNodeTreeList, out x);
-                if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (k != 0)
                 {
-                    foreach(XtraTabPage x1 in x)
+                    if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        xtraTabData.TabPages.Remove(x1);
+                        foreach (XtraTabPage x1 in x)
+                        {
+                            xtraTabData.TabPages.Remove(x1);
+                        }
                     }
+                    else return;
                 }
-                else return;
                 foreach (int eqID in lstEquipmentID)
                 {
                     List<int> listCompID = busComponentMaster.getAllIDbyEquipmentID(eqID);
@@ -858,14 +861,17 @@ namespace RBI
                     k += CountAssessmentOpen(i, out a);
                     xtratab.AddRange(a);
                 }
-                if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (k != 0)
                 {
-                    foreach (XtraTabPage x in xtratab)
+                    if (MessageBox.Show(k + " Record(s) are opening! Do you want close it?", "Cortek RBI", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        xtraTabData.TabPages.Remove(x);
+                        foreach (XtraTabPage x in xtratab)
+                        {
+                            xtraTabData.TabPages.Remove(x);
+                        }
                     }
+                    else return;
                 }
-                else return;
                 foreach (int faciID in listFaciId)
                 {
                     List<int> listEqID = busEquipmentMaster.getAllEqIDbyFaciID(faciID);
@@ -924,12 +930,16 @@ namespace RBI
                     fcInput.doubleEditClicked = true;
                     fcInput.ShowInTaskbar = false;
                     fcInput.ShowDialog();
+                    if (fcInput.ButtonOKClicked)
+                        initDataforTreeList();
                     return;
                 case 2: //edit data cho Equipment
                     frmEquipment eq = new frmEquipment(listTree1[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000);
                     eq.doubleEditClicked = true;
                     eq.ShowInTaskbar = false;
                     eq.ShowDialog();
+                    if (eq.ButtonOKCliked)
+                        initDataforTreeList();
                     return;
                 case 3: //edit data cho Component
                     int comID = listTree1[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
@@ -937,6 +947,8 @@ namespace RBI
                     comEdit.doubleEditClicked = true;
                     comEdit.ShowInTaskbar = false;
                     comEdit.ShowDialog();
+                    if (comEdit.ButtonOKClicked)
+                        initDataforTreeList();
                     return;
                 default:
                     break;
@@ -1364,8 +1376,13 @@ namespace RBI
                     damage.HighestInspectionEffectiveness = busInspectionHistory.getHighestInspEffec(componentNumber, DM_Name[i]);
                     damage.SecondInspectionEffectiveness = damage.HighestInspectionEffectiveness;
                     damage.NumberOfInspections = busInspectionHistory.InspectionNumber(componentNumber, DM_Name[i]);
-                    //damage.InspDueDate = tính ở trong Hàm InspectionCalculation = lastInspection + k
                     damage.LastInspDate = busInspectionHistory.getLastInsp(componentNumber, DM_Name[i], eq.CommissionDate);
+
+                    if (damage.LastInspDate.Year < 1753)
+                    {
+                        damage.LastInspDate = busEquipmentMaster.getComissionDate(equipmentID);
+                    }
+                    
                     damage.DF1 = Df[i];
                     switch (i)
                     {
@@ -1601,6 +1618,9 @@ namespace RBI
             fullPOF.PoFAP1 = fullPOF.TotalDFAP1 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP2 = fullPOF.TotalDFAP2 * fullPOF.FMS * fullPOF.GFFTotal;
             fullPOF.PoFAP3 = fullPOF.TotalDFAP3 * fullPOF.FMS * fullPOF.GFFTotal;
+            fullPOF.PoFAP1 = fullPOF.PoFAP1 > 1 ? 1 : fullPOF.PoFAP1;
+            fullPOF.PoFAP2 = fullPOF.PoFAP2 > 1 ? 1 : fullPOF.PoFAP2;
+            fullPOF.PoFAP3 = fullPOF.PoFAP3 > 1 ? 1 : fullPOF.PoFAP3;
 
             inspl.ComponentNumber = componentNumber;
             inspl.ApiComponentType = API_ComponentType_Name;
@@ -2076,19 +2096,22 @@ namespace RBI
             else
             {
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
-                u.Dock = DockStyle.Fill;
+                
                 switch(Num)
                 {   //2 UC cần được cập nhập lại dữ liệu sau mỗi lần tính toán
                     case 9:
                         UCRiskFactor rf = new UCRiskFactor(IDProposal);
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rf);
+                        rf.Dock = DockStyle.Fill;
                         break;
                     case 10:
                         UCRiskSummary rs = new UCRiskSummary(IDProposal);
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rs);
+                        rs.Dock = DockStyle.Fill;
                         break;
                     default:
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
+                        u.Dock = DockStyle.Fill;
                         break;
                 }
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
@@ -2347,62 +2370,60 @@ namespace RBI
 
         private void createInspectionPlanExcel(bool IsExportAllData)
         {
-            //<format file Excel>
             DevExpress.XtraSpreadsheet.SpreadsheetControl exportData = new SpreadsheetControl();
             exportData.CreateNewDocument();
-            IWorkbook workbook = exportData.Document;
-            workbook.Worksheets[0].Name = "Process Plant";
-            DevExpress.Spreadsheet.Worksheet worksheet = workbook.Worksheets[0];
-            string[] header = { "System", "Equipment", "Damage Mechanism", "Method", "Coverage", "Availability", "Last Inspection Date", "Inspection Interval", "Due Date" };
-            //header
-            worksheet.Import(header, 0, 0, false);
-            
-            
-            //format
-            DevExpress.Spreadsheet.Range range2 = worksheet.Range["A1:I1"];
-            Formatting rangeFormat2 = range2.BeginUpdateFormatting();
-            rangeFormat2.Alignment.Horizontal = SpreadsheetHorizontalAlignment.Center;
-            rangeFormat2.Fill.BackgroundColor = Color.Yellow;
-            rangeFormat2.Font.FontStyle = SpreadsheetFontStyle.Bold;
-            range2.EndUpdateFormatting(rangeFormat2);
-            //Boder
-            DevExpress.Spreadsheet.Range range3 = worksheet.Range["A1:I1"];
-            range3.SetInsideBorders(Color.Gray, BorderLineStyle.Thin);
-            range3.Borders.SetOutsideBorders(Color.Black, BorderLineStyle.Medium);
-            //<end format file Excel>
-
-            List<InspectionPlant> lstDmgMechanism = busDamageMechanism.GetListInspectionPlant();
-            
-            if (IsExportAllData)
+            try
             {
-                for (int i = 0; i < lstDmgMechanism.Count; i++)
+                //<format file Excel>
+                IWorkbook workbook = exportData.Document;
+                workbook.Worksheets[0].Name = "Process Plant";
+                workbook.Worksheets.Insert(1, "Lookup");
+                DevExpress.Spreadsheet.Worksheet worksheet = workbook.Worksheets[0];
+                DevExpress.Spreadsheet.Worksheet worksheet1 = workbook.Worksheets[1];
+                workbook.Worksheets[1].Visible = false;
+                string[] header = { "System", "Equipment", "Damage Mechanism", "Method", "Coverage", "Availability", "Last Inspection Date", "Inspection Interval", "Due Date" };
+                string[] inspectionType = {"Inspection Type", "ACFM", "Angled Compression Wave", "Angled Shear Wave", "A-scan Thickness Survey", "B-scan", "Chime", 
+                                          "Compton Scatter", "Crack Detection", "C-scan", "Digital Ultrasonic Thickness Gauge", "Endoscopy", 
+                                          "Gamma Radiography", "Hardness Surveys", "Hydrotesting", "Leak Detection", "Liquid Penetrant Inspection",
+                                          "Lorus", "Low frequency", "Magnetic Fluorescent Inspection", "Magnetic Flux Leakage", "Magnetic Particle Inspection", 
+                                          "Microstructure Replication", "Naked Eye", "On-line Monitoring", "Passive Thermography", "Penetrant Leak Detection", 
+                                          "Pulsed", "Real-time Radiography", "Remote field", "Standard (flat coil)", "Surface Waves", "Teletest", "TOFD", 
+                                          "Transient Thermography", "Video", "X-Radiography" };
+                //data validation for worksheet1
+                for (int i = 0; i < inspectionType.Length; i++)
                 {
-                    int eqId = busAssessment.getEquipmentID(lstDmgMechanism[i].IDProposal);
-                    int faciID = busEquipmentMaster.getFacilityID(eqId);
-                    worksheet.Cells["A" + (i + 2).ToString()].Value = busFacility.getFacilityName(faciID);
-                    worksheet.Cells["B" + (i + 2).ToString()].Value = busEquipmentMaster.getEquipmentName(eqId);
-                    worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
-                    worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
-                    worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
-                    worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
-                    worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
-                    worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
-                    TimeSpan interval = Convert.ToDateTime(lstDmgMechanism[i].DueDate) - Convert.ToDateTime(lstDmgMechanism[i].LastInspectionDate);
-                    worksheet.Cells["H" + (i + 2).ToString()].Value = interval.Days / 365;
+                    worksheet1.Cells["H" + (i + 1).ToString()].Value = inspectionType[i];
                 }
-            }
-            else
-            {
-                for (int i = 0; i < lstDmgMechanism.Count; i++)
+                worksheet1.Cells["H1"].Font.FontStyle = SpreadsheetFontStyle.Bold;
+
+                //header
+                worksheet.Import(header, 0, 0, false);
+                //format
+                DevExpress.Spreadsheet.Range range2 = worksheet.Range["A1:I1"];
+                Formatting rangeFormat2 = range2.BeginUpdateFormatting();
+                rangeFormat2.Alignment.Horizontal = SpreadsheetHorizontalAlignment.Center;
+                rangeFormat2.Fill.BackgroundColor = Color.Yellow;
+                rangeFormat2.Font.FontStyle = SpreadsheetFontStyle.Bold;
+                range2.EndUpdateFormatting(rangeFormat2);
+                //Boder
+                DevExpress.Spreadsheet.Range range3 = worksheet.Range["A1:I1"];
+                range3.SetInsideBorders(Color.Gray, BorderLineStyle.Thin);
+                range3.Borders.SetOutsideBorders(Color.Black, BorderLineStyle.Medium);
+
+                //<end format file Excel>
+
+                List<InspectionPlant> lstDmgMechanism = busDamageMechanism.GetListInspectionPlant();
+                worksheet.DataValidations.Add(worksheet["D2:D" + lstDmgMechanism.Count.ToString()], DataValidationType.List, ValueObject.FromRange(worksheet1["H2:H" + (inspectionType.Length + 1).ToString()].GetRangeWithAbsoluteReference()));
+                if (IsExportAllData)
                 {
-                    if (lstDmgMechanism[i].IDProposal == IDProposal)
+                    for (int i = 0; i < lstDmgMechanism.Count; i++)
                     {
                         int eqId = busAssessment.getEquipmentID(lstDmgMechanism[i].IDProposal);
                         int faciID = busEquipmentMaster.getFacilityID(eqId);
                         worksheet.Cells["A" + (i + 2).ToString()].Value = busFacility.getFacilityName(faciID);
                         worksheet.Cells["B" + (i + 2).ToString()].Value = busEquipmentMaster.getEquipmentName(eqId);
                         worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
-                        worksheet.Cells["D" + (i + 2).ToString()].Value = "No name"; //Method
+                        worksheet.Cells["D" + (i + 2).ToString()].Value = "ACFM"; //Method
                         worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
                         worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
                         worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
@@ -2411,8 +2432,33 @@ namespace RBI
                         worksheet.Cells["H" + (i + 2).ToString()].Value = interval.Days / 365;
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < lstDmgMechanism.Count; i++)
+                    {
+                        if (lstDmgMechanism[i].IDProposal == IDProposal)
+                        {
+                            int eqId = busAssessment.getEquipmentID(lstDmgMechanism[i].IDProposal);
+                            int faciID = busEquipmentMaster.getFacilityID(eqId);
+                            worksheet.Cells["A" + (i + 2).ToString()].Value = busFacility.getFacilityName(faciID);
+                            worksheet.Cells["B" + (i + 2).ToString()].Value = busEquipmentMaster.getEquipmentName(eqId);
+                            worksheet.Cells["C" + (i + 2).ToString()].Value = damageMachenism[lstDmgMechanism[i].DMItemID]; //DM item
+                            worksheet.Cells["D" + (i + 2).ToString()].Value = "ACFM"; //Method
+                            worksheet.Cells["E" + (i + 2).ToString()].Value = "N/A"; //listInspec[i].Coverage;
+                            worksheet.Cells["F" + (i + 2).ToString()].Value = "Online";//listInspec[i].Availability;
+                            worksheet.Cells["G" + (i + 2).ToString()].Value = lstDmgMechanism[i].LastInspectionDate;//listInspec[i].LastInspectionDate;
+                            worksheet.Cells["I" + (i + 2).ToString()].Value = lstDmgMechanism[i].DueDate;//listInspec[i].DueDate;
+                            TimeSpan interval = Convert.ToDateTime(lstDmgMechanism[i].DueDate) - Convert.ToDateTime(lstDmgMechanism[i].LastInspectionDate);
+                            worksheet.Cells["H" + (i + 2).ToString()].Value = interval.Days / 365;
+                        }
+                    }
+                }
+                worksheet.Columns.AutoFit(0, 8);
             }
-            worksheet.Columns.AutoFit(0, 8);
+            catch
+            {
+                MessageBox.Show("Cannot create file! Please try again", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.None);
+            }
             SaveFileDialog save = new SaveFileDialog();
             save.Filter = "Excel 2003 (*.xls)|*.xls|Excel Document (*xlsx)|*.xlsx";
             save.Title = "Save File";

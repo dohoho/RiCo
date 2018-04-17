@@ -539,7 +539,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
         private char plotinArea() //tinh lai
         {
             char k = 'B';
-            if (MAX_OP_TEMP < 75)
+            if (MAX_OP_TEMP < 80)
             {
                 k = 'A';
             }

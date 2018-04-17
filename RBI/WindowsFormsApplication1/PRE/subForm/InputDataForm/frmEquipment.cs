@@ -30,6 +30,7 @@ namespace RBI.PRE.subForm.InputDataForm
         public bool ButtonOKCliked { set; get; }
         public bool doubleEditClicked { set; get; }
         private int EquipmentID = 0;
+        private string oldName;
         public frmEquipment()
         {
             InitializeComponent();
@@ -40,6 +41,8 @@ namespace RBI.PRE.subForm.InputDataForm
             InitializeComponent();
             this.EquipmentID = ID;
             ShowDatatoControl(ID);
+            cbEquipmentType.Enabled = false;
+            oldName = txtEquipmentNumber.Text;
             label9.Text = "Edit Equipment";
         }
         public frmEquipment(String siteName, String facilityName)
@@ -206,7 +209,7 @@ namespace RBI.PRE.subForm.InputDataForm
             List<string> eqNum = bs.getListEquipmentNumber();
             foreach(string s in eqNum)
             {
-                if(s == txtEquipmentNumber.Text)
+                if (s == txtEquipmentNumber.Text && s != oldName)
                 {
                     MessageBox.Show("Equipment number already exists!", "Cortek", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
