@@ -113,6 +113,11 @@ namespace RBI.PRE.subForm.InputDataForm
         }
         private void btnFilter_Click(object sender, EventArgs e)
         {
+            if (txtPathFileExcel.Text == "")
+            {
+                MessageBox.Show("Please select a file", "Cortek RBI");
+                return;
+            }
             fileName = Path.GetFileName(txtPathFileExcel.Text);
             extension = Path.GetExtension(fileName);
             if (extension == ".xls")
@@ -135,6 +140,8 @@ namespace RBI.PRE.subForm.InputDataForm
             label1.Hide();
             spreadExcel.Dock = DockStyle.Fill;
             panelControl1.Controls.Add(spreadExcel);
+            btnSave.Enabled = true;
+            btnSaveAs.Enabled = true;
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -454,6 +461,7 @@ namespace RBI.PRE.subForm.InputDataForm
             }
             ButtonOKClicked = true;
             SplashScreenManager.CloseForm();
+            MessageBox.Show("All data have been saved! You need to add Risk Target in Facility!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             this.Close();
         }
         private void btnCancel_Click(object sender, EventArgs e)

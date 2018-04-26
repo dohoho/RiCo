@@ -45,6 +45,39 @@ namespace RBI.DAL.MSSQL
             }
             return name;
         }
+        public List<string> AllName()
+        {
+            List<string> lstName = new List<string>();
+            SqlConnection con = MSSQLDBUtils.GetDBConnection();
+            con.Open();
+            string sql = "SELECT ProposalName FROM rbi.dbo.RW_ASSESSMENT";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using(DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        if(reader.HasRows)
+                        {
+                            lstName.Add(reader.GetString(0));
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error " + ex.ToString(), "Cortek RBI");
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
+            return lstName;
+        }
         public List<int> getAllID()
         {
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();

@@ -56,6 +56,8 @@ namespace RBI.PRE.subForm.InputDataForm
             }
             spreadSheet.Dock = DockStyle.Fill;
             panelControl1.Controls.Add(spreadSheet);
+            btnSave.Enabled = true;
+            btnSaveAs.Enabled = true;
         }
         private void btnSave_Click(object sender, EventArgs e)
         {

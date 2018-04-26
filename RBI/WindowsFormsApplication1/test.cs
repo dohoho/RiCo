@@ -18,34 +18,19 @@ using DevExpress.XtraTreeList.Nodes;
 using System.Net;
 using RBI.BUS.BUSExcel;
 using RBI.Object.ObjectMSSQL;
+using DevExpress.XtraCharts;
 
 namespace RBI
 {
-    public class MyClass
-    {
-        public string Name { set; get; }
-        public static int theValue;
-        public void SayHello() { }
-        public static class A
-        {
-            public static int a;
-        }
-    }
+    
     public partial class test : Form
     {
-        
         public test()
         {
             InitializeComponent();
-            DateTime a = DateTime.Now;
-            DateTime b = DateTime.Now.AddYears(2);
-            TimeSpan c = b - a;
-            MessageBox.Show((c.Days/365).ToString());
+            textBox1.Text = "hoasid\\najsd";
+
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            
-        }
     }
 }

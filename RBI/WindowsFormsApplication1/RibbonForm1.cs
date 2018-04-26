@@ -477,7 +477,32 @@ namespace RBI
             RW_INPUT_CA_LEVEL_1 rwCALevel1 = new RW_INPUT_CA_LEVEL_1();
             RW_CA_TANK rwCATank = new RW_CA_TANK();
             RW_INPUT_CA_TANK rwInputCATank = new RW_INPUT_CA_TANK();
-            String ProposalName = "New Record Test";
+            RW_RISK_GRAPH rwRiskGraph = new RW_RISK_GRAPH();
+            /*-----------------Tìm đuôi Proposal có giá trị lớn nhất-------------------*/
+            List<string> lstProposalName = busAssessment.AllName();
+            List<int> number = new List<int>();
+            for(int i = 0; i < lstProposalName.Count; i++)
+            {
+                if(lstProposalName[i].Contains("New Proposal"))
+                {
+                    string b = lstProposalName[i].Substring(12);
+                    int temp;
+                    if (int.TryParse(b, out temp))
+                        number.Add(temp);
+                }
+            }
+            int k = 0;
+            String ProposalName = "New Proposal ";
+            if (lstProposalName.Count != 0)
+            {
+                 k = number.Max();
+                  ProposalName += (k+1).ToString();
+            }
+            else
+            {
+                ProposalName += 1;
+            }
+            /*----------------------------------------------------------------------*/
             String componentNumber = treeListProject.FocusedNode.GetValue(0).ToString();
             List<COMPONENT_MASTER> listComponentMaster = busComponentMaster.getDataSource();
             List<EQUIPMENT_MASTER> listEq = busEquipmentMaster.getDataSource();
@@ -511,7 +536,7 @@ namespace RBI
             rwCom.ID = ID;
             rwCoat.ID = ID;
             rwStream.ID = ID;
-
+            rwRiskGraph.ID = ID;
             rwFullPoF.ID = ID;
             rwMaterial.ID = ID;
             rwExtTemp.ID = ID;
@@ -523,10 +548,11 @@ namespace RBI
             busMaterial.add(rwMaterial);
             busStream.add(rwStream);
             busExtcorTemp.add(rwExtTemp);
+            busRiskGraph.add(rwRiskGraph);
             int[] eq_comID = busAssessment.getEquipmentID_ComponentID(ID);
             COMPONENT_MASTER componentMaster = busComponentMaster.getData(eq_comID[1]);
-            COMPONENT_TYPE__BUS comTypeBus = new COMPONENT_TYPE__BUS();
-            String componentTypeName = comTypeBus.getComponentTypeName(componentMaster.ComponentTypeID);
+            
+            String componentTypeName = busComponentType.getComponentTypeName(componentMaster.ComponentTypeID);
             if (componentTypeName == "Shell" || componentTypeName == "Tank Bottom")
             {
                 rwCATank.ID = ID;
@@ -974,7 +1000,7 @@ namespace RBI
                     {
                         checkTank = false;
                         ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
+                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
                         listUC.Add(ucTabnormal);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
                     }
@@ -1081,9 +1107,11 @@ namespace RBI
         }
         private void xtraTabData_CloseButtonClick(object sender, EventArgs e)
         {
-            DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
-            DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs arg = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
-            (arg.Page as DevExpress.XtraTab.XtraTabPage).Dispose();
+            //DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
+            //DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs arg = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
+            //(arg.Page as DevExpress.XtraTab.XtraTabPage).Dispose();
+            xtraTabData.SelectedTabPage.Controls.Clear();
+            xtraTabData.SelectedTabPage.Dispose();
         }
         private void xtraTabData_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
         {
@@ -1117,7 +1145,7 @@ namespace RBI
                 damageMachenism.Add(DM_ID[i], DM_Name[i]);
             }
         }
-        private void PoF(out InputInspectionCalculation insplant, out MSSQL_DM_CAL calDM, out List<RW_DAMAGE_MECHANISM> DMmachenism, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem)
+        private void PoF(out RW_FULL_POF full_pof, out InputInspectionCalculation insplant, out MSSQL_DM_CAL calDM, out List<RW_DAMAGE_MECHANISM> DMmachenism, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem)
         {
             InputInspectionCalculation inspl = new InputInspectionCalculation();
             
@@ -1621,7 +1649,7 @@ namespace RBI
             fullPOF.PoFAP1 = fullPOF.PoFAP1 > 1 ? 1 : fullPOF.PoFAP1;
             fullPOF.PoFAP2 = fullPOF.PoFAP2 > 1 ? 1 : fullPOF.PoFAP2;
             fullPOF.PoFAP3 = fullPOF.PoFAP3 > 1 ? 1 : fullPOF.PoFAP3;
-
+            full_pof = fullPOF;
             inspl.ComponentNumber = componentNumber;
             inspl.ApiComponentType = API_ComponentType_Name;
             inspl.EquipmentID = equipmentID;
@@ -1641,19 +1669,33 @@ namespace RBI
                 busFullPoF.add(fullPOF);
             #endregion
         }
-        private void InspectionPlan(InputInspectionCalculation inspl, MSSQL_DM_CAL cal, List<RW_DAMAGE_MECHANISM> DMmachenism, float FC)
+        private void InspectionPlan(RW_FULL_POF fullpof, InputInspectionCalculation inspl, MSSQL_DM_CAL cal, List<RW_DAMAGE_MECHANISM> DMmachenism, float FC)
         {
             #region INSPECTION HISTORY
             int FaciID = busEquipmentMaster.getFacilityID(inspl.EquipmentID);
-            
+            //Console.WriteLine("Some Data " + cal.APIComponentType + "\n" +
+            //                  cal.AdjustmentSettle + "\n" +
+            //                  cal.AMINE_EXPOSED + "\n" +
+            //                  cal.ContainsDeadlegs
+            //   );
             float risktaget = busRiskTarget.getRiskTarget(FaciID);
             float DF_thamchieu = risktaget / (FC * inspl.GFFTotal * inspl.FMS);
+            Console.WriteLine("DF tham chieu " + DF_thamchieu + " Risk Target " + risktaget + " FC = " + FC);
             float[] tempDf = new float[21];
             int k = 15;
             InputInspectionCalculation a = new InputInspectionCalculation();
+            RW_RISK_GRAPH riskGraph = new RW_RISK_GRAPH();
+            riskGraph.ID = IDProposal;
+            riskGraph.RiskTarget = risktaget;
             float[] age = inspl.Age;
+            float[] risk = new float[15];
+            float[] DFtotal = new float[15];
+            for (int i = 0; i < age.Length; i++)
+                Console.WriteLine("age jhsdjhn " + age[i]);
+            //int ageAssessment = 10;
             for (int i = 1; i < 16; i++)
             {
+                
                 tempDf[0] = cal.DF_THIN(age[0] + i);
                 tempDf[1] = cal.DF_LINNING(age[1] + i);
                 tempDf[2] = cal.DF_CAUSTIC(age[2] + i);
@@ -1694,22 +1736,34 @@ namespace RBI
                     if (maxBritt < tempDf[j])
                         maxBritt = tempDf[j];
                 }
-                if (maxSCC + maxExt + maxThin + tempDf[15] + maxBritt >= DF_thamchieu)
+                DFtotal[i-1] = maxSCC + maxExt + maxThin + tempDf[15] + maxBritt;
+                risk[i - 1] = fullpof.FMS * fullpof.GFFTotal * DFtotal[i - 1] * FC;
+            }
+            for (int i = 1; i < 16; i++ )
+            {
+                if (DFtotal[i-1] >= DF_thamchieu)
                 {
                     k = i;
                     break;
                 }
             }
-            RW_DAMAGE_MECHANISM_BUS damageBus = new RW_DAMAGE_MECHANISM_BUS();
+                for (int i = 0; i < risk.Length; i++)
+                {
+                    Console.WriteLine("asdjahdjhsd " + risk[i]);
+                }
+            riskGraph.Risk = risk;
+            if (busRiskGraph.CheckExistID(riskGraph.ID))
+                busRiskGraph.edit(riskGraph);
+            else
+                busRiskGraph.add(riskGraph);
             foreach (RW_DAMAGE_MECHANISM d in DMmachenism)
             {
                 d.InspDueDate = DateTime.Now.AddYears(k);
-                if (damageBus.checkExistDM(d.ID, d.DMItemID))
-                    damageBus.edit(d);
+                if (busDamageMechanism.checkExistDM(d.ID, d.DMItemID))
+                    busDamageMechanism.edit(d);
                 else
-                    damageBus.add(d);
+                    busDamageMechanism.add(d);
             }
-            RW_INSPECTION_HISTORY_BUS busInspectionHistory = new RW_INSPECTION_HISTORY_BUS();
             //gán cho Object inspection plan
             float[] inspec = inspl.DFTotal;
             for (int i = 0; i < inspec.Length; i++)
@@ -1971,10 +2025,11 @@ namespace RBI
             InputInspectionCalculation inputInsp;
             MSSQL_DM_CAL cacal;
             List<RW_DAMAGE_MECHANISM> DMmache;
+            RW_FULL_POF fullpof;
             float FC = 0;
-            PoF(out inputInsp, out cacal, out DMmache, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            PoF(out fullpof, out inputInsp, out cacal, out DMmache, ThinningType, componentNumber, eq, com, ma, st, coat, tem);
             CA(out FC, inputInsp.ApiComponentType, com, ma, caInput);
-            InspectionPlan(inputInsp, cacal, DMmache, FC);
+            InspectionPlan(fullpof,inputInsp, cacal, DMmache, FC);
         }
         private void Calculation_CA_TANK(String componentTypeName, String API_component, String ThinningType, String componentNumber, RW_EQUIPMENT eq, RW_COMPONENT com, RW_MATERIAL ma, RW_STREAM st, RW_COATING coat, RW_EXTCOR_TEMPERATURE tem, RW_INPUT_CA_TANK caTank)
         {
@@ -1982,9 +2037,10 @@ namespace RBI
             MSSQL_DM_CAL cacal;
             List<RW_DAMAGE_MECHANISM> DMmachenism;
             float FC = 0;
-            PoF(out  insp, out  cacal, out DMmachenism,ThinningType, componentNumber, eq, com, ma, st, coat, tem);
+            RW_FULL_POF fullpof;
+            PoF(out fullpof, out  insp, out  cacal, out DMmachenism,ThinningType, componentNumber, eq, com, ma, st, coat, tem);
             CA_Tank(out FC, API_component, componentTypeName, eq, ma, caTank);
-            InspectionPlan(insp, cacal, DMmachenism, FC);
+            InspectionPlan(fullpof, insp, cacal, DMmachenism, FC);
         }
 
         private void ShowItemTabpage(int ID, int Num, bool checkTank)
@@ -2036,6 +2092,9 @@ namespace RBI
                         break;
                     case 11:
                         u = uctab.ucInspectionHistory;
+                        break;
+                    case 12:
+                        u = uctab.ucDrawGraph;
                         break;
                     default:
                         break;
@@ -2788,6 +2847,10 @@ namespace RBI
         {
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 10);
         }
+        private void navViewGraph_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 12);
+        }
         #endregion
 
         #region Parameters
@@ -2858,6 +2921,26 @@ namespace RBI
         RW_INSPECTION_HISTORY_BUS busInspectionHistory = new RW_INSPECTION_HISTORY_BUS();
         FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
         RW_DAMAGE_MECHANISM_BUS busDamageMechanism = new RW_DAMAGE_MECHANISM_BUS();
+        RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();
+
+        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UCDrawGraph drawGraph = new UCDrawGraph(257);
+            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
+            tabPage.AutoScroll = true;
+            tabPage.AutoScrollMargin = new Size(20, 20);
+            tabPage.AutoScrollMinSize = new Size(tabPage.Width, tabPage.Height);
+            tabPage.Name = "graph";
+            tabPage.Text = "Graph";
+            drawGraph.Dock = DockStyle.Fill;
+            tabPage.Controls.Add(drawGraph);
+            drawGraph.AutoSize = true;
+            if (xtraTabData.TabPages.Contains(tabPage)) return;
+            xtraTabData.TabPages.Add(tabPage);
+            xtraTabData.SelectedTabPage = tabPage;
+            tabPage.Show();
+        }
+        
         //</BUS>
         #endregion
     }

@@ -6,9 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using RBI.Object.ObjectMSSQL;
-using MySql.Data.MySqlClient;
 
 namespace RBI.DAL.MSSQL
 {

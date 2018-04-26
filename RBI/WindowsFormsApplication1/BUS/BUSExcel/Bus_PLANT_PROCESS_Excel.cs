@@ -2077,7 +2077,8 @@ namespace RBI.BUS.BUSExcel
                                     obj.PTAMaterialCode = reader[20].ToString();
                                     try
                                     {
-                                        obj.CostFactor = (float)reader.GetDouble(21);
+                                        double a = reader.GetDouble(21);
+                                        obj.CostFactor = (float)a;
                                     }
                                     catch
                                     {

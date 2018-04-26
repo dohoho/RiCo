@@ -95,6 +95,7 @@
             this.xtraTabData = new DevExpress.XtraTab.XtraTabControl();
             this.xTabHome = new DevExpress.XtraTab.XtraTabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.treeListProject = new DevExpress.XtraTreeList.TreeList();
             this.imageTreeList = new DevExpress.Utils.ImageCollection(this.components);
             this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
@@ -122,11 +123,11 @@
             this.navRiskFactor = new DevExpress.XtraNavBar.NavBarItem();
             this.navCA = new DevExpress.XtraNavBar.NavBarItem();
             this.navRiskSummary = new DevExpress.XtraNavBar.NavBarItem();
+            this.navViewGraph = new DevExpress.XtraNavBar.NavBarItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.navGrRecord = new DevExpress.XtraNavBar.NavBarGroup();
             this.splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::RBI.WaitForm1), true, true);
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).BeginInit();
@@ -325,6 +326,7 @@
             this.barButtonItem8.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem8.ImageOptions.Image")));
             this.barButtonItem8.Name = "barButtonItem8";
             this.barButtonItem8.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            this.barButtonItem8.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem8_ItemClick);
             // 
             // barButtonItem13
             // 
@@ -707,6 +709,16 @@
             this.panel1.Size = new System.Drawing.Size(684, 493);
             this.panel1.TabIndex = 1;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Dosis", 71.99999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(104, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(458, 122);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Cortek RBI";
+            // 
             // treeListProject
             // 
             this.treeListProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -813,7 +825,8 @@
             this.navAddNewFacility,
             this.navRiskSummaryMainMenu,
             this.navFullInspHis,
-            this.navExportAllInsp});
+            this.navExportAllInsp,
+            this.navViewGraph});
             this.navBarControl2.Location = new System.Drawing.Point(2, 0);
             this.navBarControl2.Name = "navBarControl2";
             this.navBarControl2.OptionsNavPane.ExpandedWidth = 175;
@@ -879,6 +892,7 @@
             // navBarRecord
             // 
             this.navBarRecord.Caption = "Record";
+            this.navBarRecord.Expanded = true;
             this.navBarRecord.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
             new DevExpress.XtraNavBar.NavBarItemLink(this.navAssessmentInfo),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navEquipment),
@@ -890,7 +904,8 @@
             new DevExpress.XtraNavBar.NavBarItemLink(this.navStream),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navRiskFactor),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navCA),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navRiskSummary)});
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navRiskSummary),
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navViewGraph)});
             this.navBarRecord.Name = "navBarRecord";
             this.navBarRecord.Visible = false;
             // 
@@ -972,6 +987,12 @@
             this.navRiskSummary.SmallImage = ((System.Drawing.Image)(resources.GetObject("navRiskSummary.SmallImage")));
             this.navRiskSummary.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navRiskSummary_LinkClicked);
             // 
+            // navViewGraph
+            // 
+            this.navViewGraph.Caption = "View Graph";
+            this.navViewGraph.Name = "navViewGraph";
+            this.navViewGraph.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navViewGraph_LinkClicked);
+            // 
             // imageCollection1
             // 
             this.imageCollection1.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection1.ImageStream")));
@@ -998,16 +1019,6 @@
             this.barButtonItem4.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem4.ImageOptions.Image")));
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Dosis", 71.99999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(104, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(458, 122);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Cortek RBI";
             // 
             // RibbonForm1
             // 
@@ -1152,5 +1163,6 @@
         private System.Windows.Forms.Panel panel1;
         private DevExpress.XtraNavBar.NavBarItem navExportAllInsp;
         private System.Windows.Forms.Label label1;
+        private DevExpress.XtraNavBar.NavBarItem navViewGraph;
     }
 }

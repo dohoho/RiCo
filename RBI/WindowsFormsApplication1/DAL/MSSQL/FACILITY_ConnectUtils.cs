@@ -42,7 +42,6 @@ namespace RBI.DAL.MSSQL
                 conn.Close();
                 conn.Dispose();
             }
-
         }
         public void edit(int FacilityID,int SiteID,String FacilityName,float ManagementFactor)
         {

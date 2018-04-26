@@ -99,6 +99,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -180,6 +181,7 @@
     <Compile Include="BUS\BUSMSSQL\RW_POINTS_BUS.cs" />
     <Compile Include="BUS\BUSMSSQL\RW_PRIMARY_FLUID_BUS.cs" />
     <Compile Include="BUS\BUSMSSQL\RW_REVISION_INSPECTION_BUS.cs" />
+    <Compile Include="BUS\BUSMSSQL\RW_RISK_GRAPH_BUS.cs" />
     <Compile Include="BUS\BUSMSSQL\RW_RISK_TARGET_BUS.cs" />
     <Compile Include="BUS\BUSMSSQL\RW_SAFETY_FACTOR_BUS.cs" />
     <Compile Include="BUS\BUSMSSQL\RW_SECONDARY_FLUID_BUS.cs" />
@@ -272,6 +274,7 @@
     <Compile Include="DAL\MSSQL\RW_POINTS_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\RW_PRIMARY_FLUID_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\RW_REVISION_INSPECTION_ConnectUtils.cs" />
+    <Compile Include="DAL\MSSQL\RW_RISK_GRAPH_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\RW_RISK_TARGET_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\RW_SAFETY_FACTOR_ConnectUtils.cs" />
     <Compile Include="DAL\MSSQL\RW_SECONDARY_FLUID_ConnectUtils.cs" />
@@ -361,6 +364,7 @@
     <Compile Include="Object\ObjectMSSQL\RW_POINTS.cs" />
     <Compile Include="Object\ObjectMSSQL\RW_PRIMARY_FLUID.cs" />
     <Compile Include="Object\ObjectMSSQL\RW_REVISION_INSPECTION.cs" />
+    <Compile Include="Object\ObjectMSSQL\RW_RISK_GRAPH.cs" />
     <Compile Include="Object\ObjectMSSQL\RW_RISK_TARGET.cs" />
     <Compile Include="Object\ObjectMSSQL\RW_SAFETY_FACTOR.cs" />
     <Compile Include="Object\ObjectMSSQL\RW_SECONDARY_FLUID.cs" />
@@ -513,6 +517,12 @@
     </Compile>
     <Compile Include="PRE\subForm\InputDataForm\UCMaterialTank.Designer.cs">
       <DependentUpon>UCMaterialTank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PRE\subForm\OutputDataForm\UCDrawGraph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PRE\subForm\OutputDataForm\UCDrawGraph.Designer.cs">
+      <DependentUpon>UCDrawGraph.cs</DependentUpon>
     </Compile>
     <Compile Include="PRE\subForm\OutputDataForm\UCInspectionHistory.cs">
       <SubType>UserControl</SubType>
@@ -715,6 +725,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PRE\subForm\InputDataForm\UCStream.resx">
       <DependentUpon>UCStream.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PRE\subForm\OutputDataForm\UCDrawGraph.resx">
+      <DependentUpon>UCDrawGraph.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PRE\subForm\OutputDataForm\UCInspectionHistory.resx">
       <DependentUpon>UCInspectionHistory.cs</DependentUpon>

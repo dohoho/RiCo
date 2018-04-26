@@ -31,6 +31,7 @@ E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.InputDataForm.UCOperatingCondition.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.InputDataForm.UCStreamTank.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.InputDataForm.UCStream.resources
+E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.UCDrawGraph.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.UCInspectionHistory.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.UCInspectionHistorySubform.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.UCRisk.resources
@@ -40,7 +41,7 @@ E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.Properties.Resources.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.Resource1.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.RibbonForm1.resources
-E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.MyClass.resources
+E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.test.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.WaitForm1.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.csproj.GenerateResource.Cache
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe.licenses

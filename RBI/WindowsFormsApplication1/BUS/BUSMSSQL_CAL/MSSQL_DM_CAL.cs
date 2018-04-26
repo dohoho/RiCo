@@ -1293,7 +1293,6 @@ namespace RBI.BUS.BUSMSSQL_CAL
                 FIP = 1;
             float CR = API_CORROSION_RATE() * Math.Max(FPS, FIP);
             float ART_EXT = Math.Max(1 - (CurrentThick - CR * AGE_CUI(age)) / (getTmin() + CA), 0);
-            Debug.WriteLine("Art "+API_ART(ART_EXT).ToString());
             return API_ART(ART_EXT);
         }
         public float DF_EXTERNAL_CORROSION(float age)
@@ -1962,7 +1961,6 @@ namespace RBI.BUS.BUSMSSQL_CAL
         ///</summary>
         public float DF_885()
         {
-            Console.WriteLine("hasdjha " + CHROMIUM_12 + MIN_OP_TEMP);
             if (CHROMIUM_12 && !(MIN_OP_TEMP > 566 || MAX_OP_TEMP < 371))
             {
                 float TEMP_885 = Math.Min(MIN_DESIGN_TEMP, MIN_OP_TEMP) - REF_TEMP;

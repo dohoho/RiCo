@@ -76,5 +76,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getAllIDbyComponentID(ID);
         }
+        public List<string> AllName()
+        {
+            return DAL.AllName();
+        }
     }
 }

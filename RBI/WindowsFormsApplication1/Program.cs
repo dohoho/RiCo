@@ -22,11 +22,6 @@ namespace RBI
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new test());
             Application.Run(new RibbonForm1());
-            //Application.Run(new frmNewComponent());
-            //Application.Run(new frmEquipment());
-            //Application.Run(new frmImportInspection());
-            //Application.Run(new NewFluid());
-            //Application.Run(new newComponent());
         }
     }
 }
