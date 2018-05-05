@@ -20,8 +20,9 @@ namespace RBI.Object
         public UCRiskFactor ucRiskFactor { set; get; }
         public UCRiskSummary ucRiskSummary { set; get; }
         public UCInspectionHistorySubform ucInspHistory { set; get; }
+        public UCDrawGraph ucDrawGraph { set; get; }
         public ucTabTank(int id, UCAssessmentInfo u1, UCEquipmentPropertiesTank u2, UCComponentPropertiesTank u3, UCOperatingCondition u4,
-            UCCoatLiningIsulationCladding u5, UCMaterialTank u6, UCStreamTank u7,UCRiskFactor u8, UCRiskSummary u9, UCInspectionHistorySubform u10)
+            UCCoatLiningIsulationCladding u5, UCMaterialTank u6, UCStreamTank u7,UCRiskFactor u8, UCRiskSummary u9, UCInspectionHistorySubform u10, UCDrawGraph uc11)
         {
             this.ID = id;
             ucAss = u1;
@@ -34,6 +35,7 @@ namespace RBI.Object
             ucRiskFactor = u8;
             ucRiskSummary = u9;
             ucInspHistory = u10;
+            ucDrawGraph = uc11;
         }
     }
 }

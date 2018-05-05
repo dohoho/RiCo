@@ -47,12 +47,15 @@ namespace RBI
             treeListProject.OptionsView.ShowColumns = false;
             treeListProject.OptionsView.ShowHorzLines = true;
             treeListProject.OptionsView.ShowVertLines = false;
-            //treeListProject.ExpandAll();
+            treeListProject.ExpandAll();
             InitDictionaryDMMachenism();
             barStaticItem1.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
-
+        private void RibbonForm1_Load(object sender, EventArgs e)
+        {
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
 
         #region Button Click
 
@@ -81,7 +84,6 @@ namespace RBI
 
         private void btnSites_ItemClick(object sender, ItemClickEventArgs e)
         {
-
             frmNewSite site = new frmNewSite();
             site.ShowInTaskbar = false;
             site.ShowDialog();
@@ -256,7 +258,6 @@ namespace RBI
                     //resultRisk.riskPoF(IDProposal);
                     showUCinTabpage(resultRisk);
                 }
-
                 SplashScreenManager.CloseForm();
             }
             catch (Exception ex)
@@ -601,6 +602,7 @@ namespace RBI
                         else return;
                     }
                 }
+                busRiskGraph.delete(IDNodeTreeList);
                 busEquipment.delete(IDNodeTreeList);
                 busComponent.delete(IDNodeTreeList);
                 busExtcorTemp.delete(IDNodeTreeList);
@@ -667,6 +669,7 @@ namespace RBI
                 allID = busAssessment.getAllIDbyComponentID(IDNodeTreeList);
                 foreach (int id in allID)
                 {
+                    busRiskGraph.delete(id);
                     busEquipment.delete(busEquipment.getData(id));
                     busComponent.delete(busComponent.getData(id));
                     busExtcorTemp.delete(id);
@@ -740,6 +743,7 @@ namespace RBI
                     List<int> allAssessID = busAssessment.getAllIDbyComponentID(compID);
                     foreach (int id in allAssessID)
                     {
+                        busRiskGraph.delete(id);
                         busEquipment.delete(busEquipment.getData(id));
                         busComponent.delete(busComponent.getData(id));
                         busExtcorTemp.delete(id);
@@ -808,6 +812,7 @@ namespace RBI
                         List<int> allAssessID = busAssessment.getAllIDbyComponentID(compID);
                         foreach (int id in allAssessID)
                         {
+                            busRiskGraph.delete(id);
                             busEquipment.delete(busEquipment.getData(id));
                             busComponent.delete(busComponent.getData(id));
                             busExtcorTemp.delete(id);
@@ -910,6 +915,7 @@ namespace RBI
                             allID = busAssessment.getAllIDbyComponentID(compID);
                             foreach (int id in allID)
                             {
+                                busRiskGraph.delete(id);
                                 busEquipment.delete(busEquipment.getData(id));
                                 busComponent.delete(busComponent.getData(id));
                                 busExtcorTemp.delete(id);
@@ -1023,7 +1029,7 @@ namespace RBI
                         navCA.Enabled = false;
                         checkTank = true;
                         ucTabTank ucTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal, type), new UCComponentPropertiesTank(IDProposal, type), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal));
+                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
                         listUCTank.Add(ucTank);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTank.ucAss);
                     }
@@ -1518,7 +1524,8 @@ namespace RBI
                 }
             }
             DMmachenism = listDamageMachenism;
-            /*  Tính DF_Thin_Total
+            /*  
+             * Tính DF_Thin_Total
              *  page 2-11 (125/654)
              *  Df_thinning_total = min[Df_thinning, Df_lining] nếu như có Lining
              *  Df_thinning_total = Df_thinning  
@@ -2142,6 +2149,9 @@ namespace RBI
                     case 11:
                         u = ucTabTank.ucInspHistory;
                         break;
+                    case 12:
+                        u = ucTabTank.ucDrawGraph;
+                        break;
                     default:
                         break;
                 }
@@ -2157,28 +2167,47 @@ namespace RBI
                 xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
                 
                 switch(Num)
-                {   //2 UC cần được cập nhập lại dữ liệu sau mỗi lần tính toán
+                {   //3 UC cần được cập nhập lại dữ liệu sau mỗi lần tính toán
                     case 9:
                         UCRiskFactor rf = new UCRiskFactor(IDProposal);
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rf);
-                        rf.Dock = DockStyle.Fill;
+                        //rf.Dock = DockStyle.Fill;
+                        //rf.AutoScroll = true;
                         break;
                     case 10:
                         UCRiskSummary rs = new UCRiskSummary(IDProposal);
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rs);
-                        rs.Dock = DockStyle.Fill;
+                        //rs.Dock = DockStyle.Fill;
+                        
                         break;
+                    case 12:
+                        UCDrawGraph gr = new UCDrawGraph(IDProposal);
+                        xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(gr);
+                        //u.Dock = DockStyle.Fill;
+                        return;
                     default:
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
-                        u.Dock = DockStyle.Fill;
+                        //u.Dock = DockStyle.Fill;
+                        
                         break;
                 }
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
-                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
-                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(80, 80);
-                xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMinSize = new Size(xtraTabData.TabPages.TabControl.SelectedTabPage.Width, xtraTabData.TabPages.TabControl.SelectedTabPage.Height);
+                //u.AutoScroll = true;
+                //xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
+                //VScrollBar v = new VScrollBar();
+                //v.Dock = DockStyle.Right;
+                //v.Maximum = u.Height - xtraTabData.Height;
+                //Console.WriteLine("chieu cao " + v.Maximum);
+                //xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(v);
+
+                //xtraTabData.TabPages.TabControl.SelectedTabPage;
+
+                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
+                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(80, 80);
+                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMinSize = new Size(xtraTabData.TabPages.TabControl.SelectedTabPage.Width, xtraTabData.TabPages.TabControl.SelectedTabPage.Height);
             }
         }
+
+        
 
         private void addNewTab(string tabname, UserControl uc)
         {
@@ -2781,6 +2810,7 @@ namespace RBI
         private void navBarItem1_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             xtraTabData.TabPages.TabControl.SelectedTabPageIndex = 0;
+            
         }
 
         private void navFullInspHis_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
@@ -2940,6 +2970,8 @@ namespace RBI
             xtraTabData.SelectedTabPage = tabPage;
             tabPage.Show();
         }
+
+        
         
         //</BUS>
         #endregion

@@ -33,19 +33,7 @@ namespace RBI.PRE.subForm.OutputDataForm
                     chartRisk.Series[0].Points.Add(new SeriesPoint(year + i, new double[] { data[i] }));
                     chartRisk.Series[1].Points.Add(new SeriesPoint(year + i, new double[] { data[0] }));
                 }
-
-                
-                // Define the chart's appearance and palette.
-                //chartRisk.AppearanceName = "Light";
-                //chartRisk.PaletteName = "Opulent";
-                //chartRisk.PaletteBaseColorNumber = 5;
-
-                // Define a separate palette for the chart's indicators.
-                //chartRisk.IndicatorsPaletteName = "Default";
-
-                // Add the chart to the form.
-                //chartRisk.Dock = DockStyle.Fill;
-                //this.Controls.Add(chartRisk);
+                Console.WriteLine("Draw Finished");
             }
             catch(Exception ex)
             {

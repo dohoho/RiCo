@@ -220,7 +220,7 @@ namespace RBI.DAL.MSSQL
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ID = 0;
             }

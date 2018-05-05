@@ -144,9 +144,5 @@ namespace RBI.PRE.subForm.InputDataForm
             }
         }
 
-        //foreach (Process proc in Process.GetProcessesByName("EXCEL"))
-        //{
-        //    proc.Kill();
-        //}
 }
 }

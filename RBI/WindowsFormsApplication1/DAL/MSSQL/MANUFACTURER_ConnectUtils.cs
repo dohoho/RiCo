@@ -193,7 +193,7 @@ namespace RBI.DAL.MSSQL
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ID = 0;
             }
@@ -209,7 +209,7 @@ namespace RBI.DAL.MSSQL
             SqlConnection conn = MSSQLDBUtils.GetDBConnection();
             conn.Open();
             List<string> name = new List<string>();
-            MANUFACTURER obj = null;
+            //MANUFACTURER obj = null;
             String sql = "select ManufacturerName from rbi.dbo.MANUFACTURER";
             try
             {

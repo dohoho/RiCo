@@ -1035,7 +1035,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label23.Location = new System.Drawing.Point(30, 32);
+            this.label23.Location = new System.Drawing.Point(30, 44);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(112, 15);
             this.label23.TabIndex = 65;
@@ -1046,7 +1046,7 @@
             this.tabCA.Controls.Add(this.groupBox5);
             this.tabCA.Controls.Add(this.groupBox4);
             this.tabCA.Name = "tabCA";
-            this.tabCA.Size = new System.Drawing.Size(957, 664);
+            this.tabCA.Size = new System.Drawing.Size(961, 665);
             this.tabCA.Text = "Consequence Area";
             // 
             // groupBox5
@@ -1459,7 +1459,7 @@
             // 
             this.tabCAShell.Controls.Add(this.groupBox7);
             this.tabCAShell.Name = "tabCAShell";
-            this.tabCAShell.Size = new System.Drawing.Size(957, 664);
+            this.tabCAShell.Size = new System.Drawing.Size(961, 665);
             this.tabCAShell.Text = "Consequence Area";
             // 
             // groupBox7
@@ -1531,7 +1531,7 @@
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(957, 664);
+            this.groupBox7.Size = new System.Drawing.Size(961, 665);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Fully-Quantitative Financial Consequence of Failure and Category";
@@ -2199,7 +2199,7 @@
             // 
             this.tabCATankBottom.Controls.Add(this.groupBox6);
             this.tabCATankBottom.Name = "tabCATankBottom";
-            this.tabCATankBottom.Size = new System.Drawing.Size(957, 664);
+            this.tabCATankBottom.Size = new System.Drawing.Size(961, 665);
             this.tabCATankBottom.Text = "Consequence Area";
             // 
             // groupBox6
@@ -2267,7 +2267,7 @@
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(957, 664);
+            this.groupBox6.Size = new System.Drawing.Size(961, 665);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Fully-Quantitative Financial Consequence of Failure and Category";

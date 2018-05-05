@@ -362,7 +362,7 @@ namespace RBI.BUS.BUSExcel
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 MessageBox.Show("Format sheet Equipment error!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

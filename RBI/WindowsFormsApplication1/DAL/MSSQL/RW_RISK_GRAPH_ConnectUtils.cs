@@ -16,7 +16,7 @@ namespace RBI.DAL.MSSQL
             SqlConnection con = MSSQLDBUtils.GetDBConnection();
             con.Open();
             string sql = "INSERT INTO rbi.dbo.RW_RISK_GRAPH" +
-                         "(ID, risk1, risk2, risk3, risk4, risk5, risk6, risk7, risk8, risk9, risk10, risk11, risk12, risk13, risk14, risk15)" +
+                         "(ID, risktarget, risk1, risk2, risk3, risk4, risk5, risk6, risk7, risk8, risk9, risk10, risk11, risk12, risk13, risk14, risk15)" +
                          "VALUES ('" + obj.ID + "','" + obj.RiskTarget+"','"+obj.Risk[0] + "','" + obj.Risk[1] + "','" + obj.Risk[2] + "','"+obj.Risk[3]+"','"+obj.Risk[4]+"','"+obj.Risk[5]+"','"+obj.Risk[6]+"','"+obj.Risk[7]+"','"+obj.Risk[8]+"','"+obj.Risk[9]+"','"+obj.Risk[10]+"','"+obj.Risk[11]+"','"+obj.Risk[12]+"','"+obj.Risk[13]+"','"+obj.Risk[14]+"')";
             try
             {
@@ -75,7 +75,7 @@ namespace RBI.DAL.MSSQL
                 con.Dispose();
             }
         }
-
+        
         public void delete(int ID)
         {
             SqlConnection con = MSSQLDBUtils.GetDBConnection();

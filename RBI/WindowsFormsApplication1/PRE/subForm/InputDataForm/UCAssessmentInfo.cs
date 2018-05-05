@@ -25,6 +25,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             InitializeComponent();
             showDatatoControl(id);
+            
         }
         public String ProposalName;
         public RW_ASSESSMENT getData(int ID)
@@ -36,7 +37,7 @@ namespace RBI.PRE.subForm.InputDataForm
             ass.AssessmentDate = dateAssessmentDate.DateTime;
             ass.RiskAnalysisPeriod = txtRiskAnalysisPeriod.Text != "" ? int.Parse(txtRiskAnalysisPeriod.Text) : 0;
             ass.IsEquipmentLinked = chkRiskLinksEquipmentRisk.Checked ? 1 : 0;
-            ass.RecordType = cbReportTemplate.Text;
+            //ass.RecordType = cbReportTemplate.Text;
             ass.ProposalName = txtAssessmentName.Text;
             ass.AdoptedDate = DateTime.Now;
             ass.RecommendedDate = DateTime.Now;

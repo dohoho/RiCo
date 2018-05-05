@@ -18,9 +18,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             DAL.edit(obj);
         }
-        public void delete(RW_RISK_GRAPH obj)
+        public void delete(int ID)
         {
-            DAL.delete(obj.ID);
+            DAL.delete(ID);
         }
         public List<double> GetData(int ID)
         {

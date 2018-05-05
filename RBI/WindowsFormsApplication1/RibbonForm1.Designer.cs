@@ -991,6 +991,7 @@
             // 
             this.navViewGraph.Caption = "View Graph";
             this.navViewGraph.Name = "navViewGraph";
+            this.navViewGraph.SmallImage = ((System.Drawing.Image)(resources.GetObject("navViewGraph.SmallImage")));
             this.navViewGraph.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navViewGraph_LinkClicked);
             // 
             // imageCollection1
@@ -1039,6 +1040,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.StatusBar = this.ribStatusbar;
             this.Text = "Cortek RBI";
+            this.Load += new System.EventHandler(this.RibbonForm1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).EndInit();
