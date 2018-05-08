@@ -326,7 +326,6 @@
             this.barButtonItem8.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem8.ImageOptions.Image")));
             this.barButtonItem8.Name = "barButtonItem8";
             this.barButtonItem8.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.barButtonItem8.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem8_ItemClick);
             // 
             // barButtonItem13
             // 
@@ -686,6 +685,7 @@
             this.xtraTabData.UseDisabledStatePainter = false;
             this.xtraTabData.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabData_SelectedPageChanged);
             this.xtraTabData.CloseButtonClick += new System.EventHandler(this.xtraTabData_CloseButtonClick);
+            this.xtraTabData.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.xtraTabData_KeyPress);
             // 
             // xTabHome
             // 
@@ -730,6 +730,7 @@
             this.treeListProject.StateImageList = this.imageTreeList;
             this.treeListProject.TabIndex = 1;
             this.treeListProject.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeListProject_FocusedNodeChanged);
+            this.treeListProject.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeListProject_CustomDrawNodeCell);
             this.treeListProject.CustomDrawNodeImages += new DevExpress.XtraTreeList.CustomDrawNodeImagesEventHandler(this.treeListProject_CustomDrawNodeImages);
             this.treeListProject.PopupMenuShowing += new DevExpress.XtraTreeList.PopupMenuShowingEventHandler(this.treeListProject_PopupMenuShowing);
             this.treeListProject.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeListProject_MouseClick);
@@ -1041,6 +1042,7 @@
             this.StatusBar = this.ribStatusbar;
             this.Text = "Cortek RBI";
             this.Load += new System.EventHandler(this.RibbonForm1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RibbonForm1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popExportExcel)).EndInit();

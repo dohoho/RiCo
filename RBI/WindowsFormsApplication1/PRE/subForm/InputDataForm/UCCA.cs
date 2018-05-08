@@ -15,6 +15,7 @@ namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCCA : UserControl
     {
+        
         BUS_TOXIC bus = new BUS_TOXIC();
         MSSQL_CA_CAL BUS_CA = new MSSQL_CA_CAL();
         string[] itemsFluid = {"Acid","AlCl3","C1-C2","C13-C16","C17-C25","C25+","C3-C4","C5", "C6-C8","C9-C12","CO","DEE","EE","EEA","EG","EO","H2","H2S","HCl","HF","Methanol","Nitric Acid","NO2","Phosgene","PO","Pyrophoric","Steam","Styrene","TDI","Water"};

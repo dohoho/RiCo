@@ -7,15 +7,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
+
 namespace RBI.PRE.subForm.InputDataForm
 {
+    public delegate void DataUCChangedHanlder(object sender, DataUCChangedEventArgs e);
+    public delegate void CtrlSHandler(object sender, KeyPress e);
     public partial class UCAssessmentInfo : UserControl
     {
+        private int datachange;
+        private int ctrlSpress;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public event InputLanguageChangedEventHandler ashd;
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                if (ctrlSpress == value) return;
+                OnCtrlS_Press(new KeyPress(ctrlSpress));
+            }
+        }
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                if (datachange == value) return;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+
+        protected virtual void OnCtrlS_Press(KeyPress e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
         List<COMPONENT_TYPE> listComponentType = new List<COMPONENT_TYPE>();
         COMPONENT_TYPE__BUS componentTypeBus = new COMPONENT_TYPE__BUS();
+        
+        
         public UCAssessmentInfo()
         {
             InitializeComponent();
@@ -89,10 +128,44 @@ namespace RBI.PRE.subForm.InputDataForm
             chkRiskLinksEquipmentRisk.Checked = comMa.IsEquipmentLinked == 1 ? true : false;  
         }
 
+
         //public event 
         private void txtAssessmentName_TextChanged(object sender, EventArgs e)
         {
-            
+            DataChange++;
+        }
+        private void KeyPress1(KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                Console.WriteLine("Saved");
+                CtrlSPress++;
+            }
+        }
+        private void txtAssessmentName_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyPress1(e);
+        }
+
+        private void txtRiskAnalysisPeriod_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+
+        private void txtRiskAnalysisPeriod_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            string a = txtRiskAnalysisPeriod.Text;
+            if (!Char.IsDigit(e.KeyChar))// && !Char.IsControl(e.KeyChar) && e.KeyChar == '-')
+            {
+                DataChange++;
+                e.Handled = true;
+            }
+            if (a.Contains("-") && e.KeyChar == '-')
+            {
+                e.Handled = true;
+            }
         }
     }
 }

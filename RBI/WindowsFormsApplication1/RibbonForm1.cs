@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ using DevExpress.XtraTab;
 
 namespace RBI
 {
+    
     public partial class RibbonForm1 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         public RibbonForm1()
@@ -304,6 +306,30 @@ namespace RBI
         #endregion
 
         #region TreeListProject va XtratabData
+        private void treeListProject_CustomDrawNodeCell(object sender, CustomDrawNodeCellEventArgs e)
+        {
+            // Create brushes for cells.
+            Brush backBrush, foreBrush;
+            if (e.Node != (sender as TreeList).FocusedNode)
+            {
+                backBrush = new LinearGradientBrush(e.Bounds, Color.White, Color.White, LinearGradientMode.ForwardDiagonal);
+                foreBrush = Brushes.Black;
+            }
+            else
+            {
+                backBrush = new LinearGradientBrush(e.Bounds, Color.LightSteelBlue, Color.LightSteelBlue, LinearGradientMode.ForwardDiagonal);
+                foreBrush = new SolidBrush(Color.PeachPuff);
+            }
+
+            // Fill the background.
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+            // Paint the node value.
+            e.Graphics.DrawString(e.CellText, e.Appearance.Font, foreBrush, e.Bounds,
+            e.Appearance.GetStringFormat());
+
+            // Prohibit default painting.
+            e.Handled = true;
+        }
         private void treeListProject_MouseClick(object sender, MouseEventArgs e)
         {
             treeListProject.Appearance.FocusedCell.ForeColor = Color.Red;
@@ -951,6 +977,7 @@ namespace RBI
         {
             TreeList tree = sender as TreeList;
             TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+            
             if (treeListProject.Nodes.Count == 0) //tránh lỗi khi treelist rỗng
                 return;
             //<show edit equipment and component>
@@ -1004,8 +1031,11 @@ namespace RBI
                     String EquipmentTypeName = busEquipmentType.getEquipmentTypeName(equipmentTypeID);
                     if (EquipmentTypeName != "Tank")
                     {
+                        UCAssessmentInfo _ass = new UCAssessmentInfo(IDProposal);
+                        _ass.DataChanged += ThayDoiDuLieu;
+                        _ass.CtrlS_Press += _ass_CtrlS_Press;
                         checkTank = false;
-                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
+                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, _ass, new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
                             , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
                         listUC.Add(ucTabnormal);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
@@ -2829,10 +2859,12 @@ namespace RBI
         }
         private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 1);
         }
         private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 2);
         }
 
@@ -2951,29 +2983,38 @@ namespace RBI
         RW_INSPECTION_HISTORY_BUS busInspectionHistory = new RW_INSPECTION_HISTORY_BUS();
         FACILITY_RISK_TARGET_BUS busRiskTarget = new FACILITY_RISK_TARGET_BUS();
         RW_DAMAGE_MECHANISM_BUS busDamageMechanism = new RW_DAMAGE_MECHANISM_BUS();
-        RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();
-
-        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
+        RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();        
+        //</BUS>
+        #endregion
+        private void _ass_CtrlS_Press(object sender, KeyPress e)
         {
-            UCDrawGraph drawGraph = new UCDrawGraph(257);
-            DevExpress.XtraTab.XtraTabPage tabPage = new DevExpress.XtraTab.XtraTabPage();
-            tabPage.AutoScroll = true;
-            tabPage.AutoScrollMargin = new Size(20, 20);
-            tabPage.AutoScrollMinSize = new Size(tabPage.Width, tabPage.Height);
-            tabPage.Name = "graph";
-            tabPage.Text = "Graph";
-            drawGraph.Dock = DockStyle.Fill;
-            tabPage.Controls.Add(drawGraph);
-            drawGraph.AutoSize = true;
-            if (xtraTabData.TabPages.Contains(tabPage)) return;
-            xtraTabData.TabPages.Add(tabPage);
-            xtraTabData.SelectedTabPage = tabPage;
-            tabPage.Show();
+            string str = xtraTabData.SelectedTabPage.Text;
+            if (str.Contains("*"))
+            {
+                xtraTabData.SelectedTabPage.Text = str.Remove(str.Length - 1); //luu data va bo dau *
+            }
+            else
+                return;
+        }
+        private void ThayDoiDuLieu(object sender, DataUCChangedEventArgs e)
+        {
+            string str = xtraTabData.SelectedTabPage.Text;
+            if (str.Contains("*")) return;
+               xtraTabData.SelectedTabPage.Text += "*";
+        }
+        private void xtraTabData_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Console.WriteLine("Press");
+            xtraTabData.SelectedTabPage.Text += "*";
+            
+        }
+
+        private void RibbonForm1_KeyDown(object sender, KeyEventArgs e)
+        {
+                
         }
 
         
-        
-        //</BUS>
-        #endregion
     }
+    
 }
