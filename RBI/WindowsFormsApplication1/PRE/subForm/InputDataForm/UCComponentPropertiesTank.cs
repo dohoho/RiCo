@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
+
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCComponentPropertiesTank : UserControl
@@ -16,6 +18,8 @@ namespace RBI.PRE.subForm.InputDataForm
         string[] itemsSeverity = { "None", "Low", "Medium", "High" };
         string[] itemsBrinnellHardness = { "Below 200", "Between 200 and 237", "Greater than 237" };
         string[] itemsComplexityProtrusion = { "Above average", "Average", "Below average" };
+        private int datachange = 0;
+        private int ctrlSpress = 0;
         public UCComponentPropertiesTank()
         {
             InitializeComponent();
@@ -156,6 +160,57 @@ namespace RBI.PRE.subForm.InputDataForm
         private void txtMinRequiredThickness_KeyPress(object sender, KeyPressEventArgs e)
         {
             keyPressEvent(txtMinRequiredThickness, e);
+        }
+        #endregion
+
+        #region Xu ly su kien data thay doi
+
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+
+        private void KeyPress1(KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        private void txtTankDiameter_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+        private void txtTankDiameter_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyPress1(e);
         }
         #endregion
     }

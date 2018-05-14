@@ -141,6 +141,8 @@
             this.cbExternalIsulation.Properties.SmallImages = this.imgColExIsulation;
             this.cbExternalIsulation.Size = new System.Drawing.Size(236, 20);
             this.cbExternalIsulation.TabIndex = 13;
+            this.cbExternalIsulation.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.cbExternalIsulation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // imgColExIsulation
             // 
@@ -167,6 +169,8 @@
             this.cbIsulationCondition.Properties.SmallImages = this.imgColCondi;
             this.cbIsulationCondition.Size = new System.Drawing.Size(236, 20);
             this.cbIsulationCondition.TabIndex = 14;
+            this.cbIsulationCondition.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.cbIsulationCondition.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // imgColCondi
             // 
@@ -226,6 +230,8 @@
             this.chkInsulationContainsChlorides.Size = new System.Drawing.Size(15, 14);
             this.chkInsulationContainsChlorides.TabIndex = 12;
             this.chkInsulationContainsChlorides.UseVisualStyleBackColor = true;
+            this.chkInsulationContainsChlorides.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkInsulationContainsChlorides.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // chkExternalIsulation
             // 
@@ -235,7 +241,8 @@
             this.chkExternalIsulation.Size = new System.Drawing.Size(15, 14);
             this.chkExternalIsulation.TabIndex = 11;
             this.chkExternalIsulation.UseVisualStyleBackColor = true;
-            this.chkExternalIsulation.CheckedChanged += new System.EventHandler(this.chkExternalIsulation_CheckedChanged);
+            this.chkExternalIsulation.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkExternalIsulation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // groupBox4
             // 
@@ -274,6 +281,8 @@
             this.cbInternalLinerType.Properties.SmallImages = this.imgColInternalType;
             this.cbInternalLinerType.Size = new System.Drawing.Size(237, 20);
             this.cbInternalLinerType.TabIndex = 9;
+            this.cbInternalLinerType.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.cbInternalLinerType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // imgColInternalType
             // 
@@ -312,6 +321,8 @@
             this.cbInternalLinerCondition.Properties.SmallImages = this.imgColInternalCondition;
             this.cbInternalLinerCondition.Size = new System.Drawing.Size(236, 20);
             this.cbInternalLinerCondition.TabIndex = 10;
+            this.cbInternalLinerCondition.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.cbInternalLinerCondition.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // imgColInternalCondition
             // 
@@ -350,7 +361,8 @@
             this.chkInternalLining.Size = new System.Drawing.Size(15, 14);
             this.chkInternalLining.TabIndex = 8;
             this.chkInternalLining.UseVisualStyleBackColor = true;
-            this.chkInternalLining.CheckedChanged += new System.EventHandler(this.chkInternalLining_CheckedChanged);
+            this.chkInternalLining.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkInternalLining.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // groupBox3
             // 
@@ -376,6 +388,8 @@
             this.txtCladdingCorrosionRate.Name = "txtCladdingCorrosionRate";
             this.txtCladdingCorrosionRate.Size = new System.Drawing.Size(100, 20);
             this.txtCladdingCorrosionRate.TabIndex = 7;
+            this.txtCladdingCorrosionRate.TextChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.txtCladdingCorrosionRate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             this.txtCladdingCorrosionRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCladdingCorrosionRate_KeyPress);
             // 
             // label8
@@ -416,6 +430,8 @@
             this.chkInternalCladding.Size = new System.Drawing.Size(15, 14);
             this.chkInternalCladding.TabIndex = 6;
             this.chkInternalCladding.UseVisualStyleBackColor = true;
+            this.chkInternalCladding.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkInternalCladding.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // groupBox2
             // 
@@ -454,6 +470,8 @@
             this.cbExternalCoatQuality.Properties.SmallImages = this.imgColExternal;
             this.cbExternalCoatQuality.Size = new System.Drawing.Size(220, 20);
             this.cbExternalCoatQuality.TabIndex = 4;
+            this.cbExternalCoatQuality.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.cbExternalCoatQuality.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // imgColExternal
             // 
@@ -474,6 +492,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateExternalCoating.Size = new System.Drawing.Size(220, 20);
             this.dateExternalCoating.TabIndex = 3;
+            this.dateExternalCoating.TabStopChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.dateExternalCoating.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // chkExternalCoat
             // 
@@ -483,7 +503,8 @@
             this.chkExternalCoat.Size = new System.Drawing.Size(15, 14);
             this.chkExternalCoat.TabIndex = 2;
             this.chkExternalCoat.UseVisualStyleBackColor = true;
-            this.chkExternalCoat.CheckedChanged += new System.EventHandler(this.chkExternalCoat_CheckedChanged);
+            this.chkExternalCoat.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkExternalCoat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // chkSupport
             // 
@@ -493,6 +514,8 @@
             this.chkSupport.Size = new System.Drawing.Size(15, 14);
             this.chkSupport.TabIndex = 5;
             this.chkSupport.UseVisualStyleBackColor = true;
+            this.chkSupport.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkSupport.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // chkInternalCoat
             // 
@@ -502,6 +525,8 @@
             this.chkInternalCoat.Size = new System.Drawing.Size(15, 14);
             this.chkInternalCoat.TabIndex = 1;
             this.chkInternalCoat.UseVisualStyleBackColor = true;
+            this.chkInternalCoat.CheckedChanged += new System.EventHandler(this.txtCladdingCorrosionRate_TextChanged);
+            this.chkInternalCoat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkInternalCoat_KeyDown);
             // 
             // label5
             // 

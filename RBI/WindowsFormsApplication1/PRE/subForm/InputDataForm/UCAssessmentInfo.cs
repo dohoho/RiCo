@@ -14,21 +14,21 @@ using RBI.Object;
 namespace RBI.PRE.subForm.InputDataForm
 {
     public delegate void DataUCChangedHanlder(object sender, DataUCChangedEventArgs e);
-    public delegate void CtrlSHandler(object sender, KeyPress e);
+    public delegate void CtrlSHandler(object sender, CtrlSPressEventArgs e);
     public partial class UCAssessmentInfo : UserControl
     {
         private int datachange;
         private int ctrlSpress;
         public event DataUCChangedHanlder DataChanged;
         public event CtrlSHandler CtrlS_Press;
-        public event InputLanguageChangedEventHandler ashd;
         public int CtrlSPress
         {
             get { return ctrlSpress; }
             set
             {
-                if (ctrlSpress == value) return;
-                OnCtrlS_Press(new KeyPress(ctrlSpress));
+                if (ctrlSpress == value) return; 
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
             }
         }
         public int DataChange
@@ -37,11 +37,12 @@ namespace RBI.PRE.subForm.InputDataForm
             set
             {
                 if (datachange == value) return;
+                datachange = value;
                 OnDataChanged(new DataUCChangedEventArgs(datachange));
             }
         }
 
-        protected virtual void OnCtrlS_Press(KeyPress e)
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
         {
             if (CtrlS_Press != null)
                 CtrlS_Press(this, e);
@@ -134,17 +135,13 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             DataChange++;
         }
-        private void KeyPress1(KeyEventArgs e)
+        
+        private void txtAssessmentName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)
             {
-                Console.WriteLine("Saved");
                 CtrlSPress++;
             }
-        }
-        private void txtAssessmentName_KeyDown(object sender, KeyEventArgs e)
-        {
-            KeyPress1(e);
         }
 
         private void txtRiskAnalysisPeriod_TextChanged(object sender, EventArgs e)

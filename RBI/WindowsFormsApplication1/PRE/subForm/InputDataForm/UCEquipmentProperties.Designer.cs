@@ -152,6 +152,8 @@
             this.cbOnlineMonitoring.Properties.SmallImages = this.imgColOnlineMonitoring;
             this.cbOnlineMonitoring.Size = new System.Drawing.Size(281, 20);
             this.cbOnlineMonitoring.TabIndex = 19;
+            this.cbOnlineMonitoring.SelectedIndexChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.cbOnlineMonitoring.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // imgColOnlineMonitoring
             // 
@@ -202,6 +204,8 @@
             this.cbThermalHistory.Properties.SmallImages = this.imgColThermalHistory;
             this.cbThermalHistory.Size = new System.Drawing.Size(281, 20);
             this.cbThermalHistory.TabIndex = 18;
+            this.cbThermalHistory.SelectedIndexChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.cbThermalHistory.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // imgColThermalHistory
             // 
@@ -220,6 +224,8 @@
             this.cbExternalEnvironment.Properties.SmallImages = this.imgColExternalRnvironment;
             this.cbExternalEnvironment.Size = new System.Drawing.Size(281, 20);
             this.cbExternalEnvironment.TabIndex = 17;
+            this.cbExternalEnvironment.SelectedIndexChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.cbExternalEnvironment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // imgColExternalRnvironment
             // 
@@ -253,6 +259,8 @@
             0,
             0,
             65536});
+            this.numSystemManagementFactor.ValueChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.numSystemManagementFactor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // txtEquipmentVolume
             // 
@@ -261,6 +269,8 @@
             this.txtEquipmentVolume.Name = "txtEquipmentVolume";
             this.txtEquipmentVolume.Size = new System.Drawing.Size(120, 22);
             this.txtEquipmentVolume.TabIndex = 21;
+            this.txtEquipmentVolume.TextChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.txtEquipmentVolume.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             this.txtEquipmentVolume.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEquipmentVolume_KeyPress);
             // 
             // txtMinRequiredTemperature
@@ -271,6 +281,7 @@
             this.txtMinRequiredTemperature.Size = new System.Drawing.Size(139, 21);
             this.txtMinRequiredTemperature.TabIndex = 11;
             this.txtMinRequiredTemperature.TextChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.txtMinRequiredTemperature.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             this.txtMinRequiredTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinRequiredTemperature_KeyPress);
             // 
             // chkPresenceSulphideOperation
@@ -281,6 +292,8 @@
             this.chkPresenceSulphideOperation.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceSulphideOperation.TabIndex = 14;
             this.chkPresenceSulphideOperation.UseVisualStyleBackColor = true;
+            this.chkPresenceSulphideOperation.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkPresenceSulphideOperation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkPresenceSulphideShutdown
             // 
@@ -290,6 +303,8 @@
             this.chkPresenceSulphideShutdown.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceSulphideShutdown.TabIndex = 16;
             this.chkPresenceSulphideShutdown.UseVisualStyleBackColor = true;
+            this.chkPresenceSulphideShutdown.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkPresenceSulphideShutdown.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkLinerOnlineMonitoring
             // 
@@ -299,6 +314,8 @@
             this.chkLinerOnlineMonitoring.Size = new System.Drawing.Size(15, 14);
             this.chkLinerOnlineMonitoring.TabIndex = 15;
             this.chkLinerOnlineMonitoring.UseVisualStyleBackColor = true;
+            this.chkLinerOnlineMonitoring.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkLinerOnlineMonitoring.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkMaterialExposedFluid
             // 
@@ -308,6 +325,8 @@
             this.chkMaterialExposedFluid.Size = new System.Drawing.Size(15, 14);
             this.chkMaterialExposedFluid.TabIndex = 13;
             this.chkMaterialExposedFluid.UseVisualStyleBackColor = true;
+            this.chkMaterialExposedFluid.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkMaterialExposedFluid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkEquipmentOperatingManyYear
             // 
@@ -317,6 +336,8 @@
             this.chkEquipmentOperatingManyYear.Size = new System.Drawing.Size(15, 14);
             this.chkEquipmentOperatingManyYear.TabIndex = 12;
             this.chkEquipmentOperatingManyYear.UseVisualStyleBackColor = true;
+            this.chkEquipmentOperatingManyYear.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkEquipmentOperatingManyYear.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkPressurisationControlled
             // 
@@ -326,6 +347,8 @@
             this.chkPressurisationControlled.Size = new System.Drawing.Size(15, 14);
             this.chkPressurisationControlled.TabIndex = 6;
             this.chkPressurisationControlled.UseVisualStyleBackColor = true;
+            this.chkPressurisationControlled.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkPressurisationControlled.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkInterfaceSoilWater
             // 
@@ -335,6 +358,8 @@
             this.chkInterfaceSoilWater.Size = new System.Drawing.Size(15, 14);
             this.chkInterfaceSoilWater.TabIndex = 5;
             this.chkInterfaceSoilWater.UseVisualStyleBackColor = true;
+            this.chkInterfaceSoilWater.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkInterfaceSoilWater.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkHeatTraced
             // 
@@ -344,6 +369,8 @@
             this.chkHeatTraced.Size = new System.Drawing.Size(15, 14);
             this.chkHeatTraced.TabIndex = 4;
             this.chkHeatTraced.UseVisualStyleBackColor = true;
+            this.chkHeatTraced.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkHeatTraced.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkDowntimeProtection
             // 
@@ -353,6 +380,8 @@
             this.chkDowntimeProtection.Size = new System.Drawing.Size(15, 14);
             this.chkDowntimeProtection.TabIndex = 3;
             this.chkDowntimeProtection.UseVisualStyleBackColor = true;
+            this.chkDowntimeProtection.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkDowntimeProtection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkHighlyEffectiveInspection
             // 
@@ -362,6 +391,8 @@
             this.chkHighlyEffectiveInspection.Size = new System.Drawing.Size(15, 14);
             this.chkHighlyEffectiveInspection.TabIndex = 2;
             this.chkHighlyEffectiveInspection.UseVisualStyleBackColor = true;
+            this.chkHighlyEffectiveInspection.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkHighlyEffectiveInspection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkPWHT
             // 
@@ -371,6 +402,8 @@
             this.chkPWHT.Size = new System.Drawing.Size(15, 14);
             this.chkPWHT.TabIndex = 10;
             this.chkPWHT.UseVisualStyleBackColor = true;
+            this.chkPWHT.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkPWHT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkSteamedOutPriorWaterFlushing
             // 
@@ -380,6 +413,8 @@
             this.chkSteamedOutPriorWaterFlushing.Size = new System.Drawing.Size(15, 14);
             this.chkSteamedOutPriorWaterFlushing.TabIndex = 9;
             this.chkSteamedOutPriorWaterFlushing.UseVisualStyleBackColor = true;
+            this.chkSteamedOutPriorWaterFlushing.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkSteamedOutPriorWaterFlushing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkCylicOperation
             // 
@@ -389,6 +424,8 @@
             this.chkCylicOperation.Size = new System.Drawing.Size(15, 14);
             this.chkCylicOperation.TabIndex = 8;
             this.chkCylicOperation.UseVisualStyleBackColor = true;
+            this.chkCylicOperation.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkCylicOperation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkContainsDeadlegs
             // 
@@ -398,6 +435,8 @@
             this.chkContainsDeadlegs.Size = new System.Drawing.Size(15, 14);
             this.chkContainsDeadlegs.TabIndex = 7;
             this.chkContainsDeadlegs.UseVisualStyleBackColor = true;
+            this.chkContainsDeadlegs.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkContainsDeadlegs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // chkAministrativeControl
             // 
@@ -407,6 +446,8 @@
             this.chkAministrativeControl.Size = new System.Drawing.Size(15, 14);
             this.chkAministrativeControl.TabIndex = 1;
             this.chkAministrativeControl.UseVisualStyleBackColor = true;
+            this.chkAministrativeControl.CheckedChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
+            this.chkAministrativeControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // label23
             // 

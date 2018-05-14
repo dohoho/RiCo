@@ -70,17 +70,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnEditMostVolatileFluid = new DevExpress.XtraEditors.ButtonEdit();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnEditPrimaryFuid = new DevExpress.XtraEditors.ButtonEdit();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtPrimaryFluid = new System.Windows.Forms.TextBox();
+            this.txtVolatileFluid = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbAmineSolutionComposition.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbExposureAmine.Properties)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnEditMostVolatileFluid.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnEditPrimaryFuid.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -155,6 +153,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbAmineSolutionComposition.Size = new System.Drawing.Size(437, 20);
             this.cbAmineSolutionComposition.TabIndex = 12;
+            this.cbAmineSolutionComposition.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.cbAmineSolutionComposition.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // cbExposureAmine
             // 
@@ -164,6 +164,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbExposureAmine.Size = new System.Drawing.Size(437, 20);
             this.cbExposureAmine.TabIndex = 11;
+            this.cbExposureAmine.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.cbExposureAmine.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkToxicConstituents
             // 
@@ -173,6 +175,8 @@
             this.chkToxicConstituents.Size = new System.Drawing.Size(15, 14);
             this.chkToxicConstituents.TabIndex = 10;
             this.chkToxicConstituents.UseVisualStyleBackColor = true;
+            this.chkToxicConstituents.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkToxicConstituents.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkProcessContainsHydrogen
             // 
@@ -182,6 +186,8 @@
             this.chkProcessContainsHydrogen.Size = new System.Drawing.Size(15, 14);
             this.chkProcessContainsHydrogen.TabIndex = 20;
             this.chkProcessContainsHydrogen.UseVisualStyleBackColor = true;
+            this.chkProcessContainsHydrogen.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkProcessContainsHydrogen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkExposedSulphurBearing
             // 
@@ -191,6 +197,8 @@
             this.chkExposedSulphurBearing.Size = new System.Drawing.Size(15, 14);
             this.chkExposedSulphurBearing.TabIndex = 21;
             this.chkExposedSulphurBearing.UseVisualStyleBackColor = true;
+            this.chkExposedSulphurBearing.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkExposedSulphurBearing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkPresenceHydrofluoricAcid
             // 
@@ -200,6 +208,8 @@
             this.chkPresenceHydrofluoricAcid.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceHydrofluoricAcid.TabIndex = 19;
             this.chkPresenceHydrofluoricAcid.UseVisualStyleBackColor = true;
+            this.chkPresenceHydrofluoricAcid.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkPresenceHydrofluoricAcid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkChlorine
             // 
@@ -209,6 +219,8 @@
             this.chkChlorine.Size = new System.Drawing.Size(15, 14);
             this.chkChlorine.TabIndex = 17;
             this.chkChlorine.UseVisualStyleBackColor = true;
+            this.chkChlorine.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkChlorine.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkEnvironmentContainsCaustic
             // 
@@ -218,6 +230,8 @@
             this.chkEnvironmentContainsCaustic.Size = new System.Drawing.Size(15, 14);
             this.chkEnvironmentContainsCaustic.TabIndex = 16;
             this.chkEnvironmentContainsCaustic.UseVisualStyleBackColor = true;
+            this.chkEnvironmentContainsCaustic.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkEnvironmentContainsCaustic.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkPresenceCyanides
             // 
@@ -227,6 +241,8 @@
             this.chkPresenceCyanides.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceCyanides.TabIndex = 15;
             this.chkPresenceCyanides.UseVisualStyleBackColor = true;
+            this.chkPresenceCyanides.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkPresenceCyanides.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkEnviromentContainsH2S
             // 
@@ -236,6 +252,8 @@
             this.chkEnviromentContainsH2S.Size = new System.Drawing.Size(15, 14);
             this.chkEnviromentContainsH2S.TabIndex = 14;
             this.chkEnviromentContainsH2S.UseVisualStyleBackColor = true;
+            this.chkEnviromentContainsH2S.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkEnviromentContainsH2S.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkAqueousPhaseShutdown
             // 
@@ -245,6 +263,8 @@
             this.chkAqueousPhaseShutdown.Size = new System.Drawing.Size(15, 14);
             this.chkAqueousPhaseShutdown.TabIndex = 18;
             this.chkAqueousPhaseShutdown.UseVisualStyleBackColor = true;
+            this.chkAqueousPhaseShutdown.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkAqueousPhaseShutdown.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkAqueousPhaseDuringOperation
             // 
@@ -254,6 +274,8 @@
             this.chkAqueousPhaseDuringOperation.Size = new System.Drawing.Size(15, 14);
             this.chkAqueousPhaseDuringOperation.TabIndex = 13;
             this.chkAqueousPhaseDuringOperation.UseVisualStyleBackColor = true;
+            this.chkAqueousPhaseDuringOperation.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkAqueousPhaseDuringOperation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // chkExposedAcidGas
             // 
@@ -263,6 +285,8 @@
             this.chkExposedAcidGas.Size = new System.Drawing.Size(15, 14);
             this.chkExposedAcidGas.TabIndex = 9;
             this.chkExposedAcidGas.UseVisualStyleBackColor = true;
+            this.chkExposedAcidGas.CheckedChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.chkExposedAcidGas.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // label13
             // 
@@ -283,6 +307,7 @@
             this.txtpHWater.Size = new System.Drawing.Size(170, 21);
             this.txtpHWater.TabIndex = 8;
             this.txtpHWater.TextChanged += new System.EventHandler(this.txtpHWater_TextChanged);
+            this.txtpHWater.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtpHWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtpHWater_KeyPress);
             // 
             // label12
@@ -402,6 +427,8 @@
             this.txtCO3ConcentrationWater.Name = "txtCO3ConcentrationWater";
             this.txtCO3ConcentrationWater.Size = new System.Drawing.Size(170, 21);
             this.txtCO3ConcentrationWater.TabIndex = 7;
+            this.txtCO3ConcentrationWater.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.txtCO3ConcentrationWater.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtCO3ConcentrationWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCO3ConcentrationWater_KeyPress);
             // 
             // label14
@@ -445,6 +472,7 @@
             this.txtReleaseFluidPercent.Size = new System.Drawing.Size(170, 21);
             this.txtReleaseFluidPercent.TabIndex = 6;
             this.txtReleaseFluidPercent.TextChanged += new System.EventHandler(this.txtReleaseFluidPercent_TextChanged);
+            this.txtReleaseFluidPercent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtReleaseFluidPercent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtReleaseFluidPercent_KeyPress);
             // 
             // label
@@ -464,6 +492,8 @@
             this.txtH2SContentInWater.Name = "txtH2SContentInWater";
             this.txtH2SContentInWater.Size = new System.Drawing.Size(170, 21);
             this.txtH2SContentInWater.TabIndex = 5;
+            this.txtH2SContentInWater.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.txtH2SContentInWater.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtH2SContentInWater.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtH2SContentInWater_KeyPress);
             // 
             // label7
@@ -483,6 +513,8 @@
             this.txtChlorideIon.Name = "txtChlorideIon";
             this.txtChlorideIon.Size = new System.Drawing.Size(170, 21);
             this.txtChlorideIon.TabIndex = 4;
+            this.txtChlorideIon.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.txtChlorideIon.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtChlorideIon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtChlorideIon_KeyPress);
             // 
             // label6
@@ -503,6 +535,7 @@
             this.txtNaOHConcentration.Size = new System.Drawing.Size(170, 21);
             this.txtNaOHConcentration.TabIndex = 3;
             this.txtNaOHConcentration.TextChanged += new System.EventHandler(this.txtNaOHConcentration_TextChanged);
+            this.txtNaOHConcentration.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             this.txtNaOHConcentration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNaOHConcentration_KeyPress);
             // 
             // label5
@@ -538,9 +571,9 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.btnEditMostVolatileFluid);
+            this.groupBox2.Controls.Add(this.txtVolatileFluid);
+            this.groupBox2.Controls.Add(this.txtPrimaryFluid);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.btnEditPrimaryFuid);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(6, 19);
@@ -549,17 +582,6 @@
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Fluid";
-            // 
-            // btnEditMostVolatileFluid
-            // 
-            this.btnEditMostVolatileFluid.Location = new System.Drawing.Point(311, 46);
-            this.btnEditMostVolatileFluid.Name = "btnEditMostVolatileFluid";
-            this.btnEditMostVolatileFluid.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
-            this.btnEditMostVolatileFluid.Size = new System.Drawing.Size(363, 20);
-            this.btnEditMostVolatileFluid.TabIndex = 2;
             // 
             // label2
             // 
@@ -571,17 +593,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Most Volatile Fluid";
             // 
-            // btnEditPrimaryFuid
-            // 
-            this.btnEditPrimaryFuid.Location = new System.Drawing.Point(311, 11);
-            this.btnEditPrimaryFuid.Name = "btnEditPrimaryFuid";
-            this.btnEditPrimaryFuid.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
-            this.btnEditPrimaryFuid.Size = new System.Drawing.Size(363, 20);
-            this.btnEditPrimaryFuid.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -591,6 +602,23 @@
             this.label1.Size = new System.Drawing.Size(79, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Primary Fluid";
+            // 
+            // txtPrimaryFluid
+            // 
+            this.txtPrimaryFluid.Location = new System.Drawing.Point(311, 15);
+            this.txtPrimaryFluid.Name = "txtPrimaryFluid";
+            this.txtPrimaryFluid.Size = new System.Drawing.Size(389, 22);
+            this.txtPrimaryFluid.TabIndex = 1;
+            this.txtPrimaryFluid.TextChanged += new System.EventHandler(this.txtPrimaryFluid_TextChanged);
+            this.txtPrimaryFluid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
+            // 
+            // txtVolatileFluid
+            // 
+            this.txtVolatileFluid.Location = new System.Drawing.Point(309, 47);
+            this.txtVolatileFluid.Name = "txtVolatileFluid";
+            this.txtVolatileFluid.Size = new System.Drawing.Size(389, 22);
+            this.txtVolatileFluid.TabIndex = 1;
+            this.txtVolatileFluid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrimaryFluid_KeyDown);
             // 
             // UCStream
             // 
@@ -606,8 +634,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cbExposureAmine.Properties)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnEditMostVolatileFluid.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnEditPrimaryFuid.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -656,9 +682,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox chkToxicConstituents;
         private System.Windows.Forms.Label label11;
-        private DevExpress.XtraEditors.ButtonEdit btnEditMostVolatileFluid;
-        private DevExpress.XtraEditors.ButtonEdit btnEditPrimaryFuid;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbAmineSolutionComposition;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbExposureAmine;
+        private System.Windows.Forms.TextBox txtVolatileFluid;
+        private System.Windows.Forms.TextBox txtPrimaryFluid;
     }
 }

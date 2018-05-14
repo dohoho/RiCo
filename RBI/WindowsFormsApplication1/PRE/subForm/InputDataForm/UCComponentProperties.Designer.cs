@@ -189,6 +189,8 @@
             this.cbPreviousFailures.Properties.SmallImages = this.imgColPreFail;
             this.cbPreviousFailures.Size = new System.Drawing.Size(368, 20);
             this.cbPreviousFailures.TabIndex = 19;
+            this.cbPreviousFailures.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbPreviousFailures.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColPreFail
             // 
@@ -206,6 +208,8 @@
             this.cbJointTypeBranch.Properties.SmallImages = this.imgColJoinType;
             this.cbJointTypeBranch.Size = new System.Drawing.Size(368, 20);
             this.cbJointTypeBranch.TabIndex = 16;
+            this.cbJointTypeBranch.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbJointTypeBranch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColJoinType
             // 
@@ -225,6 +229,8 @@
             this.cbCyclicLoading.Properties.SmallImages = this.imgColCyclicLoad;
             this.cbCyclicLoading.Size = new System.Drawing.Size(368, 20);
             this.cbCyclicLoading.TabIndex = 14;
+            this.cbCyclicLoading.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbCyclicLoading.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColCyclicLoad
             // 
@@ -243,6 +249,8 @@
             this.cbMaxBrillnessHardness.Properties.SmallImages = this.imgColMaxBrinHard;
             this.cbMaxBrillnessHardness.Size = new System.Drawing.Size(368, 20);
             this.cbMaxBrillnessHardness.TabIndex = 12;
+            this.cbMaxBrillnessHardness.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbMaxBrillnessHardness.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColMaxBrinHard
             // 
@@ -260,6 +268,8 @@
             this.cbPipeCondition.Properties.SmallImages = this.imgColPipeCondi;
             this.cbPipeCondition.Size = new System.Drawing.Size(368, 20);
             this.cbPipeCondition.TabIndex = 18;
+            this.cbPipeCondition.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbPipeCondition.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColPipeCondi
             // 
@@ -277,6 +287,8 @@
             this.cbNumberFittingPipe.Properties.SmallImages = this.imgColFitting;
             this.cbNumberFittingPipe.Size = new System.Drawing.Size(368, 20);
             this.cbNumberFittingPipe.TabIndex = 17;
+            this.cbNumberFittingPipe.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbNumberFittingPipe.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColFitting
             // 
@@ -294,6 +306,8 @@
             this.cbBranchDiameter.Properties.SmallImages = this.imgColBranchDiameter;
             this.cbBranchDiameter.Size = new System.Drawing.Size(368, 20);
             this.cbBranchDiameter.TabIndex = 15;
+            this.cbBranchDiameter.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbBranchDiameter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColBranchDiameter
             // 
@@ -310,6 +324,8 @@
             this.cbComplexityProtrusion.Properties.SmallImages = this.imgColComplexity;
             this.cbComplexityProtrusion.Size = new System.Drawing.Size(368, 20);
             this.cbComplexityProtrusion.TabIndex = 13;
+            this.cbComplexityProtrusion.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbComplexityProtrusion.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColComplexity
             // 
@@ -327,6 +343,8 @@
             this.cbAmountShakingPipe.Properties.SmallImages = this.imgColAmount;
             this.cbAmountShakingPipe.Size = new System.Drawing.Size(368, 20);
             this.cbAmountShakingPipe.TabIndex = 21;
+            this.cbAmountShakingPipe.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbAmountShakingPipe.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColAmount
             // 
@@ -344,6 +362,8 @@
             this.cbCorrectiveAction.Properties.SmallImages = this.imColCorrAct;
             this.cbCorrectiveAction.Size = new System.Drawing.Size(368, 20);
             this.cbCorrectiveAction.TabIndex = 23;
+            this.cbCorrectiveAction.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbCorrectiveAction.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imColCorrAct
             // 
@@ -361,6 +381,8 @@
             this.cbAccumalatedTimeShakingPipe.Properties.SmallImages = this.imgColAccu;
             this.cbAccumalatedTimeShakingPipe.Size = new System.Drawing.Size(368, 20);
             this.cbAccumalatedTimeShakingPipe.TabIndex = 22;
+            this.cbAccumalatedTimeShakingPipe.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.cbAccumalatedTimeShakingPipe.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // imgColAccu
             // 
@@ -377,6 +399,8 @@
             this.chkVisibleAudible.Size = new System.Drawing.Size(15, 14);
             this.chkVisibleAudible.TabIndex = 20;
             this.chkVisibleAudible.UseVisualStyleBackColor = true;
+            this.chkVisibleAudible.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkVisibleAudible.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // chkHighlyEffectiveMixPoint
             // 
@@ -386,6 +410,8 @@
             this.chkHighlyEffectiveMixPoint.Size = new System.Drawing.Size(15, 14);
             this.chkHighlyEffectiveMixPoint.TabIndex = 9;
             this.chkHighlyEffectiveMixPoint.UseVisualStyleBackColor = true;
+            this.chkHighlyEffectiveMixPoint.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkHighlyEffectiveMixPoint.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // chkPresenceInjectionMixPoint
             // 
@@ -395,6 +421,8 @@
             this.chkPresenceInjectionMixPoint.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceInjectionMixPoint.TabIndex = 8;
             this.chkPresenceInjectionMixPoint.UseVisualStyleBackColor = true;
+            this.chkPresenceInjectionMixPoint.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkPresenceInjectionMixPoint.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // chkTrampElements
             // 
@@ -404,6 +432,8 @@
             this.chkTrampElements.Size = new System.Drawing.Size(15, 14);
             this.chkTrampElements.TabIndex = 11;
             this.chkTrampElements.UseVisualStyleBackColor = true;
+            this.chkTrampElements.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkTrampElements.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // label25
             // 
@@ -434,6 +464,8 @@
             this.chkPresenceCracks.Size = new System.Drawing.Size(15, 14);
             this.chkPresenceCracks.TabIndex = 10;
             this.chkPresenceCracks.UseVisualStyleBackColor = true;
+            this.chkPresenceCracks.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkPresenceCracks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // label27
             // 
@@ -474,6 +506,8 @@
             this.chkDamageFoundDuringInspection.Size = new System.Drawing.Size(15, 14);
             this.chkDamageFoundDuringInspection.TabIndex = 7;
             this.chkDamageFoundDuringInspection.UseVisualStyleBackColor = true;
+            this.chkDamageFoundDuringInspection.CheckedChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.chkDamageFoundDuringInspection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             // 
             // label23
             // 
@@ -492,6 +526,8 @@
             this.txtCurrentCorrosionRate.Name = "txtCurrentCorrosionRate";
             this.txtCurrentCorrosionRate.Size = new System.Drawing.Size(125, 21);
             this.txtCurrentCorrosionRate.TabIndex = 3;
+            this.txtCurrentCorrosionRate.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtCurrentCorrosionRate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtCurrentCorrosionRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentCorrosionRate_KeyPress);
             // 
             // label22
@@ -511,6 +547,8 @@
             this.txtCurrentThickness.Name = "txtCurrentThickness";
             this.txtCurrentThickness.Size = new System.Drawing.Size(125, 21);
             this.txtCurrentThickness.TabIndex = 2;
+            this.txtCurrentThickness.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtCurrentThickness.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtCurrentThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCurrentThickness_KeyPress);
             // 
             // label21
@@ -530,6 +568,8 @@
             this.txtMinRequiredThickness.Name = "txtMinRequiredThickness";
             this.txtMinRequiredThickness.Size = new System.Drawing.Size(125, 21);
             this.txtMinRequiredThickness.TabIndex = 5;
+            this.txtMinRequiredThickness.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtMinRequiredThickness.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtMinRequiredThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinRequiredThickness_KeyPress);
             // 
             // label20
@@ -549,6 +589,8 @@
             this.txtDeltaFATT.Name = "txtDeltaFATT";
             this.txtDeltaFATT.Size = new System.Drawing.Size(125, 21);
             this.txtDeltaFATT.TabIndex = 6;
+            this.txtDeltaFATT.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtDeltaFATT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtDeltaFATT.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDeltaFATT_KeyPress);
             // 
             // label19
@@ -569,6 +611,8 @@
             this.txtNominalThickness.Name = "txtNominalThickness";
             this.txtNominalThickness.Size = new System.Drawing.Size(125, 21);
             this.txtNominalThickness.TabIndex = 4;
+            this.txtNominalThickness.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtNominalThickness.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtNominalThickness.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNominalThickness_KeyPress);
             // 
             // label18
@@ -588,6 +632,8 @@
             this.txtNominalDiameter.Name = "txtNominalDiameter";
             this.txtNominalDiameter.Size = new System.Drawing.Size(125, 21);
             this.txtNominalDiameter.TabIndex = 1;
+            this.txtNominalDiameter.TextChanged += new System.EventHandler(this.txtNominalDiameter_TextChanged);
+            this.txtNominalDiameter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNominalDiameter_KeyDown);
             this.txtNominalDiameter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNominalDiameter_KeyPress);
             // 
             // label17

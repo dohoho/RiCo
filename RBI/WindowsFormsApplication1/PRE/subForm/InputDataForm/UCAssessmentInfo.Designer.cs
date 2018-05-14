@@ -448,6 +448,8 @@
             this.dateAssessmentDate.Size = new System.Drawing.Size(240, 20);
             this.dateAssessmentDate.TabIndex = 2;
             this.dateAssessmentDate.EditValueChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
+            this.dateAssessmentDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
+            this.dateAssessmentDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
             // 
             // txtRiskAnalysisPeriod
             // 
@@ -458,6 +460,7 @@
             this.txtRiskAnalysisPeriod.TabIndex = 3;
             this.txtRiskAnalysisPeriod.Text = "36";
             this.txtRiskAnalysisPeriod.TextChanged += new System.EventHandler(this.txtRiskAnalysisPeriod_TextChanged);
+            this.txtRiskAnalysisPeriod.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
             this.txtRiskAnalysisPeriod.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
             // 
             // txtAssessmentName
@@ -469,6 +472,7 @@
             this.txtAssessmentName.TabIndex = 1;
             this.txtAssessmentName.TextChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
             this.txtAssessmentName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
+            this.txtAssessmentName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
             // 
             // label5
             // 

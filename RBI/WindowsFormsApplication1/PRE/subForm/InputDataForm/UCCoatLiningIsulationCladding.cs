@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCCoatLiningIsulationCladding : UserControl
@@ -177,17 +178,88 @@ namespace RBI.PRE.subForm.InputDataForm
             }
         }
 
+        
+
+
+        #region Xu ly su kien Data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        #endregion
+        private void KeyPress1(KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
         private void txtCladdingCorrosionRate_KeyPress(object sender, KeyPressEventArgs e)
         {
             string a = txtCladdingCorrosionRate.Text;
-            if(!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
             {
-                e.Handled = true;   
+                e.Handled = true;
             }
             if (a.Contains(".") && e.KeyChar == '.')
             {
                 e.Handled = true;
             }
         }
+        private void txtCladdingCorrosionRate_TextChanged(object sender, EventArgs e)
+        {
+            DataChange += 1;
+            if(sender is CheckBox)
+            {
+                CheckBox chk = sender as CheckBox;
+                cbExternalCoatQuality.Enabled = dateExternalCoating.Enabled = (chk.Name == "chkExternalCoat" && chk.Checked) ? true : false;
+                cbInternalLinerType.Enabled = cbInternalLinerCondition.Enabled = (chk.Name == "chkInternalLining" && chk.Checked) ? true : false;
+            }
+            if(sender is TextBox)
+            {
+                TextBox txt = sender as TextBox;
+                double a = double.Parse(txt.Text);
+                if (a < float.MinValue || a > float.MaxValue)
+                    MessageBox.Show("Invalid value", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void chkInternalCoat_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyPress1(e);
+        }
+
+       
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCMaterial : UserControl
@@ -26,7 +27,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             InitializeComponent();
             cbHTHAMaterial.Enabled = false;
-            cbPTAMaterial.Enabled = false;
+            txtMaterial.Enabled = false;
             addSulfurContent();
             addMaterialGradeHTHA();
             addHeatTreatment();
@@ -36,7 +37,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             InitializeComponent();
             cbHTHAMaterial.Enabled = false;
-            cbPTAMaterial.Enabled = false;
+            txtMaterial.Enabled = false;
             addSulfurContent();
             addMaterialGradeHTHA();
             addHeatTreatment();
@@ -47,7 +48,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             RW_MATERIAL_BUS BUS = new RW_MATERIAL_BUS();
             RW_MATERIAL obj = BUS.getData(id);
-            cbPTAMaterial.Text = obj.MaterialName;
+            txtMaterial.Text = obj.MaterialName;
             txtDesignPressure.Text = obj.DesignPressure.ToString();
             txtMaxDesignTemperature.Text = obj.DesignTemperature.ToString();
             txtMinDesignTemperature.Text = obj.MinDesignTemperature.ToString();
@@ -103,7 +104,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             RW_MATERIAL ma = new RW_MATERIAL();
             ma.ID = ID;
-            ma.MaterialName = cbPTAMaterial.Text;
+            ma.MaterialName = txtMaterial.Text;
             ma.DesignPressure = txtDesignPressure.Text != "" ? float.Parse(txtDesignPressure.Text) : 0;
             ma.DesignTemperature = txtMaxDesignTemperature.Text != "" ? float.Parse(txtMaxDesignTemperature.Text) : 0;
             ma.MinDesignTemperature = txtMinDesignTemperature.Text != "" ? float.Parse(txtMinDesignTemperature.Text) : 0;
@@ -167,12 +168,12 @@ namespace RBI.PRE.subForm.InputDataForm
         }
         private void chkIsHTHASeverity_CheckedChanged(object sender, EventArgs e)
         {
-            cbHTHAMaterial.Enabled = chkIsHTHASeverity.Checked ? true : false;
+
         }
 
         private void chkIsPTASeverity_CheckedChanged(object sender, EventArgs e)
         {
-            cbPTAMaterialGrade.Enabled = chkIsPTASeverity.Checked ? true : false;
+
         }
         #endregion
 
@@ -248,5 +249,61 @@ namespace RBI.PRE.subForm.InputDataForm
             keyPressEvent(txtMaterialCostFactor, e, false);
         }
         #endregion
+
+        #region Xu ly su kien khi data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+
+        private void txtMaterial_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+            if(sender is CheckBox)
+            {
+                CheckBox chk = sender as CheckBox;
+                cbHTHAMaterial.Enabled = (chk.Name == "chkIsHTHASeverity" && chk.Checked) ? true : false;
+                cbPTAMaterialGrade.Enabled = (chk.Name == "chkIsPTASeverity" && chk.Checked) ? true : false;
+            }
+        }
+
+        private void txtMaterial_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        #endregion
+
+        
     }
 }

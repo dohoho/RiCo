@@ -295,7 +295,7 @@
     <Compile Include="Object\Component.cs" />
     <Compile Include="Object\DataUCChangedEventArgs.cs" />
     <Compile Include="Object\InputInspectionCalculation.cs" />
-    <Compile Include="Object\KeyPress.cs" />
+    <Compile Include="Object\CtrlSPressEventArgs.cs" />
     <Compile Include="Object\ObjectMSSQL\API_COMPONENT_TYPE.cs" />
     <Compile Include="Object\ObjectMSSQL\COMPONENT_DETAIL.cs" />
     <Compile Include="Object\ObjectMSSQL\COMPONENT_MASTER.cs" />

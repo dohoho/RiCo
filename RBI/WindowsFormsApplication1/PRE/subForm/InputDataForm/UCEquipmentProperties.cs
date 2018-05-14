@@ -9,49 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCEquipmentProperties : UserControl
     {
-        string[] itemsOnlineMonitoring = {  "Amine high velocity corrosion - Corrosion coupons",
-                                            "Amine high velocity corrosion - Electrical resistance probes",
-                                            "Amine high velocity corrosion - Key process variable",
-                                            "Amine low velocity corrosion - Corrosion coupons",
-                                            "Amine low velocity corrosion - Electrical resistance probes",
-                                            "Amine low velocity corrosion - Key process variable",
-                                            "HCI corrosion - Corrosion coupons",
-                                            "HCI corrosion - Electrical resistance probes",
-                                            "HCI corrosion - Key process variable",
-                                            "HCI corrosion - Key process variable & Electrical resistance probes",
-                                            "HF corrosion - Corrosion coupons",
-                                            "HF corrosion - Electrical resistance probes",
-                                            "HF corrosion - Key process variable",
-                                            "High temperature H2S/H2 corrosion - Corrosion coupons",
-                                            "High temperature H2S/H2 corrosion - Electrical resistance probes",
-                                            "High temperature H2S/H2 corrosion - Key process parameters",
-                                            "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons",
-                                            "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes",
-                                            "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable",
-                                            "No online monitoring",
-                                            "Other corrosion - Corrosion coupons",
-                                            "Other corrosion - Electrical resistance probes",
-                                            "Other corrosion - Key process variable",
-                                            "Sour water high velocity corrosion - Corrosion coupons",
-                                            "Sour water high velocity corrosion - Electrical resistance probes",
-                                            "Sour water high velocity corrosion - Key process variable",
-                                            "Sour water low velocity corrosion - Corrosion coupons",
-                                            "Sour water low velocity corrosion - Electrical resistance probes",
-                                            "Sour water low velocity corrosion - Key process variable",
-                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons",
-                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes",
-                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters",
-                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes",
-                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons",
-                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes",
-                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters"
-                                            };
-        string[] itemsExternalEnvironment = { "Arid/dry", "Marine", "Severe", "Temperate"};
-        string[] itemsThermalHistory = { "None", "Solution Annealed", "Stabilised After Welding", "Stabilised Before Welding" };
+        
         public UCEquipmentProperties()
         {
             InitializeComponent();
@@ -67,6 +30,8 @@ namespace RBI.PRE.subForm.InputDataForm
             addItemsThermalHistory();
             ShowDatatoControl(ID);
         }
+
+        #region Process Data
         public void ShowDatatoControl(int ID)
         {
             RW_EQUIPMENT_BUS eqBus = new RW_EQUIPMENT_BUS();
@@ -146,20 +111,69 @@ namespace RBI.PRE.subForm.InputDataForm
             //eq.CommissionDate = 
             return eq;
         }
-        
+        #endregion
+
+        #region Xu ly su kien
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                if (datachange == value) return;
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
         private void txtMinRequiredTemperature_TextChanged(object sender, EventArgs e)
         {
-            
+            DataChange += 1;
         }
-
+        
+        private void chkAministrativeControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
         private void txtMinRequiredTemperature_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //string a = txtMinRequiredTemperature.Text;
+            //if(!char.IsDigit(e.KeyChar)&&!char.IsControl(e.KeyChar))
+            //{
+            //    e.Handled = true;
+            //}
+            //if(a.Contains("-") && e.KeyChar == '-')
+            //{
+            //    e.Handled = true;
+            //}
             string a = txtMinRequiredTemperature.Text;
-            if(!Char.IsDigit(e.KeyChar)&&!Char.IsControl(e.KeyChar) && e.KeyChar == '-')
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
             {
                 e.Handled = true;
             }
-            if(a.Contains("-") && e.KeyChar == '-')
+            if ((a.StartsWith("-") && e.KeyChar == '-') || (a.Contains(".") && e.KeyChar == '.'))
             {
                 e.Handled = true;
             }
@@ -177,6 +191,9 @@ namespace RBI.PRE.subForm.InputDataForm
                 e.Handled = true;
             }
         }
+        #endregion
+
+        #region Add data to combobox
         private void addItemsOnlineMonitoring()
         {
             cbOnlineMonitoring.Properties.Items.Add("", -1, -1);
@@ -201,5 +218,52 @@ namespace RBI.PRE.subForm.InputDataForm
                 cbThermalHistory.Properties.Items.Add(itemsThermalHistory[i], i, i);
             }
         }
+        #endregion
+
+        #region variable
+        string[] itemsOnlineMonitoring = {  "Amine high velocity corrosion - Corrosion coupons",
+                                            "Amine high velocity corrosion - Electrical resistance probes",
+                                            "Amine high velocity corrosion - Key process variable",
+                                            "Amine low velocity corrosion - Corrosion coupons",
+                                            "Amine low velocity corrosion - Electrical resistance probes",
+                                            "Amine low velocity corrosion - Key process variable",
+                                            "HCI corrosion - Corrosion coupons",
+                                            "HCI corrosion - Electrical resistance probes",
+                                            "HCI corrosion - Key process variable",
+                                            "HCI corrosion - Key process variable & Electrical resistance probes",
+                                            "HF corrosion - Corrosion coupons",
+                                            "HF corrosion - Electrical resistance probes",
+                                            "HF corrosion - Key process variable",
+                                            "High temperature H2S/H2 corrosion - Corrosion coupons",
+                                            "High temperature H2S/H2 corrosion - Electrical resistance probes",
+                                            "High temperature H2S/H2 corrosion - Key process parameters",
+                                            "High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons",
+                                            "High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes",
+                                            "High temperature Sulfidic / Naphthenic acid corrosion - Key process variable",
+                                            "No online monitoring",
+                                            "Other corrosion - Corrosion coupons",
+                                            "Other corrosion - Electrical resistance probes",
+                                            "Other corrosion - Key process variable",
+                                            "Sour water high velocity corrosion - Corrosion coupons",
+                                            "Sour water high velocity corrosion - Electrical resistance probes",
+                                            "Sour water high velocity corrosion - Key process variable",
+                                            "Sour water low velocity corrosion - Corrosion coupons",
+                                            "Sour water low velocity corrosion - Electrical resistance probes",
+                                            "Sour water low velocity corrosion - Key process variable",
+                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons",
+                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes",
+                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters",
+                                            "Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes",
+                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons",
+                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes",
+                                            "Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters"
+                                            };
+        string[] itemsExternalEnvironment = { "Arid/dry", "Marine", "Severe", "Temperate" };
+        string[] itemsThermalHistory = { "None", "Solution Annealed", "Stabilised After Welding", "Stabilised Before Welding" };
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        #endregion
+
+        
     }
 }

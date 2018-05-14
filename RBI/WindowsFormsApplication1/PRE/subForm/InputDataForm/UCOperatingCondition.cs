@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
+
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCOperatingCondition : UserControl
@@ -91,6 +93,7 @@ namespace RBI.PRE.subForm.InputDataForm
         #region KeyPress Event Handle
         private void keyPressEvent(TextBox textbox, KeyPressEventArgs ev, bool percent)
         {
+            
             string a = textbox.Text;
             if (percent)
             {
@@ -199,6 +202,7 @@ namespace RBI.PRE.subForm.InputDataForm
         }
         private void checkOver100(TextBox txt)
         {
+            DataChange++;
             if(txt.Text != "")
             {
                 try
@@ -267,5 +271,55 @@ namespace RBI.PRE.subForm.InputDataForm
             checkOver100(txtOp176);
         }
         #endregion
+
+
+        #region Xu ly su kien khi data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        private void txtMaximumOperatingTemp_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+        private void txtMaximumOperatingTemp_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        #endregion
+
+        
+        
     }
 }

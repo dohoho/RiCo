@@ -28,13 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbPTAMaterialGrade = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.cbHTHAMaterial = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.cbHeatTreatment = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.cbSulfurContent = new DevExpress.XtraEditors.ImageComboBoxEdit();
-            this.cbPTAMaterial = new DevExpress.XtraEditors.ButtonEdit();
             this.chkNickelAlloy = new System.Windows.Forms.CheckBox();
             this.chkAusteniticSteel = new System.Windows.Forms.CheckBox();
             this.chkIsPTASeverity = new System.Windows.Forms.CheckBox();
@@ -79,21 +77,21 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtMaterial = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbPTAMaterialGrade.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHTHAMaterial.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHeatTreatment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbSulfurContent.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbPTAMaterial.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtMaterial);
             this.groupBox1.Controls.Add(this.cbPTAMaterialGrade);
             this.groupBox1.Controls.Add(this.cbHTHAMaterial);
             this.groupBox1.Controls.Add(this.cbHeatTreatment);
             this.groupBox1.Controls.Add(this.cbSulfurContent);
-            this.groupBox1.Controls.Add(this.cbPTAMaterial);
             this.groupBox1.Controls.Add(this.chkNickelAlloy);
             this.groupBox1.Controls.Add(this.chkAusteniticSteel);
             this.groupBox1.Controls.Add(this.chkIsPTASeverity);
@@ -146,6 +144,7 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Material";
+            this.groupBox1.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
             // 
             // cbPTAMaterialGrade
             // 
@@ -156,6 +155,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbPTAMaterialGrade.Size = new System.Drawing.Size(368, 20);
             this.cbPTAMaterialGrade.TabIndex = 20;
+            this.cbPTAMaterialGrade.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.cbPTAMaterialGrade.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // cbHTHAMaterial
             // 
@@ -165,6 +166,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbHTHAMaterial.Size = new System.Drawing.Size(368, 20);
             this.cbHTHAMaterial.TabIndex = 18;
+            this.cbHTHAMaterial.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.cbHTHAMaterial.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // cbHeatTreatment
             // 
@@ -174,6 +177,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbHeatTreatment.Size = new System.Drawing.Size(368, 20);
             this.cbHeatTreatment.TabIndex = 16;
+            this.cbHeatTreatment.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.cbHeatTreatment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // cbSulfurContent
             // 
@@ -183,19 +188,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbSulfurContent.Size = new System.Drawing.Size(368, 20);
             this.cbSulfurContent.TabIndex = 15;
-            // 
-            // cbPTAMaterial
-            // 
-            this.cbPTAMaterial.Location = new System.Drawing.Point(172, 27);
-            this.cbPTAMaterial.Name = "cbPTAMaterial";
-            editorButtonImageOptions1.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.True;
-            editorButtonImageOptions1.EnableTransparency = false;
-            this.cbPTAMaterial.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(),
-            new DevExpress.XtraEditors.Controls.EditorButton(editorButtonImageOptions1, DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, null)});
-            this.cbPTAMaterial.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-            this.cbPTAMaterial.Size = new System.Drawing.Size(490, 20);
-            this.cbPTAMaterial.TabIndex = 1;
+            this.cbSulfurContent.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.cbSulfurContent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkNickelAlloy
             // 
@@ -205,6 +199,8 @@
             this.chkNickelAlloy.Size = new System.Drawing.Size(15, 14);
             this.chkNickelAlloy.TabIndex = 14;
             this.chkNickelAlloy.UseVisualStyleBackColor = true;
+            this.chkNickelAlloy.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkNickelAlloy.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkAusteniticSteel
             // 
@@ -214,6 +210,8 @@
             this.chkAusteniticSteel.Size = new System.Drawing.Size(15, 14);
             this.chkAusteniticSteel.TabIndex = 13;
             this.chkAusteniticSteel.UseVisualStyleBackColor = true;
+            this.chkAusteniticSteel.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkAusteniticSteel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkIsPTASeverity
             // 
@@ -223,7 +221,8 @@
             this.chkIsPTASeverity.Size = new System.Drawing.Size(15, 14);
             this.chkIsPTASeverity.TabIndex = 19;
             this.chkIsPTASeverity.UseVisualStyleBackColor = true;
-            this.chkIsPTASeverity.CheckedChanged += new System.EventHandler(this.chkIsPTASeverity_CheckedChanged);
+            this.chkIsPTASeverity.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkIsPTASeverity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkIsHTHASeverity
             // 
@@ -233,7 +232,8 @@
             this.chkIsHTHASeverity.Size = new System.Drawing.Size(15, 14);
             this.chkIsHTHASeverity.TabIndex = 17;
             this.chkIsHTHASeverity.UseVisualStyleBackColor = true;
-            this.chkIsHTHASeverity.CheckedChanged += new System.EventHandler(this.chkIsHTHASeverity_CheckedChanged);
+            this.chkIsHTHASeverity.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkIsHTHASeverity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkChromium
             // 
@@ -243,6 +243,8 @@
             this.chkChromium.Size = new System.Drawing.Size(15, 14);
             this.chkChromium.TabIndex = 12;
             this.chkChromium.UseVisualStyleBackColor = true;
+            this.chkChromium.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkChromium.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkSusceptibleTemper
             // 
@@ -252,6 +254,8 @@
             this.chkSusceptibleTemper.Size = new System.Drawing.Size(15, 14);
             this.chkSusceptibleTemper.TabIndex = 11;
             this.chkSusceptibleTemper.UseVisualStyleBackColor = true;
+            this.chkSusceptibleTemper.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkSusceptibleTemper.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // chkCarbonLowAlloySteel
             // 
@@ -261,6 +265,8 @@
             this.chkCarbonLowAlloySteel.Size = new System.Drawing.Size(15, 14);
             this.chkCarbonLowAlloySteel.TabIndex = 10;
             this.chkCarbonLowAlloySteel.UseVisualStyleBackColor = true;
+            this.chkCarbonLowAlloySteel.CheckedChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.chkCarbonLowAlloySteel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             // 
             // label15
             // 
@@ -346,6 +352,8 @@
             this.txtSigmaPhase.Name = "txtSigmaPhase";
             this.txtSigmaPhase.Size = new System.Drawing.Size(138, 21);
             this.txtSigmaPhase.TabIndex = 9;
+            this.txtSigmaPhase.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtSigmaPhase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtSigmaPhase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSigmaPhase_KeyPress);
             // 
             // txtBrittleFracture
@@ -355,6 +363,8 @@
             this.txtBrittleFracture.Name = "txtBrittleFracture";
             this.txtBrittleFracture.Size = new System.Drawing.Size(138, 21);
             this.txtBrittleFracture.TabIndex = 8;
+            this.txtBrittleFracture.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtBrittleFracture.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtBrittleFracture.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBrittleFracture_KeyPress);
             // 
             // txtAllowableStress
@@ -364,6 +374,8 @@
             this.txtAllowableStress.Name = "txtAllowableStress";
             this.txtAllowableStress.Size = new System.Drawing.Size(138, 21);
             this.txtAllowableStress.TabIndex = 4;
+            this.txtAllowableStress.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtAllowableStress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtAllowableStress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAllowableStress_KeyPress);
             // 
             // label16
@@ -383,6 +395,8 @@
             this.txtReferenceTemperature.Name = "txtReferenceTemperature";
             this.txtReferenceTemperature.Size = new System.Drawing.Size(138, 21);
             this.txtReferenceTemperature.TabIndex = 7;
+            this.txtReferenceTemperature.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtReferenceTemperature.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtReferenceTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtReferenceTemperature_KeyPress);
             // 
             // label9
@@ -402,6 +416,8 @@
             this.txtMaterialCostFactor.Name = "txtMaterialCostFactor";
             this.txtMaterialCostFactor.Size = new System.Drawing.Size(138, 21);
             this.txtMaterialCostFactor.TabIndex = 21;
+            this.txtMaterialCostFactor.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtMaterialCostFactor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtMaterialCostFactor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaterialCostFactor_KeyPress);
             // 
             // txtCorrosionAllowance
@@ -411,6 +427,8 @@
             this.txtCorrosionAllowance.Name = "txtCorrosionAllowance";
             this.txtCorrosionAllowance.Size = new System.Drawing.Size(138, 21);
             this.txtCorrosionAllowance.TabIndex = 5;
+            this.txtCorrosionAllowance.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtCorrosionAllowance.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtCorrosionAllowance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCorrosionAllowance_KeyPress);
             // 
             // txtDesignPressure
@@ -420,6 +438,8 @@
             this.txtDesignPressure.Name = "txtDesignPressure";
             this.txtDesignPressure.Size = new System.Drawing.Size(138, 21);
             this.txtDesignPressure.TabIndex = 3;
+            this.txtDesignPressure.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtDesignPressure.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtDesignPressure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDesignPressure_KeyPress);
             // 
             // txtMinDesignTemperature
@@ -429,6 +449,8 @@
             this.txtMinDesignTemperature.Name = "txtMinDesignTemperature";
             this.txtMinDesignTemperature.Size = new System.Drawing.Size(138, 21);
             this.txtMinDesignTemperature.TabIndex = 6;
+            this.txtMinDesignTemperature.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtMinDesignTemperature.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtMinDesignTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMinDesignTemperature_KeyPress);
             // 
             // label5
@@ -502,6 +524,8 @@
             this.txtMaxDesignTemperature.Name = "txtMaxDesignTemperature";
             this.txtMaxDesignTemperature.Size = new System.Drawing.Size(138, 21);
             this.txtMaxDesignTemperature.TabIndex = 2;
+            this.txtMaxDesignTemperature.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtMaxDesignTemperature.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
             this.txtMaxDesignTemperature.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMaxDesignTemperature_KeyPress);
             // 
             // label27
@@ -638,6 +662,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Material";
             // 
+            // txtMaterial
+            // 
+            this.txtMaterial.Location = new System.Drawing.Point(172, 24);
+            this.txtMaterial.Name = "txtMaterial";
+            this.txtMaterial.Size = new System.Drawing.Size(491, 22);
+            this.txtMaterial.TabIndex = 22;
+            this.txtMaterial.TextChanged += new System.EventHandler(this.txtMaterial_TextChanged);
+            this.txtMaterial.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaterial_KeyDown);
+            // 
             // UCMaterial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -651,7 +684,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cbHTHAMaterial.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHeatTreatment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbSulfurContent.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbPTAMaterial.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -703,10 +735,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtSigmaPhase;
         private System.Windows.Forms.Label label16;
-        private DevExpress.XtraEditors.ButtonEdit cbPTAMaterial;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbSulfurContent;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbPTAMaterialGrade;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbHTHAMaterial;
         private DevExpress.XtraEditors.ImageComboBoxEdit cbHeatTreatment;
+        private System.Windows.Forms.TextBox txtMaterial;
     }
 }

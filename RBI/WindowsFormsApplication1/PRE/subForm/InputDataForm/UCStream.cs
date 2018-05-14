@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCStream : UserControl
@@ -154,16 +155,19 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtH2SContentInWater_KeyPress(object sender, KeyPressEventArgs e)
         {
+            
             keyPressEvent(txtH2SContentInWater, e);
         }
 
         private void txtReleaseFluidPercent_KeyPress(object sender, KeyPressEventArgs e)
         {
+            
             keyPressEvent(txtReleaseFluidPercent, e);
         }
 
         private void txtCO3ConcentrationWater_KeyPress(object sender, KeyPressEventArgs e)
         {
+            
             keyPressEvent(txtCO3ConcentrationWater, e);
         }
 
@@ -175,6 +179,7 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtNaOHConcentration_TextChanged(object sender, EventArgs e)
         {
+            DataChange++;
             try
             {
                 if(float.Parse(txtNaOHConcentration.Text) > 100)
@@ -191,6 +196,7 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtReleaseFluidPercent_TextChanged(object sender, EventArgs e)
         {
+            DataChange++;
             try
             {
                 if (float.Parse(txtReleaseFluidPercent.Text) > 100)
@@ -207,6 +213,7 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtpHWater_TextChanged(object sender, EventArgs e)
         {
+            DataChange++;
             try
             {
                 if (float.Parse(txtpHWater.Text) > 14)
@@ -220,5 +227,52 @@ namespace RBI.PRE.subForm.InputDataForm
                 txtpHWater.Text = "0";
             }
         }
+
+        #region Xu ly su kien khi data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        private void txtPrimaryFluid_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+        private void txtPrimaryFluid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        #endregion
     }
 }

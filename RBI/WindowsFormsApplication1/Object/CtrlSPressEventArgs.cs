@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RBI.Object
 {
-    public class KeyPress
+    public class CtrlSPressEventArgs
     {
         public int ctrlSpress;
-        public KeyPress(int p)
+        public CtrlSPressEventArgs(int p)
         {
             this.ctrlSpress = p;
         }

@@ -1032,11 +1032,40 @@ namespace RBI
                     if (EquipmentTypeName != "Tank")
                     {
                         UCAssessmentInfo _ass = new UCAssessmentInfo(IDProposal);
+                        UCEquipmentProperties equipment = new UCEquipmentProperties(IDProposal);
+                        UCComponentProperties component = new UCComponentProperties(IDProposal);
+                        UCOperatingCondition op = new UCOperatingCondition(IDProposal);
+                        UCCoatLiningIsulationCladding coat = new UCCoatLiningIsulationCladding(IDProposal);
+                        UCMaterial material = new UCMaterial(IDProposal);
+                        UCStream stream = new UCStream(IDProposal);
+                        UCCA ca =  new UCCA(IDProposal);
+                        UCRiskFactor riskFactor = new UCRiskFactor(IDProposal);
+                        UCRiskSummary riskSummary =  new UCRiskSummary(IDProposal);
+                        UCDrawGraph drawGraph =  new UCDrawGraph(IDProposal);
+                        UCInspectionHistorySubform inspection = new UCInspectionHistorySubform(IDProposal);
                         _ass.DataChanged += ThayDoiDuLieu;
-                        _ass.CtrlS_Press += _ass_CtrlS_Press;
+                        _ass.CtrlS_Press += CtrlS_Press;
+
+                        equipment.DataChanged += ThayDoiDuLieu;
+                        equipment.CtrlS_Press += CtrlS_Press;
+
+                        component.DataChanged += ThayDoiDuLieu;
+                        component.CtrlS_Press += CtrlS_Press;
+
+                        op.DataChanged += ThayDoiDuLieu;
+                        op.CtrlS_Press += CtrlS_Press;
+
+                        coat.DataChanged += ThayDoiDuLieu;
+                        coat.CtrlS_Press += CtrlS_Press;
+
+                        material.DataChanged += ThayDoiDuLieu;
+                        material.CtrlS_Press += CtrlS_Press;
+
+                        stream.DataChanged += ThayDoiDuLieu;
+                        stream.CtrlS_Press += CtrlS_Press;
+                        
                         checkTank = false;
-                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, _ass, new UCEquipmentProperties(IDProposal), new UCComponentProperties(IDProposal), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterial(IDProposal), new UCStream(IDProposal), new UCCA(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
+                        ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, _ass, equipment, component, op, coat, material, stream, ca, riskFactor, riskSummary, inspection, drawGraph);
                         listUC.Add(ucTabnormal);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
                     }
@@ -2986,11 +3015,12 @@ namespace RBI
         RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();        
         //</BUS>
         #endregion
-        private void _ass_CtrlS_Press(object sender, KeyPress e)
+        private void CtrlS_Press(object sender, CtrlSPressEventArgs e)
         {
             string str = xtraTabData.SelectedTabPage.Text;
             if (str.Contains("*"))
             {
+                Console.WriteLine("bo dau sao");
                 xtraTabData.SelectedTabPage.Text = str.Remove(str.Length - 1); //luu data va bo dau *
             }
             else

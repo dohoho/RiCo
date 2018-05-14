@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
+
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCMaterialTank : UserControl
@@ -24,7 +26,7 @@ namespace RBI.PRE.subForm.InputDataForm
         public UCMaterialTank()
         {
             InitializeComponent();
-            cbPTAMaterial.Enabled = false;
+            txtMaterial.Enabled = false;
             addSulfurContent();
             addHeatTreatment();
             addPTAMterial();
@@ -32,7 +34,7 @@ namespace RBI.PRE.subForm.InputDataForm
         public UCMaterialTank(int ID)
         {
             InitializeComponent();
-            cbPTAMaterial.Enabled = false;
+            txtMaterial.Enabled = false;
             addSulfurContent();
             addHeatTreatment();
             addPTAMterial();
@@ -44,7 +46,7 @@ namespace RBI.PRE.subForm.InputDataForm
             RW_MATERIAL obj = BUS.getData(ID);
             RW_INPUT_CA_TANK_BUS busTank = new RW_INPUT_CA_TANK_BUS();
             float tank = busTank.getProductionCost(ID);
-            cbPTAMaterial.Text = obj.MaterialName;
+            txtMaterial.Text = obj.MaterialName;
             txtDesignPressure.Text = obj.DesignPressure.ToString();
             txtMaxDesignTemperature.Text = obj.DesignTemperature.ToString();
             txtMinDesignTemperature.Text = obj.MinDesignTemperature.ToString();
@@ -89,7 +91,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             RW_MATERIAL ma = new RW_MATERIAL();
             ma.ID = ID;
-            ma.MaterialName = cbPTAMaterial.Text;
+            ma.MaterialName = txtMaterial.Text;
             ma.DesignPressure = txtDesignPressure.Text != "" ? float.Parse(txtDesignPressure.Text) : 0;
             ma.DesignTemperature = txtMaxDesignTemperature.Text != "" ? float.Parse(txtMaxDesignTemperature.Text) : 0;
             ma.MinDesignTemperature = txtMinDesignTemperature.Text != "" ? float.Parse(txtMinDesignTemperature.Text) : 0;
@@ -123,7 +125,7 @@ namespace RBI.PRE.subForm.InputDataForm
         }
         private void chkIsPTASeverity_CheckedChanged(object sender, EventArgs e)
         {
-            cbPTAMaterialGrade.Enabled = chkIsPTASeverity.Checked ? true : false;
+
         }
         #region Add Data to ComboBox
         private void addSulfurContent()
@@ -223,6 +225,56 @@ namespace RBI.PRE.subForm.InputDataForm
             keyPressEvent(txtMaterialCostFactor, e, false);
         }
         #endregion
+
+        #region Xu ly su kien khi Data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        
+        private void txtMaterial_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+        private void txtMaterial_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        #endregion
+
+        
 
     }
 }

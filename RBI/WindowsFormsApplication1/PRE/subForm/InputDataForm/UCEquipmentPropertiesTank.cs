@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;   
+
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCEquipmentPropertiesTank : UserControl
     {
+        #region Parameter
         string[] itemsAdjustmentSettlement = { "Recorded settlement exceeds API 653 criteria", "Recorded settlement meets API 653 criteria", "Settlement never evaluated", "Concrete foundation, no settlement" };
         string[] itemsExternalEnvironment = { "Arid/dry", "Marine", "Severe", "Temperate"};
         string[] itemsOnlineMonitoring = {  "Amine high velocity corrosion - Corrosion coupons",
@@ -54,6 +57,7 @@ namespace RBI.PRE.subForm.InputDataForm
         string[] itemsThermalHistory = { "None", "Solution Annealed", "Stabilised After Welding", "Stabilised Before Welding" };
         string[] itemsEnvironmental = { "High", "Medium", "Low" };
         string[] itemsTypeSoil = { "Coarse Sand", "Fine Sand", "Very Fane Sand", "Silt", "Sandy Clay", "Clay", "Concrete-Asphalt" };
+        #endregion
         public UCEquipmentPropertiesTank()
         {
             InitializeComponent();
@@ -188,6 +192,8 @@ namespace RBI.PRE.subForm.InputDataForm
             eq.DistanceToGroundWater = txtDistanceGroundWater.Text != "" ? float.Parse(txtDistanceGroundWater.Text) : 0;
             return eq;
         }
+
+        #region Data to Combobox
         private void additemsAdjustmentSettlement()
         {
             cbAdjustmentSettlement.Properties.Items.Add("", -1, -1);
@@ -228,7 +234,7 @@ namespace RBI.PRE.subForm.InputDataForm
                 cbEnvironmentalSensitivity.Properties.Items.Add(itemsEnvironmental[i], i, i);
             }
         }
-        
+        #endregion
         public RW_INPUT_CA_TANK getDataforTank(int ID)
         {
             RW_INPUT_CA_TANK tank = new RW_INPUT_CA_TANK();
@@ -277,5 +283,53 @@ namespace RBI.PRE.subForm.InputDataForm
                 e.Handled = true;
             }
         }
+        #region Xu ly su kien khi data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                datachange = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        private void txtDistanceGroundWater_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+        private void chkAministrativeControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
+        #endregion
+
+        
     }
 }
