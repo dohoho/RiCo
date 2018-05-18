@@ -8,7 +8,7 @@ namespace RBI.Object
 {
     public class CtrlSPressEventArgs
     {
-        public int ctrlSpress;
+        public readonly int ctrlSpress;
         public CtrlSPressEventArgs(int p)
         {
             this.ctrlSpress = p;

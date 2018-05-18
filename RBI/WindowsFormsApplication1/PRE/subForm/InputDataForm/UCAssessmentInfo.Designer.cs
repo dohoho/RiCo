@@ -472,7 +472,7 @@
             this.txtAssessmentName.TabIndex = 1;
             this.txtAssessmentName.TextChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
             this.txtAssessmentName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
-            this.txtAssessmentName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
+            //this.txtAssessmentName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
             // 
             // label5
             // 

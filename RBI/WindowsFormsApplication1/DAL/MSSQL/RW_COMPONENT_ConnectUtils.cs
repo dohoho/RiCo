@@ -430,6 +430,39 @@ namespace RBI.DAL.MSSQL
             }
             return obj;
         }
+        public string GetComponentNumber(int ID)
+        {
+            string a = "";
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            String sql = "SELECT ComponentNumber FROM rbi.dbo.COMPONENT_MASTER WHERE ComponentID = '"+ID+"'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            a = reader.GetString(0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("GET DATA FAIL!" + ex.ToString(), "ERROR!");
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            return a;
+        }
     }
 }
 

@@ -378,15 +378,15 @@ namespace RBI
             treeListProject.DataSource = listTree;
             treeListProject.RefreshDataSource();
             listTree1 = listTree;
-            try
-            {
-                treeListProject.FocusedNode.Expand();
-            }
-            catch
-            {
-                // do nothing
-            }
-            //treeListProject.ExpandAll();
+            //try
+            //{
+            //    treeListProject.FocusedNode.Expand();
+            //}
+            //catch
+            //{
+            //    // do nothing
+            //}
+            treeListProject.ExpandAll();
             //treeListProject.ExpandToLevel(selectedLevel);
         }
         private void treeListProject_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
@@ -1063,7 +1063,10 @@ namespace RBI
 
                         stream.DataChanged += ThayDoiDuLieu;
                         stream.CtrlS_Press += CtrlS_Press;
-                        
+
+                        ca.DataChanged += ThayDoiDuLieu;
+                        ca.CtrlS_Press += CtrlS_Press;
+
                         checkTank = false;
                         ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, _ass, equipment, component, op, coat, material, stream, ca, riskFactor, riskSummary, inspection, drawGraph);
                         listUC.Add(ucTabnormal);
@@ -1087,8 +1090,37 @@ namespace RBI
                         }
                         navCA.Enabled = false;
                         checkTank = true;
-                        ucTabTank ucTank = new ucTabTank(IDProposal, new UCAssessmentInfo(IDProposal), new UCEquipmentPropertiesTank(IDProposal, type), new UCComponentPropertiesTank(IDProposal, type), new UCOperatingCondition(IDProposal)
-                            , new UCCoatLiningIsulationCladding(IDProposal), new UCMaterialTank(IDProposal), new UCStreamTank(IDProposal), new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
+                        /**************************************/
+                        UCAssessmentInfo ass = new UCAssessmentInfo(IDProposal);
+                        UCEquipmentPropertiesTank eq = new UCEquipmentPropertiesTank(IDProposal, type);
+                        UCComponentPropertiesTank com = new UCComponentPropertiesTank(IDProposal, type);
+                        UCOperatingCondition op = new UCOperatingCondition(IDProposal);
+                        UCCoatLiningIsulationCladding coat = new UCCoatLiningIsulationCladding(IDProposal);
+                        UCMaterialTank material = new UCMaterialTank(IDProposal);
+                        UCStreamTank stream = new UCStreamTank(IDProposal);
+
+                        ass.DataChanged += ThayDoiDuLieu;
+                        ass.CtrlS_Press += CtrlS_Press;
+
+                        eq.DataChanged += ThayDoiDuLieu;
+                        eq.CtrlS_Press += CtrlS_Press;
+
+                        com.DataChanged += ThayDoiDuLieu;
+                        com.CtrlS_Press += CtrlS_Press;
+
+                        op.DataChanged += ThayDoiDuLieu;
+                        op.CtrlS_Press += CtrlS_Press;
+
+                        coat.DataChanged += ThayDoiDuLieu;
+                        coat.CtrlS_Press += CtrlS_Press;
+
+                        material.DataChanged += ThayDoiDuLieu;
+                        material.CtrlS_Press += CtrlS_Press;
+
+                        stream.DataChanged += ThayDoiDuLieu;
+                        stream.CtrlS_Press += CtrlS_Press;
+                        /**************************************/
+                        ucTabTank ucTank = new ucTabTank(IDProposal, ass, eq, com, op, coat, material, stream, new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
                         listUCTank.Add(ucTank);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTank.ucAss);
                     }
@@ -1701,7 +1733,7 @@ namespace RBI
             fullPOF.PoFAP3Category = cal.PoFCategory(DF_Total[2]);
             //get Managerment Factor 
             float FMS = 0;
-            FMS = busFacility.getFMS(busEquipmentMaster.getSiteID(equipmentID));
+            FMS = busFacility.getFMS(busEquipmentMaster.getFacilityID(equipmentID));
             fullPOF.FMS = FMS;
             //get GFFtotal
             float GFFTotal = 0;
@@ -2247,7 +2279,6 @@ namespace RBI
                     default:
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
                         //u.Dock = DockStyle.Fill;
-                        
                         break;
                 }
                 //u.AutoScroll = true;
@@ -2882,13 +2913,15 @@ namespace RBI
         {
             int n = 0;
             if (int.TryParse(tabname, out n))
+            {
+                numUC = serial;
                 ShowItemTabpage(n, serial, checkTank);
+            }
             else
                 return;
         }
         private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 1);
         }
         private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
@@ -2988,6 +3021,7 @@ namespace RBI
         private List<ucTabNormal> listUC = new List<ucTabNormal>();
         private List<ucTabTank> listUCTank = new List<ucTabTank>();
         private int IDNodeTreeList = 0;
+        private int numUC = 0;
         //<BUS>
         SITES_BUS busSites = new SITES_BUS();
         FACILITY_BUS busFacility = new FACILITY_BUS();
@@ -3015,16 +3049,69 @@ namespace RBI
         RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();        
         //</BUS>
         #endregion
+
         private void CtrlS_Press(object sender, CtrlSPressEventArgs e)
         {
             string str = xtraTabData.SelectedTabPage.Text;
+            int ID = Convert.ToInt32(xtraTabData.SelectedTabPage.Name);
             if (str.Contains("*"))
             {
-                Console.WriteLine("bo dau sao");
+                if(sender is UCAssessmentInfo)
+                {
+                    CtrlSPress_SaveData("UCAssessmentInfo", ID, sender);
+                    initDataforTreeList();
+                    int[] comID = busAssessment.getEquipmentID_ComponentID(ID);
+                    string comNum = busComponent.GetComponentNumber(comID[1]);
+                    string assName = busAssessment.getAssessmentName(ID);
+                    xtraTabData.SelectedTabPage.Text = comNum + "[" + assName + "]";
+                    barStaticItem2.Caption = "Saved";
+                    return;
+                }
+                else if(sender is UCEquipmentProperties)
+                {
+                    CtrlSPress_SaveData("UCEquipmentProperties", ID, sender);
+                }
+                else if(sender is UCEquipmentPropertiesTank)
+                {
+                    CtrlSPress_SaveData("UCEquipmentPropertiesTank", ID, sender);
+                }
+                else if(sender is UCComponentProperties)
+                {
+                    CtrlSPress_SaveData("UCComponentProperties", ID, sender);
+                }
+                else if(sender is UCComponentPropertiesTank)
+                {
+                    CtrlSPress_SaveData("UCComponentPropertiesTank", ID, sender);
+                }
+                else if(sender is UCMaterial)
+                {
+                    CtrlSPress_SaveData("UCMaterial", ID, sender);
+                }
+                else if(sender is UCMaterialTank)
+                {
+                    CtrlSPress_SaveData("UCMaterialTank", ID, sender);
+                }
+                else if(sender is UCOperatingCondition)
+                {
+                    CtrlSPress_SaveData("UCOperatingCondition", ID, sender);
+                }
+                else if(sender is UCStream)
+                {
+                    CtrlSPress_SaveData("UCStream", ID, sender);
+                }
+                else if(sender is UCStreamTank)
+                {
+                    CtrlSPress_SaveData("UCStreamTank", ID, sender);
+                }
+                else
+                {
+                    CtrlSPress_SaveData("UCCA", ID, sender);
+                }
                 xtraTabData.SelectedTabPage.Text = str.Remove(str.Length - 1); //luu data va bo dau *
+                barStaticItem2.Caption = "Saved";
             }
             else
-                return;
+                return;    
         }
         private void ThayDoiDuLieu(object sender, DataUCChangedEventArgs e)
         {
@@ -3032,10 +3119,85 @@ namespace RBI
             if (str.Contains("*")) return;
                xtraTabData.SelectedTabPage.Text += "*";
         }
+        private void CtrlSPress_SaveData(string ucName, int ID, object uc)
+        {
+            switch (ucName)
+            {
+                case "UCAssessmentInfo":
+                    UCAssessmentInfo ass = uc as UCAssessmentInfo;
+                    RW_ASSESSMENT rwAss = ass.getData(ID);
+                    busAssessment.edit(rwAss);
+                    break;
+                case "UCEquipmentProperties":
+                    UCEquipmentProperties eq = uc as UCEquipmentProperties;
+                    RW_EQUIPMENT rwEq = eq.getData(ID);
+                    busEquipment.edit(rwEq);
+                    break;
+                case "UCEquipmentPropertiesTank":
+                    UCEquipmentPropertiesTank eq1= uc as UCEquipmentPropertiesTank;
+                    RW_EQUIPMENT rwEq1 = eq1.getData(ID);
+                    busEquipment.edit(rwEq1);
+                    break;
+                case "UCComponentProperties":
+                    UCComponentProperties com = uc as UCComponentProperties;
+                    RW_COMPONENT rwCom = com.getData(ID);
+                    busComponent.edit(rwCom);
+                    break;
+                case "UCComponentPropertiesTank":
+                    UCComponentPropertiesTank com1 = uc as UCComponentPropertiesTank;
+                    RW_COMPONENT rwCom1 = com1.getData(ID);
+                    busComponent.edit(rwCom1);
+                    break;
+                case "UCMaterial":
+                    UCMaterial ma = uc as UCMaterial;
+                    RW_MATERIAL rwMa = ma.getData(ID);
+                    busMaterial.edit(rwMa);
+                    break;
+                case "UCMaterialTank":
+                    UCMaterialTank ma1 = uc as UCMaterialTank;
+                    RW_MATERIAL rwMa1 = ma1.getData(ID);
+                    busMaterial.edit(rwMa1);
+                    break;
+                case "UCOperatingCondition":
+                    UCOperatingCondition op = uc as UCOperatingCondition;
+                    RW_STREAM rwStream = op.getDataforStream(ID);
+                    RW_EXTCOR_TEMPERATURE rwExtr = op.getDataExtcorTemp(ID);
+                    busStream.edit(rwStream);
+                    busExtcorTemp.edit(rwExtr);
+                    break;
+                case "UCStream":
+                    UCStream stream1 = uc as UCStream;
+                    RW_STREAM rwStream1 = stream1.getData(ID);
+                    busStream.edit(rwStream1);
+                    break;
+                case "UCStreamTank":
+                    UCStreamTank stream = uc as UCStreamTank;
+                    RW_STREAM rwStream2 = stream.getData(ID);
+                    busStream.edit(rwStream2);
+                    break;
+                case "UCCA":
+                    UCCA ca = uc as UCCA;
+                    RW_INPUT_CA_LEVEL_1 rwCA = ca.getData(ID);
+                    busInputCALevel1.edit(rwCA);
+                    break;
+                default:
+                    break;
+            }
+        }
         private void xtraTabData_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Console.WriteLine("Press");
-            xtraTabData.SelectedTabPage.Text += "*";
+            try
+            {
+                Control.ControlCollection ct = xtraTabData.SelectedTabPage.Controls;
+                string ucName = ct[0].Name;
+                int ID = Convert.ToInt32(xtraTabData.SelectedTabPage.Name);
+                barStaticItem1.Caption = "Saved";
+                CtrlSPress_SaveData(ucName, ID, ct[0]);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
             
         }
 
@@ -3044,7 +3206,5 @@ namespace RBI
                 
         }
 
-        
     }
-    
 }

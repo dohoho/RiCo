@@ -22,11 +22,11 @@ namespace RBI.PRE.subForm.InputDataForm
         public UCOperatingCondition(int ID)
         {
             InitializeComponent();
-            getData(ID);
+            ShowDataToForm(ID);
         }
         
         RW_EXTCOR_TEMPERATURE objTemp = new RW_EXTCOR_TEMPERATURE();
-        private void getData(int ID)
+        private void ShowDataToForm(int ID)
         {
             RW_STREAM_BUS SteamBus = new RW_STREAM_BUS();
             RW_EXTCOR_TEMPERATURE_BUS tempBus = new RW_EXTCOR_TEMPERATURE_BUS();

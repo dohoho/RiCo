@@ -21,6 +21,16 @@ namespace RBI.PRE.subForm.InputDataForm
         private int ctrlSpress;
         public event DataUCChangedHanlder DataChanged;
         public event CtrlSHandler CtrlS_Press;
+        public UCAssessmentInfo()
+        {
+            InitializeComponent();
+            listComponentType = componentTypeBus.getDataSource();
+        }
+        public UCAssessmentInfo(int id)
+        {
+            InitializeComponent();
+            showDatatoControl(id);
+        }
         public int CtrlSPress
         {
             get { return ctrlSpress; }
@@ -56,17 +66,7 @@ namespace RBI.PRE.subForm.InputDataForm
         COMPONENT_TYPE__BUS componentTypeBus = new COMPONENT_TYPE__BUS();
         
         
-        public UCAssessmentInfo()
-        {
-            InitializeComponent();
-            listComponentType = componentTypeBus.getDataSource();
-        }
-        public UCAssessmentInfo(int id)
-        {
-            InitializeComponent();
-            showDatatoControl(id);
-            
-        }
+        
         public String ProposalName;
         public RW_ASSESSMENT getData(int ID)
         {
@@ -84,12 +84,6 @@ namespace RBI.PRE.subForm.InputDataForm
             ass.EquipmentID = temp[0];
             ass.ComponentID = temp[1];
             return ass;
-        }
-        public RW_EQUIPMENT getData1()
-        {
-            RW_EQUIPMENT eq = new RW_EQUIPMENT();
-            eq.CommissionDate = dateComissionDate.DateTime;
-            return eq;
         }
         public void showDatatoControl(int ID)
         {
@@ -152,14 +146,8 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtRiskAnalysisPeriod_KeyPress(object sender, KeyPressEventArgs e)
         {
-
             string a = txtRiskAnalysisPeriod.Text;
-            if (!Char.IsDigit(e.KeyChar))// && !Char.IsControl(e.KeyChar) && e.KeyChar == '-')
-            {
-                DataChange++;
-                e.Handled = true;
-            }
-            if (a.Contains("-") && e.KeyChar == '-')
+            if (!Char.IsDigit(e.KeyChar) && (e.KeyChar == '-'))
             {
                 e.Handled = true;
             }

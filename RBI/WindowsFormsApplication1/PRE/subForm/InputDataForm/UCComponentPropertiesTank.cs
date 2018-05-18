@@ -117,6 +117,7 @@ namespace RBI.PRE.subForm.InputDataForm
                 cbMaxBrillnessHardness.Properties.Items.Add(itemsBrinnellHardness[i], i, i);
             }
         }
+
         #region Key Press Event
 
         private void keyPressEvent(TextBox textbox, KeyPressEventArgs ev)
@@ -196,13 +197,6 @@ namespace RBI.PRE.subForm.InputDataForm
                 CtrlS_Press(this, e);
         }
 
-        private void KeyPress1(KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.S)
-            {
-                CtrlSPress++;
-            }
-        }
         private void txtTankDiameter_TextChanged(object sender, EventArgs e)
         {
             DataChange++;
@@ -210,7 +204,10 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtTankDiameter_KeyDown(object sender, KeyEventArgs e)
         {
-            KeyPress1(e);
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
         }
         #endregion
     }

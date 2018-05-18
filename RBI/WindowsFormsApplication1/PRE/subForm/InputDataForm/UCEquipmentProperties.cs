@@ -81,7 +81,8 @@ namespace RBI.PRE.subForm.InputDataForm
                 }
             }
         }
-        
+        EQUIPMENT_MASTER_BUS busEquipmentMaster = new EQUIPMENT_MASTER_BUS();
+        FACILITY_BUS busFacility = new FACILITY_BUS();
         public RW_EQUIPMENT getData(int ID)
         {
             RW_EQUIPMENT eq = new RW_EQUIPMENT();
@@ -104,7 +105,9 @@ namespace RBI.PRE.subForm.InputDataForm
             eq.PressurisationControlled = chkPressurisationControlled.Checked ? 1 : 0;
             eq.PWHT = chkPWHT.Checked ? 1 : 0;
             eq.SteamOutWaterFlush = chkSteamedOutPriorWaterFlushing.Checked ? 1 : 0;
-            eq.ManagementFactor = (float)numSystemManagementFactor.Value;
+            int equipmentID = assBus.getEquipmentID(ID);
+            float FMS = busFacility.getFMS(busEquipmentMaster.getFacilityID(equipmentID));
+            eq.ManagementFactor = FMS;
             eq.ThermalHistory = cbThermalHistory.Text;
             eq.YearLowestExpTemp = chkEquipmentOperatingManyYear.Checked ? 1 : 0;
             eq.Volume = txtEquipmentVolume.Text != "" ? float.Parse(txtEquipmentVolume.Text) : 0;

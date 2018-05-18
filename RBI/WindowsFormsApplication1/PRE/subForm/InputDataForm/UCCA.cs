@@ -11,6 +11,8 @@ using RBI.Object.ObjectMSSQL_CAL;
 using RBI.BUS.BUSMSSQL_CAL;
 using RBI.Object.ObjectMSSQL;
 using RBI.BUS.BUSMSSQL;
+using RBI.Object;
+
 namespace RBI.PRE.subForm.InputDataForm
 {
     public partial class UCCA : UserControl
@@ -18,6 +20,7 @@ namespace RBI.PRE.subForm.InputDataForm
         
         BUS_TOXIC bus = new BUS_TOXIC();
         MSSQL_CA_CAL BUS_CA = new MSSQL_CA_CAL();
+        #region Parameter
         string[] itemsFluid = {"Acid","AlCl3","C1-C2","C13-C16","C17-C25","C25+","C3-C4","C5", "C6-C8","C9-C12","CO","DEE","EE","EEA","EG","EO","H2","H2S","HCl","HF","Methanol","Nitric Acid","NO2","Phosgene","PO","Pyrophoric","Steam","Styrene","TDI","Water"};
         string[] itemsFluidPhase = { "Liquid", "Vapor", "Two-phase" };
         string[] itemsDetectionType = { "A", "B", "C" };
@@ -28,6 +31,44 @@ namespace RBI.PRE.subForm.InputDataForm
         string[] itemsIsulationType = { "A", "B", "C" };
         List<String> timeDuration;
         string ReleasePhase;
+        #endregion
+
+        #region Xu ly su kien khi Data thay doi
+        private int datachange = 0;
+        private int ctrlSpress = 0;
+        public event DataUCChangedHanlder DataChanged;
+        public event CtrlSHandler CtrlS_Press;
+
+        public int DataChange
+        {
+            get { return datachange; }
+            set
+            {
+                datachange = value;
+                OnDataChanged(new DataUCChangedEventArgs(datachange));
+            }
+        }
+        public int CtrlSPress
+        {
+            get { return ctrlSpress; }
+            set
+            {
+                ctrlSpress = value;
+                OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
+            }
+        }
+        protected virtual void OnDataChanged(DataUCChangedEventArgs e)
+        {
+            if (DataChanged != null)
+                DataChanged(this, e);
+        }
+        protected virtual void OnCtrlS_Press(CtrlSPressEventArgs e)
+        {
+            if (CtrlS_Press != null)
+                CtrlS_Press(this, e);
+        }
+        #endregion
+
         public UCCA()
         {
             InitializeComponent();
@@ -132,13 +173,8 @@ namespace RBI.PRE.subForm.InputDataForm
             ca.Personal_Density = txtPersonDensity.Text != "" ? float.Parse(txtPersonDensity.Text) : 0;
             return ca;
         }
-        public RW_INPUT_CA_TANK getDataCATank()
-        {
-            RW_INPUT_CA_TANK ca = new RW_INPUT_CA_TANK();
-            ca.API_FLUID = cbFluid.Text;
-            return ca;
-        }
-        
+
+        #region Add data to combobox
         private void additemsIsulationType()
         {
             cbIsulationType.Properties.Items.Add("", -1, -1);
@@ -179,114 +215,17 @@ namespace RBI.PRE.subForm.InputDataForm
                 cbMittigationSystem.Properties.Items.Add(itemsMittigationSystem[i], i, i);
             }
         }
+        #endregion
         private void clearData()
         {
             cbReleaseDuration.Properties.Items.Clear();
         }
         private void cbFluid_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //timeDuration = new List<string>();
-            //List<TOXIC_511_512> list511 = bus.getList511_512();
-            //List<TOXIC_513> list513 = bus.getList513();
-            //if (cbFluidPhase.Text == "Vapor" || cbFluidPhase.Text == "Powder")
-            //{
-            //    ReleasePhase = "Gas";
-            //}
-            //else if (cbFluidPhase.Text == "Liquid")
-            //{
-            //    ReleasePhase = "Liquid";
-            //}
-            //else
-            //{
-            //    ReleasePhase = "";
-            //}
-            //if (cbFluid.Text == "H2S" || cbFluid.Text == "HF" || cbFluid.Text == "Ammonia" || cbFluid.Text == "Chlorine")
-            //{
-            //    for (int i = 0; i < list511.Count; i++)
-            //    {
-            //        if (cbFluid.Text == list511[i].ToxicName)
-            //        {
-            //            timeDuration.Add(list511[i].ReleaseDuration);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < list513.Count; i++)
-            //    {
-            //        if (cbFluid.Text == list513[i].TOXIC_NAME && ReleasePhase == list513[i].TOXIC_TYPE)
-            //        {
-            //            timeDuration.Add(list513[i].DURATION);
-            //        }
-            //    }
-            //}
-            //if (timeDuration.Count != 0)
-            //{
-            //    txtToxicPercent.Enabled = true;
-            //}
-            //else
-            //{
-            //    txtToxicPercent.Enabled = false;
-            //}
-            //clearData();
-            //cbReleaseDuration.Properties.Items.Add("", -1, -1);
-            //for (int i = 0; i < timeDuration.Count; i++)
-            //{
-            //    cbReleaseDuration.Properties.Items.Add(timeDuration[i], i, i);
-            //}
             setUpReleaseDuration();
         }
         private void cbFluidPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //timeDuration = new List<string>();
-            //List<TOXIC_511_512> list511 = bus.getList511_512();
-            //List<TOXIC_513> list513 = bus.getList513();
-            //if (cbFluidPhase.Text == "Vapor")
-            //{
-            //    ReleasePhase = "Gas";
-            //}
-            //else if (cbFluidPhase.Text == "Liquid" || cbFluidPhase.Text == "Powder")
-            //{
-            //    ReleasePhase = "Liquid";
-            //}
-            //else
-            //{
-            //    ReleasePhase = "";
-            //}
-            //if (cbFluid.Text == "H2S" || cbFluid.Text == "HF" || cbFluid.Text == "Ammonia" || cbFluid.Text == "Chlorine")
-            //{
-            //    for (int i = 0; i < list511.Count; i++)
-            //    {
-            //        if (cbFluid.Text == list511[i].ToxicName)
-            //        {
-            //            timeDuration.Add(list511[i].ReleaseDuration);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < list513.Count; i++)
-            //    {
-            //        if (cbFluid.Text == list513[i].TOXIC_NAME && ReleasePhase == list513[i].TOXIC_TYPE)
-            //        {
-            //            timeDuration.Add(list513[i].DURATION);
-            //        }
-            //    }
-            //}
-            //if (timeDuration.Count != 0)
-            //{
-            //    txtToxicPercent.Enabled = true;
-            //}
-            //else
-            //{
-            //    txtToxicPercent.Enabled = false;
-            //}
-            //clearData();
-            //cbReleaseDuration.Properties.Items.Add("", -1, -1);
-            //for (int i = 0; i < timeDuration.Count; i++)
-            //{
-            //    cbReleaseDuration.Properties.Items.Add(timeDuration[i], i, i);
-            //}
             setUpReleaseDuration();
         }
         private void setUpReleaseDuration()
@@ -399,20 +338,22 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void txtToxicPercent_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if(float.Parse(txtToxicPercent.Text) > 100)
-                {
-                    MessageBox.Show("Invalid value", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtToxicPercent.Text = "100";
-                }
-            }
-            catch
-            {
-                txtToxicPercent.Text = "0";
-            }
+
         }
         #endregion
+
+        private void txtEquipmentCost_TextChanged(object sender, EventArgs e)
+        {
+            DataChange++;
+        }
+
+        private void txtEquipmentCost_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
+        }
 
         //du lieu cho Release Duration anh Vu viet
         /*

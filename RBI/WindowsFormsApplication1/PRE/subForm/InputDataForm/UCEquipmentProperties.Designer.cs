@@ -37,7 +37,6 @@
             this.imgColThermalHistory = new DevExpress.Utils.ImageCollection(this.components);
             this.cbExternalEnvironment = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.imgColExternalRnvironment = new DevExpress.Utils.ImageCollection(this.components);
-            this.numSystemManagementFactor = new System.Windows.Forms.NumericUpDown();
             this.txtEquipmentVolume = new System.Windows.Forms.TextBox();
             this.txtMinRequiredTemperature = new System.Windows.Forms.TextBox();
             this.chkPresenceSulphideOperation = new System.Windows.Forms.CheckBox();
@@ -57,7 +56,6 @@
             this.chkAministrativeControl = new System.Windows.Forms.CheckBox();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -85,7 +83,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgColThermalHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbExternalEnvironment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgColExternalRnvironment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSystemManagementFactor)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -93,7 +90,6 @@
             this.groupBox1.Controls.Add(this.cbOnlineMonitoring);
             this.groupBox1.Controls.Add(this.cbThermalHistory);
             this.groupBox1.Controls.Add(this.cbExternalEnvironment);
-            this.groupBox1.Controls.Add(this.numSystemManagementFactor);
             this.groupBox1.Controls.Add(this.txtEquipmentVolume);
             this.groupBox1.Controls.Add(this.txtMinRequiredTemperature);
             this.groupBox1.Controls.Add(this.chkPresenceSulphideOperation);
@@ -113,7 +109,6 @@
             this.groupBox1.Controls.Add(this.chkAministrativeControl);
             this.groupBox1.Controls.Add(this.label23);
             this.groupBox1.Controls.Add(this.label22);
-            this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Controls.Add(this.label19);
@@ -234,33 +229,6 @@
             this.imgColExternalRnvironment.Images.SetKeyName(1, "yellow.png");
             this.imgColExternalRnvironment.Images.SetKeyName(2, "green.png");
             this.imgColExternalRnvironment.Images.SetKeyName(3, "red.png");
-            // 
-            // numSystemManagementFactor
-            // 
-            this.numSystemManagementFactor.DecimalPlaces = 2;
-            this.numSystemManagementFactor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numSystemManagementFactor.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numSystemManagementFactor.Location = new System.Drawing.Point(291, 342);
-            this.numSystemManagementFactor.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numSystemManagementFactor.Name = "numSystemManagementFactor";
-            this.numSystemManagementFactor.Size = new System.Drawing.Size(120, 20);
-            this.numSystemManagementFactor.TabIndex = 20;
-            this.numSystemManagementFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numSystemManagementFactor.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numSystemManagementFactor.ValueChanged += new System.EventHandler(this.txtMinRequiredTemperature_TextChanged);
-            this.numSystemManagementFactor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAministrativeControl_KeyDown);
             // 
             // txtEquipmentVolume
             // 
@@ -468,16 +436,6 @@
             this.label22.Size = new System.Drawing.Size(112, 15);
             this.label22.TabIndex = 0;
             this.label22.Text = "Equipment Volume";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(20, 346);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(161, 15);
-            this.label21.TabIndex = 0;
-            this.label21.Text = "System Management Factor";
             // 
             // label20
             // 
@@ -701,7 +659,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgColThermalHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbExternalEnvironment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgColExternalRnvironment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSystemManagementFactor)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -709,7 +666,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.NumericUpDown numSystemManagementFactor;
         private System.Windows.Forms.TextBox txtEquipmentVolume;
         private System.Windows.Forms.TextBox txtMinRequiredTemperature;
         private System.Windows.Forms.CheckBox chkPresenceSulphideOperation;
@@ -729,7 +685,6 @@
         private System.Windows.Forms.CheckBox chkAministrativeControl;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label19;

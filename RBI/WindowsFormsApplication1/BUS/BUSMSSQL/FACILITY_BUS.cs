@@ -32,9 +32,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getDataSource();
         }
-        public float getFMS(int SiteID)
+        public float getFMS(int FaciID)
         {
-            return DAL.getFMS(SiteID);
+            return DAL.getFMS(FaciID);
         }
         public String getFacilityName(int faciID)
         {

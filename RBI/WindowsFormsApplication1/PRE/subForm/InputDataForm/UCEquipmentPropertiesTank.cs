@@ -245,9 +245,9 @@ namespace RBI.PRE.subForm.InputDataForm
             return tank;
         }
 
-        private void txtDistanceGroundWater_KeyPress(object sender, KeyPressEventArgs e)
+        private void TextboxDataChange(TextBox txt, KeyPressEventArgs e)
         {
-            string a = txtDistanceGroundWater.Text;
+            string a = txt.Text;
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
                 e.Handled = true;
@@ -256,32 +256,20 @@ namespace RBI.PRE.subForm.InputDataForm
             {
                 e.Handled = true;
             }
+        }
+        private void txtDistanceGroundWater_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextboxDataChange(txtDistanceGroundWater, e);
         }
 
         private void txtMinRequiredTemperature_KeyPress(object sender, KeyPressEventArgs e)
         {
-            string a = txtMinRequiredTemperature.Text;
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-            if (a.Contains('.') && e.KeyChar == '.')
-            {
-                e.Handled = true;
-            }
+            TextboxDataChange(txtMinRequiredTemperature, e);
         }
 
         private void txtEquipmentVolume_KeyPress(object sender, KeyPressEventArgs e)
         {
-            string a = txtEquipmentVolume.Text;
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-            if (a.Contains('.') && e.KeyChar == '.')
-            {
-                e.Handled = true;
-            }
+            TextboxDataChange(txtEquipmentVolume, e);
         }
         #region Xu ly su kien khi data thay doi
         private int datachange = 0;
@@ -302,7 +290,7 @@ namespace RBI.PRE.subForm.InputDataForm
             get { return ctrlSpress; }
             set
             {
-                datachange = value;
+                ctrlSpress = value;
                 OnCtrlS_Press(new CtrlSPressEventArgs(ctrlSpress));
             }
         }

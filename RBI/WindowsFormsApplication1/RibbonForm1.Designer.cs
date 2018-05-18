@@ -78,6 +78,7 @@
             this.barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
             this.popImportExcel = new DevExpress.XtraBars.PopupMenu(this.components);
             this.btnImportInspection = new DevExpress.XtraBars.BarButtonItem();
+            this.barStaticItem2 = new DevExpress.XtraBars.BarStaticItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -196,9 +197,10 @@
             this.barButtonItem9,
             this.btnImportInspection,
             this.btnNewEq,
-            this.btnNewCom});
+            this.btnNewCom,
+            this.barStaticItem2});
             this.ribbon.Location = new System.Drawing.Point(0, 0);
-            this.ribbon.MaxItemId = 18;
+            this.ribbon.MaxItemId = 19;
             this.ribbon.Name = "ribbon";
             this.ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1,
@@ -572,6 +574,11 @@
             this.btnImportInspection.Name = "btnImportInspection";
             this.btnImportInspection.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnImportInspection_ItemClick);
             // 
+            // barStaticItem2
+            // 
+            this.barStaticItem2.Id = 18;
+            this.barStaticItem2.Name = "barStaticItem2";
+            // 
             // ribbonPage1
             // 
             this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -662,6 +669,7 @@
             // 
             // ribStatusbar
             // 
+            this.ribStatusbar.ItemLinks.Add(this.barStaticItem2);
             this.ribStatusbar.Location = new System.Drawing.Point(0, 667);
             this.ribStatusbar.Name = "ribStatusbar";
             this.ribStatusbar.Ribbon = this.ribbon;
@@ -1168,5 +1176,6 @@
         private DevExpress.XtraNavBar.NavBarItem navExportAllInsp;
         private System.Windows.Forms.Label label1;
         private DevExpress.XtraNavBar.NavBarItem navViewGraph;
+        private DevExpress.XtraBars.BarStaticItem barStaticItem2;
     }
 }

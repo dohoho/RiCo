@@ -185,6 +185,8 @@
             this.txtEquipmentCost.Name = "txtEquipmentCost";
             this.txtEquipmentCost.Size = new System.Drawing.Size(198, 21);
             this.txtEquipmentCost.TabIndex = 3;
+            this.txtEquipmentCost.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtEquipmentCost.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtEquipmentCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEquipmentCost_KeyPress);
             // 
             // txtEnvironmentCost
@@ -194,6 +196,8 @@
             this.txtEnvironmentCost.Name = "txtEnvironmentCost";
             this.txtEnvironmentCost.Size = new System.Drawing.Size(198, 21);
             this.txtEnvironmentCost.TabIndex = 6;
+            this.txtEnvironmentCost.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtEnvironmentCost.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtEnvironmentCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEnvironmentCost_KeyPress);
             // 
             // txtPersonDensity
@@ -203,6 +207,8 @@
             this.txtPersonDensity.Name = "txtPersonDensity";
             this.txtPersonDensity.Size = new System.Drawing.Size(198, 21);
             this.txtPersonDensity.TabIndex = 14;
+            this.txtPersonDensity.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtPersonDensity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtPersonDensity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPersonDensity_KeyPress);
             // 
             // txtToxicPercent
@@ -212,7 +218,8 @@
             this.txtToxicPercent.Name = "txtToxicPercent";
             this.txtToxicPercent.Size = new System.Drawing.Size(198, 20);
             this.txtToxicPercent.TabIndex = 12;
-            this.txtToxicPercent.TextChanged += new System.EventHandler(this.txtToxicPercent_TextChanged);
+            this.txtToxicPercent.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtToxicPercent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtToxicPercent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtToxicPercent_KeyPress);
             // 
             // txtInjureCost
@@ -222,6 +229,8 @@
             this.txtInjureCost.Name = "txtInjureCost";
             this.txtInjureCost.Size = new System.Drawing.Size(198, 21);
             this.txtInjureCost.TabIndex = 5;
+            this.txtInjureCost.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtInjureCost.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtInjureCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInjureCost_KeyPress);
             // 
             // txtProductionCost
@@ -231,6 +240,8 @@
             this.txtProductionCost.Name = "txtProductionCost";
             this.txtProductionCost.Size = new System.Drawing.Size(198, 21);
             this.txtProductionCost.TabIndex = 4;
+            this.txtProductionCost.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtProductionCost.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtProductionCost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtProductionCost_KeyPress);
             // 
             // txtMassComponent
@@ -240,6 +251,8 @@
             this.txtMassComponent.Name = "txtMassComponent";
             this.txtMassComponent.Size = new System.Drawing.Size(198, 21);
             this.txtMassComponent.TabIndex = 10;
+            this.txtMassComponent.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtMassComponent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtMassComponent.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMassComponent_KeyPress);
             // 
             // txtMassInvert
@@ -249,6 +262,8 @@
             this.txtMassInvert.Name = "txtMassInvert";
             this.txtMassInvert.Size = new System.Drawing.Size(198, 21);
             this.txtMassInvert.TabIndex = 9;
+            this.txtMassInvert.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.txtMassInvert.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             this.txtMassInvert.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMassInvert_KeyPress);
             // 
             // cbMittigationSystem
@@ -259,6 +274,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbMittigationSystem.Size = new System.Drawing.Size(198, 20);
             this.cbMittigationSystem.TabIndex = 11;
+            this.cbMittigationSystem.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbMittigationSystem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // cbIsulationType
             // 
@@ -268,6 +285,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbIsulationType.Size = new System.Drawing.Size(198, 20);
             this.cbIsulationType.TabIndex = 8;
+            this.cbIsulationType.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbIsulationType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // cbReleaseDuration
             // 
@@ -277,6 +296,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbReleaseDuration.Size = new System.Drawing.Size(198, 20);
             this.cbReleaseDuration.TabIndex = 13;
+            this.cbReleaseDuration.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbReleaseDuration.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // cbDetectionType
             // 
@@ -286,6 +307,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbDetectionType.Size = new System.Drawing.Size(198, 20);
             this.cbDetectionType.TabIndex = 7;
+            this.cbDetectionType.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbDetectionType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // cbFluidPhase
             // 
@@ -296,6 +319,8 @@
             this.cbFluidPhase.Size = new System.Drawing.Size(198, 20);
             this.cbFluidPhase.TabIndex = 2;
             this.cbFluidPhase.SelectedIndexChanged += new System.EventHandler(this.cbFluidPhase_SelectedIndexChanged);
+            this.cbFluidPhase.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbFluidPhase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // cbFluid
             // 
@@ -306,6 +331,8 @@
             this.cbFluid.Size = new System.Drawing.Size(198, 20);
             this.cbFluid.TabIndex = 1;
             this.cbFluid.SelectedIndexChanged += new System.EventHandler(this.cbFluid_SelectedIndexChanged);
+            this.cbFluid.TextChanged += new System.EventHandler(this.txtEquipmentCost_TextChanged);
+            this.cbFluid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEquipmentCost_KeyDown);
             // 
             // label22
             // 

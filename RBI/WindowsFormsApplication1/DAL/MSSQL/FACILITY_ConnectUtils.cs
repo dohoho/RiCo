@@ -178,12 +178,12 @@ namespace RBI.DAL.MSSQL
             }
             return obj;
         }
-        public float getFMS(int SiteID)
+        public float getFMS(int FaciID)
         {
             float FMS = 0;
             SqlConnection con = MSSQLDBUtils.GetDBConnection();
             con.Open();
-            String sql = "SELECT ManagementFactor FROM [rbi].[dbo].[FACILITY] WHERE SiteID = '"+SiteID+"'";
+            String sql = "SELECT ManagementFactor FROM [rbi].[dbo].[FACILITY] WHERE FacilityID = '" + FaciID + "'";
             try
             {
                 SqlCommand cmd = new SqlCommand();

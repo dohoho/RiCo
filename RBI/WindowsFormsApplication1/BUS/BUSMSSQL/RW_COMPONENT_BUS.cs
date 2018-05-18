@@ -41,5 +41,9 @@ namespace RBI.BUS.BUSMSSQL
         {
             return DAL.getData(ID);
         }
+        public string GetComponentNumber(int ID)
+        {
+            return DAL.GetComponentNumber(ID);
+        }
     }
 }
