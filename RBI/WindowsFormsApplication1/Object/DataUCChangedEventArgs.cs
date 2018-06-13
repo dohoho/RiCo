@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RBI.Object
 {
-    public class DataUCChangedEventArgs
+    public class DataUCChangedEventArgs : EventArgs
     {
         public readonly int data;
         public DataUCChangedEventArgs(int data)

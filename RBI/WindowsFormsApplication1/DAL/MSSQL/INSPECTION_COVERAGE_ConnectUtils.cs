@@ -45,7 +45,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int CoverageID, int PlanID, String CoverageName, DateTime CoverageDate, String Remarks, String Findings, String FindingRTF)
@@ -75,7 +75,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int CoverageID)
@@ -99,7 +99,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<INSPECTION_COVERAGE> getDataSource()
@@ -159,7 +159,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

@@ -41,7 +41,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int IMTypeID, String IMTypeName, String IMTypeCode, int IMItemID)
@@ -69,7 +69,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int IMTypeID)
@@ -93,7 +93,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<IM_TYPE> getDataSource()
@@ -135,7 +135,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

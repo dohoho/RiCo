@@ -124,47 +124,54 @@ namespace RBI.BUS.BUSMSSQL_CAL
         private float d_n(int i)
         {
             float dn = 0;
-            if (API_COMPONENT_TYPE_NAME == "TANKBOTTOM")
+            switch(API_COMPONENT_TYPE_NAME)
             {
-                if (i == 1)
-                {
-                    if (PREVENTION_BARRIER)
-                        dn = 3.175f;
+                case "TANKBOTTOM":
+                    if (i == 1)
+                    {
+                        if (PREVENTION_BARRIER)
+                            dn = 3.175f;
+                        else
+                            dn = 12.7f;
+                    }
+                    else if (i == 2)
+                        dn = 0;
+                    else if (i == 3)
+                        dn = 0;
+                    else if (i == 4 && PREVENTION_BARRIER)
+                        dn = 250 * TANK_DIAMETER;
                     else
-                        dn = 12.7f;
-                }
-                else if (i == 2)
-                    dn = 0;
-                else if (i == 3)
-                    dn = 0;
-                else if (i == 4 && PREVENTION_BARRIER)
-                    dn = 250 * TANK_DIAMETER;
-                else
-                    dn = 0;
-            }
-            else if (API_COMPONENT_TYPE_NAME == "COURSE-1" || API_COMPONENT_TYPE_NAME == "COURSE-10" || API_COMPONENT_TYPE_NAME == "COURSE-2" || API_COMPONENT_TYPE_NAME == "COURSE-3" ||
-                    API_COMPONENT_TYPE_NAME == "COURSE-4" || API_COMPONENT_TYPE_NAME == "COURSE-5" || API_COMPONENT_TYPE_NAME == "COURSE-6" || API_COMPONENT_TYPE_NAME == "COURSE-7" ||
-                    API_COMPONENT_TYPE_NAME == "COURSE-8" || API_COMPONENT_TYPE_NAME == "COURSE-9")
-            {
-                if (i == 1)
-                    dn = 3.175f;
-                else if (i == 2)
-                    dn = 6.35f;
-                else if (i == 3)
-                    dn = 50.8f;
-                else
-                    dn = 250 * TANK_DIAMETER;
-            }
-            else
-            {
-                if (i == 1)
-                    dn = 6.4f;
-                else if (i == 2)
-                    dn = 25;
-                else if (i == 3)
-                    dn = 102;
-                else
-                    dn = (float)Math.Min(NominalDiameter, 406);
+                        dn = 0;
+                    break;
+                case "COURSE-1":
+                case "COURSE-2":
+                case "COURSE-3":
+                case "COURSE-4":
+                case "COURSE-5":
+                case "COURSE-6":
+                case "COURSE-7":
+                case "COURSE-8":
+                case "COURSE-9":
+                case "COURSE-10":
+                    if (i == 1)
+                        dn = 3.175f;
+                    else if (i == 2)
+                        dn = 6.35f;
+                    else if (i == 3)
+                        dn = 50.8f;
+                    else
+                        dn = 250 * TANK_DIAMETER;
+                    break;
+                default:
+                    if (i == 1)
+                        dn = 6.4f;
+                    else if (i == 2)
+                        dn = 25;
+                    else if (i == 3)
+                        dn = 102;
+                    else
+                        dn = (float)Math.Min(NominalDiameter, 406);
+                    break;
             }
             return dn;
         }
@@ -1339,5 +1346,1674 @@ namespace RBI.BUS.BUSMSSQL_CAL
         {
             return FC_environ_bottom() + FC_cmd_bottom() + FC_PROD_SHELL();
         }
+
+        
     }
+    //class CALevel2
+    //{
+    //    API_COMPONENT_TYPE_BUS busAPI_COM = new API_COMPONENT_TYPE_BUS();
+    //    MSSQL_RBI_CAL_ConnUtils DAL_CAL = new MSSQL_RBI_CAL_ConnUtils();
+    //    // material
+    //    public String material { set; get; }
+    //    // fluid
+    //    public String fluid { set; get; }
+    //    // component type
+    //    public String componentType { set; get; }
+    //    // phase of stored fluid
+    //    public String fluidPhase { set; get; }
+    //    // poolfire type
+    //    public String poolfireType { set; get; }
+    //    // equipcost
+    //    public float equipcost { set; get; }
+    //    // mass fraction liquid
+    //    public float frac_l { set; get; }
+    //    // vapor density
+    //    public float p_v { set; get; }
+    //    // fraction of fluid flashed
+    //    public float frac_fsh { set; get; }
+    //    // liquid density
+    //    public float p_l { set; get; }
+    //    // stored pressure kPa
+    //    public float p_s { set; get; }
+    //    // atmospheric pressure kPa
+    //    public float p_atm { set; get; }
+    //    // stored fluid's saturation pressure kPa
+    //    public float psat_s { set; get; }
+    //    // stored temperature K
+    //    public float t_s { set; get; }
+    //    // bubble point temperature for flashed liquid K
+    //    public float t_b { set; get; }
+    //    // dew point temperature for flashed vapor K
+    //    public float t_d { set; get; }
+    //    // atmosphere temperature K
+    //    public float t_atm { set; get; }
+    //    // time for steady release of fluid
+    //    public float t_pn { set; get; }
+    //    // specific heat of pool liquid J/kg-K
+    //    public float c_pl { set; get; }
+    //    // reynold constant
+    //    public float r_e { set; get; }
+    //    // fluid mass
+    //    public float mass_inv { set; get; }
+    //    // component mass
+    //    public float mass_comp { set; get; }
+    //    // mass of flammable material in vapor cloud
+    //    public float mass_vce { set; get; }
+    //    // detection type
+    //    public float detectionType { set; get; }
+    //    // isolation type
+    //    public float isolationType { set; get; }
+    //    // mass fraction of release rate
+    //    public float mfrac_flame { set; get; }
+    //    // volume of liquid to establish fire pool m3
+    //    public float V_pn { set; get; }
+    //    // bubble-point pressure, corresponding to the ground temperature kPa
+    //    public float P_bg { set; get; }
+    //    // wind speed m/s
+    //    public float u_w { set; get; }
+    //    // area surface type
+    //    public String surface { set; get; }
+    //    // ground temperature K
+    //    public float t_g { set; get; }
+    //    // ambient condition
+    //    public String ambientCondition { set; get; }
+    //    // humidity %
+    //    public float RH { set; get; }
+    //    // mole fraction of release rate
+    //    public float molefrac_tox { set; get; }
+    //    // toxic Component
+    //    public String toxicComponent { set; get; }
+    //    // criteria
+    //    public String criteria { set; get; }
+    //    // grade level cloud
+    //    public float ca_n_cloud { set; get; }
+    //    //represent Fluid
+    //    public String representFluid { set; get; }
+    //    // moles flash from liquid to vapor
+    //    public float n_v { set; get; }
+    //    // outage multiplier
+    //    public float outage_mult { set; get; }
+    //    // production cost ($)
+    //    public float prodcost { set; get; }
+    //    // injury cost that company would be incurred($)
+    //    public float injcost { set; get; }
+    //    // environment cost
+    //    public float envcost { set; get; }
+    //    // population density (person/m^2)
+    //    public float popdens { set; get; }
+    //    // m hoang thieu tu day tro xuong
+    //    public float xs_cmdn_pool { set; get; }
+    //    //
+    //    public float xs_injn_pool { set; get; }
+    //    //
+    //    public float xs_cmdn_jet { set; get; }
+    //    //
+    //    public float xs_injn_jet { set; get; }
+    //    //
+    //    public float xs_cmdn_fb { set; get; }
+    //    //
+    //    public float xs_injn_fb { set; get; }
+    //    //
+    //    public float xs_cmdn_vce { set; get; }
+    //    //
+    //    public float xs_injn_vce { set; get; }
+    //    // grade cloud area
+    //    public float gradecloudArea { set; get; }
+
+    //    // 
+    //    public float xs_cmdn_pexp { set; get; }
+    //    // 
+    //    public float xs_cmdn_bleve { set; get; }
+    //    // 
+    //    public float xs_injn_pexp { set; get; }
+    //    // 
+    //    public float xs_injn_bleve { set; get; }
+    //    // Step 2 release rate calculation
+    //    // 2.1
+    //    public float d_n(int n)
+    //    {
+    //        float dn = 0;
+    //        if (n == 1)
+    //            dn = 0.25f;
+    //        else if (n == 2)
+    //            dn = 1;
+    //        else if (n == 3)
+    //            dn = 4;
+    //        else
+    //            dn = 16;
+    //        return dn;
+    //    }
+    //    // 2.2
+    //    public float gff_n(int n)
+    //    {
+    //        float gff_n = 0;
+    //        if (n == 1)
+    //        {
+    //            gff_n = busAPI_COM.GetGFFn(componentType, "GFFSmall");
+    //        }
+    //        else if (n == 2)
+    //        {
+    //            gff_n = busAPI_COM.GetGFFn(componentType, "GFFMedium");
+    //        }
+    //        else if (n == 3)
+    //        {
+    //            gff_n = busAPI_COM.GetGFFn(componentType, "GFFLarge");
+    //        }
+    //        else
+    //        {
+    //            gff_n = busAPI_COM.GetGFFn(componentType, "GFFRupture");
+    //        }
+    //        return gff_n;
+
+    //    }
+
+    //    public float gff_total()
+    //    {
+    //        float gff_total = 1;
+    //        gff_total = busAPI_COM.getGFFTotal(componentType);
+    //        return gff_total;
+    //    }
+
+    //    // Step 3 release hole size selection
+    //    // 3.2
+    //    public String releasePhase()
+    //    {
+    //        String release_phase = "";
+    //        if ((p_s >= p_atm) && (p_s <= psat_s))
+    //            release_phase = "Vapor";
+    //        else if ((psat_s > p_atm) && (psat_s <= p_s))
+    //            release_phase = "Two-phase";
+    //        else
+    //            release_phase = "Liquid";
+    //        return release_phase;
+    //    }
+
+    //    // 3.3
+    //    public float a_n(int n)
+    //    {
+    //        float a_n = 0;
+    //        float dn = d_n(n);
+    //        a_n = (float)(Math.PI * Math.Pow(dn, 2) / 4);
+    //        return a_n;
+    //    }
+    //    // 3.4
+    //    public float W_n(int n)
+    //    {
+    //        float W_n = 0;
+    //        float an = a_n(n);
+    //        String releasephase = releasePhase();
+    //        float k = 0;
+    //        float k_vn = 0;
+    //        float mw = float.Parse(rbi.getMw(fluid));
+    //        float p_trans = 0;
+    //        if (releasephase.Equals("Liquid") || releasephase.Equals("Two-phase"))
+    //        {
+    //            k = (float)(0.9935 + 2.878 / Math.Pow(r_e, 0.5) + 342.75 / Math.Pow(r_e, 1.5));
+    //            k_vn = (float)Math.Pow(k, -1);
+    //            W_n = 0.61 * k_vn * rbi.getPl(fluid) * an * Math.Sqrt(2 * 6.67 * Math.Exp(-11) * Math.Abs(p_s - p_atm) / rbi.getPl(fluid)) / (rbi.getC(1));
+    //        }
+    //        else
+    //        {
+    //            float R = 8.314f;
+    //            k = (Cp() / (Cp() - R));
+    //            p_trans = (float)(p_atm * Math.Pow((k + 1) / 2, k / (k - 1)));
+    //            if (p_s > p_trans)
+    //            {
+    //                float x = (k * mw * 6.67 * Math.Exp(-11) / (R * t_s)) * Math.Pow(2 / (k + 1), (k + 1) / (k - 1));
+    //                W_n = 0.9 * an * p_s * Math.Sqrt(x) / (rbi.getC(2));
+    //            }
+    //            else
+    //            {
+    //                float x = (mw * 6.67 * Math.Exp(-11) / (8.314 * t_s)) * ((2 * k) / (k - 1)) * Math.Pow(p_atm / p_s, 2 / k) * (1 - Math.Pow(p_atm / p_s, (k - 1) / k));
+    //                W_n = 0.9 * an * p_s * Math.Sqrt(x) / (rbi.getC(2));
+    //            }
+    //        }
+
+    //        return W_n;
+    //    }
+
+    //    // cp
+    //    public float Cp()
+    //    {
+    //        int idealCp = rbi.getCp_ideal(fluid);
+    //        float cp = 0;
+    //        float A = rbi.getCp(fluid, "A");
+    //        float B = rbi.getCp(fluid, "B");
+    //        float C = rbi.getCp(fluid, "C");
+    //        float D = rbi.getCp(fluid, "D");
+    //        float E = rbi.getCp(fluid, "E");
+    //        float CP_C2 = (C / t_s) / (Math.Sinh(C / t_s));
+    //        float CP_E2 = (E / t_s) / (Math.Cosh(E / t_s));
+    //        if (idealCp == 1)
+    //        {
+    //            cp = A + B * t_s + C * t_s * t_s + D * t_s * t_s * t_s;
+    //        }
+    //        else if (idealCp == 2)
+    //        {
+    //            cp = A + B * CP_C2 * CP_C2 + D * CP_E2 * CP_E2;
+    //        }
+    //        else if (idealCp == 3)
+    //        {
+    //            cp = A + B * t_s + C * Math.Pow(t_s, 2) + D * Math.Pow(t_s, 3) + E * Math.Pow(t_s, 4);
+    //        }
+    //        else
+    //        {
+    //            cp = 0;
+    //        }
+    //        return cp;
+    //    }
+
+
+    //    // Step 4 : fluid inventory available for release
+    //    // 4.5
+    //    public float W_max8()
+    //    {
+    //        float W_max8 = 0;
+    //        float an = 32450;
+    //        String releasephase = releasePhase();
+    //        float k = 0;
+    //        float k_vn = 0;
+    //        float mw = float.Parse(rbi.getMw(fluid));
+    //        float p_trans = 0;
+    //        if (releasephase.Equals("Liquid") || releasephase.Equals("Two-phase"))
+    //        {
+    //            k = 0.9935 + 2.878 / Math.Pow(r_e, 0.5) + 342.75 / Math.Pow(r_e, 1.5);
+    //            k_vn = Math.Pow(k, -1);
+    //            W_max8 = 0.61 * k_vn * rbi.getPl(fluid) * an * Math.Sqrt(2 * 6.67 * Math.Exp(-11) * Math.Abs(p_s - p_atm) / rbi.getPl(fluid)) / (rbi.getC(1));
+    //        }
+    //        else
+    //        {
+    //            float R = 8.314;
+    //            k = (Cp() / (Cp() - R));
+    //            p_trans = p_atm * Math.Pow((k + 1) / 2, k / (k - 1));
+    //            if (p_s > p_trans)
+    //            {
+    //                float x = (k * mw * 6.67 * Math.Exp(-11) / (R * t_s)) * Math.Pow(2 / (k + 1), (k + 1) / (k - 1));
+    //                W_max8 = 0.9 * an * p_s * Math.Sqrt(x) / (rbi.getC(2));
+    //            }
+    //            else
+    //            {
+    //                float x = (mw * 6.67 * Math.Exp(-11) / (8.314 * t_s)) * ((2 * k) / (k - 1)) * Math.Pow(p_atm / p_s, 2 / k) * (1 - Math.Pow(p_atm / p_s, (k - 1) / k));
+    //                W_max8 = 0.9 * an * p_s * Math.Sqrt(x) / (rbi.getC(2));
+    //            }
+    //        }
+
+    //        return W_max8;
+    //    }
+    //    // 4.6
+    //    public float mass_addn(int n)
+    //    {
+    //        float mass_addn = 0;
+    //        float Wmax8 = W_max8();
+    //        float Wn = W_n(n);
+    //        mass_addn = 180 * Math.Min(Wmax8, Wn);
+    //        return mass_addn;
+    //    }
+    //    // 4.7
+    //    public float mass_availn(int n)
+    //    {
+    //        float mass_availn = 0;
+    //        float massaddn = mass_addn(n);
+    //        mass_availn = Math.Min(mass_comp + massaddn, mass_inv);
+    //        return mass_availn;
+    //    }
+
+    //    // Step 5 : releaseType
+    //    // 5.1 
+    //    public float t_n(int n)
+    //    {
+    //        float t_n = 0;
+    //        float Wn = W_n(n);
+    //        t_n = (rbi.getC(3)) / Wn;
+    //        return t_n;
+    //    }
+    //    // 5.2
+    //    public String releaseType(int n)
+    //    {
+    //        String releaseType = "";
+    //        float tn = t_n(n);
+    //        float dn = d_n(n);
+    //        float massavailn = mass_availn(n);
+    //        if (dn <= 6.35)
+    //            releaseType = "Continuous";
+    //        else if ((tn <= 180) || (massavailn > 4536))
+    //            releaseType = "Instantaneous";
+    //        else
+    //            releaseType = "Continuous";
+    //        return releaseType;
+    //    }
+
+    //    // Step 6 : Impact of detection and isolation system on release magnitude
+    //    // 6.4
+    //    public float fact_di()
+    //    {
+    //        float fact_di = 0;
+    //        if (detectionType == 1 && isolationType == 1)
+    //        {
+    //            fact_di = 0.25;
+    //        }
+    //        else if (detectionType == 1 && isolationType == 2)
+    //        {
+    //            fact_di = 0.2;
+    //        }
+    //        else if ((detectionType == 1 || detectionType == 2) && isolationType == 3)
+    //        {
+    //            fact_di = 0.1;
+    //        }
+    //        else if (detectionType == 2 && isolationType == 2)
+    //        {
+    //            fact_di = 0.15;
+    //        }
+    //        else fact_di = 0;
+    //        return fact_di;
+    //    }
+
+    //    //6.5
+    //    public float ld_n_max(int n)
+    //    {
+    //        float ld_max = 0;
+    //        float dn = d_n(n);
+    //        if (detectionType == 1 && isolationType == 1)
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 20;
+    //            else if (dn == 1)
+    //                ld_max = 10;
+    //            else //if (dn == 4)
+    //                ld_max = 5;
+    //        }
+    //        else if (detectionType == 1 && isolationType == 2)
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 30;
+    //            else if (dn == 1)
+    //                ld_max = 20;
+    //            else// if (dn == 4)
+    //                ld_max = 10;
+    //        }
+    //        else if (detectionType == 1 && isolationType == 3)
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 40;
+    //            else if (dn == 1)
+    //                ld_max = 30;
+    //            else// if (dn == 4)
+    //                ld_max = 20;
+    //        }
+    //        else if ((isolationType == 1 || isolationType == 2) && detectionType == 2)
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 40;
+    //            else if (dn == 1)
+    //                ld_max = 30;
+    //            else// if (dn == 4)
+    //                ld_max = 20;
+    //        }
+    //        else if (detectionType == 2 && isolationType == 3)
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 60;
+    //            else if (dn == 1)
+    //                ld_max = 30;
+    //            else// if (dn == 4)
+    //                ld_max = 20;
+    //        }
+    //        else if (detectionType == 3 && (isolationType == 1 || isolationType == 2 || isolationType == 3))
+    //        {
+    //            if (dn == 0.25)
+    //                ld_max = 60;
+    //            else if (dn == 1)
+    //                ld_max = 40;
+    //            else// if (dn == 4)
+    //                ld_max = 20;
+    //        }
+    //        else
+    //            ld_max = 0;
+    //        return ld_max;
+    //    }
+
+
+    //    // Step 7 : Release rate and consequence for analysis
+    //    // 7.1
+    //    public float rate_n(int n)
+    //    {
+    //        float rate_n = 0;
+    //        float Wn = W_n(n);
+    //        float factdi = fact_di();
+
+    //        rate_n = Wn * (1 - factdi);
+    //        return rate_n;
+    //    }
+    //    // 7.2
+    //    public float ld_n(int n)
+    //    {
+    //        float ld_n = 0;
+    //        float raten = rate_n(n);
+    //        float massavailn = mass_availn(n);
+    //        float ldmax = ld_n_max(n);
+    //        ld_n = Math.Min(massavailn / raten, 60 * ldmax);
+    //        return ld_n;
+    //    }
+    //    // 7.3
+    //    public float frac_ro()
+    //    {
+    //        float frac_ro = 0;
+    //        if (frac_fsh < 0.5)
+    //            frac_ro = 1 - 2 * frac_fsh;
+    //        else
+    //            frac_ro = 0;
+    //        return frac_ro;
+    //    }
+    //    // 7.4
+    //    public float W_n_pool(int n)
+    //    {
+    //        float W_n_pool = 0;
+    //        float raten = rate_n(n);
+    //        float fracro = frac_ro();
+    //        W_n_pool = raten * fracro;
+    //        return W_n_pool;
+    //    }
+    //    // 7.5
+    //    public float W_n_jet(int n)
+    //    {
+    //        float W_n_jet = 0;
+    //        float raten = rate_n(n);
+    //        float fracro = frac_ro();
+    //        W_n_jet = raten * (1 - fracro);
+    //        return W_n_jet;
+    //    }
+    //    // 7.6
+    //    public float frac_entl()
+    //    {
+    //        float frac_entl = 0;
+    //        float fracro = frac_ro();
+    //        frac_entl = (frac_l * frac_fsh) / (1 - fracro);
+    //        return frac_entl;
+    //    }
+    //    // 7.7
+    //    public float erate_n(int n)
+    //    {
+    //        float erate_n = 0;
+    //        String releasephase = releasePhase();
+    //        float r_pn = Math.Sqrt(2 / 3) * Math.Pow((8 * 9.81 * V_pn) / (Math.PI), 0.25) * Math.Pow(t_pn, 0.75);
+    //        float ksurf = rbi.getksurf(surface);
+    //        float xsurf = rbi.getxsurf(surface);
+    //        float alphasurf = rbi.getalphasurf(surface);
+
+    //        if (releasephase.Equals("Vapor"))
+    //            erate_n = W_n_jet(n);
+    //        else// if (releasephase.Equals("Liquid"))
+    //        {
+    //            if (poolfireType.Equals("Non-boiling"))
+    //                erate_n = (rbi.getC(15)) * P_bg * float.Parse(rbi.getMw(fluid)) * Math.Pow(r_pn, 1.89) * Math.Pow(u_w, 0.78);
+    //            else// if (poolfireType.Equals("Boiling"))
+    //                erate_n = Math.Pow(Math.PI, 1.5) * xsurf * ksurf * (t_g - t_b) * Math.Pow(2 * 9.81 * V_pn, 0.5) * t_pn / ((rbi.getC(14)) * 90 * Math.Sqrt(Math.PI * alphasurf));
+    //        }
+    //        return erate_n;
+    //    }
+
+    //    // Step 8 flamable explosive Consequences area
+    //    // 8.2 flammable release rate
+    //    public float rate_n_flame(int n)
+    //    {
+    //        return rate_n(n) * mfrac_flame;
+    //    }
+    //    public float rate_ln_flame(int n)
+    //    {
+    //        return rate_n_flame(n) * (1 - frac_fsh);
+    //    }
+    //    public float rate_vn_flame(int n)
+    //    {
+    //        return rate_n_flame(n) * frac_fsh;
+    //    }
+
+
+    //    // 8.4 probability of ignition of the release
+    //    public float poi_ln_amb(int n)
+    //    {
+    //        return 1.00982 - 0.70372 * Math.Log(float.Parse(rbi.getMw(fluid))) - 0.013045 * Math.Log((rbi.getC(4)) * rate_ln_flame(n)) + 0.18554 * Math.Log(Math.Pow(float.Parse(rbi.getMw(fluid)), 2)) - 0.0014619 * Math.Log(Math.Pow((rbi.getC(4)) * rate_ln_flame(n), 2)) - 0.022131 * Math.Log(float.Parse(rbi.getMw(fluid))) * Math.Log((rbi.getC(4)) * rate_ln_flame(n)) - 0.016572 * Math.Log(Math.Pow(float.Parse(rbi.getMw(fluid)), 3)) + 0.00011281 * Math.Log(Math.Pow((rbi.getC(4)) * rate_ln_flame(n), 3)) + 0.00050697 * Math.Log(float.Parse(rbi.getMw(fluid))) * Math.Log(Math.Pow((rbi.getC(4)) * rate_ln_flame(n), 2)) - 0.0035535 * Math.Log(Math.Pow(float.Parse(rbi.getMw(fluid)), 2)) * Math.Log((rbi.getC(4)) * rate_ln_flame(n));
+
+    //    }
+    //    public float poi_vn_amb(int n)
+    //    {
+    //        return (1.16928 - 0.39309 * Math.Log(float.Parse(rbi.getMw(fluid))) - 0.053213 * Math.Log((rbi.getC(4)) * rate_vn_flame(n)) + 0.033904 * Math.Log(Math.Pow(float.Parse(rbi.getMw(fluid)), 2)) - 0.0028936 * Math.Log(Math.Pow((rbi.getC(4)) * rate_ln_flame(n), 2)) - 0.0067701 * Math.Log(float.Parse(rbi.getMw(fluid))) * Math.Log((rbi.getC(4)) * rate_ln_flame(n)) / (1 - 0.00110843 * Math.Log(float.Parse(rbi.getMw(fluid))) - 0.094276 * Math.Log((rbi.getC(4)) * rate_vn_flame(n)) + 0.029813 * Math.Log(Math.Pow(float.Parse(rbi.getMw(fluid)), 2)) + 0.0031951 * Math.Log(Math.Pow((rbi.getC(4)) * rate_ln_flame(n), 2)) - 0.058105 * Math.Log(float.Parse(rbi.getMw(fluid))) * Math.Log((rbi.getC(4)) * rate_vn_flame(n))));
+
+    //    }
+    //    public float poi_l_ait()
+    //    {
+    //        return 1.0;
+    //    }
+    //    public float poi_v_ait()
+    //    {
+    //        float max;
+    //        float temp = (170 - float.Parse(rbi.getMw(fluid))) / (170 - 2);
+    //        if (temp > 0)
+    //            max = 0.7 + temp;
+    //        else
+    //            max = 0.7;
+    //        return max;
+    //    }
+    //    public float poi_ln(int n)
+    //    {
+    //        return poi_ln_amb(n) + (poi_l_ait() - poi_ln_amb(n)) * (t_s - (rbi.getC(16))) / ((rbi.getAIT(fluid)) - (rbi.getC(16)));
+    //    }
+    //    public float poi_vn(int n)
+    //    {
+    //        return poi_vn_amb(n) + (poi_v_ait() - poi_vn_amb(n)) * (t_s - (rbi.getC(16))) / ((rbi.getAIT(fluid)) - (rbi.getC(16)));
+    //    }
+    //    public float poi_2n(int n)
+    //    {
+    //        return poi_ln(n) * frac_fsh + poi_vn(n) * (1 - frac_fsh);
+    //    }
+
+
+    //    // 8.5 probability of a immidiate ignition given ignition given immediate release 
+    //    public float poii(String fp, int n)
+    //    {
+    //        float poii = 0;
+    //        String releasetype = releaseType(n);
+    //        if (releasetype.Equals("Continuous"))
+    //        {
+    //            if (fp.Equals("Liquid"))
+    //            {
+    //                if (ambientCondition.Equals("Ambient Temperature"))
+    //                    poii = rbi.getpoii_n_amb_ambientTemperature(releasetype, fp);
+    //                else// if (ambientCondition.Equals("AIT"))
+    //                    poii = rbi.getpoii_AIT(releasetype, fp);
+    //            }
+    //            else// if (fp.Equals("Vapor"))
+    //            {
+    //                if (ambientCondition.Equals("Ambient Temperature"))
+    //                    poii = rbi.getpoii_n_amb_ambientTemperature(releasetype, fp);
+    //                else// if (ambientCondition.Equals("AIT"))
+    //                    poii = rbi.getpoii_AIT(releasetype, fp);
+    //            }
+    //        }
+    //        else// if (releasetype.Equals("Instantaneous"))
+    //        {
+    //            if (fp.Equals("Liquid"))
+    //            {
+    //                if (ambientCondition.Equals("Ambient Temperature"))
+    //                    poii = rbi.getpoii_n_amb_ambientTemperature(releasetype, fp);
+    //                else// if (ambientCondition.Equals("AIT"))
+    //                    poii = rbi.getpoii_AIT(releasetype, fp);
+    //            }
+    //            else// if (fp.Equals("Vapor"))
+    //            {
+    //                if (ambientCondition.Equals("Ambient Temperature"))
+    //                    poii = rbi.getpoii_n_amb_ambientTemperature(releasetype, fp);
+    //                else// if (ambientCondition.Equals("AIT"))
+    //                    poii = rbi.getpoii_AIT(releasetype, fp);
+    //            }
+    //        }
+    //        return poii;
+    //    }
+    //    public float poii_ln(int n)
+    //    {
+    //        float poii_ln_amb = poii("Liquid", n);
+    //        return poii_ln_amb + (1.0 - poii_ln_amb) * (t_s - (rbi.getC(16))) / ((rbi.getAIT(fluid)) - (rbi.getC(16)));
+    //    }
+    //    public float poii_vn(int n)
+    //    {
+    //        float poii_vn_amb = poii("Vapor", n);
+    //        return poii_vn_amb + (1.0 - poii_vn_amb) * (t_s - (rbi.getC(16))) / ((rbi.getAIT(fluid)) - (rbi.getC(16)));
+    //    }
+    //    public float poii_2n(int n)
+    //    {
+    //        return frac_fsh * poii_ln(n) + (1 - frac_fsh) * poii_vn(n);
+    //    }
+
+
+    //    // 8.6 probability of a vce given delayed ignition
+    //    public float pvce(String fp, int n)
+    //    {
+    //        String releasetype = releaseType(n);
+    //        float pvce = rbi.getpvcedi(releasetype, fp);
+    //        return pvce;
+    //    }
+    //    public float pvcedi_ln(int n)
+    //    {
+    //        return pvce("Liquid", n);
+    //    }
+    //    public float pvcedi_vn(int n)
+    //    {
+    //        return pvce("Vapor", n);
+    //    }
+    //    public float pvcedi_2n(int n)
+    //    {
+    //        return frac_fsh * pvcedi_ln(n) + (1 - frac_fsh) * pvcedi_vn(n);
+    //    }
+
+
+    //    // 8.7 probability of a flasf fire given delayed ignition 
+    //    public float pffdi_ln(int n)
+    //    {
+    //        float pffdi_ln = 1 - pvcedi_ln(n);
+    //        return pffdi_ln;
+    //    }
+    //    public float pffdi_vn(int n)
+    //    {
+    //        float pffdi_vn = 1 - pvcedi_vn(n);
+    //        return pffdi_vn;
+    //    }
+    //    public float pffdi_2n(String fp, int n)
+    //    {
+    //        float pffdi_2n = frac_fsh * pffdi_ln(n) + (1 - frac_fsh) * pffdi_vn(n);
+    //        return pffdi_2n;
+    //    }
+
+
+    //    // 8.8 probability of a fireball given immediate release 
+    //    public float pfbii(String releasetype, String fluidPhase)
+    //    {
+    //        float pfbii = 0;
+    //        if ((releasetype.Equals("Instantaneous") || fluidPhase.Equals("Vapor")) & releasetype.Equals("Instantaneous") || fluidPhase.Equals("Two-phase"))
+    //            pfbii = 1;
+    //        else
+    //            pfbii = 0;
+    //        return pfbii;
+    //    }
+
+
+    //    // 8.9 select appropriate event tree type
+    //    public String eventTreeType(int n)
+    //    {
+    //        String eventTreeType = "";
+    //        if ((n == 1) || (n == 2) || (n == 3))
+    //            eventTreeType = "Leakage";
+    //        else// if (n == 4)
+    //            eventTreeType = "Rupture";
+    //        return eventTreeType;
+    //    }
+
+
+    //    // 8.10 probability of all possible event outcomes
+    //    public float p_poolfire(int n)
+    //    {
+    //        float p_poolFire = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        String releasetype = releaseType(n);
+    //        float poiln = poi_ln(n);
+    //        float poiiln = poii_ln(n);
+    //        float poi2n = poi_2n(n);
+    //        float poii2n = poii_2n(n);
+    //        float pvcedivn = pvcedi_vn(n);
+    //        float pfbii2r = pfbii(releasetype, fluidPhase);
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_poolFire = 0;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_poolFire = poiln * poiiln;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                if (releasetype.Equals("Instantaneous"))
+    //                    p_poolFire = poi2n * poii2n;
+    //                else
+    //                    p_poolFire = 0;
+
+    //            }
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_poolFire = 0;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_poolFire = poiln * poiiln;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_poolFire = poi2n * poii2n * (1 - pfbii2r);
+    //            }
+    //        }
+
+    //        return p_poolFire;
+    //    }
+    //    public float p_jetfire(int n)
+    //    {
+    //        float p_jetfire = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        String releasetype = releaseType(n);
+    //        float poivn = poi_vn(n);
+    //        float poiivn = poii_vn(n);
+    //        float poi2n = poi_2n(n);
+    //        float poii2n = poii_2n(n);
+
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                if (releasetype.Equals("Continuous"))
+    //                    p_jetfire = poivn * poiivn;
+    //                else
+    //                    p_jetfire = 0;
+
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_jetfire = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                if (releasetype.Equals("Continuous"))
+    //                    p_jetfire = poi2n * poii2n;
+    //                else
+    //                    p_jetfire = 0;
+    //            }
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_jetfire = 0;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_jetfire = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_jetfire = 0;
+    //            }
+    //        }
+
+    //        return p_jetfire;
+    //    }
+    //    public float p_fireball(int n)
+    //    {
+    //        float p_fireball = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        String releasetype = releaseType(n);
+    //        float poivn = poi_vn(n);
+    //        float poiivn = poii_vn(n);
+    //        float poi2n = poi_2n(n);
+    //        float poii2n = poii_2n(n);
+    //        float pfbii2r = pfbii(releasetype, fluidPhase);
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                if (releasetype.Equals("Instantaneous"))
+    //                    p_fireball = poivn * poiivn;
+    //                else
+    //                    p_fireball = 0;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_fireball = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                if (releasetype.Equals("Instantaneous"))
+    //                    p_fireball = poi2n * poii2n;
+    //                else
+    //                    p_fireball = 0;
+    //            }
+    //        }
+    //        else //if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_fireball = poivn * poiivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_fireball = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_fireball = poi2n * poii2n * pfbii2r;
+    //            }
+    //        }
+
+    //        return p_fireball;
+    //    }
+    //    public float p_vce(int n)
+    //    {
+    //        float p_vce = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        String releasetype = releaseType(n);
+    //        float poivn = poi_vn(n);
+    //        float poiivn = poii_vn(n);
+    //        float poiln = poi_ln(n);
+    //        float poiiln = poii_ln(n);
+    //        float poi2n = poi_2n(n);
+    //        float poii2n = poii_2n(n);
+    //        float pfbii2r = pfbii(releasetype, fluidPhase);
+    //        float pvcedivn = pvcedi_vn(n);
+    //        float pvcediln = pvcedi_ln(n);
+    //        float pvcedi2n = pvcedi_2n(n);
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_vce = poivn * (1 - poiivn) * pvcedivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_vce = poiln * (1 - poiiln) * pvcediln;
+    //            }
+    //            else //if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_vce = poi2n * (1 - poii2n) * pvcedi2n;
+    //            }
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_vce = poivn * (1 - poiivn) * pvcedivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_vce = poiln * (1 - poiiln) * pvcediln;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_vce = poi2n * (1 - poii2n) * pvcedi2n;
+    //            }
+    //        }
+
+    //        return p_vce;
+    //    }
+    //    public float p_flashfire(int n)
+    //    {
+    //        float p_flashfire = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        String releasetype = releaseType(n);
+    //        float poivn = poi_vn(n);
+    //        float poiivn = poii_vn(n);
+    //        float poiln = poi_ln(n);
+    //        float poiiln = poii_ln(n);
+    //        float poi2n = poi_2n(n);
+    //        float poii2n = poii_2n(n);
+    //        float pfbii2r = pfbii(releasetype, fluidPhase);
+    //        float pvcedivn = pvcedi_vn(n);
+    //        float pvcediln = pvcedi_ln(n);
+    //        float pvcedi2n = pvcedi_2n(n);
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_flashfire = poivn * (1 - poiivn) * (1 - pvcedivn);
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_flashfire = poiln * (1 - poiiln) * (1 - pvcediln);
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_flashfire = poi2n * (1 - poii2n) * (1 - pvcedi2n);
+    //            }
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_flashfire = poivn * (1 - poiivn) * (1 - pvcedivn);
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_flashfire = poiln * (1 - poiiln) * (1 - pvcediln);
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_flashfire = poi2n * (1 - poii2n) * (1 - pvcedi2n);
+    //            }
+    //        }
+
+    //        return p_flashfire;
+    //    }
+    //    public float p_safedispersion(int n)
+    //    {
+    //        float p_safedispersion = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        float poivn = poi_vn(n);
+    //        float poiln = poi_vn(n);
+    //        float poi2n = poi_2n(n);
+
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_safedispersion = 1 - poivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_safedispersion = 1 - poiln;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_safedispersion = 1 - poi2n;
+    //            }
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_safedispersion = poivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_safedispersion = 1 - poiln;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_safedispersion = 0;
+    //            }
+    //        }
+
+    //        return p_safedispersion;
+    //    }
+    //    public float p_pe(int n)
+    //    {
+    //        float p_pe = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        float poivn = poi_vn(n);
+
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            p_pe = 0;
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_pe = 1 - poivn;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_pe = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_pe = 0;
+    //            }
+    //        }
+    //        return p_pe;
+    //    }
+    //    public float p_bleve(int n)
+    //    {
+    //        float p_bleve = 0;
+    //        String eTT = eventTreeType(n);
+    //        String releasephase = releasePhase();
+    //        float poi2n = poi_2n(n);
+
+    //        if (eTT.Equals("Leakage"))
+    //        {
+    //            p_bleve = 0;
+    //        }
+    //        else// if (eTT.Equals("Rupture"))
+    //        {
+    //            if (releasephase.Equals("Vapor"))
+    //            {
+    //                p_bleve = 0;
+    //            }
+    //            else if (releasephase.Equals("Liquid"))
+    //            {
+    //                p_bleve = 0;
+    //            }
+    //            else// if (releasephase.Equals("Two-phase"))
+    //            {
+    //                p_bleve = 1 - poi2n;
+    //            }
+    //        }
+    //        return p_bleve;
+    //    }
+
+    //    // 8.11 component damage and personal injury of fire pool
+    //    public float m_b()
+    //    {
+    //        float m_b = 0;
+    //        if (poolfireType.Equals("Non-boiling"))
+    //            m_b = ((rbi.getC(17)) * 45 * Math.Pow(10, 6)) / (c_pl * (t_b - t_atm) + 20 * Math.Pow(10, 5));
+    //        else// if (poolfireType.Equals("Boiling"))
+    //            m_b = ((rbi.getC(17)) * 45 * Math.Pow(10, 6)) / (20 * Math.Pow(10, 5));
+    //        return m_b;
+    //    }
+    //    public float aburn_pfn(int n)
+    //    {
+    //        float aburn_pfn = 0;
+    //        aburn_pfn = W_n_pool(n) / m_b();
+    //        return aburn_pfn;
+    //    }
+    //    public float a_max_pfn(int n)
+    //    {
+    //        float a_max_pfn = 0;
+    //        a_max_pfn = mass_availn(n) / ((rbi.getC(18)) * frac_ro() * p_l);
+    //        return a_max_pfn;
+    //    }
+    //    public float a_pfn(int n)
+    //    {
+    //        float a_pfn = 0;
+    //        float amaxpfn = a_max_pfn(n);
+    //        float aburnpfn = aburn_pfn(n);
+    //        a_pfn = Math.Min(Math.Min(amaxpfn, aburnpfn), (rbi.getC(7)) * 929.1);
+    //        return a_pfn;
+    //    }
+    //    public float r_pfn(int n)
+    //    {
+    //        float r_pfn = 0;
+    //        float apfn = a_pfn(n);
+
+    //        r_pfn = Math.Sqrt(apfn / Math.PI);
+    //        return r_pfn;
+    //    }
+    //    public float u_sn(int n)
+    //    {
+    //        float u_sn = 0;
+    //        float mb = m_b();
+    //        float rpfn = r_pfn(n);
+    //        u_sn = Math.Max(1.0, u_w * Math.Pow(p_v / (2 * 9.81 * mb * rpfn), 0.333));
+    //        return u_sn;
+    //    }
+    //    public float l_pfn(int n)
+    //    {
+    //        float l_pfn = 0;
+    //        float mb = m_b();
+    //        float rpfn = r_pfn(n);
+    //        float usn = u_sn(n);
+    //        l_pfn = 110 * rpfn * Math.Pow(mb / (p_atm * Math.Sqrt(2 * 9.81 * rpfn)), 0.67) * Math.Pow(usn, -0.21);
+    //        return l_pfn;
+    //    }
+    //    public float O_pfn(int n)
+    //    {
+    //        float O_pfn = 0;
+    //        float usn = u_sn(n);
+    //        O_pfn = Math.Acos(1 / usn);
+    //        return O_pfn;
+    //    }
+    //    public float qrad_n_pool(int n)
+    //    {
+    //        float qrad_n_pool = 0;
+    //        float lpfn = l_pfn(n);
+    //        float rpfn = r_pfn(n);
+    //        float mb = m_b();
+    //        qrad_n_pool = ((rbi.getC(14)) * 0.35 * mb * 45 * Math.Pow(10, 6) * Math.PI * Math.Pow(rpfn, 2)) / (2 * Math.PI * rpfn * lpfn + Math.PI * Math.Pow(rpfn, 2));
+    //        return qrad_n_pool;
+    //    }
+    //    public float t_aimn(float xs_n)
+    //    {
+    //        float t_aimn = 0;
+    //        float pw = (rbi.getC(20)) * RH * Math.Exp(14.4114 - (rbi.getC(19)) / t_atm);
+
+    //        t_aimn = 0.819 * Math.Pow(pw * xs_n, -0.09);
+    //        return t_aimn;
+    //    }
+    //    public float f_cyln(float xs_n_pool, int n)
+    //    {
+    //        float f_cyln = 0;
+    //        float lpfn = l_pfn(n);
+    //        float rpfn = r_pfn(n);
+    //        float opfn = O_pfn(n);
+    //        float X = lpfn / rpfn;
+    //        float Y = xs_n_pool / rpfn;
+    //        float A = Math.Pow(X, 2) + Math.Pow(Y + 1, 2) - 2 * X * (Y + 1) * Math.Sin(opfn);
+    //        float B = Math.Pow(X, 2) + Math.Pow(Y - 1, 2) - 2 * X * (Y - 1) * Math.Sin(opfn);
+    //        float C = 1 + (Math.Pow(Y, 2) - 1) * Math.Pow(Math.Cos(opfn), 2);
+    //        float fvn = (X * Math.Cos(opfn)) / (Y - X * Math.Sin(opfn)) * (Math.Pow(X, 2) + Math.Pow(Y + 1, 2) - 2 * Y * (1 + Math.Sin(opfn))) / (Math.PI * Math.Sqrt(A * B)) * Math.Atan((A * (Y - 1)) / (B * (Y + 1))) + (Math.Cos(opfn)) / (Math.PI * Math.Sqrt(C)) * (Math.Atan((X * Y - (Math.Pow(Y, 2) * Math.Sin(opfn))) / (Math.Sqrt(Math.Pow(Y, 2) - 1) * Math.Sqrt(C))) + Math.Atan((Math.Sin(opfn) * Math.Sqrt(Math.Pow(Y, 2) - 1)) / (Math.Sqrt(C)))) - (X * Math.Cos(opfn)) / (Math.PI * (Y - X * Math.Sin(opfn))) * Math.Atan(Math.Sqrt((Y - 1) / (Y + 1)));
+    //        float fhn = 1 / Math.PI * Math.Atan(Math.Sqrt((Y + 1) / (Y - 1))) - (Math.Pow(X, 2) + Math.Pow(Y + 1, 2) - 2 * (Y + 1 + X * Y * Math.Sin(opfn))) / (Math.PI * Math.Sqrt(A * B)) * Math.Atan(Math.Sqrt((A * (Y - 1)) / (B * (Y + 1)))) + (Math.Sin(opfn)) / (Math.PI * Math.Sqrt(C)) * (Math.Atan((X * Y - (Math.Pow(Y, 2) - 1) * Math.Sin(opfn)) / (Math.Sqrt(Math.Pow(Y, 2) - 1) * Math.Sqrt(C)) + Math.Atan((Math.Sin(opfn) * Math.Sqrt(Math.Pow(Y, 2) - 1)) / (Math.Sqrt(C)))));
+
+    //        f_cyln = Math.Sqrt(Math.Pow(fvn, 2) + Math.Pow(fhn, 2));
+    //        return f_cyln;
+    //    }
+    //    public float ith_n_pool(float xs_n_pool, int n)
+    //    {
+    //        float ith_n_pool = 0;
+    //        float tatmn = t_aimn(xs_n_pool);
+    //        float qradnpool = qrad_n_pool(n);
+    //        float fcyln = f_cyln(xs_n_pool, n);
+
+    //        ith_n_pool = (rbi.getC(19)) * qradnpool * tatmn * fcyln;
+
+    //        return ith_n_pool;
+    //    }
+    //    public float ca_pool(float xs_n_pool)
+    //    {
+    //        float ca_pool = 0;
+    //        ca_pool = Math.PI * Math.Pow(xs_n_pool, 2);
+    //        return ca_pool;
+    //    }
+
+    //    // 8.12 component damage and personal injury of jet fire
+    //    public float qrad_n_jet(int n)
+    //    {
+    //        float qrad_n_jet = 0;
+    //        float mb = m_b();
+    //        qrad_n_jet = (rbi.getC(14)) * 0.35 * W_n_jet(n) * 55.50 * Math.Pow(10, 6);
+    //        return qrad_n_jet;
+    //    }
+    //    public float fp_n(float xs_n_jet)
+    //    {
+    //        float fp_n = 0;
+    //        fp_n = 1 / (4 * Math.PI * Math.Pow(xs_n_jet, 2));
+    //        return fp_n;
+    //    }
+    //    public float ith_n_jet(float xs_n_jet, int n)
+    //    {
+
+    //        float ith_n_jet = 0;
+    //        float tatmn = t_aimn(xs_n_jet);
+    //        float qradnjet = qrad_n_jet(n);
+    //        float fpn = fp_n(xs_n_jet);
+
+
+    //        ith_n_jet = tatmn * qradnjet * fpn;
+
+    //        return ith_n_jet;
+    //    }
+    //    public float ca_jet(float xs_n_jet)
+    //    {
+    //        float ca_jet = 0;
+    //        ca_jet = Math.PI * Math.Pow(xs_n_jet, 2);
+    //        return ca_jet;
+    //    }
+
+    //    // 8.13 component damage and personal injury of fireball
+    //    public float mass_fb(int n)
+    //    {
+    //        float mass_fb = 0;
+    //        mass_fb = mfrac_flame * mass_availn(n);
+    //        return mass_fb;
+    //    }
+    //    public float d_max_fb(int n)
+    //    {
+    //        float d_max_fb = 0;
+    //        float massfb = mass_fb(n);
+    //        d_max_fb = (rbi.getC(22)) * Math.Pow(massfb, 0.333);
+    //        return d_max_fb;
+    //    }
+    //    public float h_fb(int n)
+    //    {
+    //        float h_fb = 0;
+    //        float dmaxfb = d_max_fb(n);
+    //        h_fb = 0.75 * dmaxfb;
+    //        return h_fb;
+    //    }
+    //    public float t_fb(int n)
+    //    {
+    //        float t_fb = 0;
+    //        float massfb = mass_fb(n);
+    //        if (massfb < 29.937)
+    //            t_fb = (rbi.getC(23)) * Math.Pow(massfb, 0.333);
+    //        else
+    //            t_fb = (rbi.getC(24)) * Math.Pow(massfb, 0.167);
+    //        return t_fb;
+    //    }
+    //    public float qrad_fball(int n)
+    //    {
+    //        float qrad_fball = 0;
+    //        float massfb = mass_fb(n);
+    //        float dmax = d_max_fb(n);
+    //        float tfb = t_fb(n);
+    //        float Bfb = (rbi.getC(25)) * Math.Pow(p_s, 0.32);
+    //        qrad_fball = ((rbi.getC(14)) * Bfb * massfb * 45 * Math.Pow(10, 6)) / (Math.PI * Math.Pow(dmax, 2) * tfb);
+    //        return qrad_fball;
+    //    }
+    //    public float fsph(float xs_n_fball, int n)
+    //    {
+    //        float fsph = 0;
+    //        float dmax = d_max_fb(n);
+    //        float cfb = Math.Sqrt(Math.Pow(dmax / 2, 2) + Math.Pow(xs_n_fball / 2, 2));
+    //        fsph = Math.Pow(dmax, 2) / (4 * Math.Pow(cfb, 2));
+    //        return fsph;
+    //    }
+    //    public float ith_n_fb(float xs_n_fb, int n)
+    //    {
+    //        float ith_n_fb = 0;
+    //        float tatmn = t_aimn(xs_n_fb);
+    //        float qradnjet = qrad_fball(n);
+    //        float fsph1 = fsph(xs_n_fb, n);
+    //        ith_n_fb = tatmn * qradnjet * fsph1;
+
+    //        return ith_n_fb;
+    //    }
+    //    public float ca_fb(float xs_fball)
+    //    {
+    //        float ca_fb = 0;
+    //        ca_fb = Math.PI * Math.Pow(xs_fball, 2);
+    //        return ca_fb;
+    //    }
+
+    //    // 8.14 component damage and personal injury of vce
+    //    public float W_tnt()
+    //    {
+    //        float W_tnt = 0;
+    //        W_tnt = (0.09 * mass_vce * 90 * Math.Pow(10, 6)) / (4648);
+    //        return W_tnt;
+    //    }
+    //    public float R_hsn(float xs_n_vce)
+    //    {
+    //        float R_hsn = 0;
+    //        float wtnt = W_tnt();
+    //        R_hsn = ((rbi.getC(27)) * xs_n_vce) / (Math.Pow(wtnt, 0.3333333333));
+    //        return R_hsn;
+    //    }
+    //    public float P_son(float xs_n_vce)
+    //    {
+    //        float P_son = 0;
+    //        float rhsn = R_hsn(xs_n_vce);
+    //        P_son = Math.Abs(-0.059965896 + (1.1288697) / (Math.Log(rhsn)) - (7.9625216) / (Math.Pow(Math.Log(rhsn), 2)) + (25.106738) / (Math.Pow(Math.Log(rhsn), 3)) - (30.396707) / (Math.Pow(Math.Log(rhsn), 4)) + (19.399862) / (Math.Pow(Math.Log(rhsn), 5)) - (6.8853477) / (Math.Pow(Math.Log(rhsn), 6)) + (1.2825511) / (Math.Pow(Math.Log(rhsn), 7)) - (0.097705789) / (Math.Pow(Math.Log(rhsn), 8)));
+    //        return P_son;
+    //    }
+
+    //    public float ca_vce(float xs_n_vce)
+    //    {
+    //        float ca_vce = 0;
+    //        ca_vce = Math.PI * Math.Pow(xs_n_vce, 2);
+    //        return ca_vce;
+    //    }
+    //    public float p_r(float xs_n_vce)
+    //    {
+    //        float p_r = 0;
+    //        float pson = P_son(xs_n_vce);
+    //        p_r = Math.Abs(-23.8 + 2.92 * Math.Log((rbi.getC(28)) * pson));
+    //        return p_r;
+    //    }
+
+    //    // 8.15 component damage and personal injury of flash fire
+    //    public float ca_cmdn_flash()
+    //    {
+    //        float ca_cmdn_flash = 0;
+    //        ca_cmdn_flash = 0.25 * gradecloudArea;
+    //        return ca_cmdn_flash;
+    //    }
+
+    //    // 8.16
+    //    public float ca_cmdn_flame(int n)
+    //    {
+    //        float ca_cmdn_flame = 0;
+    //        ca_cmdn_flame = p_poolfire(n) * ca_pool(xs_cmdn_pool) + p_jetfire(n) * ca_jet(xs_cmdn_jet) + p_fireball(n) * ca_fb(xs_cmdn_fb) + p_vce(n) * ca_vce(xs_cmdn_vce) + p_flashfire(n) * ca_cmdn_flash();
+    //        return ca_cmdn_flame;
+    //    }
+    //    public float ca_injn_flame(int n)
+    //    {
+    //        float ca_injn_flame = 0;
+    //        ca_injn_flame = p_poolfire(n) * ca_pool(xs_injn_pool) + p_jetfire(n) * ca_jet(xs_injn_jet) + p_fireball(n) * ca_fb(xs_injn_fb) + p_vce(n) * ca_vce(xs_injn_vce) + p_flashfire(n) * gradecloudArea;
+    //        return ca_injn_flame;
+    //    }
+
+    //    //8.17
+    //    public float ca_cmd_flame()
+    //    {
+    //        float ca_cmd_flame = 0;
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * ca_cmdn_flame(i);
+    //        }
+    //        ca_cmd_flame = t / gff_total();
+    //        return ca_cmd_flame;
+    //    }
+    //    public float ca_inj_flame()
+    //    {
+    //        float ca_inj_flame = 0;
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * ca_injn_flame(i);
+    //        }
+    //        ca_inj_flame = t / gff_total();
+    //        return ca_inj_flame;
+    //    }
+
+
+
+    //    // Step 9 toxic consequences area
+    //    public float mass_n(int n)
+    //    {
+    //        float mass_n = 0;
+    //        mass_n = Math.Min(rate_n(n) * ld_n(n), mass_availn(n));
+
+    //        return mass_n;
+    //    }
+
+    //    // 9.2
+    //    public float ld_n_tox(int n)
+    //    {
+    //        float ld_n_tox = 0;
+    //        ld_n_tox = Math.Min(Math.Min(3600, (mass_n(n)) / (W_n(n))), 60 * ld_n_max(n));
+    //        return ld_n_tox;
+    //    }
+    //    // 9.3
+    //    public float tox_lim()
+    //    {
+    //        float tox_lim = 0;
+    //        tox_lim = rbi.getToxicImpactCriteria(toxicComponent, criteria);
+    //        return tox_lim;
+    //    }
+    //    // 9.4
+    //    public float tox_lim_mod()
+    //    {
+    //        float tox_lim_mod = 0;
+    //        float toxlim = tox_lim();
+    //        tox_lim_mod = toxlim / molefrac_tox;
+    //        return tox_lim_mod;
+    //    }
+    //    // 9.7
+    //    public float ptox_n(int n)
+    //    {
+    //        float ptox_n = 0;
+    //        ptox_n = p_safedispersion(n);
+    //        return ptox_n;
+    //    }
+    //    public float ca_injn_tox(int n)
+    //    {
+    //        float ca_n_tox = 0;
+    //        float pntox = ptox_n(n);
+    //        ca_n_tox = pntox * ca_n_cloud;
+    //        return ca_n_tox;
+    //    }
+    //    public float ca_tox()
+    //    {
+    //        float ca_tox = 0;
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * ca_injn_tox(i);
+    //        }
+    //        ca_tox = t / gff_total();
+    //        return Math.Abs(ca_tox);
+    //    }
+
+
+    //    // Step 10 non flammable non toxic consequence area
+    //    // 10.2
+    //    public float ca_injn_cont(int n)
+    //    {
+    //        float ca_injn_cont = 0;
+    //        float h = 0.31 - 0.0032 * Math.Pow((rbi.getC(11)) * (p_s - p_atm) - 40, 2);
+    //        float g = 2696 - 21.9 * (rbi.getC(11)) * (p_s - p_atm) + 1.474 * Math.Pow((rbi.getC(11)) * (p_s - p_atm), 2);
+    //        if (representFluid.Equals("Steam"))
+    //            ca_injn_cont = (rbi.getC(9)) * rate_n(n);
+    //        else// if (representFluid.Equals("Acids") || representFluid.Equals("Caustics"))
+    //            ca_injn_cont = 0.2 * (rbi.getC(8)) * g * Math.Pow((rbi.getC(4)) * rate_n(n), h);
+
+    //        return ca_injn_cont;
+    //    }
+    //    public float ca_injn_inst(int n)
+    //    {
+    //        float ca_injn_inst = 0;
+
+    //        if (representFluid.Equals("Steam"))
+    //            ca_injn_inst = (rbi.getC(10)) * Math.Pow(mass_n(n), 0.6384);
+    //        else// if (representFluid.Equals("Acids") || representFluid.Equals("Caustics"))
+    //            ca_injn_inst = 0;
+
+    //        return ca_injn_inst;
+    //    }
+    //    public float fact_n_ic(int n)
+    //    {
+    //        if (representFluid.Equals("Steam"))
+    //            return Math.Min(rate_n(n) / (rbi.getC(5)), 1);
+    //        else// if (representFluid.Equals("Acids") || representFluid.Equals("Caustics"))
+    //            return 0;
+    //    }
+    //    public float ca_injn_leak(int n)
+    //    {
+    //        float ca_injn_leak = 0;
+    //        float cainjninst = ca_injn_inst(n);
+    //        float factnic = fact_n_ic(n);
+    //        float cainjncont = ca_injn_cont(n);
+    //        ca_injn_leak = cainjninst * factnic + cainjncont * (1 - factnic);
+
+    //        return ca_injn_leak;
+    //    }
+
+    //    // 10.2
+    //    public float ca_cmd_pexp()
+    //    {
+    //        float ca_cmd_pexp = 0;
+    //        String eventtreeType = eventTreeType(4);
+    //        if (eventtreeType.Equals("Rupture"))
+    //        {
+    //            ca_cmd_pexp = Math.PI * Math.Pow(xs_cmdn_pexp, 2);
+    //        }
+    //        return ca_cmd_pexp;
+    //    }
+    //    public float ca_inj_pexp()
+    //    {
+    //        float ca_inj_pexp = 0;
+    //        String eventtreeType = eventTreeType(4);
+    //        if (eventtreeType.Equals("Rupture"))
+    //        {
+    //            ca_inj_pexp = Math.PI * Math.Pow(xs_injn_pexp, 2);
+    //        }
+    //        return ca_inj_pexp;
+    //    }
+
+    //    // 10.3
+    //    public float W_tnt_bleve()
+    //    {
+    //        float Wtntbleve = 0;
+    //        String releasephase = releasePhase();
+    //        Wtntbleve = (rbi.getC(30)) * n_v * 8.314 * t_s * Math.Log(p_s / p_atm);
+    //        float Wtnt = W_tnt();
+    //        if (releasephase.Equals("Two-phase"))
+    //            return Wtntbleve + Wtnt;
+    //        else
+    //            return Wtntbleve;
+    //        //return Wtntbleve;
+    //    }
+    //    public float ca_cmd_bleve()
+    //    {
+    //        float ca_cmd_bleve = 0;
+    //        ca_cmd_bleve = Math.PI * Math.Pow(xs_cmdn_bleve, 2);
+    //        return ca_cmd_bleve;
+    //    }
+
+    //    public float ca_inj_bleve()
+    //    {
+    //        float ca_inj_bleve = 0;
+    //        String eventtreeType = eventTreeType(4);
+    //        if (eventtreeType.Equals("Rupture"))
+    //        {
+    //            ca_inj_bleve = Math.PI * Math.Pow(xs_injn_bleve, 2);
+    //        }
+    //        return ca_inj_bleve;
+    //    }
+    //    // 10.4
+    //    public float ca_cmdn_nfnt()
+    //    {
+    //        float ca_cmdn_nfnt = 0;
+    //        float cacmdpexp = ca_cmd_pexp();
+    //        float cainjbleve = ca_cmd_bleve();
+
+    //        ca_cmdn_nfnt = Math.Max(cacmdpexp, cainjbleve);
+    //        return ca_cmdn_nfnt;
+    //    }
+    //    public float ca_injn_nfnt(int n)
+    //    {
+    //        float ca_injn_nfnt = 0;
+    //        float cacmdpexp = ca_inj_pexp();
+    //        float cainjbleve = ca_inj_bleve();
+    //        float cainjleak = ca_injn_leak(n);
+
+    //        ca_injn_nfnt = Math.Max(cacmdpexp, cainjbleve) + cainjleak;
+    //        return ca_injn_nfnt;
+    //    }
+    //    // 10.5
+    //    public float ca_cmd_nfnt()
+    //    {
+    //        float ca_cmd_nfnt = 0;
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * ca_cmdn_nfnt();
+    //        }
+    //        ca_cmd_nfnt = t / gff_total();
+    //        return ca_cmd_nfnt;
+    //    }
+    //    public float ca_inj_nfnt()
+    //    {
+    //        float ca_inj_nfnt = 0;
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * ca_injn_nfnt(i);
+    //        }
+    //        ca_inj_nfnt = t / gff_total();
+    //        return ca_inj_nfnt;
+    //    }
+
+    //    // Step 11 component and injury consequences
+    //    // 11.1
+    //    public float ca_cmd()
+    //    {
+    //        float ca_cmd = 0;
+    //        float cacmdflame = ca_cmd_flame();
+    //        float cacmdntft = ca_cmd_nfnt();
+    //        ca_cmd = Math.Max(cacmdflame, cacmdntft);
+    //        return ca_cmd;
+    //    }
+
+    //    // 11.2
+    //    public float ca_inj()
+    //    {
+    //        float ca_inj = 0;
+    //        float cainjflame = ca_inj_flame();
+    //        float cainjnfnt = ca_inj_nfnt();
+    //        float cainjtox = ca_tox();
+    //        ca_inj = Math.Max(Math.Max(cainjflame, cainjtox), cainjnfnt);
+    //        return ca_inj;
+    //    }
+
+    //    // Step 12: financial consequence
+    //    // 12.1
+    //    public float fc_cmd()
+    //    {
+    //        float fc_cmd = 0;
+    //        float matcost = rbi.getMatcost(material);
+    //        float t = 0;
+    //        for (int i = 1; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * rbi.getHoleSize(componentType, i) * matcost;
+    //        }
+    //        fc_cmd = t / gff_total();
+    //        return fc_cmd;
+    //    }
+
+    //    //12.2
+    //    public float fc_affa()
+    //    {
+    //        float fc_affa = 0;
+    //        float cacmd = ca_cmd();
+
+    //        fc_affa = cacmd * equipcost;
+    //        return fc_affa;
+    //    }
+
+    //    // 12.3
+    //    public float outage_cmd()
+    //    {
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            t += gff_n(i) * rbi.getOutage(componentType, i) * outage_mult;
+    //        }
+    //        return t / gff_total();
+    //    }
+    //    public float outage_affa()
+    //    {
+    //        float outage_affa = 0;
+    //        float fcaffa = fc_affa();
+
+    //        outage_affa = Math.Pow(10, 1.242 + 0.585 * Math.Log10(fcaffa * Math.Pow(10, -6)));
+    //        return outage_affa;
+    //    }
+    //    public float fc_prod()
+    //    {
+    //        float fc_prod = 0;
+    //        float outagecmd = outage_cmd();
+    //        float outageaffa = outage_affa();
+
+    //        fc_prod = (outagecmd + outageaffa) * prodcost;
+    //        return fc_prod;
+    //    }
+
+    //    // 12.4
+    //    public float fc_inj()
+    //    {
+    //        float fc_inj = 0;
+    //        float cainj = ca_inj();
+    //        float outageaffa = outage_affa();
+
+    //        fc_inj = cainj * popdens * injcost;
+    //        return fc_inj;
+    //    }
+
+    //    // 12.5
+    //    public float vol_n_env(int n)
+    //    {
+    //        float vol_n_env = 0;
+    //        float massn = mass_n(n);
+    //        float frac_evap = rbi.getfracEvap(fluid);
+
+    //        vol_n_env = (rbi.getC(13)) * massn * (1 - frac_evap) / p_l;
+    //        return vol_n_env;
+    //    }
+    //    public float fc_environ()
+    //    {
+    //        float fc_environ = 0;
+
+    //        float t = 0;
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            float volnenv = vol_n_env(i);
+    //            t += gff_n(i) * volnenv * envcost;
+    //        }
+
+    //        fc_environ = t / gff_total();
+    //        return fc_environ;
+    //    }
+
+
+    //    // 12.6
+    //    public float fc()
+    //    {
+    //        float fc = 0;
+    //        float fccmd = fc_cmd();
+    //        float fcaffa = fc_affa();
+    //        float fcprod = fc_prod();
+    //        float fcinj = fc_inj();
+    //        float fcenviron = fc_environ();
+    //        fc = fccmd + fcaffa + fcprod + fcinj + fcenviron;
+    //        return fc;
+    //    }
+
+    //    // consequence analysis
+    //    public float ca()
+    //    {
+    //        return ca_cmd() + ca_inj();
+    //    }
+
+    //    // catalog
+    //    public int convertCatalog()
+    //    {
+    //        float c_a = ca();
+    //        if (c_a <= 100)
+    //            return 1;
+    //        else if (c_a > 100 && c_a <= 1000)
+    //            return 2;
+    //        else if (c_a > 1000 && c_a <= 3000)
+    //            return 3;
+    //        else if (c_a > 3000 && c_a <= 10000)
+    //            return 4;
+    //        else return 5;
+    //    }
+    //}
 }

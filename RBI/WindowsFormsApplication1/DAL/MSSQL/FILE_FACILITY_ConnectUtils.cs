@@ -52,7 +52,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
 
         }
@@ -88,7 +88,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
 
         }
@@ -111,7 +111,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<FILE_FACILITY> getDataSource()
@@ -169,7 +169,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

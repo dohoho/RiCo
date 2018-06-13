@@ -65,7 +65,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, String Release_Phase, float fact_di, float fact_mit, float fact_ait, float CA_cmd, float CA_inj_flame, float CA_inj_toxic, float CA_inj_ntnf, float FC_cmd, float FC_affa, float FC_prod, float FC_inj, float FC_envi, float FC_total, String FCOF_Category)
@@ -104,7 +104,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void detele(int ID)
@@ -126,7 +126,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public RW_CA_LEVEL_1 getData(int ID)
@@ -222,7 +222,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }

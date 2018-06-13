@@ -39,7 +39,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int EquipmentTypeID,String EquipmentTypeCode, String EquipmentTypeName)
@@ -66,7 +66,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int EquipmentTypeID)
@@ -88,7 +88,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         
         }
@@ -130,7 +130,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -169,7 +169,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -202,7 +202,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return equipmentTypeName;
         }
@@ -239,7 +239,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return ID;
         }
@@ -272,7 +272,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }

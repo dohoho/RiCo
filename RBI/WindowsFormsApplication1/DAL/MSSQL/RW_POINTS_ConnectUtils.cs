@@ -71,7 +71,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, int PointID, String PointName, String GaugePoint, String PointLocation, String PIDNo, String FittingDesc, String Specification, String Size, float MinReqThickness, float ThicknessReading, DateTime ThicknessDate, float NominalThickness, float EstimatedCorrosionRate, float CalculatedCorrosionRate, float CalculatedRemainingLife, float k)
@@ -114,7 +114,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -210,7 +210,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

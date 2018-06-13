@@ -263,6 +263,18 @@ namespace RBI.PRE.subForm.InputDataForm
         private void txtMaterial_TextChanged(object sender, EventArgs e)
         {
             DataChange++;
+            if(sender is CheckBox)
+            {
+                CheckBox chk = sender as CheckBox;
+                switch(chk.Name)
+                {
+                    case "chkIsPTASeverity":
+                        cbPTAMaterialGrade.Enabled = chk.Checked ? true : false;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private void txtMaterial_KeyDown(object sender, KeyEventArgs e)

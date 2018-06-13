@@ -75,7 +75,7 @@ namespace RBI.PRE.subForm.OutputDataForm
                 MessageBox.Show("Please select a file", "Cortek RBI");
                 return;
             }
-            this.Close();
+            //this.Close();
         }
     }
 }

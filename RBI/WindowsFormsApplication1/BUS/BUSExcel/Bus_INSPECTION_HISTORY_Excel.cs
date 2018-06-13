@@ -70,7 +70,7 @@ namespace RBI.BUS.BUSExcel
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

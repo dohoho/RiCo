@@ -128,7 +128,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -202,7 +202,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -504,7 +504,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -771,7 +771,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -804,7 +804,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }
@@ -839,7 +839,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return DF;
         }

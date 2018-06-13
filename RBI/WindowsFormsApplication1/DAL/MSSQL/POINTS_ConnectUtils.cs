@@ -53,7 +53,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int PointID, String PointName, int ComponentID, float CorrosionRate, float NominalThickness, float MinReqThickness, float ThicknessCurrent, float ThicknessPrevious, DateTime DateCurrent, DateTime DatePrevious)
@@ -90,7 +90,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int PointID)
@@ -116,7 +116,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<POINTS> getDataSource()
@@ -191,7 +191,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

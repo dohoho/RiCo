@@ -37,7 +37,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int DesignCodeID, String DesignCode, String DesignCodeApp)
@@ -64,7 +64,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int DesignCodeID)
@@ -88,7 +88,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<DESIGN_CODE> getDataSource()
@@ -131,7 +131,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -164,7 +164,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }
@@ -193,14 +193,14 @@ namespace RBI.DAL.MSSQL
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ID = 0;
             }
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return ID;
         }
@@ -233,7 +233,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }

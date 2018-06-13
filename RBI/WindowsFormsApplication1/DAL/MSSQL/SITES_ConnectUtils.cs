@@ -35,7 +35,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int SiteID, String SiteName)
@@ -58,7 +58,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -121,7 +121,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -155,7 +155,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }
@@ -191,7 +191,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return check;
         }
@@ -227,7 +227,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return ID;
         }
@@ -260,7 +260,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }

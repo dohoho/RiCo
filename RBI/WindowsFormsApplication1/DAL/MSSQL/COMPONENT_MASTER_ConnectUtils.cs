@@ -41,7 +41,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return comNumber;
         }
@@ -74,7 +73,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return comNumber;
         }
@@ -107,7 +105,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return id;
         }
@@ -150,7 +147,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
 
         }
@@ -185,7 +181,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
 
         }
@@ -208,7 +203,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
         }
         public List<COMPONENT_MASTER> getDataSource()
@@ -260,7 +254,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return list;
         }
@@ -293,7 +286,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return _ID;
         }
@@ -326,7 +319,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return comName;
         }
@@ -364,7 +357,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return obj;
         }
@@ -406,7 +399,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return check;
         }
@@ -448,7 +440,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return check;
         }
@@ -479,7 +470,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return ListCompID;
         }
@@ -515,7 +505,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return lstAssID;
         }
@@ -546,7 +535,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return ListCompID;
         }
@@ -574,7 +562,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return comTypeID;
         }

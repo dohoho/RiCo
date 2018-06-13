@@ -136,50 +136,6 @@ namespace RBI.PRE.subForm.InputDataForm
             return coat;
         }
 
-        private void chkInternalLining_CheckedChanged(object sender, EventArgs e)
-        {
-            if(chkInternalLining.Checked)
-            {
-                cbInternalLinerType.Enabled = true;
-                cbInternalLinerCondition.Enabled = true;
-            }
-            else
-            {
-                cbInternalLinerType.Enabled = false;
-                cbInternalLinerCondition.Enabled = false;
-            }
-        }
-
-        private void chkExternalIsulation_CheckedChanged(object sender, EventArgs e)
-        {
-            if(chkExternalIsulation.Checked)
-            {
-                cbIsulationCondition.Enabled = true;
-                cbExternalIsulation.Enabled = true;
-            }
-            else
-            {
-                cbIsulationCondition.Enabled = false;
-                cbExternalIsulation.Enabled = false;
-            }
-        }
-
-        private void chkExternalCoat_CheckedChanged(object sender, EventArgs e)
-        {
-            if(chkExternalCoat.Checked)
-            {
-                cbExternalCoatQuality.Enabled = true;
-                dateExternalCoating.Enabled = true;
-            }
-            else
-            {
-                cbExternalCoatQuality.Enabled = false;
-                dateExternalCoating.Enabled = false;
-            }
-        }
-
-        
-
 
         #region Xu ly su kien Data thay doi
         private int datachange = 0;
@@ -217,13 +173,7 @@ namespace RBI.PRE.subForm.InputDataForm
                 DataChanged(this, e);
         }
         #endregion
-        private void KeyPress1(KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.S)
-            {
-                CtrlSPress++;
-            }
-        }
+        
         private void txtCladdingCorrosionRate_KeyPress(object sender, KeyPressEventArgs e)
         {
             string a = txtCladdingCorrosionRate.Text;
@@ -243,8 +193,21 @@ namespace RBI.PRE.subForm.InputDataForm
             if(sender is CheckBox)
             {
                 CheckBox chk = sender as CheckBox;
-                cbExternalCoatQuality.Enabled = dateExternalCoating.Enabled = (chk.Name == "chkExternalCoat" && chk.Checked) ? true : false;
-                cbInternalLinerType.Enabled = cbInternalLinerCondition.Enabled = (chk.Name == "chkInternalLining" && chk.Checked) ? true : false;
+                switch(chk.Name)
+                {
+                    case "chkExternalCoat":
+                        dateExternalCoating.Enabled = cbExternalCoatQuality.Enabled = chk.Checked ? true : false;
+                        break;
+                    case "chkInternalLining":
+                        cbInternalLinerType.Enabled = cbInternalLinerCondition.Enabled = chk.Checked ? true : false;
+                        break;
+                    case "chkExternalIsulation":
+                        cbExternalIsulation.Enabled = cbIsulationCondition.Enabled = chk.Checked ? true : false;
+                        break;
+                    default:
+                        break;
+
+                }
             }
             if(sender is TextBox)
             {
@@ -257,9 +220,10 @@ namespace RBI.PRE.subForm.InputDataForm
 
         private void chkInternalCoat_KeyDown(object sender, KeyEventArgs e)
         {
-            KeyPress1(e);
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                CtrlSPress++;
+            }
         }
-
-       
     }
 }

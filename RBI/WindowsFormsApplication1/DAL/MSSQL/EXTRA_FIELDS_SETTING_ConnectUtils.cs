@@ -52,7 +52,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ExtraFieldID,String FieldID,String FieldName,String FieldDescription,int SeqNo,
@@ -86,7 +86,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ExtraFieldID)
@@ -108,7 +108,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<EXTRA_FIELDS_SETTING> getDataSource()
@@ -161,7 +161,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }                   

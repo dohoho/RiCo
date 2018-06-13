@@ -44,7 +44,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, int DefaultAssessmentMethod, String SchemaVersion, String UnlockCode, String CompanyName)
@@ -75,7 +75,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -158,7 +158,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

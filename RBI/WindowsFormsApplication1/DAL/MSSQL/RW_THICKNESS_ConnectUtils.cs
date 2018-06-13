@@ -51,7 +51,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, int PointID, DateTime ThicknessDate, float MinReading, String Orientation,
@@ -86,7 +86,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -168,7 +168,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

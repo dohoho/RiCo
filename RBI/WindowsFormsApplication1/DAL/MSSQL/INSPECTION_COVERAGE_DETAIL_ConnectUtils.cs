@@ -49,7 +49,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int CoverageDetailID, int CoverageID, int ComponentID, int DMItemID, int IMTypeID, DateTime InspectionDate, String EffectivenessCode, int CarriedOut, DateTime CarriedOutDate)
@@ -82,7 +82,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int CoverageDetailID)
@@ -106,7 +106,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<INSPECTION_COVERAGE_DETAIL> getDataSource()
@@ -161,7 +161,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

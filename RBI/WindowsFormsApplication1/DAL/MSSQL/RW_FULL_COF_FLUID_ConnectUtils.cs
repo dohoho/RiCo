@@ -75,7 +75,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, double Cp, double k, double GFFTotal, double Kv_n, String ReleasePhase, double Cd, double Ptrans, double NBP, double Density, double MW, double R, double Ps, double Ts, double Patm, double fact_di, double fact_mit, double fact_AIT, double g, double h)
@@ -122,7 +122,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ID)
@@ -148,7 +148,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         // get datasource
@@ -281,7 +281,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

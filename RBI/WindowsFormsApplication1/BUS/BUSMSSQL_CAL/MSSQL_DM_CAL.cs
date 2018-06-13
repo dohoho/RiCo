@@ -1291,7 +1291,7 @@ namespace RBI.BUS.BUSMSSQL_CAL
                 FIP = 2;
             else
                 FIP = 1;
-            float CR = API_CORROSION_RATE() * Math.Max(FPS, FIP);
+            float CR = API_EXTERNAL_CORROSION_RATE() * Math.Max(FPS, FIP);
             float ART_EXT = Math.Max(1 - (CurrentThick - CR * AGE_CUI(age)) / (getTmin() + CA), 0);
             return API_ART(ART_EXT);
         }

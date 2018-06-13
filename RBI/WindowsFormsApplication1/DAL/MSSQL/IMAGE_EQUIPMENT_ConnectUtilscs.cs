@@ -43,7 +43,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ImageID, int EquipmentID, String ImageName, String ImageDescription, byte[] ImageBinary, byte[] ImageBinarySmall)
@@ -73,7 +73,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ImageID)
@@ -97,7 +97,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<IMAGE_EQUIPMENT> getDataSource()
@@ -146,7 +146,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

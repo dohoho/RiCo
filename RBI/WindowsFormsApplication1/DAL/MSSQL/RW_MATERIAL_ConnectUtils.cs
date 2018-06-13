@@ -78,7 +78,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, String MaterialName, float DesignPressure, float DesignTemperature, float MinDesignTemperature, float BrittleFractureThickness, float CorrosionAllowance, float SigmaPhase, String SulfurContent, String HeatTreatment, float ReferenceTemperature, String PTAMaterialCode, String HTHAMaterialCode, int IsPTA, int IsHTHA, int Austenitic, int Temper, int CarbonLowAlloy, int NickelBased,int ChromeMoreEqual12, float AllowableStress, float CostFactor)
@@ -126,7 +126,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -150,7 +150,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -185,7 +185,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return exist;
         }
@@ -300,7 +300,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -412,7 +412,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }

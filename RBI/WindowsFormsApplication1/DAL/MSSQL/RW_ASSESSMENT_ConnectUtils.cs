@@ -41,7 +41,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return name;
         }
@@ -74,7 +74,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return lstName;
         }
@@ -107,7 +107,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -169,7 +169,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID,int EquipmentID, int ComponentID, DateTime AssessmentDate, int AssessmentMethod, int RiskAnalysisPeriod, int IsEquipmentLinked, String RecordType, int ProposalNo, int RevisionNo, int IsRecommend, String ProposalOrRevision, String AdoptedBy, DateTime AdoptedDate, String RecommendedBy, DateTime RecommendedDate, String ProposalName)
@@ -211,7 +211,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ID)
@@ -237,7 +237,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<RW_ASSESSMENT> getDataSource()
@@ -341,7 +341,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -374,7 +374,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return eqID;
         }
@@ -407,7 +407,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return assDate;
         }
@@ -440,7 +440,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }
@@ -471,7 +471,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return temp;
         }
@@ -506,7 +506,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return ass;
         }
@@ -540,7 +540,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return count;
         }
@@ -576,7 +576,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return temp;
         }
@@ -609,7 +609,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return temp;
         }

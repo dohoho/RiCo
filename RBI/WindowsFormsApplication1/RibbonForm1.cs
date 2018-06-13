@@ -51,7 +51,7 @@ namespace RBI
             treeListProject.OptionsView.ShowVertLines = false;
             treeListProject.ExpandAll();
             InitDictionaryDMMachenism();
-            barStaticItem1.Caption = "Ready";
+            barStaticItem2.Caption = "Ready";
             SplashScreenManager.CloseForm();
         }
         private void RibbonForm1_Load(object sender, EventArgs e)
@@ -181,8 +181,8 @@ namespace RBI
                     RW_COMPONENT com = uc.ucComp.getData(IDProposal);
                     RW_STREAM stream = uc.ucStream.getData(IDProposal);
                     RW_STREAM op = uc.ucOpera.getDataforStream(IDProposal);
-                    treeListProject.FocusedNode.SetValue(0, ass.ProposalName);
-                    xtraTabData.SelectedTabPage.Text = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + ass.ProposalName + "]";
+                    //treeListProject.FocusedNode.SetValue(0, ass.ProposalName);
+                    //xtraTabData.SelectedTabPage.Text = treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + ass.ProposalName + "]";
                     //<gan full gia tri cho stream>
                     stream.FlowRate = op.FlowRate;
                     stream.MaxOperatingPressure = op.MaxOperatingPressure;
@@ -204,6 +204,7 @@ namespace RBI
                     //Save Data
                     SaveDatatoDatabase(ass, eq, com, stream, extTemp, coat, ma, caInput);
                     UCRiskFactor resultRisk = new UCRiskFactor(IDProposal);
+                    previousUC[tabPageIndex] = resultRisk;
                     showUCinTabpage(resultRisk);
                 }
                 else
@@ -248,7 +249,7 @@ namespace RBI
                     caTank.SHELL_COURSE_HEIGHT = caTank4.SHELL_COURSE_HEIGHT;
                     caTank.TANK_DIAMETTER = caTank4.TANK_DIAMETTER;
                     caTank.Prevention_Barrier = caTank4.Prevention_Barrier;
-
+                    
                     String _tabName = xtraTabData.SelectedTabPage.Text;
                     String componentNumber = _tabName.Substring(0, _tabName.IndexOf("["));
                     String ThinningType = uc.ucRiskFactor.type;
@@ -256,14 +257,16 @@ namespace RBI
                     MessageBox.Show("Calculation finished!", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     SaveDatatoDatabase(ass, eq, com, stream, extTemp, coat, ma, caTank);
                     UCRiskFactor resultRisk = new UCRiskFactor(IDProposal);
-                    //resultRisk.ShowDataOutputCA(IDProposal);
-                    //resultRisk.riskPoF(IDProposal);
+                    resultRisk.ShowDataOutputCA(IDProposal);
+                    resultRisk.riskPoF(IDProposal);
+                    previousUC[tabPageIndex] = resultRisk;
                     showUCinTabpage(resultRisk);
                 }
                 SplashScreenManager.CloseForm();
             }
             catch (Exception ex)
             {
+                SplashScreenManager.CloseForm();
                 MessageBox.Show("Chưa tính được" + ex.ToString(), "Cortek RBI");
             }
         }
@@ -378,15 +381,15 @@ namespace RBI
             treeListProject.DataSource = listTree;
             treeListProject.RefreshDataSource();
             listTree1 = listTree;
-            //try
-            //{
-            //    treeListProject.FocusedNode.Expand();
-            //}
-            //catch
-            //{
-            //    // do nothing
-            //}
-            treeListProject.ExpandAll();
+            try
+            {
+                treeListProject.FocusedNode.Expand();
+            }
+            catch
+            {
+                // do nothing
+            }
+            //treeListProject.ExpandAll();
             //treeListProject.ExpandToLevel(selectedLevel);
         }
         private void treeListProject_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
@@ -598,7 +601,7 @@ namespace RBI
         }
         private void deleteRecord(object sender, EventArgs e)
         {
-            /*Cần xóa dữ liệu ở các bảng:
+            /* Cần xóa dữ liệu ở các bảng:
              * RW_ASSESSMENT
              * RW_EQUIPMENT
              * RW_COMPONENT
@@ -977,7 +980,11 @@ namespace RBI
         {
             TreeList tree = sender as TreeList;
             TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
-            
+            #region Change Color
+            DevExpress.XtraNavBar.NavBarItem obj = new DevExpress.XtraNavBar.NavBarItem();
+            obj.Name = "navAssessmentInfo";
+            ChangeColorForNavLink(obj);
+            #endregion
             if (treeListProject.Nodes.Count == 0) //tránh lỗi khi treelist rỗng
                 return;
             //<show edit equipment and component>
@@ -1071,6 +1078,7 @@ namespace RBI
                         ucTabNormal ucTabnormal = new ucTabNormal(IDProposal, _ass, equipment, component, op, coat, material, stream, ca, riskFactor, riskSummary, inspection, drawGraph);
                         listUC.Add(ucTabnormal);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTabnormal.ucAss);
+                        previousUC.Add(ucTabnormal.ucAss);
                     }
                     else
                     {
@@ -1123,6 +1131,7 @@ namespace RBI
                         ucTabTank ucTank = new ucTabTank(IDProposal, ass, eq, com, op, coat, material, stream, new UCRiskFactor(IDProposal), new UCRiskSummary(IDProposal), new UCInspectionHistorySubform(IDProposal), new UCDrawGraph(IDProposal));
                         listUCTank.Add(ucTank);
                         addNewTab(treeListProject.FocusedNode.ParentNode.GetValue(0).ToString() + "[" + treeListProject.FocusedNode.GetValue(0).ToString() + "]", ucTank.ucAss);
+                        previousUC.Add(ucTank.ucAss);
                     }
                     if (checkTank)
                     {
@@ -1204,14 +1213,15 @@ namespace RBI
         }
         private void xtraTabData_CloseButtonClick(object sender, EventArgs e)
         {
-            //DevExpress.XtraTab.XtraTabControl tabControl = sender as DevExpress.XtraTab.XtraTabControl;
-            //DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs arg = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
-            //(arg.Page as DevExpress.XtraTab.XtraTabPage).Dispose();
+            if (xtraTabData.SelectedTabPage.Text.Contains('*'))
+                MessageBox.Show("Save file", "Cortek RBI");
+            previousUC.RemoveAt(tabPageIndex);
             xtraTabData.SelectedTabPage.Controls.Clear();
             xtraTabData.SelectedTabPage.Dispose();
         }
         private void xtraTabData_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
         {
+            tabPageIndex = xtraTabData.SelectedTabPageIndex - 1;
             int id_proposal;
             if (int.TryParse(xtraTabData.SelectedTabPage.Name, out id_proposal))
             {
@@ -1231,10 +1241,149 @@ namespace RBI
                         break;
                 }
             }
+            
+            //Console.WriteLine("UC name ");
+        }
+        private void CtrlS_Press(object sender, CtrlSPressEventArgs e)
+        {
+            string str = xtraTabData.SelectedTabPage.Text;
+            int ID = Convert.ToInt32(xtraTabData.SelectedTabPage.Name);
+            if (str.Contains("*"))
+            {
+                Control.ControlCollection ct = xtraTabData.SelectedTabPage.Controls;
+                foreach (Control c in ct)
+                {
+                    if (c is UCAssessmentInfo)
+                    {
+                        CtrlSPress_SaveData(c.Name, ID, c);
+                        initDataforTreeList();
+                        int[] comID = busAssessment.getEquipmentID_ComponentID(ID);
+                        string comNum = busComponent.GetComponentNumber(comID[1]);
+                        string assName = busAssessment.getAssessmentName(ID);
+                        xtraTabData.SelectedTabPage.Text = comNum + "[" + assName + "]";
+                    }
+                    CtrlSPress_SaveData(c.Name, ID, c);
+                    barStaticItem2.Caption = "Saved";
+                }
+                xtraTabData.SelectedTabPage.Text = str.Remove(str.Length - 1); //luu data va bo dau *
+            }
+        }
+        private void ThayDoiDuLieu(object sender, DataUCChangedEventArgs e)
+        {
+            string str = xtraTabData.SelectedTabPage.Text;
+            if (str.Contains("*")) return;
+            else xtraTabData.SelectedTabPage.Text += "*";
+        }
+        private void CtrlSPress_SaveData(string ucName, int ID, object uc)
+        {
+            switch (ucName)
+            {
+                case "UCAssessmentInfo":
+                    UCAssessmentInfo ass = uc as UCAssessmentInfo;
+                    RW_ASSESSMENT rwAss = ass.getData(ID);
+                    busAssessment.edit(rwAss);
+                    break;
+                case "UCEquipmentProperties":
+                    UCEquipmentProperties eq = uc as UCEquipmentProperties;
+                    RW_EQUIPMENT rwEq = eq.getData(ID);
+                    busEquipment.edit(rwEq);
+                    break;
+                case "UCEquipmentPropertiesTank":
+                    UCEquipmentPropertiesTank eq1 = uc as UCEquipmentPropertiesTank;
+                    RW_EQUIPMENT rwEq1 = eq1.getData(ID);
+                    busEquipment.edit(rwEq1);
+                    break;
+                case "UCComponentProperties":
+                    UCComponentProperties com = uc as UCComponentProperties;
+                    RW_COMPONENT rwCom = com.getData(ID);
+                    busComponent.edit(rwCom);
+                    break;
+                case "UCComponentPropertiesTank":
+                    UCComponentPropertiesTank com1 = uc as UCComponentPropertiesTank;
+                    RW_COMPONENT rwCom1 = com1.getData(ID);
+                    busComponent.edit(rwCom1);
+                    break;
+                case "UCMaterial":
+                    UCMaterial ma = uc as UCMaterial;
+                    RW_MATERIAL rwMa = ma.getData(ID);
+                    busMaterial.edit(rwMa);
+                    break;
+                case "UCMaterialTank":
+                    UCMaterialTank ma1 = uc as UCMaterialTank;
+                    RW_MATERIAL rwMa1 = ma1.getData(ID);
+                    busMaterial.edit(rwMa1);
+                    break;
+                case "UCOperatingCondition":
+                    UCOperatingCondition op = uc as UCOperatingCondition;
+                    RW_STREAM rwStream = op.getDataforStream(ID);
+                    RW_EXTCOR_TEMPERATURE rwExtr = op.getDataExtcorTemp(ID);
+                    busStream.edit(rwStream);
+                    busExtcorTemp.edit(rwExtr);
+                    break;
+                case "UCStream":
+                    UCStream stream1 = uc as UCStream;
+                    RW_STREAM rwStream1 = stream1.getData(ID);
+                    busStream.edit(rwStream1);
+                    break;
+                case "UCStreamTank":
+                    UCStreamTank stream = uc as UCStreamTank;
+                    RW_STREAM rwStream2 = stream.getData(ID);
+                    busStream.edit(rwStream2);
+                    break;
+                case "UCCA":
+                    UCCA ca = uc as UCCA;
+                    RW_INPUT_CA_LEVEL_1 rwCA = ca.getData(ID);
+                    busInputCALevel1.edit(rwCA);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void treeListProject_KeyDown(object sender, KeyEventArgs e)
+        {
+            EditDataForNode(sender);
         }
         #endregion
 
         #region Function Tu viet
+        private void EditDataForNode(object sender)
+        {
+            TreeList tree = sender as TreeList;
+            TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+            int levelNode = treeListProject.FocusedNode.Level;
+            switch (levelNode)
+            {
+                case 1: // edit data cho Facility
+                    frmFacilityInput fcInput = new frmFacilityInput(listTree1[hi.Node.Id].ID - hi.Node.Level * 100000);
+                    fcInput.doubleEditClicked = true;
+                    fcInput.ShowInTaskbar = false;
+                    fcInput.ShowDialog();
+                    if (fcInput.ButtonOKClicked)
+                        initDataforTreeList();
+                    return;
+                case 2: //edit data cho Equipment
+                    frmEquipment eq = new frmEquipment(listTree1[hi.Node.Id].ID - (hi.Node.Level - 1) * 200000);
+                    eq.doubleEditClicked = true;
+                    eq.ShowInTaskbar = false;
+                    eq.ShowDialog();
+                    if (eq.ButtonOKCliked)
+                        initDataforTreeList();
+                    return;
+                case 3: //edit data cho Component
+                    int comID = listTree1[hi.Node.Id].ID - (hi.Node.Level - 2) * 300000;
+                    frmNewComponent comEdit = new frmNewComponent(comID);
+                    comEdit.doubleEditClicked = true;
+                    comEdit.ShowInTaskbar = false;
+                    comEdit.ShowDialog();
+                    if (comEdit.ButtonOKClicked)
+                        initDataforTreeList();
+                    return;
+                default:
+                    break;
+            }
+        }
         private void InitDictionaryDMMachenism()
         {
             for(int i = 0; i < DM_ID.Length; i++)
@@ -1771,11 +1920,6 @@ namespace RBI
         {
             #region INSPECTION HISTORY
             int FaciID = busEquipmentMaster.getFacilityID(inspl.EquipmentID);
-            //Console.WriteLine("Some Data " + cal.APIComponentType + "\n" +
-            //                  cal.AdjustmentSettle + "\n" +
-            //                  cal.AMINE_EXPOSED + "\n" +
-            //                  cal.ContainsDeadlegs
-            //   );
             float risktaget = busRiskTarget.getRiskTarget(FaciID);
             float DF_thamchieu = risktaget / (FC * inspl.GFFTotal * inspl.FMS);
             Console.WriteLine("DF tham chieu " + DF_thamchieu + " Risk Target " + risktaget + " FC = " + FC);
@@ -1788,9 +1932,6 @@ namespace RBI
             float[] age = inspl.Age;
             float[] risk = new float[15];
             float[] DFtotal = new float[15];
-            for (int i = 0; i < age.Length; i++)
-                Console.WriteLine("age jhsdjhn " + age[i]);
-            //int ageAssessment = 10;
             for (int i = 1; i < 16; i++)
             {
                 
@@ -1845,11 +1986,13 @@ namespace RBI
                     break;
                 }
             }
-                for (int i = 0; i < risk.Length; i++)
-                {
-                    Console.WriteLine("asdjahdjhsd " + risk[i]);
-                }
-            riskGraph.Risk = risk;
+            string str = "";
+            for (int i = 0; i < risk.Length; i++)
+            {
+                str += "risk " + i + " " + risk[i] + "\n";
+            }
+            MessageBox.Show(str);
+                riskGraph.Risk = risk;
             if (busRiskGraph.CheckExistID(riskGraph.ID))
                 busRiskGraph.edit(riskGraph);
             else
@@ -2251,54 +2394,53 @@ namespace RBI
             if (xtraTabData.SelectedTabPageIndex == 0) return;
             if (xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Contains(u))
             {
+                previousUC[tabPageIndex].Hide();
+                u.Show();
+                previousUC[tabPageIndex] = u;
                 return;
             }
             else
             {
-                xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Clear();
-                
+                int idProposal;
+                if (!int.TryParse(xtraTabData.SelectedTabPage.Name, out idProposal))
+                    return;
                 switch(Num)
                 {   //3 UC cần được cập nhập lại dữ liệu sau mỗi lần tính toán
                     case 9:
-                        UCRiskFactor rf = new UCRiskFactor(IDProposal);
+                        UCRiskFactor rf = new UCRiskFactor(idProposal);
+                        previousUC[tabPageIndex].Hide();
+                        previousUC[tabPageIndex] = rf;
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rf);
                         //rf.Dock = DockStyle.Fill;
-                        //rf.AutoScroll = true;
+                        rf.AutoSize = true;
                         break;
                     case 10:
-                        UCRiskSummary rs = new UCRiskSummary(IDProposal);
+                        UCRiskSummary rs = new UCRiskSummary(idProposal);
+                        previousUC[tabPageIndex].Hide();
+                        previousUC[tabPageIndex] = rs;
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(rs);
                         //rs.Dock = DockStyle.Fill;
-                        
+                        rs.AutoSize = true;
                         break;
                     case 12:
-                        UCDrawGraph gr = new UCDrawGraph(IDProposal);
+                        UCDrawGraph gr = new UCDrawGraph(idProposal);
+                        previousUC[tabPageIndex].Hide();
+                        previousUC[tabPageIndex] = gr;
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(gr);
-                        //u.Dock = DockStyle.Fill;
+                        gr.Dock = DockStyle.Fill;
+                        gr.AutoSize = true;
                         return;
                     default:
+                        previousUC[tabPageIndex].Hide();
+                        previousUC[tabPageIndex] = u;
                         xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(u);
                         //u.Dock = DockStyle.Fill;
+                        u.AutoSize = true;
                         break;
                 }
-                //u.AutoScroll = true;
-                //xtraTabData.TabPages.TabControl.SelectedTabPage.Focus();
-                //VScrollBar v = new VScrollBar();
-                //v.Dock = DockStyle.Right;
-                //v.Maximum = u.Height - xtraTabData.Height;
-                //Console.WriteLine("chieu cao " + v.Maximum);
-                //xtraTabData.TabPages.TabControl.SelectedTabPage.Controls.Add(v);
-
-                //xtraTabData.TabPages.TabControl.SelectedTabPage;
-
-                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScroll = true;
-                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMargin = new System.Drawing.Size(80, 80);
-                //xtraTabData.TabPages.TabControl.SelectedTabPage.AutoScrollMinSize = new Size(xtraTabData.TabPages.TabControl.SelectedTabPage.Width, xtraTabData.TabPages.TabControl.SelectedTabPage.Height);
             }
         }
-
         
-
         private void addNewTab(string tabname, UserControl uc)
         {
             string _tabID = IDProposal.ToString();
@@ -2355,7 +2497,6 @@ namespace RBI
         {
             try
             {
-
                 DevExpress.XtraSpreadsheet.SpreadsheetControl exportData = new SpreadsheetControl();
                 exportData.CreateNewDocument();
                 IWorkbook workbook = exportData.Document;
@@ -2900,7 +3041,6 @@ namespace RBI
         private void navBarItem1_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             xtraTabData.TabPages.TabControl.SelectedTabPageIndex = 0;
-            
         }
 
         private void navFullInspHis_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
@@ -2920,66 +3060,194 @@ namespace RBI
             else
                 return;
         }
+        private void ChangeColorForNavLink(object sender)
+        {
+            DevExpress.XtraNavBar.NavBarItem nav = sender as DevExpress.XtraNavBar.NavBarItem;
+            switch(nav.Name)
+            {
+                case "navAssessmentInfo":
+                    navAssessmentInfo.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor = 
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor = 
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navEquipment":
+                    navEquipment.Appearance.ForeColor = Color.Red;
+                    navAssessmentInfo.Appearance.ForeColor = navComponent.Appearance.ForeColor = 
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor = 
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navComponent":
+                    navComponent.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navAssessmentInfo.Appearance.ForeColor = 
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor = 
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+
+                case "navOperating":
+                    navOperating.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navAssessmentInfo.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navMaterial":
+                    navMaterial.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navAssessmentInfo.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navCoating":
+                    navCoating.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navAssessmentInfo.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navNoInspection":
+                    navNoInspection.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navAssessmentInfo.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navStream":
+                    navStream.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navAssessmentInfo.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navRiskFactor":
+                    navRiskFactor.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navAssessmentInfo.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navCA":
+                    navCA.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navAssessmentInfo.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navRiskSummary":
+                    navRiskSummary.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navAssessmentInfo.Appearance.ForeColor =
+                        navViewGraph.Appearance.ForeColor = Color.Black;
+                    break;
+                case "navViewGraph":
+                    navViewGraph.Appearance.ForeColor = Color.Red;
+                    navEquipment.Appearance.ForeColor = navComponent.Appearance.ForeColor =
+                        navOperating.Appearance.ForeColor = navMaterial.Appearance.ForeColor =
+                        navCoating.Appearance.ForeColor = navNoInspection.Appearance.ForeColor =
+                        navStream.Appearance.ForeColor = navRiskFactor.Appearance.ForeColor =
+                        navCA.Appearance.ForeColor = navRiskSummary.Appearance.ForeColor =
+                        navAssessmentInfo.Appearance.ForeColor = Color.Black;
+                    break;
+                default:
+                    break;
+            }
+        }
         private void navAssessmentInfo_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 1);
         }
         private void navEquipment_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 2);
         }
 
         private void navComponent_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 3);
         }
 
         private void navOperating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 4);
         }
 
         private void navMaterial_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 6);
         }
 
         private void navCoating_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 5);
         }
 
         private void navNoInspection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 11);
         }
 
         private void navStream_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 7);
         }
         private void navRiskFactor_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 9);
         }
         private void navCA_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 8);
         }
         private void navRiskSummary_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 10);
         }
         private void navViewGraph_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
+            ChangeColorForNavLink(sender);
             CheckAndShowTab(this.xtraTabData.SelectedTabPage.Name, 12);
         }
         #endregion
 
         #region Parameters
         
-
         //<input DM>
         private int[] DM_ID = { 8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10 };
         private string[] DM_Name = { "Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking", 
@@ -3022,6 +3290,8 @@ namespace RBI
         private List<ucTabTank> listUCTank = new List<ucTabTank>();
         private int IDNodeTreeList = 0;
         private int numUC = 0;
+        private List<UserControl> previousUC = new List<UserControl>();
+        private int tabPageIndex = 0;
         //<BUS>
         SITES_BUS busSites = new SITES_BUS();
         FACILITY_BUS busFacility = new FACILITY_BUS();
@@ -3049,162 +3319,6 @@ namespace RBI
         RW_RISK_GRAPH_BUS busRiskGraph = new RW_RISK_GRAPH_BUS();        
         //</BUS>
         #endregion
-
-        private void CtrlS_Press(object sender, CtrlSPressEventArgs e)
-        {
-            string str = xtraTabData.SelectedTabPage.Text;
-            int ID = Convert.ToInt32(xtraTabData.SelectedTabPage.Name);
-            if (str.Contains("*"))
-            {
-                if(sender is UCAssessmentInfo)
-                {
-                    CtrlSPress_SaveData("UCAssessmentInfo", ID, sender);
-                    initDataforTreeList();
-                    int[] comID = busAssessment.getEquipmentID_ComponentID(ID);
-                    string comNum = busComponent.GetComponentNumber(comID[1]);
-                    string assName = busAssessment.getAssessmentName(ID);
-                    xtraTabData.SelectedTabPage.Text = comNum + "[" + assName + "]";
-                    barStaticItem2.Caption = "Saved";
-                    return;
-                }
-                else if(sender is UCEquipmentProperties)
-                {
-                    CtrlSPress_SaveData("UCEquipmentProperties", ID, sender);
-                }
-                else if(sender is UCEquipmentPropertiesTank)
-                {
-                    CtrlSPress_SaveData("UCEquipmentPropertiesTank", ID, sender);
-                }
-                else if(sender is UCComponentProperties)
-                {
-                    CtrlSPress_SaveData("UCComponentProperties", ID, sender);
-                }
-                else if(sender is UCComponentPropertiesTank)
-                {
-                    CtrlSPress_SaveData("UCComponentPropertiesTank", ID, sender);
-                }
-                else if(sender is UCMaterial)
-                {
-                    CtrlSPress_SaveData("UCMaterial", ID, sender);
-                }
-                else if(sender is UCMaterialTank)
-                {
-                    CtrlSPress_SaveData("UCMaterialTank", ID, sender);
-                }
-                else if(sender is UCOperatingCondition)
-                {
-                    CtrlSPress_SaveData("UCOperatingCondition", ID, sender);
-                }
-                else if(sender is UCStream)
-                {
-                    CtrlSPress_SaveData("UCStream", ID, sender);
-                }
-                else if(sender is UCStreamTank)
-                {
-                    CtrlSPress_SaveData("UCStreamTank", ID, sender);
-                }
-                else
-                {
-                    CtrlSPress_SaveData("UCCA", ID, sender);
-                }
-                xtraTabData.SelectedTabPage.Text = str.Remove(str.Length - 1); //luu data va bo dau *
-                barStaticItem2.Caption = "Saved";
-            }
-            else
-                return;    
-        }
-        private void ThayDoiDuLieu(object sender, DataUCChangedEventArgs e)
-        {
-            string str = xtraTabData.SelectedTabPage.Text;
-            if (str.Contains("*")) return;
-               xtraTabData.SelectedTabPage.Text += "*";
-        }
-        private void CtrlSPress_SaveData(string ucName, int ID, object uc)
-        {
-            switch (ucName)
-            {
-                case "UCAssessmentInfo":
-                    UCAssessmentInfo ass = uc as UCAssessmentInfo;
-                    RW_ASSESSMENT rwAss = ass.getData(ID);
-                    busAssessment.edit(rwAss);
-                    break;
-                case "UCEquipmentProperties":
-                    UCEquipmentProperties eq = uc as UCEquipmentProperties;
-                    RW_EQUIPMENT rwEq = eq.getData(ID);
-                    busEquipment.edit(rwEq);
-                    break;
-                case "UCEquipmentPropertiesTank":
-                    UCEquipmentPropertiesTank eq1= uc as UCEquipmentPropertiesTank;
-                    RW_EQUIPMENT rwEq1 = eq1.getData(ID);
-                    busEquipment.edit(rwEq1);
-                    break;
-                case "UCComponentProperties":
-                    UCComponentProperties com = uc as UCComponentProperties;
-                    RW_COMPONENT rwCom = com.getData(ID);
-                    busComponent.edit(rwCom);
-                    break;
-                case "UCComponentPropertiesTank":
-                    UCComponentPropertiesTank com1 = uc as UCComponentPropertiesTank;
-                    RW_COMPONENT rwCom1 = com1.getData(ID);
-                    busComponent.edit(rwCom1);
-                    break;
-                case "UCMaterial":
-                    UCMaterial ma = uc as UCMaterial;
-                    RW_MATERIAL rwMa = ma.getData(ID);
-                    busMaterial.edit(rwMa);
-                    break;
-                case "UCMaterialTank":
-                    UCMaterialTank ma1 = uc as UCMaterialTank;
-                    RW_MATERIAL rwMa1 = ma1.getData(ID);
-                    busMaterial.edit(rwMa1);
-                    break;
-                case "UCOperatingCondition":
-                    UCOperatingCondition op = uc as UCOperatingCondition;
-                    RW_STREAM rwStream = op.getDataforStream(ID);
-                    RW_EXTCOR_TEMPERATURE rwExtr = op.getDataExtcorTemp(ID);
-                    busStream.edit(rwStream);
-                    busExtcorTemp.edit(rwExtr);
-                    break;
-                case "UCStream":
-                    UCStream stream1 = uc as UCStream;
-                    RW_STREAM rwStream1 = stream1.getData(ID);
-                    busStream.edit(rwStream1);
-                    break;
-                case "UCStreamTank":
-                    UCStreamTank stream = uc as UCStreamTank;
-                    RW_STREAM rwStream2 = stream.getData(ID);
-                    busStream.edit(rwStream2);
-                    break;
-                case "UCCA":
-                    UCCA ca = uc as UCCA;
-                    RW_INPUT_CA_LEVEL_1 rwCA = ca.getData(ID);
-                    busInputCALevel1.edit(rwCA);
-                    break;
-                default:
-                    break;
-            }
-        }
-        private void xtraTabData_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            try
-            {
-                Control.ControlCollection ct = xtraTabData.SelectedTabPage.Controls;
-                string ucName = ct[0].Name;
-                int ID = Convert.ToInt32(xtraTabData.SelectedTabPage.Name);
-                barStaticItem1.Caption = "Saved";
-                CtrlSPress_SaveData(ucName, ID, ct[0]);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            
-        }
-
-        private void RibbonForm1_KeyDown(object sender, KeyEventArgs e)
-        {
-                
-        }
 
     }
 }

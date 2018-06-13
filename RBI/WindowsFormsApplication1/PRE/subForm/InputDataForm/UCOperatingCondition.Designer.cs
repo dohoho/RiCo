@@ -157,7 +157,7 @@
             this.groupBox2.Location = new System.Drawing.Point(6, 139);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(921, 285);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "% of Operating Temperature in Different Temperature Range";
             // 
@@ -443,7 +443,7 @@
             this.txtOp6.Location = new System.Drawing.Point(235, 77);
             this.txtOp6.Name = "txtOp6";
             this.txtOp6.Size = new System.Drawing.Size(117, 21);
-            this.txtOp6.TabIndex = 1;
+            this.txtOp6.TabIndex = 10;
             this.txtOp6.TextChanged += new System.EventHandler(this.txtOp6_TextChanged);
             this.txtOp6.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaximumOperatingTemp_KeyDown);
             this.txtOp6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOp6_KeyPress);

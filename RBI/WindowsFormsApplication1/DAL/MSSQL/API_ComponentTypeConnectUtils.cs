@@ -12,6 +12,7 @@ namespace RBI.DAL.MSSQL
 {
     class API_ComponentTypeConnectUtils
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public void add(int APIComponentTypeID, String APIComponentTypeName, float GFFSmall, float GFFMedium,
                         float GFFLarge, float GFFRupture, float GFFTotal, float HoleCostSmall, float HoleCostMedium,
                         float HoleCostLarge, float HoleCostRupture, float OutageSmall, float OutageMedium, float OutageLarge,
@@ -66,7 +67,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int APIComponentTypeID, String APIComponentTypeName, float GFFSmall, float GFFMedium,
@@ -109,7 +110,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int APIComponentTypeID)
@@ -131,7 +132,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -195,7 +196,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return obj;
         }
@@ -260,7 +260,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -293,7 +293,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
             }
             return GFFTotal;
         }
@@ -327,7 +326,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
             }
             return APIName;
         }
@@ -362,9 +360,42 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return ID;
+        }
+        public float GetGFFn(string componentType, string gffname)
+        {
+            SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+            conn.Open();
+            float gff = 0;
+            String sql = " SELECT " + gffname + " FROM rbi.dbo.API_COMPONENT_TYPE WHERE APIComponentTypeName = '"+componentType+"'";
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            gff = (float)reader.GetDouble(0);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "GET DATA FAIL!");
+            }
+            finally
+            {
+                conn.Close();
+                
+            }
+            return gff;
         }
     }
 }

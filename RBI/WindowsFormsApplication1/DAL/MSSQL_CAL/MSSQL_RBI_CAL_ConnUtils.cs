@@ -567,7 +567,7 @@ namespace RBI.DAL.MSSQL_CAL
                     }
                 }
             }
-            catch(Exception e)
+            catch
             {
                 //MessageBox.Show("GET DF_LIN FAIL! "+e.ToString());
             }

@@ -32,7 +32,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
         }
 
@@ -72,7 +72,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
         }
         
@@ -95,7 +95,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
         }
 
@@ -128,7 +128,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return lstRisk;
         }
@@ -159,7 +159,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 con.Close();
-                con.Dispose();
+                
             }
             return isExist;
         }

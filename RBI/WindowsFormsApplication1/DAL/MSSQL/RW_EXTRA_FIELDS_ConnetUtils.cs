@@ -138,7 +138,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, String ObjectField001, String ObjectField002, String ObjectField003, String ObjectField004, String ObjectField005, String ObjectField006, String ObjectField007, String ObjectField008, String ObjectField009, String ObjectField010, String ObjectField011, String ObjectField012, String ObjectField013, String ObjectField014,
@@ -219,7 +219,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ID)
@@ -245,7 +245,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
     }

@@ -76,7 +76,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, int DMItemID, float LF2AP1, float LF2AP2, float LF2AP3, float LF2FactorAP1, float LF2FactorAP2, float LF2FactorAP3, float LF3, float LF3Factor, float LCF, String LHAP1Category, String LHAP2Category, String LHAP3Category, float LHAP1Value, float LHAP2Value, float LHAP3Value, float CoFValue, String CoFCategory, float RLI, int IsEL)
@@ -123,7 +123,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -277,7 +277,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

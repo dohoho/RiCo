@@ -54,7 +54,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int TemplateID, String TemplateName, String TemplateDescription, String OriginalFile, String ReportIdentifier, String ReportID, String ReportType, String ReportVersion, int Predefined, byte[] TemplateBinary)
@@ -90,7 +90,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int TemplateID)
@@ -116,7 +116,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public List<REPORT_TEMPLATE> getDataSource()
@@ -195,7 +195,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

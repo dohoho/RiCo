@@ -29,6 +29,15 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dateAssessmentDate = new DevExpress.XtraEditors.DateEdit();
+            this.txtRiskAnalysisPeriod = new System.Windows.Forms.TextBox();
+            this.txtAssessmentName = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chkRiskLinksEquipmentRisk = new System.Windows.Forms.CheckBox();
             this.txtComponentName = new System.Windows.Forms.TextBox();
@@ -59,37 +68,135 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dateAssessmentDate = new DevExpress.XtraEditors.DateEdit();
-            this.txtRiskAnalysisPeriod = new System.Windows.Forms.TextBox();
-            this.txtAssessmentName = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dateComissionDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateComissionDate.Properties)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.groupBox4);
-            this.groupBox1.Controls.Add(this.groupBox3);
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Location = new System.Drawing.Point(0, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(863, 513);
+            this.groupBox1.Size = new System.Drawing.Size(440, 510);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Assessment General Information ";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.groupBox4);
+            this.panel1.Controls.Add(this.groupBox3);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 18);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(434, 489);
+            this.panel1.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.dateAssessmentDate);
+            this.groupBox2.Controls.Add(this.txtRiskAnalysisPeriod);
+            this.groupBox2.Controls.Add(this.txtAssessmentName);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(428, 107);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Assessment";
+            // 
+            // dateAssessmentDate
+            // 
+            this.dateAssessmentDate.EditValue = null;
+            this.dateAssessmentDate.Location = new System.Drawing.Point(183, 47);
+            this.dateAssessmentDate.Name = "dateAssessmentDate";
+            this.dateAssessmentDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dateAssessmentDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dateAssessmentDate.Size = new System.Drawing.Size(240, 20);
+            this.dateAssessmentDate.TabIndex = 2;
+            this.dateAssessmentDate.DateTimeChanged += new System.EventHandler(this.dateAssessmentDate_DateTimeChanged);
+            this.dateAssessmentDate.EditValueChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
+            this.dateAssessmentDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
+            this.dateAssessmentDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
+            // 
+            // txtRiskAnalysisPeriod
+            // 
+            this.txtRiskAnalysisPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRiskAnalysisPeriod.Location = new System.Drawing.Point(183, 73);
+            this.txtRiskAnalysisPeriod.Name = "txtRiskAnalysisPeriod";
+            this.txtRiskAnalysisPeriod.Size = new System.Drawing.Size(120, 22);
+            this.txtRiskAnalysisPeriod.TabIndex = 3;
+            this.txtRiskAnalysisPeriod.Text = "36";
+            this.txtRiskAnalysisPeriod.TextChanged += new System.EventHandler(this.txtRiskAnalysisPeriod_TextChanged);
+            this.txtRiskAnalysisPeriod.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
+            this.txtRiskAnalysisPeriod.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
+            // 
+            // txtAssessmentName
+            // 
+            this.txtAssessmentName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAssessmentName.Location = new System.Drawing.Point(183, 22);
+            this.txtAssessmentName.Name = "txtAssessmentName";
+            this.txtAssessmentName.Size = new System.Drawing.Size(240, 22);
+            this.txtAssessmentName.TabIndex = 1;
+            this.txtAssessmentName.TextChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
+            this.txtAssessmentName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(309, 78);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "months";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 75);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(117, 15);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Risk Analysis Period";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(102, 15);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Assessment Date";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(110, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Assessment Name";
             // 
             // groupBox4
             // 
@@ -106,9 +213,9 @@
             this.groupBox4.Controls.Add(this.label22);
             this.groupBox4.Controls.Add(this.label23);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(6, 367);
+            this.groupBox4.Location = new System.Drawing.Point(3, 351);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(851, 134);
+            this.groupBox4.Size = new System.Drawing.Size(428, 134);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Component";
@@ -233,9 +340,9 @@
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(6, 132);
+            this.groupBox3.Location = new System.Drawing.Point(3, 116);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(851, 229);
+            this.groupBox3.Size = new System.Drawing.Size(428, 229);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Equipment";
@@ -417,121 +524,25 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Equipment Number";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.dateAssessmentDate);
-            this.groupBox2.Controls.Add(this.txtRiskAnalysisPeriod);
-            this.groupBox2.Controls.Add(this.txtAssessmentName);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(6, 19);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(851, 107);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Assessment";
-            // 
-            // dateAssessmentDate
-            // 
-            this.dateAssessmentDate.EditValue = null;
-            this.dateAssessmentDate.Location = new System.Drawing.Point(183, 47);
-            this.dateAssessmentDate.Name = "dateAssessmentDate";
-            this.dateAssessmentDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateAssessmentDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateAssessmentDate.Size = new System.Drawing.Size(240, 20);
-            this.dateAssessmentDate.TabIndex = 2;
-            this.dateAssessmentDate.EditValueChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
-            this.dateAssessmentDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
-            this.dateAssessmentDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
-            // 
-            // txtRiskAnalysisPeriod
-            // 
-            this.txtRiskAnalysisPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRiskAnalysisPeriod.Location = new System.Drawing.Point(183, 73);
-            this.txtRiskAnalysisPeriod.Name = "txtRiskAnalysisPeriod";
-            this.txtRiskAnalysisPeriod.Size = new System.Drawing.Size(120, 22);
-            this.txtRiskAnalysisPeriod.TabIndex = 3;
-            this.txtRiskAnalysisPeriod.Text = "36";
-            this.txtRiskAnalysisPeriod.TextChanged += new System.EventHandler(this.txtRiskAnalysisPeriod_TextChanged);
-            this.txtRiskAnalysisPeriod.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
-            this.txtRiskAnalysisPeriod.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
-            // 
-            // txtAssessmentName
-            // 
-            this.txtAssessmentName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAssessmentName.Location = new System.Drawing.Point(183, 22);
-            this.txtAssessmentName.Name = "txtAssessmentName";
-            this.txtAssessmentName.Size = new System.Drawing.Size(240, 22);
-            this.txtAssessmentName.TabIndex = 1;
-            this.txtAssessmentName.TextChanged += new System.EventHandler(this.txtAssessmentName_TextChanged);
-            this.txtAssessmentName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAssessmentName_KeyDown);
-            //this.txtAssessmentName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRiskAnalysisPeriod_KeyPress);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(309, 78);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "months";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 75);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 15);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Risk Analysis Period";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 15);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Assessment Date";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Assessment Name";
-            // 
             // UCAssessmentInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "UCAssessmentInfo";
-            this.Size = new System.Drawing.Size(863, 513);
+            this.Size = new System.Drawing.Size(445, 517);
             this.groupBox1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dateComissionDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateComissionDate.Properties)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateAssessmentDate.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -577,5 +588,6 @@
         private System.Windows.Forms.TextBox txtEquipmentType;
         private DevExpress.XtraEditors.DateEdit dateAssessmentDate;
         private DevExpress.XtraEditors.DateEdit dateComissionDate;
+        private System.Windows.Forms.Panel panel1;
     }
 }

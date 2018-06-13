@@ -290,8 +290,17 @@ namespace RBI.PRE.subForm.InputDataForm
             if(sender is CheckBox)
             {
                 CheckBox chk = sender as CheckBox;
-                cbHTHAMaterial.Enabled = (chk.Name == "chkIsHTHASeverity" && chk.Checked) ? true : false;
-                cbPTAMaterialGrade.Enabled = (chk.Name == "chkIsPTASeverity" && chk.Checked) ? true : false;
+                switch(chk.Name)
+                {
+                    case "chkIsHTHASeverity":
+                        cbHTHAMaterial.Enabled = chk.Checked ? true : false;
+                        break;
+                    case "chkIsPTASeverity":
+                        cbPTAMaterialGrade.Enabled = chk.Checked ? true : false;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 

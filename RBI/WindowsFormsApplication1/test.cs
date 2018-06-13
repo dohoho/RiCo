@@ -19,16 +19,18 @@ using System.Net;
 using RBI.BUS.BUSExcel;
 using RBI.Object.ObjectMSSQL;
 using DevExpress.XtraCharts;
+using RBI.BUS.BUSMSSQL_CAL;
 
 namespace RBI
 {
     
     public partial class test : Form
     {
+        MSSQL_DM_CAL d = new MSSQL_DM_CAL();
         public test()
         {
             InitializeComponent();
-            textBox1.Text = "hoasid\\najsd";
+            //thinning
 
         }
 

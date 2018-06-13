@@ -107,7 +107,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit( int ID , String AmineSolution , int AqueousOperation , int AqueousShutdown , int ToxicConstituent , int Caustic , float Chloride , float CO3Concentration , int Cyanide , int ExposedToGasAmine , int ExposedToSulphur , String ExposureToAmine , int FlammableFluidID , float FlowRate ,  int H2S , float H2SInWater , int Hydrogen ,  float H2SPartialPressure , int Hydrofluoric , int MaterialExposedToClInt , float MaxOperatingPressure , float MaxOperatingTemperature , float MinOperatingPressure , float MinOperatingTemperature , float CriticalExposureTemperature ,  int ModelFluidID , float NaOHConcentration , int NonFlameToxicFluidID , float ReleaseFluidPercentToxic , String StoragePhase ,  int ToxicFluidID , float WaterpH , String TankFluidName , float FluidHeight , float FluidLeaveDikePercent , float FluidLeaveDikeRemainOnSitePercent , float FluidGoOffSitePercent)
@@ -172,7 +172,7 @@ namespace RBI.DAL.MSSQL
                 finally
                 {
                     conn.Close();
-                    conn.Dispose();
+                    
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
 
@@ -383,7 +383,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -569,7 +569,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -602,7 +602,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }

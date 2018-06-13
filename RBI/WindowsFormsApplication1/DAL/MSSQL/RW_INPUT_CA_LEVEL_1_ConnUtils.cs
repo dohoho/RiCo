@@ -69,7 +69,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void Edit(int ID, String API_FLUID, String SYSTEM, String Release_Duration, String Detection_Type, String Isulation_Type, String Mitigation_System, float Equipment_Cost, float Injure_Cost, float Evironment_Cost, float Toxic_Percent, float Personal_Density, float Material_Cost, float Production_Cost, float Mass_Inventory, float Mass_Component, float Stored_Pressure, float Stored_Temp)
@@ -110,7 +110,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void Delete(int ID)
@@ -134,7 +134,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public RW_INPUT_CA_LEVEL_1 GetData(int ID)
@@ -312,7 +312,7 @@ namespace RBI.DAL.MSSQL
                     }
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 obj.ID = 0;
                 //MessageBox.Show("GET DATA FAIL!" + ex.ToString(), "ERROR!");
@@ -320,7 +320,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }

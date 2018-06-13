@@ -39,7 +39,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
         }
         public void edit(int ComponentID, int MaterialID, int StreamID)
@@ -67,7 +66,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
         }
         public void delete(int ComponentID)
@@ -89,7 +87,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
         }
         public COMPONENT_DETAIL getData(int ComponentID)
@@ -126,7 +123,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return obj;
         }
@@ -167,7 +163,6 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
             }
             return list;
         }

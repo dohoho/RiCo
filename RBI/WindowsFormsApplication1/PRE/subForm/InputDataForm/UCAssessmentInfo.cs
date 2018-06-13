@@ -25,6 +25,7 @@ namespace RBI.PRE.subForm.InputDataForm
         {
             InitializeComponent();
             listComponentType = componentTypeBus.getDataSource();
+            //panel1.AutoScroll = true;
         }
         public UCAssessmentInfo(int id)
         {
@@ -64,8 +65,6 @@ namespace RBI.PRE.subForm.InputDataForm
         }
         List<COMPONENT_TYPE> listComponentType = new List<COMPONENT_TYPE>();
         COMPONENT_TYPE__BUS componentTypeBus = new COMPONENT_TYPE__BUS();
-        
-        
         
         public String ProposalName;
         public RW_ASSESSMENT getData(int ID)
@@ -141,15 +140,32 @@ namespace RBI.PRE.subForm.InputDataForm
         private void txtRiskAnalysisPeriod_TextChanged(object sender, EventArgs e)
         {
             DataChange++;
+            int n;
+            if(int.TryParse(txtRiskAnalysisPeriod.Text, out n))
+            {
+                if(n > 180)
+                {
+                    MessageBox.Show("The cycle has exceeded 15 years", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtRiskAnalysisPeriod.Text = "180";
+                }
+            }
         }
 
 
         private void txtRiskAnalysisPeriod_KeyPress(object sender, KeyPressEventArgs e)
         {
-            string a = txtRiskAnalysisPeriod.Text;
-            if (!Char.IsDigit(e.KeyChar) && (e.KeyChar == '-'))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))// && (e.KeyChar != '.'))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void dateAssessmentDate_DateTimeChanged(object sender, EventArgs e)
+        {
+            if((DateTime)dateAssessmentDate.EditValue > DateTime.Now)
+            {
+                MessageBox.Show("Date time is invalid", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dateAssessmentDate.EditValue = DateTime.Now;
             }
         }
     }

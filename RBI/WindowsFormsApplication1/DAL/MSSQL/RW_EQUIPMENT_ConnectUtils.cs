@@ -93,7 +93,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, int AdminUpsetManagement, int ContainsDeadlegs, int CyclicOperation, int HighlyDeadlegInsp, int DowntimeProtectionUsed, String ExternalEnvironment, int HeatTraced, int InterfaceSoilWater, int LinerOnlineMonitoring, int MaterialExposedToClExt, double MinReqTemperaturePressurisation, String OnlineMonitoring, int PresenceSulphidesO2, int PresenceSulphidesO2Shutdown, int PressurisationControlled, int PWHT, int SteamOutWaterFlush, double ManagementFactor, String ThermalHistory, int YearLowestExpTemp, double Volume, String TypeOfSoil, String EnvironmentSensitivity, double DistanceToGroundWater, String AdjustmentSettle, int ComponentIsWelded, int TankIsMaintained)
@@ -148,7 +148,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ID)
@@ -174,7 +174,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         // get datasource 
@@ -297,7 +297,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -417,7 +417,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -450,7 +450,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }
@@ -483,7 +483,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return id;
         }

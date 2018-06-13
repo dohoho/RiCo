@@ -61,7 +61,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void Edit(int ID,float FLUID_HEIGHT, float SHELL_COURSE_HEIGHT, float TANK_DIAMETTER, int Prevention_Barrier, String Environ_Sensitivity, float P_lvdike, float P_onsite, float P_offsite, String Soil_Type, String TANK_FLUID, String API_FLUID, float SW, float ProductionCost)
@@ -98,7 +98,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void Delete(int ID)
@@ -120,7 +120,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public RW_INPUT_CA_TANK getData(int ID)
@@ -178,7 +178,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -211,7 +211,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }

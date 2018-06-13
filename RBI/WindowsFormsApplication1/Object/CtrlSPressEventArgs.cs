@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RBI.Object
 {
-    public class CtrlSPressEventArgs
+    public class CtrlSPressEventArgs : EventArgs
     {
         public readonly int ctrlSpress;
         public CtrlSPressEventArgs(int p)

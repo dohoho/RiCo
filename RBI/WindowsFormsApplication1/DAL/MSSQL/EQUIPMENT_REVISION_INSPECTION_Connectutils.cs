@@ -55,7 +55,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int RevisionID,int CoverageDetailID,String ComponentNumber,int CoverageID,int DMItemID,
@@ -92,7 +92,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             }
         public void delete(int RevisionID,int CoverageDetailID)
@@ -114,7 +114,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             
           
@@ -174,7 +174,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }

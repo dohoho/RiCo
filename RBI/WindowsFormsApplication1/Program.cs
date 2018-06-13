@@ -7,7 +7,8 @@ using System.Windows.Forms;
 using RBI.PRE.subForm;
 using RBI.PRE.subForm.InputDataForm;
 using DevExpress.XtraSplashScreen;
-
+using System.Data.SqlClient;
+using RBI.DAL.MSSQL;
 namespace RBI
 {
     static class Program
@@ -18,6 +19,17 @@ namespace RBI
         [STAThread]
         static void Main()
         {
+            try
+            {
+                SqlConnection conn = MSSQLDBUtils.GetDBConnection();
+                conn.Open();
+                conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Cannot Connect to Database", "Cortek RBI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new test());

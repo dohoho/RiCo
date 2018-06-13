@@ -1,7 +1,6 @@
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
-E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.csprojResolveAssemblyReference.cache
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.frm_backup.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.OutputDataForm.frm_restored.resources
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.PRE.subForm.InputDataForm.frmImportExcelTank.resources
@@ -47,3 +46,4 @@ E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe.licenses
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+E:\Project\RBIProject\RBI_Application\RBI\WindowsFormsApplication1\obj\Debug\RBI.csprojResolveAssemblyReference.cache

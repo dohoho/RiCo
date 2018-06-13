@@ -57,7 +57,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void edit(int ID, double Minus12ToMinus8, double Minus8ToPlus6, double Plus6ToPlus32, double Plus32ToPlus71, double Plus71ToPlus107, double Plus107ToPlus121, double Plus121ToPlus135, double Plus135ToPlus162, double Plus162ToPlus176, double MoreThanPlus176)
@@ -94,7 +94,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         public void delete(int ID)
@@ -120,7 +120,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
         }
         //get datasoure
@@ -205,7 +205,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return list;
         }
@@ -290,7 +290,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return obj;
         }
@@ -323,7 +323,7 @@ namespace RBI.DAL.MSSQL
             finally
             {
                 conn.Close();
-                conn.Dispose();
+                
             }
             return IsExist;
         }
